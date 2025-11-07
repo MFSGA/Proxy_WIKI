@@ -1,8 +1,6 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Proxy Wiki\n"
-"POT-Creation-Date: 2025-11-07T22:07:44+08:00\n"
-"PO-Revision-Date: 2025-11-07 23:58+0800\n"
 "Last-Translator: chimera_rust@proton.me\n"
 "Language-Team: Language zh-CN\n"
 "MIME-Version: 1.0\n"
