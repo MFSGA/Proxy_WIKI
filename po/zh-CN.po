@@ -21,4 +21,4 @@ msgstr "项目前言"
 
 #: src/preface.md
 msgid "THis book"
-msgstr ""
+msgstr "这本书"
