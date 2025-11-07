@@ -52,12 +52,12 @@ jobs:
         uses: ./.github/workflows/install-mdbook
 
       - name: Build course in English
-        run: .github/workflows/build.sh en book
+        run: bash .github/workflows/build.sh en book
 
       - name: Build all translations
         run: |
           for po_lang in ${{ env.LANGUAGES }}; do
-              .github/workflows/build.sh $po_lang book/$po_lang
+              bash .github/workflows/build.sh $po_lang book/$po_lang
               mv book/$po_lang/html book/html/$po_lang
           done
 
