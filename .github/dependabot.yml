@@ -1,0 +1,87 @@
+# Please see the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: cargo
+    groups:
+      minor:
+        update-types:
+          - minor
+      patch:
+        update-types:
+          - patch
+  - package-ecosystem: cargo
+    directory: /src/bare-metal/alloc-example/
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: cargo
+    groups:
+      minor:
+        update-types:
+          - minor
+      patch:
+        update-types:
+          - patch
+  - package-ecosystem: cargo
+    directory: /src/bare-metal/aps/examples/
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: cargo
+    groups:
+      minor:
+        update-types:
+          - minor
+      patch:
+        update-types:
+          - patch
+  - package-ecosystem: cargo
+    directory: /src/bare-metal/microcontrollers/examples/
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: cargo
+    groups:
+      minor:
+        update-types:
+          - minor
+      patch:
+        update-types:
+          - patch
+  - package-ecosystem: cargo
+    directory: /src/exercises/bare-metal/compass/
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: cargo
+    groups:
+      minor:
+        update-types:
+          - minor
+      patch:
+        update-types:
+          - patch
+  - package-ecosystem: cargo
+    directory: /src/exercises/bare-metal/rtc/
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: cargo
+    groups:
+      minor:
+        update-types:
+          - minor
+      patch:
+        update-types:
+          - patch
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

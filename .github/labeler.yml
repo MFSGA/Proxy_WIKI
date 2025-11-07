@@ -1,0 +1,87 @@
+translation:
+  - changed-files:
+      - any-glob-to-any-file: po/*.po
+
+"translation/ar":
+  - changed-files:
+      - any-glob-to-any-file: po/ar.po
+
+"translation/bn":
+  - changed-files:
+      - any-glob-to-any-file: po/bn.po
+
+"translation/da":
+  - changed-files:
+      - any-glob-to-any-file: po/da.po
+
+"translation/de":
+  - changed-files:
+      - any-glob-to-any-file: po/de.po
+
+"translation/el":
+  - changed-files:
+      - any-glob-to-any-file: po/el.po
+
+"translation/es":
+  - changed-files:
+      - any-glob-to-any-file: po/es.po
+
+"translation/fa":
+  - changed-files:
+      - any-glob-to-any-file: po/fa.po
+
+"translation/fr":
+  - changed-files:
+      - any-glob-to-any-file: po/fr.po
+
+"translation/id":
+  - changed-files:
+      - any-glob-to-any-file: po/id.po
+
+"translation/it":
+  - changed-files:
+      - any-glob-to-any-file: po/it.po
+
+"translation/ja":
+  - changed-files:
+      - any-glob-to-any-file: po/ja.po
+
+"translation/ko":
+  - changed-files:
+      - any-glob-to-any-file: po/ko.po
+
+"translation/pl":
+  - changed-files:
+      - any-glob-to-any-file: po/pl.po
+
+"translation/pt-BR":
+  - changed-files:
+      - any-glob-to-any-file: po/pt-BR.po
+
+"translation/ro":
+  - changed-files:
+      - any-glob-to-any-file: po/ro.po
+
+"translation/ru":
+  - changed-files:
+      - any-glob-to-any-file: po/ru.po
+
+"translation/tr":
+  - changed-files:
+      - any-glob-to-any-file: po/tr.po
+
+"translation/uk":
+  - changed-files:
+      - any-glob-to-any-file: po/uk.po
+
+"translation/vi":
+  - changed-files:
+      - any-glob-to-any-file: po/vi.po
+
+"translation/zh-CN":
+  - changed-files:
+      - any-glob-to-any-file: po/zh-CN.po
+
+"translation/zh-TW":
+  - changed-files:
+      - any-glob-to-any-file: po/zh-TW.po
