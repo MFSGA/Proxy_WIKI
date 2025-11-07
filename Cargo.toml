@@ -2,3 +2,6 @@
 # Please keep the workspace members sorted.
 members = ["xtask", "mdbook-exerciser", "mdbook-course"]
 resolver = "2"
+
+[workspace.package]
+authors = ["chimera_rust@proton.me"]

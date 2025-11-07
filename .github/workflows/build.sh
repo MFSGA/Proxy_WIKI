@@ -24,7 +24,9 @@ else
 
     # Back-date the sources to POT-Creation-Date. The content lives in two
     # directories:
-    rm -r src/ third_party/
+    # todo: re-add third_party/ when we have translations there
+    # rm -r src/ third_party/
+    rm -r src/ 
     git restore --source "$(git rev-list -n 1 --before "$pot_creation_date" @)" src/ third_party/ book.toml
     # Set language and adjust site URL. Clear the redirects since they are
     # in sync with the source files, not the translation.
