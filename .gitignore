@@ -1,0 +1,6 @@
+/book/
+
+# mdBook build artifacts
+print.pdf
+
+target/

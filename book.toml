@@ -1,0 +1,55 @@
+[book]
+title = "Proxy Wiki"
+authors = ["chimera_rust@proton.me"]
+language = "en"
+multilingual = true
+src = "src"
+
+[build]
+create-missing = false
+extra-watch-dirs = ["po"]
+
+
+[serve]
+port = 5000
+# host = "localhost"
+
+[preprocessor.gettext]
+after = ["links"]
+
+[output.html]
+default-theme = "rust"
+preferred-dark-theme = "navy"
+additional-css = [
+  "theme/css/svgbob.css",
+  "theme/css/redbox.css",
+  "theme/css/speaker-notes.css",
+  "theme/css/language-picker.css",
+  "theme/css/rtl.css",
+]
+additional-js = [
+  "theme/speaker-notes.js",
+  "theme/redbox.js",
+]
+no-section-label = false
+site-url = "/"
+
+[output.html.fold]
+enable = true
+level = 2
+
+[output.html.playpen]
+editable = true
+copy-js = true
+line-numbers = true
+
+[output.html.print]
+enable = true
+
+[output.html.search]
+use-boolean-and = true
+
+[output.xgettext]
+optional = true
+pot-file = "messages.pot"
+granularity = 0

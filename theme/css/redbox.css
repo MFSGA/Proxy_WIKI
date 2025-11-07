@@ -1,0 +1,35 @@
+div#aspect-ratio-helper {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+div#aspect-ratio-helper div {
+  position: relative;
+  outline: 2em solid rgba(255, 0, 0, 0.2);
+  margin: 0 auto;
+  /* At this width, the theme fonts are readable in a 16
+       person conference room. If the browser is wider, the
+       text becomes too small to be legible. */
+  max-width: 980px;
+  /* On a standard 16/9 monitor, we expect to lose a bit
+       of vertical space to borders. */
+  aspect-ratio: 16/8.5;
+}
+
+#turn-off-red-box {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 10000;
+  padding: 10px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  pointer-events: auto;
+}
