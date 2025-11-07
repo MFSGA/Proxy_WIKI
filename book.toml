@@ -10,8 +10,8 @@ create-missing = false
 extra-watch-dirs = ["po"]
 
 
-[serve]
-port = 5000
+# [serve]
+# port = 5000
 # host = "localhost"
 
 [preprocessor.gettext]
