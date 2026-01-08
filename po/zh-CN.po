@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Proxy Wiki\n"
-"POT-Creation-Date: 2025-11-08 01:13+0800\n"
+"POT-Creation-Date: 2026-01-09T00:31:50+08:00\n"
 "PO-Revision-Date: 2025-11-08 01:15+0800\n"
 "Last-Translator: chimera_rust@proton.me\n"
 "Language-Team: Language zh-CN\n"
+"Language: zh-CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh-CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/SUMMARY.md
@@ -19,6 +19,939 @@ msgstr "目录"
 msgid "Preface"
 msgstr "项目前言"
 
+#: src/SUMMARY.md src/introduction.md
+msgid "Introduction"
+msgstr "简介"
+
+#: src/SUMMARY.md src/system-topology.md
+msgid "System Topology"
+msgstr "系统拓扑"
+
+#: src/SUMMARY.md src/chimera_client.md
+msgid "chimera_client Client"
+msgstr "chimera_client 客户端"
+
+#: src/SUMMARY.md src/chimera.md
+msgid "Chimera Server"
+msgstr "Chimera 服务器"
+
+#: src/SUMMARY.md
+msgid "Chimera_Server Library"
+msgstr "chimera_server 库"
+
+#: src/SUMMARY.md src/protocol.md
+msgid "Protocol"
+msgstr "协议"
+
+#: src/SUMMARY.md src/protocol.md src/protocols/socks5.md
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+#: src/SUMMARY.md src/protocols/http.md
+msgid "HTTP"
+msgstr "HTTP"
+
+#: src/SUMMARY.md src/protocol.md src/protocols/trojan.md
+msgid "Trojan"
+msgstr "Trojan"
+
+#: src/SUMMARY.md src/protocol.md src/protocols/hysteria2.md
+msgid "Hysteria 2"
+msgstr "Hysteria 2"
+
+#: src/SUMMARY.md src/protocol.md src/protocols/vless.md
+msgid "VLESS"
+msgstr "VLESS"
+
 #: src/preface.md
-msgid "THis book"
-msgstr "这本书"
+msgid ""
+"The landscape of proxy applications has become crowded and fragmented, so—"
+"out of personal interest—I decided to consolidate the ones I use into a "
+"single stack. The `chimera_client` takes inspiration from the open-source "
+"[clash-rs](https://github.com/Watfaq/clash-rs) project, with the long-term "
+"goal of matching [Mihomo](https://github.com/MetaCubeX/mihomo)'s feature "
+"set. `Chimera` follows the [clash-nyanpasu](https://github.com/libnyanpasu/"
+"clash-nyanpasu) project, but the key difference is that my top priority is "
+"first-class support for the `chimera_client` engine itself, which can "
+"largely be considered the `clash-rs` core. Meanwhile, the `chimera_server` "
+"project can be viewed as a Rust implementation of [xray-core](https://github."
+"com/XTLS/Xray-core), with compatibility with the original `xray-core` "
+"remaining the end goal."
+msgstr ""
+"代理应用的生态日益拥挤且碎片化，因此出于个人兴趣，我决定将自己使用的方案"
+"整合为一个统一的技术栈。`chimera_client` 受到开源项目 [clash-rs]"
+"(https://github.com/Watfaq/clash-rs) 启发，长期目标是对齐 [Mihomo]"
+"(https://github.com/MetaCubeX/mihomo) 的功能集。`Chimera` 借鉴 [clash-nyanpasu]"
+"(https://github.com/libnyanpasu/clash-nyanpasu) 项目，但关键区别在于我优先"
+"保障对 `chimera_client` 引擎的一流支持，它在很大程度上可视为 `clash-rs` 的核心。"
+"与此同时，`chimera_server` 项目可以视作 [xray-core]"
+"(https://github.com/XTLS/Xray-core) 的 Rust 实现，最终目标仍是与原版 `xray-core` 兼容。"
+
+#: src/preface.md
+msgid "Project Links"
+msgstr "项目链接"
+
+#: src/preface.md
+msgid "`clash-rs`: <https://github.com/Watfaq/clash-rs>"
+msgstr "`clash-rs`: <https://github.com/Watfaq/clash-rs>"
+
+#: src/preface.md
+msgid "`Mihomo`: <https://github.com/MetaCubeX/mihomo>"
+msgstr "`Mihomo`: <https://github.com/MetaCubeX/mihomo>"
+
+#: src/preface.md
+msgid "`clash-nyanpasu`: <https://github.com/libnyanpasu/clash-nyanpasu>"
+msgstr "`clash-nyanpasu`: <https://github.com/libnyanpasu/clash-nyanpasu>"
+
+#: src/preface.md
+msgid "`xray-core`: <https://github.com/XTLS/Xray-core>"
+msgstr "`xray-core`: <https://github.com/XTLS/Xray-core>"
+
+#: src/introduction.md
+msgid ""
+"This documentation set explains the proxy ecosystem maintained in this "
+"repository, focusing on three primary projects: `chimera_client`, `Chimera`, "
+"and `chimera_server`. Each module targets a different layer of the overall "
+"stack—client experience, server-side ingress, and reusable protocol logic—"
+"yet they share a common goal: delivering reliable, high-performance "
+"connectivity under diverse network conditions. The following chapters "
+"describe how the pieces fit together, what problems each component solves, "
+"and how teams can deploy and extend them."
+msgstr ""
+"本文档集介绍本仓库维护的代理生态，重点关注三个主要项目：`chimera_client`、"
+"`Chimera` 和 `chimera_server`。每个模块面向整体栈的不同层面——客户端体验、"
+"服务端入口以及可复用的协议逻辑——但目标一致：在多样网络条件下提供可靠、"
+"高性能的连通性。后续章节将说明各部分如何协作、各自解决的问题，以及团队如何"
+"部署和扩展它们。"
+
+#: src/system-topology.md
+msgid ""
+"The reference deployment pairs `clash-rs` clients with one or multiple "
+"`Chimera` frontends, all built on the shared primitives exposed by "
+"`chimera_core`. Clients typically run on user devices or edge nodes where "
+"they terminate local applications and translate outbound traffic into proxy-"
+"aware streams. These streams traverse secure tunnels toward `Chimera`, which "
+"performs authentication, routing, and protocol termination before forwarding "
+"packets to upstream services or the public internet."
+msgstr ""
+"参考部署将 `clash-rs` 客户端与一个或多个 `Chimera` 前端配对，二者都构建在"
+"`chimera_core` 提供的共享原语之上。客户端通常运行在用户设备或边缘节点上，在那里"
+"接管本地应用并将出站流量转换为代理可感知的流。随后这些流经由安全隧道到达"
+"`Chimera`，后者在转发数据包至上游服务或公网之前完成认证、路由与协议终止。"
+
+#: src/system-topology.md
+msgid ""
+"Because the stack centers on `chimera_core`, upgrades to cipher suites, "
+"multiplexing strategies, or configuration schemas become instantly available "
+"to both sides, minimizing version skew. Observability is likewise unified: "
+"telemetry emitted at each layer shares identifiers so that request flows "
+"remain traceable end to end."
+msgstr ""
+"由于整个栈以 `chimera_core` 为中心，对加密套件、多路复用策略或配置架构的升级会"
+"立即在两端生效，最大限度减少版本偏差。可观测性也被统一：各层发出的遥测共享"
+"标识符，使请求链路能够端到端追踪。"
+
+#: src/chimera_client.md
+msgid "Role and Objectives"
+msgstr "角色与目标"
+
+#: src/chimera_client.md
+msgid ""
+"`chimera_client` is a Rust reimplementation of the popular Clash client, "
+"optimized for low-latency rule evaluation and resource-constrained "
+"environments. It exposes the familiar Clash configuration language while "
+"embracing Rust’s safety guarantees, making it suitable for desktop, mobile "
+"(via bindings), and headless automation scenarios. The client focuses on "
+"three pillars: broad protocol compatibility, deterministic policy routing, "
+"and easy operator ergonomics."
+msgstr ""
+"`chimera_client` 是流行 Clash 客户端的 Rust 版本重写，针对低延迟规则评估和"
+"资源受限环境做了优化。它提供熟悉的 Clash 配置语言，同时利用 Rust 的安全性保证，"
+"适用于桌面、移动端（通过绑定）以及无头自动化场景。客户端聚焦三大支柱：广泛的"
+"协议兼容性、确定性的策略路由，以及易用的运维体验。"
+
+#: src/chimera_client.md
+msgid "Architecture Overview"
+msgstr "架构概览"
+
+#: src/chimera_client.md
+msgid ""
+"Internally, the client splits into configuration ingestion, controller APIs, "
+"transport engines, and policy runtime. The configuration loader parses Clash "
+"YAML into strongly typed Rust structures, validates them with `chimera_core` "
+"schemas, and hot-reloads updates. The controller layer provides both a local "
+"HTTP API and optional TUI, enabling on-device rule inspection. Transport "
+"engines encapsulate each supported protocol (e.g., Shadowsocks, VMess, "
+"Trojan, Reality/QUIC); they share cipher suites and handshake logic via "
+"`chimera_core`. The policy runtime builds a decision tree from user rules, "
+"executes DNS strategies, and feeds matching traffic into the appropriate "
+"transport engine."
+msgstr ""
+"在内部，客户端划分为配置导入、控制器 API、传输引擎和策略运行时。配置加载器将"
+"Clash YAML 解析为强类型的 Rust 结构，并用 `chimera_core` 的 schema 校验，随后"
+"支持热更新。控制器层提供本地 HTTP API 和可选 TUI，使设备端可以检查规则。传输"
+"引擎封装每种受支持的协议（如 Shadowsocks、VMess、Trojan、Reality/QUIC），并通过"
+"`chimera_core` 共享加密套件与握手逻辑。策略运行时根据用户规则构建决策树，执行"
+"DNS 策略，将匹配流量交给相应的传输引擎。"
+
+#: src/chimera_client.md
+msgid "Protocol Coverage and Features"
+msgstr "协议覆盖与特性"
+
+#: src/chimera_client.md
+msgid ""
+"`chimera_client` aims for interoperability with the most common proxy "
+"ecosystems:"
+msgstr "`chimera_client` 致力于与最常见的代理生态互操作："
+
+#: src/chimera_client.md
+msgid "Traditional: HTTP(S), SOCKS5, and TCP/UDP relays."
+msgstr "传统：HTTP(S)、SOCKS5，以及 TCP/UDP 中继。"
+
+#: src/chimera_client.md
+msgid ""
+"Modern encrypted: Shadowsocks/SSR, VMess/VLESS (TCP/WS/gRPC/QUIC), Trojan, "
+"NaïveProxy, TUIC, Hysteria v2."
+msgstr "现代加密：Shadowsocks/SSR、VMess/VLESS（TCP/WS/gRPC/QUIC）、Trojan、NaïveProxy、"
+"TUIC、Hysteria v2。"
+
+#: src/chimera_client.md
+msgid ""
+"Advanced transports: Reality TLS fingerprinting, multiplexed QUIC sessions, "
+"and custom obfuscation plugins."
+msgstr "高级传输：Reality TLS 指纹、QUIC 多路复用会话，以及自定义混淆插件。"
+
+#: src/chimera_client.md
+msgid ""
+"Each protocol implementation documents cipher options, authentication "
+"requirements, multiplexing behavior, and fallbacks. Users can mix outbound "
+"types in a single configuration and chain proxies for complex routing."
+msgstr ""
+"每种协议实现都记录加密选项、认证要求、多路复用行为与回退策略。用户可以在同一"
+"配置中混用多种出站类型，并串联代理以实现复杂路由。"
+
+#: src/chimera_client.md
+msgid "Deployment Patterns"
+msgstr "部署模式"
+
+#: src/chimera_client.md
+msgid ""
+"The client ships binaries for major desktop platforms and offers container "
+"images for server-side routing or CI testing. A lightweight system service "
+"wraps the daemon on Linux to manage automatic restarts and secret rotation. "
+"For mobile, bindings expose the controller API to Flutter and React Native "
+"shells. Configuration synchronization relies on GitOps-friendly manifests "
+"plus optional remote profile URLs, enabling fleets to pull signed updates on "
+"schedule."
+msgstr ""
+"客户端为主流桌面平台提供二进制，并提供容器镜像用于服务器端路由或 CI 测试。"
+"Linux 上有轻量级系统服务封装守护进程，负责自动重启与密钥轮换。移动端通过绑定向"
+"Flutter 与 React Native 外壳暴露控制器 API。配置同步依赖 GitOps 友好的清单与"
+"可选的远程配置 URL，使大规模部署能够按计划拉取签名更新。"
+
+#: src/chimera_client.md
+msgid "Performance, Observability, and Troubleshooting"
+msgstr "性能、可观测性与故障排查"
+
+#: src/chimera_client.md
+msgid ""
+"`chimera_client` integrates structured logging, OpenTelemetry traces, and "
+"per-rule metrics. Operators can export connection stats, latency "
+"percentiles, and rule hit counts for dashboards. Performance tuning guidance "
+"covers DNS cache sizing, rule tree pruning, per-protocol concurrency caps, "
+"and CPU affinity when running on routers. Troubleshooting chapters walk "
+"through common failure modes such as TLS fingerprint mismatches, DNS "
+"poisoning, or controller authentication errors."
+msgstr ""
+"`chimera_client` 集成结构化日志、OpenTelemetry 追踪和按规则统计的指标。运维人员"
+"可以导出连接统计、延迟分位数和规则命中次数用于仪表盘。性能调优指南涵盖 DNS 缓存"
+"大小、规则树裁剪、各协议并发上限，以及在路由器上运行时的 CPU 亲和性设置。故障"
+"排查章节会讲解常见失效场景，如 TLS 指纹不匹配、DNS 污染或控制器认证错误。"
+
+#: src/chimera.md
+msgid "Mission and Capabilities"
+msgstr "使命与能力"
+
+#: src/chimera.md
+msgid ""
+"`Chimera` serves as the high-performance ingress tier that terminates client "
+"sessions, enforces policies, and bridges traffic to target destinations. It "
+"is optimized for multi-tenant deployments where each ingress port may "
+"advertise multiple proxy protocols simultaneously. Chimera emphasizes: "
+"minimal handshake latency, fine-grained access control, horizontal "
+"scalability, and integrated observability."
+msgstr ""
+"`Chimera` 作为高性能入口层，负责终止客户端会话、执行策略，并将流量桥接到目标"
+"目的地。它针对多租户部署优化，每个入口端口可同时提供多种代理协议。Chimera 强调："
+"最小化握手延迟、细粒度访问控制、水平扩展能力以及一体化可观测性。"
+
+#: src/chimera.md
+msgid "Component Breakdown"
+msgstr "组件构成"
+
+#: src/chimera.md
+msgid ""
+"The server is organized into listener frontends, authentication middleware, "
+"routing fabric, and egress adaptors. Listener frontends accept TCP, TLS, "
+"QUIC, or WebSocket connections and delegate deciphering to protocol handlers "
+"derived from `chimera_core`. Authentication middleware layers include static "
+"tokens, mTLS, external OIDC checks, and short-lived capability tickets. The "
+"routing fabric maps authenticated sessions to upstream clusters, optionally "
+"applying geo-aware or latency-aware load balancing. Egress adaptors speak "
+"raw TCP/UDP, HTTP/2, or custom backhaul protocols. Pluggable filters allow "
+"L7 inspection, rate limiting, and protocol translation."
+msgstr ""
+"服务器由监听前端、认证中间件、路由骨干以及出口适配器组成。监听前端接受 TCP、"
+"TLS、QUIC 或 WebSocket 连接，并将解码工作交给源自 `chimera_core` 的协议处理器。"
+"认证中间件层包括静态令牌、mTLS、外部 OIDC 校验以及短期能力票据。路由骨干将通过"
+"认证的会话映射到上游集群，并可应用地理感知或延迟感知的负载均衡。出口适配器支持"
+"原生 TCP/UDP、HTTP/2 或自定义回传协议。可插拔过滤器允许进行 L7 检查、限流以及"
+"协议转换。"
+
+#: src/chimera.md
+msgid "Deployment and Scaling"
+msgstr "部署与扩展"
+
+#: src/chimera.md
+msgid ""
+"Chimera nodes can run bare-metal, in containers, or under orchestration "
+"(Kubernetes, Nomad). A stateless design lets operators scale horizontally; "
+"sticky sessions are handled through consistent hashing of client "
+"identifiers. Configuration is delivered via declarative manifests that "
+"describe listeners, credentials, and routing tables, with hot-reload "
+"support. The project documents blueprints for single-region clusters, active-"
+"active multi-region, and edge POP deployments, including how to terminate "
+"QUIC at the edge while backhauling over TCP."
+msgstr ""
+"Chimera 节点可在裸机、容器或编排系统（Kubernetes、Nomad）中运行。无状态设计使"
+"运维可以水平扩展；通过对客户端标识做一致性哈希来处理会话粘性。配置通过声明式"
+"清单下发，描述监听器、凭据和路由表，并支持热更新。项目文档提供单地域集群、双活"
+"多地域以及边缘 POP 部署蓝图，包括如何在边缘终止 QUIC 并通过 TCP 回传。"
+
+#: src/chimera.md
+msgid "Security and Compliance"
+msgstr "安全与合规"
+
+#: src/chimera.md
+msgid ""
+"Security guidance covers TLS certificate management, key rotation, mixed-"
+"protocol ports, and selective logging to honor privacy regulations. Built-in "
+"auditing records connection metadata, rule decisions, and administrative "
+"actions. Compliance appendices explain how to integrate Chimera logs with "
+"SIEM platforms, enforce retention policies, and implement regulatory "
+"controls such as lawful interception hooks when required."
+msgstr ""
+"安全指南涵盖 TLS 证书管理、密钥轮换、混合协议端口以及为遵守隐私法规而进行的"
+"选择性日志记录。内置审计会记录连接元数据、规则决策和管理操作。合规附录说明如何"
+"将 Chimera 日志接入 SIEM 平台、执行留存策略，并在需要时实现合法截获等监管控制。"
+
+#: src/chimera_server.md
+msgid "chimera_server Library"
+msgstr "chimera_server 库"
+
+#: src/chimera_server.md
+msgid "Purpose and Scope"
+msgstr "用途与范围"
+
+#: src/chimera_server.md
+msgid ""
+"`chimera_server` is the shared Rust crate that provides protocol primitives, "
+"configuration schemas, crypto suites, and common utilities for both client "
+"and server projects. By centralizing these capabilities, the ecosystem "
+"avoids duplicated logic, ensures protocol compliance, and keeps security "
+"fixes consistent across binaries."
+msgstr ""
+"`chimera_server` 是共享的 Rust crate，为客户端和服务端项目提供协议原语、配置"
+"架构、密码套件以及通用工具。通过集中这些能力，生态系统避免重复逻辑，确保协议"
+"合规，并让安全修复在各二进制中保持一致。"
+
+#: src/chimera_server.md
+msgid "Key Modules"
+msgstr "关键模块"
+
+#: src/chimera_server.md
+msgid ""
+"Configuration model: strongly typed structures plus serde-based "
+"serialization for Clash manifests, Chimera manifests, and shared policy "
+"fragments."
+msgstr ""
+"配置模型：用于 Clash 清单、Chimera 清单以及共享策略片段的强类型结构与基于 serde "
+"的序列化。"
+
+#: src/chimera_server.md
+msgid ""
+"Crypto and handshake utilities: AEAD ciphers, key derivation, certificate "
+"pinning helpers, TLS fingerprint templates, and QUIC transport parameters."
+msgstr ""
+"加密与握手工具：AEAD 密码、密钥派生、证书固定辅助、TLS 指纹模板以及 QUIC 传输参数。"
+
+#: src/chimera_server.md
+msgid ""
+"Transport abstractions: traits for stream/session lifecycles, multiplexing "
+"interfaces, buffer management, and async runtime adapters."
+msgstr ""
+"传输抽象：流/会话生命周期的 trait、多路复用接口、缓冲区管理以及异步运行时适配器。"
+
+#: src/chimera_server.md
+msgid ""
+"Event bus: lightweight publish/subscribe mechanism so higher layers can tap "
+"into connection lifecycle events, metrics, and alerts."
+msgstr ""
+"事件总线：轻量的发布/订阅机制，使上层能够接入连接生命周期事件、指标和告警。"
+
+#: src/chimera_server.md
+msgid "API Surface and Extensibility"
+msgstr "API 面与可扩展性"
+
+#: src/chimera_server.md
+msgid ""
+"The crate exposes a stable Rust API along with optional C FFI bindings for "
+"other languages. Extension points allow third parties to register custom "
+"cipher suites, add routing annotations, or hook into telemetry emission. "
+"Versioning follows semver with clear migration guides whenever breaking "
+"changes occur, ensuring that `clash-rs` and `Chimera` can track upgrades "
+"smoothly."
+msgstr ""
+"该 crate 提供稳定的 Rust API，并可选提供 C FFI 绑定以供其他语言使用。扩展点允许"
+"第三方注册自定义密码套件、添加路由注解或挂接遥测输出。版本管理遵循 semver，"
+"发生破坏性变更时提供清晰的迁移指南，确保 `clash-rs` 和 `Chimera` 能平滑跟进升级。"
+
+#: src/chimera_server.md
+msgid "Testing and Quality"
+msgstr "测试与质量"
+
+#: src/chimera_server.md
+msgid ""
+"`chimera_server` maintains exhaustive unit tests for parsers, crypto "
+"primitives, and transport behaviors. Integration suites spin up in-memory "
+"client/server pairs to validate interoperability before changes land. "
+"Benchmarks measure handshake latency, throughput, and memory footprint "
+"across representative hardware, providing baselines for regression detection."
+msgstr ""
+"`chimera_server` 维护覆盖解析器、密码原语和传输行为的详尽单元测试。集成测试会"
+"启动内存中的客户端/服务端对以验证互操作性。基准测试在代表性硬件上测量握手延迟、"
+"吞吐量和内存占用，为回归检测提供基线。"
+
+#: src/protocol.md
+msgid "Overview"
+msgstr "概览"
+
+#: src/protocol.md
+msgid "Default Transport"
+msgstr "默认传输"
+
+#: src/protocol.md
+msgid "Authentication"
+msgstr "认证"
+
+#: src/protocol.md src/protocols/socks5.md src/protocols/http.md
+#: src/protocols/trojan.md src/protocols/hysteria2.md src/protocols/vless.md
+msgid "Strengths"
+msgstr "优势"
+
+#: src/protocol.md
+msgid "Typical Constraints"
+msgstr "典型限制"
+
+#: src/protocol.md
+msgid "TCP control + optional UDP"
+msgstr "TCP 控制 + 可选 UDP"
+
+#: src/protocol.md
+msgid "Optional username/password"
+msgstr "可选用户名/密码"
+
+#: src/protocol.md
+msgid "Works with almost any TCP app, UDP associate mode"
+msgstr "几乎适配任何 TCP 应用，支持 UDP ASSOCIATE 模式"
+
+#: src/protocol.md
+msgid "Clear-text by default, needs TLS/obfs elsewhere"
+msgstr "默认明文，需要在其他层使用 TLS/混淆"
+
+#: src/protocol.md
+msgid "HTTP(S) CONNECT"
+msgstr "HTTP(S) CONNECT"
+
+#: src/protocol.md
+msgid "TCP over HTTP/1.1 or HTTP/2"
+msgstr "通过 HTTP/1.1 或 HTTP/2 承载 TCP"
+
+#: src/protocol.md
+msgid "Basic auth, bearer token, mutual TLS"
+msgstr "Basic 认证、Bearer 令牌、双向 TLS"
+
+#: src/protocol.md
+msgid "Blends with web traffic, easy to deploy on gateways"
+msgstr "与 Web 流量融合，易于在网关部署"
+
+#: src/protocol.md
+msgid "Only proxies TCP, relies on intermediary keeping long-lived tunnels"
+msgstr "仅代理 TCP，依赖中间层保持长时隧道"
+
+#: src/protocol.md
+msgid "TLS over TCP"
+msgstr "基于 TCP 的 TLS"
+
+#: src/protocol.md
+msgid "Pre-shared password validated inside TLS"
+msgstr "TLS 内校验预共享密码"
+
+#: src/protocol.md
+msgid "Hard to fingerprint, benefits from CDN/SNI"
+msgstr "难以被指纹识别，受益于 CDN/SNI"
+
+#: src/protocol.md
+msgid "Each password maps to a port/user, needs valid TLS certificate"
+msgstr "每个密码映射到端口/用户，需要有效的 TLS 证书"
+
+#: src/protocol.md
+msgid "QUIC (UDP) with TLS 1.3"
+msgstr "带 TLS 1.3 的 QUIC（UDP）"
+
+#: src/protocol.md
+msgid "Password or OIDC-like token"
+msgstr "密码或类似 OIDC 的令牌"
+
+#: src/protocol.md
+msgid "High throughput, UDP native, congestion tuning"
+msgstr "高吞吐、原生 UDP、支持拥塞调优"
+
+#: src/protocol.md
+msgid "Requires open UDP ports, MTU tuning important"
+msgstr "需要开放 UDP 端口，MTU 调优很重要"
+
+#: src/protocol.md
+msgid "TLS/XTLS over TCP or MKCP"
+msgstr "基于 TCP 或 MKCP 的 TLS/XTLS"
+
+#: src/protocol.md
+msgid "UUID-based identity"
+msgstr "基于 UUID 的身份"
+
+#: src/protocol.md
+msgid "Flexible multiplexing, optional XTLS auto-split"
+msgstr "灵活的多路复用，可选 XTLS 自动拆分"
+
+#: src/protocol.md
+msgid "No encryption without TLS/XTLS layer, ecosystem-specific tooling"
+msgstr "缺少 TLS/XTLS 层则无加密，工具生态较为特定"
+
+#: src/protocol.md
+msgid ""
+"Detailed breakdowns now live in dedicated files; each follows the same "
+"structure (highlights, flow, configuration snippet, strengths, and "
+"limitations) to make comparisons straightforward."
+msgstr ""
+"详细拆解已移至独立文件；每个文件都遵循相同结构（亮点、流程、配置片段、优势与"
+"限制），便于对比。"
+
+#: src/protocol.md
+msgid "Deep Dives"
+msgstr "深入解析"
+
+#: src/protocol.md
+msgid ""
+"[SOCKS5](./protocols/socks5.md) – General-purpose TCP/UDP proxy with "
+"flexible method negotiation."
+msgstr "[SOCKS5](./protocols/socks5.md) – 通用的 TCP/UDP 代理，支持灵活的方法协商。"
+
+#: src/protocol.md
+msgid ""
+"[HTTP CONNECT Proxy](./protocols/http.md) – HTTPS-friendly tunnels that ride "
+"over standard web ports."
+msgstr "[HTTP CONNECT Proxy](./protocols/http.md) – 基于标准 Web 端口的 HTTPS 友好隧道。"
+
+#: src/protocol.md
+msgid ""
+"[Trojan](./protocols/trojan.md) – TLS-camouflaged password proxy ideal for "
+"CDN fronting."
+msgstr "[Trojan](./protocols/trojan.md) – 以 TLS 伪装的密码代理，适合 CDN 前置。"
+
+#: src/protocol.md
+msgid ""
+"[Hysteria 2](./protocols/hysteria2.md) – QUIC-based transport tuned for high-"
+"loss or high-latency links."
+msgstr "[Hysteria 2](./protocols/hysteria2.md) – 基于 QUIC 的传输，针对高丢包或高延迟链路优化。"
+
+#: src/protocol.md
+msgid ""
+"[VLESS](./protocols/vless.md) – UUID-auth protocol with configurable "
+"transports such as TLS, XTLS, or Reality."
+msgstr "[VLESS](./protocols/vless.md) – 基于 UUID 认证的协议，传输层可配置 TLS、XTLS 或 Reality。"
+
+#: src/protocols/socks5.md
+msgid "Official RFC"
+msgstr "官方 RFC"
+
+#: src/protocols/socks5.md src/protocols/http.md src/protocols/trojan.md
+#: src/protocols/hysteria2.md src/protocols/vless.md
+msgid "Highlights"
+msgstr "亮点"
+
+#: src/protocols/socks5.md
+msgid ""
+"Layer-4 proxy that forwards arbitrary TCP streams and supports UDP via "
+"ASSOCIATE command."
+msgstr "四层代理，可转发任意 TCP 流，并通过 ASSOCIATE 命令支持 UDP。"
+
+#: src/protocols/socks5.md
+msgid ""
+"Method negotiation lets the server advertise `NO AUTH`, `USERPASS`, or "
+"custom authentication."
+msgstr "方法协商允许服务器声明 `NO AUTH`、`USERPASS` 或自定义认证。"
+
+#: src/protocols/socks5.md
+msgid "Widely supported by browsers, curl, SSH, and VPN clients."
+msgstr "被浏览器、curl、SSH 和 VPN 客户端广泛支持。"
+
+#: src/protocols/socks5.md src/protocols/http.md src/protocols/trojan.md
+#: src/protocols/hysteria2.md src/protocols/vless.md
+msgid "Flow"
+msgstr "流程"
+
+#: src/protocols/socks5.md
+msgid "Client opens a TCP socket to the proxy."
+msgstr "客户端向代理打开一个 TCP 套接字。"
+
+#: src/protocols/socks5.md
+msgid ""
+"Client sends a list of supported authentication methods; server responds "
+"with the chosen method."
+msgstr "客户端发送支持的认证方法列表；服务器返回选定的方法。"
+
+#: src/protocols/socks5.md
+msgid "Optional username/password exchange takes place."
+msgstr "可选的用户名/密码交换。"
+
+#: src/protocols/socks5.md
+msgid ""
+"Client issues `CONNECT`, `BIND`, or `UDP ASSOCIATE` with destination info."
+msgstr "客户端携带目标信息发送 `CONNECT`、`BIND` 或 `UDP ASSOCIATE`。"
+
+#: src/protocols/socks5.md
+msgid "Server replies with success/failure code and starts relaying traffic."
+msgstr "服务器返回成功/失败码并开始转发流量。"
+
+#: src/protocols/socks5.md src/protocols/http.md src/protocols/trojan.md
+#: src/protocols/hysteria2.md src/protocols/vless.md
+msgid "Configuration Snippet"
+msgstr "配置片段"
+
+#: src/protocols/socks5.md
+msgid "Works with legacy tooling without extra plugins."
+msgstr "无需额外插件即可配合传统工具使用。"
+
+#: src/protocols/socks5.md
+msgid "UDP associate makes DNS-over-UDP possible."
+msgstr "UDP ASSOCIATE 使 DNS-over-UDP 成为可能。"
+
+#: src/protocols/socks5.md
+msgid "Minimal framing overhead keeps latency low."
+msgstr "最小的封装开销保持低延迟。"
+
+#: src/protocols/socks5.md src/protocols/http.md src/protocols/trojan.md
+#: src/protocols/hysteria2.md src/protocols/vless.md
+msgid "Limitations"
+msgstr "限制"
+
+#: src/protocols/socks5.md
+msgid ""
+"No built-in encryption; must rely on TLS-over-SOCKS or upstream obfuscation."
+msgstr "没有内置加密；必须依赖 TLS-over-SOCKS 或上游混淆。"
+
+#: src/protocols/socks5.md
+msgid ""
+"UDP associate requires the client to keep listening on a local port, which "
+"some firewalls block."
+msgstr "UDP ASSOCIATE 要求客户端持续监听本地端口，部分防火墙会阻断。"
+
+#: src/protocols/socks5.md
+msgid "Authentication is static unless wrapped in a management layer."
+msgstr "认证通常是静态的，除非外层包裹管理层。"
+
+#: src/protocols/http.md
+msgid ""
+"Presents itself as a normal HTTP(S) server and upgrades individual requests "
+"into tunnels via the `CONNECT` verb."
+msgstr "表现为普通的 HTTP(S) 服务器，通过 `CONNECT` 方法将单个请求升级为隧道。"
+
+#: src/protocols/http.md
+msgid "Easy to front with Nginx, Apache, or cloud load balancers."
+msgstr "易于使用 Nginx、Apache 或云负载均衡进行前置。"
+
+#: src/protocols/http.md
+msgid "Supports HTTP/2 multiplexing when both sides understand it."
+msgstr "双方支持时可使用 HTTP/2 多路复用。"
+
+#: src/protocols/http.md
+msgid "Client opens a TCP (or TLS) connection to the proxy endpoint."
+msgstr "客户端与代理端点建立 TCP（或 TLS）连接。"
+
+#: src/protocols/http.md
+msgid ""
+"Client optionally performs HTTP auth (Basic, Digest, Bearer, or mutual TLS)."
+msgstr "客户端可选进行 HTTP 认证（Basic、Digest、Bearer 或双向 TLS）。"
+
+#: src/protocols/http.md
+msgid ""
+"Client sends `CONNECT target.example.com:443 HTTP/1.1` (or an HTTP/2 `:"
+"method CONNECT`)."
+msgstr "客户端发送 `CONNECT target.example.com:443 HTTP/1.1`（或 HTTP/2 的 `:method CONNECT`）。"
+
+#: src/protocols/http.md
+msgid "Proxy validates policy, then responds `200 Connection Established`."
+msgstr "代理校验策略后返回 `200 Connection Established`。"
+
+#: src/protocols/http.md
+msgid ""
+"Subsequent bytes are relayed transparently until one side closes the tunnel."
+msgstr "后续字节透明转发，直到任一侧关闭隧道。"
+
+#: src/protocols/http.md
+msgid ""
+"Blends with standard HTTPS traffic; hard to distinguish from regular web "
+"browsing."
+msgstr "与标准 HTTPS 流量混在一起，难以与普通网页浏览区分。"
+
+#: src/protocols/http.md
+msgid "Works well behind corporate firewalls that only permit ports 80/443."
+msgstr "适合在只允许 80/443 端口的企业防火墙后使用。"
+
+#: src/protocols/http.md
+msgid ""
+"HTTP/2 variants allow many tunnels over one TCP session, reducing handshake "
+"cost."
+msgstr "HTTP/2 变体可在单个 TCP 会话上复用多条隧道，降低握手成本。"
+
+#: src/protocols/http.md
+msgid "TCP-only; cannot forward UDP flows without extra encapsulation."
+msgstr "仅支持 TCP；不经额外封装无法转发 UDP 流。"
+
+#: src/protocols/http.md
+msgid ""
+"Proxies must maintain state per tunnel, which impacts scaling under many "
+"short-lived connections."
+msgstr "代理需为每条隧道维护状态，在大量短连接下会影响扩展性。"
+
+#: src/protocols/http.md
+msgid "Additional HTTP headers may leak metadata if not sanitized."
+msgstr "若未清理，额外的 HTTP 头可能泄露元数据。"
+
+#: src/protocols/trojan.md
+msgid ""
+"Uses TLS as the outer layer; the first payload is a simple password-based "
+"handshake."
+msgstr "以 TLS 作为外层；首个负载是基于密码的简单握手。"
+
+#: src/protocols/trojan.md
+msgid ""
+"Designed to look like normal HTTPS while granting full-duplex streams after "
+"auth."
+msgstr "设计为看起来像普通 HTTPS，认证后提供全双工流。"
+
+#: src/protocols/trojan.md
+msgid "Commonly deployed alongside CDN fronting with SNI-based routing."
+msgstr "常与基于 SNI 路由的 CDN 前置一起部署。"
+
+#: src/protocols/trojan.md
+msgid ""
+"Client performs a TLS handshake to the Trojan server using a legitimate SNI."
+msgstr "客户端使用合法 SNI 与 Trojan 服务器进行 TLS 握手。"
+
+#: src/protocols/trojan.md
+msgid ""
+"After TLS is established, the client writes a password plus target address "
+"in the Trojan format."
+msgstr "TLS 建立后，客户端按 Trojan 格式发送密码与目标地址。"
+
+#: src/protocols/trojan.md
+msgid "Server validates the password; on success it connects to the target."
+msgstr "服务器校验密码，成功后连接目标。"
+
+#: src/protocols/trojan.md
+msgid ""
+"Both sides exchange data within the encrypted TLS channel until termination."
+msgstr "双方在加密的 TLS 通道中交换数据直至结束。"
+
+#: src/protocols/trojan.md
+msgid ""
+"Leverages well-tested TLS stacks; inherits forward secrecy and ALPN "
+"capabilities."
+msgstr "利用成熟的 TLS 栈，继承前向保密与 ALPN 能力。"
+
+#: src/protocols/trojan.md
+msgid "Simple credential model makes operational management straightforward."
+msgstr "简单的凭证模型使运维管理更直接。"
+
+#: src/protocols/trojan.md
+msgid ""
+"Can multiplex multiple users through one TLS endpoint while staying "
+"indistinguishable from HTTPS."
+msgstr "可在单个 TLS 端点上复用多用户，同时仍难以与 HTTPS 区分。"
+
+#: src/protocols/trojan.md
+msgid ""
+"Each password maps to a virtual user; revocation requires redeploying "
+"configs."
+msgstr "每个密码对应一个虚拟用户；撤销需要重新下发配置。"
+
+#: src/protocols/trojan.md
+msgid "TLS certificate management (issuance, renewal) is mandatory."
+msgstr "必须进行 TLS 证书管理（签发、续期）。"
+
+#: src/protocols/trojan.md
+msgid ""
+"Middleboxes that block unknown ALPNs may require tweaking to match "
+"mainstream HTTPS fingerprints."
+msgstr "若中间设备阻断未知 ALPN，可能需要调整以匹配主流 HTTPS 指纹。"
+
+#: src/protocols/hysteria2.md
+msgid ""
+"QUIC- and UDP-based transport built for high-throughput and high-latency "
+"networks."
+msgstr "面向高吞吐、高延迟网络的 QUIC/UDP 传输。"
+
+#: src/protocols/hysteria2.md
+msgid ""
+"Implements selective acknowledgments, BBR-like congestion control, and "
+"application-layer keepalives."
+msgstr "实现选择性确认、类 BBR 拥塞控制以及应用层保活。"
+
+#: src/protocols/hysteria2.md
+msgid "Supports protocol obfuscation by randomizing packet size/padding."
+msgstr "通过随机化包大小/填充支持协议混淆。"
+
+#: src/protocols/hysteria2.md
+msgid ""
+"Client initiates a QUIC handshake to the server UDP port (default 443/udp)."
+msgstr "客户端对服务器 UDP 端口发起 QUIC 握手（默认 443/udp）。"
+
+#: src/protocols/hysteria2.md
+msgid ""
+"TLS 1.3 handshake with ALPN `h3` runs inside QUIC; server authenticates via "
+"password or token."
+msgstr "带 ALPN `h3` 的 TLS 1.3 握手在 QUIC 内进行；服务器通过密码或令牌认证。"
+
+#: src/protocols/hysteria2.md
+msgid ""
+"Once authenticated, the client opens bidirectional streams for TCP proxying "
+"or datagrams for UDP."
+msgstr "认证后，客户端打开双向流用于 TCP 代理，或使用数据报处理 UDP。"
+
+#: src/protocols/hysteria2.md
+msgid ""
+"Adaptive congestion algorithm tunes pacing; optional packet loss recovery "
+"retransmits as needed."
+msgstr "自适应拥塞算法调整发送节奏；可选丢包恢复按需重传。"
+
+#: src/protocols/hysteria2.md
+msgid ""
+"Excels on lossy or long-distance links thanks to optimized congestion "
+"control."
+msgstr "凭借优化的拥塞控制，在高丢包或长距离链路上表现出色。"
+
+#: src/protocols/hysteria2.md
+msgid "Native UDP tunneling avoids TCP-over-TCP meltdown for gaming or VoIP."
+msgstr "原生 UDP 隧道避免游戏或 VoIP 场景的 TCP-over-TCP 崩溃。"
+
+#: src/protocols/hysteria2.md
+msgid "Built-in obfuscation and padding resist simple traffic fingerprinting."
+msgstr "内置混淆与填充抵抗简单流量指纹。"
+
+#: src/protocols/hysteria2.md
+msgid ""
+"Requires stable UDP reachability; some enterprise networks block outbound "
+"UDP."
+msgstr "需要稳定的 UDP 可达性；一些企业网络会阻断出站 UDP。"
+
+#: src/protocols/hysteria2.md
+msgid ""
+"Needs path MTU tuning to avoid fragmentation; 1200 bytes is a safe default."
+msgstr "需要进行路径 MTU 调优以避免分片；1200 字节是较安全的默认值。"
+
+#: src/protocols/hysteria2.md
+msgid ""
+"Implementations are newer compared with SOCKS5/HTTP, so client compatibility "
+"is narrower."
+msgstr "相较 SOCKS5/HTTP，其实现较新，客户端兼容性更窄。"
+
+#: src/protocols/vless.md
+msgid ""
+"Lightweight stateless protocol from Project V that uses UUIDs for client "
+"identification."
+msgstr "来自 Project V 的轻量无状态协议，使用 UUID 作为客户端标识。"
+
+#: src/protocols/vless.md
+msgid ""
+"Typically paired with TLS, XTLS, or Reality transport layers for encryption "
+"and camouflage."
+msgstr "通常与 TLS、XTLS 或 Reality 传输层搭配，用于加密与伪装。"
+
+#: src/protocols/vless.md
+msgid ""
+"Supports multiplexing, fallback routes, and advanced routing rules within "
+"the Xray core ecosystem."
+msgstr "在 Xray core 生态内支持多路复用、回退路由和高级路由规则。"
+
+#: src/protocols/vless.md
+msgid ""
+"Client connects to the server transport (TLS, XTLS, Reality, gRPC, or MKCP)."
+msgstr "客户端连接到服务器传输层（TLS、XTLS、Reality、gRPC 或 MKCP）。"
+
+#: src/protocols/vless.md
+msgid ""
+"Client sends a VLESS header carrying the UUID, command (TCP/UDP), and target "
+"address."
+msgstr "客户端发送包含 UUID、命令（TCP/UDP）和目标地址的 VLESS 头。"
+
+#: src/protocols/vless.md
+msgid ""
+"Server validates the UUID, then opens a stream or datagram tunnel to the "
+"destination."
+msgstr "服务器校验 UUID 后，建立到目的地的流或数据报隧道。"
+
+#: src/protocols/vless.md
+msgid ""
+"Optional features such as Flow Control Transport (FCT) or XTLS split "
+"accelerate traffic."
+msgstr "可选功能如 Flow Control Transport（FCT）或 XTLS 拆分可加速流量。"
+
+#: src/protocols/vless.md
+msgid ""
+"UUID-based auth scales well for many users and integrates with automated "
+"issuers."
+msgstr "基于 UUID 的认证易于扩展到大量用户，并可与自动化签发系统集成。"
+
+#: src/protocols/vless.md
+msgid ""
+"Compatible with multiple transports, giving flexibility between TCP, gRPC, "
+"WS, or QUIC layers."
+msgstr "兼容多种传输层，在 TCP、gRPC、WS 或 QUIC 之间提供灵活选择。"
+
+#: src/protocols/vless.md
+msgid ""
+"XTLS/Reality options reduce TLS overhead and mimic legitimate HTTPS "
+"fingerprints."
+msgstr "XTLS/Reality 选项降低 TLS 开销并模拟合法 HTTPS 指纹。"
+
+#: src/protocols/vless.md
+msgid ""
+"Requires the Xray-core ecosystem; not natively supported by mainstream OS "
+"tools."
+msgstr "依赖 Xray-core 生态；主流操作系统工具并不原生支持。"
+
+#: src/protocols/vless.md
+msgid ""
+"Misconfiguration of flow parameters can break compatibility with older "
+"clients."
+msgstr "流控参数配置错误会破坏与旧客户端的兼容性。"
+
+#: src/protocols/vless.md
+msgid ""
+"Security relies heavily on the chosen transport; bare VLESS without TLS "
+"offers no encryption."
+msgstr "安全性高度依赖所选传输层；不带 TLS 的裸 VLESS 没有加密。"
+
+#~ msgid "THis book"
+#~ msgstr "这本书"
