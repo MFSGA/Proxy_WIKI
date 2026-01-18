@@ -1,24 +1,33 @@
 # Trojan
 
 ### Highlights
-- Uses TLS as the outer layer; the first payload is a simple password-based handshake.
-- Designed to look like normal HTTPS while granting full-duplex streams after auth.
-- Commonly deployed alongside CDN fronting with SNI-based routing.
+- Starts with a real TLS handshake; all subsequent bytes are TLS application data.
+- Auth is a pre-shared password hashed with SHA-224 and hex encoded.
+- Request framing reuses SOCKS5-style address fields for CONNECT and UDP ASSOCIATE.
+- Invalid or unknown traffic can be forwarded to a fallback endpoint to look like normal HTTPS.
 
 ### Flow
-1. Client performs a TLS handshake to the Trojan server using a legitimate SNI.
-2. After TLS is established, the client writes a password plus target address in the Trojan format.
-3. Server validates the password; on success it connects to the target.
-4. Both sides exchange data within the encrypted TLS channel until termination.
+1. Client completes a standard TLS handshake with the server (SNI/ALPN as configured).
+2. Client sends `hex(SHA224(password))` + CRLF + Trojan Request + CRLF (+ optional payload).
+3. Server validates the password and request, then connects to the destination.
+4. For TCP, data is relayed bidirectionally; for UDP, packets are framed and tunneled over the TLS stream.
 
-### Configuration Snippet
+### Wire Format
+- The precise framing and field definitions live in [Wire Format](./trojan/wire-format.md).
+- The first TLS record may include payload after the request to reduce packet count.
+
+### Traffic Handling
+- Fallback behavior and anti-detection notes are in [Traffic Handling](./trojan/traffic-handling.md).
 
 ### Strengths
-- Leverages well-tested TLS stacks; inherits forward secrecy and ALPN capabilities.
-- Simple credential model makes operational management straightforward.
-- Can multiplex multiple users through one TLS endpoint while staying indistinguishable from HTTPS.
+- Uses standard TLS stacks and certificates; inherits mature TLS security and ALPN support.
+- Hard to fingerprint when served from a legitimate HTTPS endpoint.
+- Minimal protocol overhead once the handshake completes.
 
 ### Limitations
-- Each password maps to a virtual user; revocation requires redeploying configs.
-- TLS certificate management (issuance, renewal) is mandatory.
-- Middleboxes that block unknown ALPNs may require tweaking to match mainstream HTTPS fingerprints.
+- Shared-password model means revocation is coarse unless per-user passwords are used.
+- Requires valid TLS certificates and operational renewal.
+- Fallback behavior must be configured to keep probes indistinguishable from real HTTPS.
+
+### References
+- https://trojan-gfw.github.io/trojan/protocol
