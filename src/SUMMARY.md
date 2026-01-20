@@ -5,6 +5,7 @@
 - [System Topology](./system-topology.md)
 - [Chimera_Client](./chimera_client.md)
   - [DNS Module](./chimera_client/dns.md)
+  - [Ports and Listeners](./chimera_client/ports.md)
 - [Chimera Server](./chimera.md)
 - [Chimera_Server Library](./chimera_server.md)
 - [Protocol](./protocol.md)

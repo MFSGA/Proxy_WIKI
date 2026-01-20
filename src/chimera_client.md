@@ -10,13 +10,14 @@ Internally, the client splits into configuration ingestion, controller APIs, tra
 `chimera_client` keeps configuration aligned with its module boundaries, so each functional area has its own block in the Clash-style YAML. This makes changes easier to reason about, and limits the blast radius of hot-reload updates.
 
 - Core runtime and profile: set global defaults such as mode selection, service ports, logging verbosity, IPv6/allow-lan toggles, and reload behavior.
-- Inbound listeners: define local HTTP/SOCKS/TUN/transparent ports, bind addresses, UDP enablement, and device interface selection.
+- Inbound listeners: define local HTTP/SOCKS/TUN/transparent ports, bind addresses, UDP enablement, and device interface selection. See [Ports and Listeners](./chimera_client/ports.md).
 - Controller and UX: configure the API bind host/port, authentication tokens, and optional TUI or desktop shell toggles.
 - DNS pipeline: declare upstream resolvers, cache sizing, fake-IP versus real-IP strategy, fallback behavior, and policy-based resolver selection. See [DNS Module](./chimera_client/dns.md).
 - Policy engine: order rules, attach rule providers, choose a default group, and map traffic to outbound groups.
 - Transport engines: specify per-protocol parameters like cipher suites, transports (TCP/WS/gRPC/QUIC), multiplexing, and TLS fingerprint options; reuse defaults to keep profiles consistent.
 - Observability: enable structured logs, metrics, and trace exports, with sampling and retention tuned per environment.
 - Update and sync: manage remote profile URLs, signature verification, polling intervals, and rollback on invalid configs.
+
 
 ## Protocol Coverage and Features
 `chimera_client` aims for interoperability with the most common proxy ecosystems:
@@ -32,3 +33,8 @@ The client ships binaries for major desktop platforms and offers container image
 
 ## Performance, Observability, and Troubleshooting
 `chimera_client` integrates structured logging, OpenTelemetry traces, and per-rule metrics. Operators can export connection stats, latency percentiles, and rule hit counts for dashboards. Performance tuning guidance covers DNS cache sizing, rule tree pruning, per-protocol concurrency caps, and CPU affinity when running on routers. Troubleshooting chapters walk through common failure modes such as TLS fingerprint mismatches, DNS poisoning, or controller authentication errors.
+
+## Reference Repositories
+The `chimera_client` source lives here:
+
+- `chimera_client`: <https://github.com/MFSGA/Chimera_Client>
