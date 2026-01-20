@@ -31,7 +31,7 @@ exported as a static site.
 cargo xtask install-tools
 
 # Preview the English docs locally (default http://localhost:3000)
-cargo xtask serve
+cargo xtask serve --port 3100 (opt)
 
 # Preview or build a specific language, e.g., Simplified Chinese
 cargo xtask serve -l zh-CN     # live preview

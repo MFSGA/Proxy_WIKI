@@ -66,6 +66,10 @@ enum Task {
         /// directory (or the book/xx directory if a language is provided).
         #[arg(short, long)]
         output: Option<PathBuf>,
+
+        /// Port to bind the web server to. Defaults to 3000.
+        #[arg(short = 'p', long = "port", default_value_t = 3000)]
+        port: u16,
     },
     /// Create a static version of the course.
     Build {
@@ -86,7 +90,11 @@ fn execute_task() -> Result<()> {
         Task::InstallTools { binstall } => install_tools(binstall),
         Task::WebTests { dir } => run_web_tests(dir),
         Task::RustTests => run_rust_tests(),
-        Task::Serve { language, output } => start_web_server(language, output),
+        Task::Serve {
+            language,
+            output,
+            port,
+        } => start_web_server(language, output, port),
         Task::Build { language, output } => build(language, output),
     }
 }
@@ -223,6 +231,7 @@ fn run_mdbook_command(
     subcommand: &str,
     language: Option<String>,
     output_arg: Option<PathBuf>,
+    port: Option<u16>,
 ) -> Result<()> {
     let workspace_root = Path::new(env!("CARGO_WORKSPACE_DIR"));
 
@@ -237,20 +246,25 @@ fn run_mdbook_command(
     cmd.arg("-d");
     cmd.arg(get_output_dir(language, output_arg));
 
+    if let Some(port) = port {
+        cmd.arg("--port").arg(port.to_string());
+    }
+
     run_command(&mut cmd)
 }
 
 fn start_web_server(
     language: Option<String>,
     output_arg: Option<PathBuf>,
+    port: u16,
 ) -> Result<()> {
     println!("Starting web server ...");
-    run_mdbook_command("serve", language, output_arg)
+    run_mdbook_command("serve", language, output_arg, Some(port))
 }
 
 fn build(language: Option<String>, output_arg: Option<PathBuf>) -> Result<()> {
     println!("Building course...");
-    run_mdbook_command("build", language, output_arg)
+    run_mdbook_command("build", language, output_arg, None)
 }
 
 fn get_output_dir(language: Option<String>, output_arg: Option<PathBuf>) -> PathBuf {
