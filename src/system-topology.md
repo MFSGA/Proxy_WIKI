@@ -1,5 +1,5 @@
-# System Topology
+# 系统拓扑
 
-The reference deployment pairs `clash-rs` clients with one or multiple `Chimera` frontends, all built on the shared primitives exposed by `chimera_core`. Clients typically run on user devices or edge nodes where they terminate local applications and translate outbound traffic into proxy-aware streams. These streams traverse secure tunnels toward `Chimera`, which performs authentication, routing, and protocol termination before forwarding packets to upstream services or the public internet.
+参考部署将 `clash-rs` 客户端与一个或多个 `Chimera` 前端配对使用，二者均基于 `chimera_core` 暴露的共享原语。客户端通常运行在用户设备或边缘节点上，负责接入本地应用并将出站流量转换为代理感知的流。随后，这些流通过安全隧道到达 `Chimera`，由其执行认证、路由与协议终止，再将数据转发至上游服务或公网。
 
-Because the stack centers on `chimera_core`, upgrades to cipher suites, multiplexing strategies, or configuration schemas become instantly available to both sides, minimizing version skew. Observability is likewise unified: telemetry emitted at each layer shares identifiers so that request flows remain traceable end to end.
+由于整个栈以 `chimera_core` 为中心，加密套件、多路复用策略或配置规范的升级可以同步影响两端，最大限度减少版本偏差。可观测性也实现统一：各层产生的遥测共享标识符，保证请求流从端到端可追踪。

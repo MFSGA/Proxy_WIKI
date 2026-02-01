@@ -1,40 +1,40 @@
 # Chimera_Client
 
-## Role and Objectives
-`chimera_client` is a Rust reimplementation of the popular Clash client, optimized for low-latency rule evaluation and resource-constrained environments. It exposes the familiar Clash configuration language while embracing Rust’s safety guarantees, making it suitable for desktop, mobile (via bindings), and headless automation scenarios. The client focuses on three pillars: broad protocol compatibility, deterministic policy routing, and easy operator ergonomics.
+## 角色与目标
+`chimera_client` 是热门 Clash 客户端的 Rust 重写版本，针对低延迟规则匹配和资源受限环境做了优化。它保留熟悉的 Clash 配置语言，同时利用 Rust 的安全保障，适用于桌面、移动端（通过绑定）以及无界面的自动化场景。客户端强调三大支柱：广泛协议兼容性、确定性策略路由、以及易于运维的使用体验。
 
-## Architecture Overview
-Internally, the client splits into configuration ingestion, controller APIs, transport engines, and policy runtime. The configuration loader parses Clash YAML into strongly typed Rust structures, validates them with `chimera_core` schemas, and hot-reloads updates. The controller layer provides both a local HTTP API and optional TUI, enabling on-device rule inspection. Transport engines encapsulate each supported protocol (e.g., Shadowsocks, VMess, Trojan, Reality/QUIC); they share cipher suites and handshake logic via `chimera_core`. The policy runtime builds a decision tree from user rules, executes DNS strategies, and feeds matching traffic into the appropriate transport engine.
+## 架构概览
+在内部，客户端划分为配置加载、控制器 API、传输引擎与策略运行时。配置加载器将 Clash YAML 解析为强类型 Rust 结构体，并通过 `chimera_core` 的 schema 进行校验与热更新。控制层提供本地 HTTP API 与可选 TUI，便于在设备上检查规则。传输引擎封装每种协议（如 Shadowsocks、VMess、Trojan、Reality/QUIC），并通过 `chimera_core` 共享加密套件与握手逻辑。策略运行时根据用户规则构建决策树，执行 DNS 策略，并将匹配流量导入对应的传输引擎。
 
-## Module Configuration Guide
-`chimera_client` keeps configuration aligned with its module boundaries, so each functional area has its own block in the Clash-style YAML. This makes changes easier to reason about, and limits the blast radius of hot-reload updates.
+## 模块化配置指南
+`chimera_client` 的配置与模块边界保持一致，因此 Clash 风格的 YAML 中每个功能区域都有独立块。这让修改更易理解，也能降低热更新的影响范围。
 
-- Core runtime and profile: set global defaults such as mode selection, service ports, logging verbosity, IPv6/allow-lan toggles, and reload behavior.
-- Inbound listeners: define local HTTP/SOCKS/TUN/transparent ports, bind addresses, UDP enablement, and device interface selection. See [Ports and Listeners](./chimera_client/ports.md).
-- Controller and UX: configure the API bind host/port, authentication tokens, and optional TUI or desktop shell toggles.
-- DNS pipeline: declare upstream resolvers, cache sizing, fake-IP versus real-IP strategy, fallback behavior, and policy-based resolver selection. See [DNS Module](./chimera_client/dns.md).
-- Policy engine: order rules, attach rule providers, choose a default group, and map traffic to outbound groups.
-- Transport engines: specify per-protocol parameters like cipher suites, transports (TCP/WS/gRPC/QUIC), multiplexing, and TLS fingerprint options; reuse defaults to keep profiles consistent.
-- Observability: enable structured logs, metrics, and trace exports, with sampling and retention tuned per environment.
-- Update and sync: manage remote profile URLs, signature verification, polling intervals, and rollback on invalid configs.
+- 核心运行时与配置：设置全局默认值，如模式选择、服务端口、日志级别、IPv6/allow-lan 开关与重载行为。
+- 入站监听：定义本地 HTTP/SOCKS/TUN/透明代理端口、绑定地址、UDP 开关与网卡选择。参见[端口与监听](./chimera_client/ports.md)。
+- 控制器与体验：配置 API 绑定地址/端口、鉴权令牌，以及可选的 TUI 或桌面外壳开关。
+- DNS 流水线：声明上游解析器、缓存大小、fake-IP 与 real-IP 策略、回退行为与基于策略的解析器选择。参见[DNS 模块](./chimera_client/dns.md)。
+- 策略引擎：排序规则、绑定规则提供者、选择默认组，并将流量映射到出站组。
+- 传输引擎：指定各协议参数，如加密套件、传输层（TCP/WS/gRPC/QUIC）、多路复用与 TLS 指纹选项；复用默认值以保持配置一致。
+- 可观测性：启用结构化日志、指标与追踪导出，并按环境调整采样与保留策略。
+- 更新与同步：管理远程配置 URL、签名校验、轮询周期与无效配置的回滚。
 
 
-## Protocol Coverage and Features
-`chimera_client` aims for interoperability with the most common proxy ecosystems:
+## 协议覆盖与特性
+`chimera_client` 旨在兼容最常见的代理生态：
 
-- Traditional: HTTP(S), SOCKS5, and TCP/UDP relays.
-- Modern encrypted: Shadowsocks/SSR, VMess/VLESS (TCP/WS/gRPC/QUIC), Trojan, NaïveProxy, TUIC, Hysteria v2.
-- Advanced transports: Reality TLS fingerprinting, multiplexed QUIC sessions, and custom obfuscation plugins.
+- 传统协议：HTTP(S)、SOCKS5，以及 TCP/UDP 中继。
+- 现代加密协议：Shadowsocks/SSR、VMess/VLESS（TCP/WS/gRPC/QUIC）、Trojan、NaïveProxy、TUIC、Hysteria v2。
+- 高级传输：Reality TLS 指纹、多路复用 QUIC 会话，以及自定义混淆插件。
 
-Each protocol implementation documents cipher options, authentication requirements, multiplexing behavior, and fallbacks. Users can mix outbound types in a single configuration and chain proxies for complex routing.
+每个协议实现都会记录加密选项、认证要求、多路复用行为与回退策略。用户可在单一配置中混用多种出站类型，并通过级联代理完成复杂路由。
 
-## Deployment Patterns
-The client ships binaries for major desktop platforms and offers container images for server-side routing or CI testing. A lightweight system service wraps the daemon on Linux to manage automatic restarts and secret rotation. For mobile, bindings expose the controller API to Flutter and React Native shells. Configuration synchronization relies on GitOps-friendly manifests plus optional remote profile URLs, enabling fleets to pull signed updates on schedule.
+## 部署模式
+客户端为主流桌面平台提供二进制，并为服务端路由或 CI 测试提供容器镜像。轻量级系统服务在 Linux 上封装守护进程，以便自动重启与密钥轮换。移动端则通过绑定向 Flutter 和 React Native 外壳开放控制器 API。配置同步依赖 GitOps 友好清单与可选远程配置 URL，便于集群按计划拉取签名更新。
 
-## Performance, Observability, and Troubleshooting
-`chimera_client` integrates structured logging, OpenTelemetry traces, and per-rule metrics. Operators can export connection stats, latency percentiles, and rule hit counts for dashboards. Performance tuning guidance covers DNS cache sizing, rule tree pruning, per-protocol concurrency caps, and CPU affinity when running on routers. Troubleshooting chapters walk through common failure modes such as TLS fingerprint mismatches, DNS poisoning, or controller authentication errors.
+## 性能、可观测性与故障排查
+`chimera_client` 集成结构化日志、OpenTelemetry 追踪与按规则统计指标。运维人员可导出连接统计、延迟分位与规则命中次数用于看板。性能调优建议覆盖 DNS 缓存大小、规则树剪枝、各协议并发上限，以及在路由器上运行时的 CPU 亲和设置。故障排查章节涵盖 TLS 指纹不匹配、DNS 污染或控制器认证错误等常见问题。
 
-## Reference Repositories
-The `chimera_client` source lives here:
+## 参考仓库
+`chimera_client` 源码地址如下：
 
 - `chimera_client`: <https://github.com/MFSGA/Chimera_Client>

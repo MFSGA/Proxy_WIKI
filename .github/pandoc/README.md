@@ -1,4 +1,3 @@
-# Config Overrides for `mdbook-pandoc`
+# `mdbook-pandoc` 配置覆盖
 
-The configuration file fragments here are used to override the configuration in
-`book.toml`. See `.github/workflows/build.sh` for details.
+此处的配置片段用于覆盖 `book.toml` 中的配置。详情参见 `.github/workflows/build.sh`。

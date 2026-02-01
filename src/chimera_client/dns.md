@@ -1,32 +1,32 @@
-# DNS Module
+# DNS 模块
 
-## Scope and Goals
-The DNS module is responsible for domain resolution before policy routing. Its goals are predictable rule matching, low latency, and safe resolution under hostile or unreliable networks. Configuration typically lives under a `dns` block in the Clash-style YAML and can be hot-reloaded.
+## 范围与目标
+DNS 模块负责在策略路由之前进行域名解析。目标是规则匹配可预测、低延迟，并能在不可靠或被干扰的网络中安全解析。配置通常位于 Clash 风格 YAML 的 `dns` 块下，并支持热更新。
 
-## Configuration Areas
-- Upstream resolvers: define UDP, DoH, or DoT endpoints, and choose which transport is allowed per environment.
-- Resolution mode: select fake-IP versus real-IP behavior, and configure the fake-IP pool plus domain filters that must bypass synthesis.
-- Split-horizon policies: map domain suffixes or rule sets to specific resolvers, including private zones and regional endpoints.
-- Fallback strategy: add fallback resolvers and health checks for blocked, poisoned, or slow upstreams.
-- Cache behavior: tune TTL caps, cache size, and prefetch rules to reduce latency without stale answers.
-- Safety controls: enable hosts overrides, blocklists, or ECS avoidance to limit leakage and improve consistency.
-- Bootstrap resolvers: keep a small plain DNS list so DoH or DoT endpoints can be resolved without circular dependencies.
+## 配置区域
+- 上游解析器：定义 UDP、DoH 或 DoT 端点，并决定每个环境允许的传输方式。
+- 解析模式：选择 fake-IP 或 real-IP 行为，并配置 fake-IP 池以及必须绕过合成的域名过滤器。
+- 分流策略：将域名后缀或规则集映射到特定解析器，包括私有域与区域性端点。
+- 回退策略：为被阻断、污染或延迟过高的上游添加回退解析器与健康检查。
+- 缓存行为：调整 TTL 上限、缓存大小与预取规则，在降低延迟的同时避免陈旧结果。
+- 安全控制：启用 hosts 覆盖、阻断列表或 ECS 避免机制，以减少泄露并提升一致性。
+- 引导解析器：保留少量明文 DNS 列表，用于解析 DoH/DoT 端点，避免循环依赖。
 
-## Resolution Modes
-- Fake-IP mode: synthesizes IPs so traffic can be steered by domain rules even after apps connect by IP. This works best with TUN or transparent proxying but requires careful fake-IP filtering for local or IP-sensitive services.
-- Real-IP mode: returns actual addresses to applications, which is simpler for LAN workflows and strict DNS consumers but reduces the ability to enforce domain rules after connection.
-- Hybrid usage: keep fake-IP enabled for general traffic and add explicit fake-IP filters for mDNS, LAN suffixes, or time sync domains.
+## 解析模式
+- Fake-IP 模式：合成 IP，使得应用按 IP 连接后仍能基于域名规则分流。该模式更适合 TUN 或透明代理，但需要谨慎配置 fake-IP 过滤以适配局域网或对 IP 敏感的服务。
+- Real-IP 模式：向应用返回真实地址，适合局域网或对 DNS 严格的场景，但会削弱连接建立后按域名规则匹配的能力。
+- 混合模式：对普通流量启用 fake-IP，并对 mDNS、局域网后缀或时间同步域名设置 fake-IP 过滤。
 
-## Resolver Selection Flow
-1. Apply hosts overrides and consult the in-memory cache.
-2. Select a resolver based on domain policies or rule sets.
-3. Query primary resolvers in order or in parallel.
-4. If responses fail validation or time out, trigger fallback resolvers.
-5. Cache the response with TTL caps and return it to the caller.
+## 解析器选择流程
+1. 应用 hosts 覆盖并查询内存缓存。
+2. 根据域名策略或规则集选择解析器。
+3. 按顺序或并行查询主解析器。
+4. 若响应校验失败或超时，触发回退解析器。
+5. 使用 TTL 上限缓存响应并返回给调用方。
 
-## Configuration References
-### chimera_client (current)
-The current implementation relies on the system resolver. Keep DNS disabled unless you are testing the in-progress DNS server, and override IPv6 only if you need to suppress AAAA answers.
+## 配置参考
+### chimera_client（当前）
+当前实现依赖系统解析器。除非测试开发中的 DNS 服务端，否则保持 DNS 关闭；仅在需要屏蔽 AAAA 解析时覆盖 IPv6。
 
 ```yaml
 dns:
@@ -34,8 +34,8 @@ dns:
   ipv6: false
 ```
 
-### Mihomo / Clash (reference projects)
-This block mirrors the Clash-compatible DNS schema as used by Mihomo. It is usable in those projects and serves as a target shape for chimera_client parity.
+### Mihomo / Clash（参考项目）
+此配置块镜像了 Mihomo 中使用的 Clash 兼容 DNS schema，可作为 chimera_client 对齐目标。
 
 ```yaml
 dns:
@@ -60,16 +60,16 @@ dns:
     geoip-code: CN
 ```
 
-## Operational Guidance
-- Prefer explicit resolver policies when different traffic classes require distinct egress paths.
-- Keep fake-IP exclusions narrow to avoid bypassing rule evaluation unintentionally.
-- Use a small bootstrap resolver list for DoH or DoT endpoints that must resolve at startup.
-- Tune cache caps with observed traffic patterns rather than using defaults blindly.
-- Monitor fallback usage; spikes often indicate upstream blocks or transport failures.
+## 运维建议
+- 当不同流量类别需要不同出口路径时，优先使用明确的解析器策略。
+- 保持 fake-IP 排除项范围尽量小，避免意外绕过规则匹配。
+- 对需要在启动时解析的 DoH/DoT 端点，使用少量引导解析器列表。
+- 根据实际流量模式调整缓存上限，而不是盲目使用默认值。
+- 监控回退解析的触发频率；异常激增往往意味着上游被阻断或传输失败。
 
-## Troubleshooting Checklist
-- Confirm the local DNS listener is reachable (for example, `dig @127.0.0.1 -p 1053 example.com`).
-- Verify the system resolver or TUN stack actually points at the client listener.
-- Revisit fake-IP filters for domains that must keep real IPs.
-- Inspect logs for upstream timeouts, TLS handshake errors, or poisoned responses.
-- Temporarily force a single UDP resolver to isolate DoH or DoT connectivity issues.
+## 故障排查清单
+- 确认本地 DNS 监听可达（例如 `dig @127.0.0.1 -p 1053 example.com`）。
+- 验证系统解析器或 TUN 栈确实指向客户端监听。
+- 重新检查对必须保留真实 IP 的域名的 fake-IP 过滤。
+- 查看日志中的上游超时、TLS 握手错误或污染响应。
+- 临时强制使用单个 UDP 解析器，以隔离 DoH/DoT 连通性问题。

@@ -1,9 +1,6 @@
 # xtask
 
-The purpose of the xtask binary is to enable cross platform task automation
-within the project (somewhat similar to how `npm run` is used in Node.js
-projects to run scripts). Please see
-[cargo xtask](https://github.com/matklad/cargo-xtask) for more information.
+xtask 二进制的目的，是在项目内提供跨平台的任务自动化（有点类似 Node.js 项目中使用 `npm run` 来执行脚本）。详情请参考
+[cargo xtask](https://github.com/matklad/cargo-xtask)。
 
-To add support for a new task, add a new arm to the `match` in the
-`execute_task` function, and add a new handler function that contains the logic.
+若要新增任务支持，请在 `execute_task` 函数的 `match` 中添加新的分支，并新增对应的处理函数实现逻辑。

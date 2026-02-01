@@ -1,7 +1,6 @@
 # exerciser
 
-This is an mdBook renderer to generate templates for exercises from the Markdown
-source. Given a Markdown file `example.md` with one or more sections like:
+这是一个 mdBook 渲染器，用于从 Markdown 源文件生成练习模板。给定一个包含如下片段的 Markdown 文件 `example.md`：
 
 ````markdown
 <!-- File src/main.rs -->
@@ -15,13 +14,12 @@ fn some_more_code() {
 ```
 ````
 
-and mdbook configuration in `book.toml` like:
+以及 `book.toml` 中的 mdBook 配置：
 
 ```toml
 [output.exerciser]
 output-directory = "comprehensive-rust-exercises"
 ```
 
-It will create a file
-`book/exerciser/comprehensive-rust-exercises/example/src/main.rs` with the
-appropriate contents.
+它会生成文件
+`book/exerciser/comprehensive-rust-exercises/example/src/main.rs`，并写入相应内容。

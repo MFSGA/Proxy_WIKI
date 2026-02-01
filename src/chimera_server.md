@@ -1,16 +1,16 @@
-# chimera_server Library
+# chimera_server 库
 
-## Purpose and Scope
-`chimera_server` is the shared Rust crate that provides protocol primitives, configuration schemas, crypto suites, and common utilities for both client and server projects. By centralizing these capabilities, the ecosystem avoids duplicated logic, ensures protocol compliance, and keeps security fixes consistent across binaries.
+## 目的与范围
+`chimera_server` 是共享的 Rust crate，为客户端和服务端提供协议原语、配置规范、加密套件与通用工具。通过集中这些能力，生态系统可以避免逻辑重复、确保协议一致性，并让安全修复在各个二进制中保持同步。
 
-## Key Modules
-- Configuration model: strongly typed structures plus serde-based serialization for Clash manifests, Chimera manifests, and shared policy fragments.
-- Crypto and handshake utilities: AEAD ciphers, key derivation, certificate pinning helpers, TLS fingerprint templates, and QUIC transport parameters.
-- Transport abstractions: traits for stream/session lifecycles, multiplexing interfaces, buffer management, and async runtime adapters.
-- Event bus: lightweight publish/subscribe mechanism so higher layers can tap into connection lifecycle events, metrics, and alerts.
+## 核心模块
+- 配置模型：用于 Clash 清单、Chimera 清单及共享策略片段的强类型结构与 serde 序列化支持。
+- 加密与握手工具：AEAD 加密、密钥派生、证书 Pin 工具、TLS 指纹模板与 QUIC 传输参数。
+- 传输抽象：流/会话生命周期 trait、多路复用接口、缓冲管理与异步运行时适配。
+- 事件总线：轻量级发布/订阅机制，便于上层接入连接生命周期事件、指标与告警。
 
-## API Surface and Extensibility
-The crate exposes a stable Rust API along with optional C FFI bindings for other languages. Extension points allow third parties to register custom cipher suites, add routing annotations, or hook into telemetry emission. Versioning follows semver with clear migration guides whenever breaking changes occur, ensuring that `clash-rs` and `Chimera` can track upgrades smoothly.
+## API 面与可扩展性
+该 crate 提供稳定的 Rust API，并提供可选的 C FFI 绑定供其他语言使用。扩展点允许第三方注册自定义加密套件、添加路由标注或挂钩遥测输出。版本管理遵循语义化版本（semver），在出现破坏性变更时提供清晰迁移指南，确保 `clash-rs` 与 `Chimera` 可以平滑升级。
 
-## Testing and Quality
-`chimera_server` maintains exhaustive unit tests for parsers, crypto primitives, and transport behaviors. Integration suites spin up in-memory client/server pairs to validate interoperability before changes land. Benchmarks measure handshake latency, throughput, and memory footprint across representative hardware, providing baselines for regression detection.
+## 测试与质量
+`chimera_server` 针对解析器、加密原语与传输行为维护详尽单元测试。集成测试会启动内存中的客户端/服务端组合，在改动落地前验证互操作性。基准测试覆盖握手延迟、吞吐量与内存占用，为回归检测提供基线。
