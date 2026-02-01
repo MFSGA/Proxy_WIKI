@@ -15,4 +15,6 @@
     - [Wire Format](./protocols/trojan/wire-format.md)
     - [Traffic Handling](./protocols/trojan/traffic-handling.md)
   - [Hysteria 2](./protocols/hysteria2.md)
+  - [TUIC](./protocols/tuic.md)
   - [VLESS](./protocols/vless.md)
+  - [Reality](./protocols/reality.md)
