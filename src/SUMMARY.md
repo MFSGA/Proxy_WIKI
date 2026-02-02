@@ -15,4 +15,6 @@
     - [线格式](./protocols/trojan/wire-format.md)
     - [流量处理](./protocols/trojan/traffic-handling.md)
   - [Hysteria 2](./protocols/hysteria2.md)
+  - [TUIC](./protocols/tuic.md)
   - [VLESS](./protocols/vless.md)
+  - [Reality](./protocols/reality.md)
