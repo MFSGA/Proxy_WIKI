@@ -1,48 +1,29 @@
-# Testing Comprehensive Rust
+# Comprehensive Rust 测试
 
-The course material contains JS code that can break and needs to be checked for
-functionality. Examples are `theme/speaker-notes.js` or `theme/book.js`.
+课程资料包含可能出问题的 JS 代码，需要检查其功能性。例如 `theme/speaker-notes.js` 或 `theme/book.js`。
 
-Comprehensive Rust is using [webdriverIO](https://webdriver.io/) and the
-[webdriverIO Expect API](https://webdriver.io/docs/api/expect-webdriverio/) in
-combination with [Mocha](https://mochajs.org/). WebdriverIO is taking care of
-accessing the webpage with a real browser and can access the state of the page
-so behavior can be asserted.
+Comprehensive Rust 使用 [webdriverIO](https://webdriver.io/) 与 [webdriverIO Expect API](https://webdriver.io/docs/api/expect-webdriverio/)，并结合 [Mocha](https://mochajs.org/)。WebdriverIO 负责用真实浏览器访问页面，并读取页面状态以便断言行为。
 
-The [Static Server Service](https://webdriver.io/docs/static-server-service/) is
-used mainly in the [CI](../.github/workflows/build.yml) to serve the book on
-port `localhost:8080` such that the test runner can access it. This mode is used
-when `npm start` or `npm test` is executed.
+[Static Server Service](https://webdriver.io/docs/static-server-service/) 主要用于 [CI](../.github/workflows/build.yml) 中，将书籍服务在 `localhost:8080` 上，以便测试运行器访问。运行 `npm start` 或 `npm test` 时会启用该模式。
 
-> **Tip:** Use `cargo xtask web-tests` to run the tests in this directory from
-> anywhere in the repository.
+> **提示：** 使用 `cargo xtask web-tests` 可在仓库任意位置运行本目录下的测试。
 
-For local testing and quick iterations it is possible to use `cargo xtask serve`
-which creates a small HTTP server on port 3000 by default. There is a special
-config that is invoked with `npm run test-mdbook` that uses
-`http://localhost:3000`
+在本地快速验证时，可以使用 `cargo xtask serve`，默认会在 3000 端口启动一个小型 HTTP 服务器。`npm run test-mdbook` 会调用一个特殊配置，使用 `http://localhost:3000`。
 
-## Deal with failing tests
+## 处理失败的测试
 
-When you see tests failing they should already indicate what checks broke for
-specific pages.
+当测试失败时，通常会提示哪些页面的检查出现了问题。
 
-### Legitimate warnings
+### 合理的警告
 
-You might e.g. need to reduce the length of an overlong page (or get an
-exemption) or updating some mdbook infrastructure had a breaking change that
-breaks functionality. These issues need to be fixed before this change is
-merged.
+例如：需要缩短过长的页面（或申请豁免）；或 mdBook 基础设施更新带来破坏性变更。这些问题在合入之前都需要修复。
 
-### Broken test environment
+### 测试环境异常
 
-Sometimes tests can also fail in the CI environment with errors like this.
+有时 CI 环境也会失败并出现如下错误：
 
 ```
 ERROR webdriver: WebDriverError: tab crashed
 ```
 
-If you see messages like these, it may indicate an issue with the web-tests that
-is not caused by your changes. Please file a bug to report this. As a temporary
-workaround, if all other checks pass and you are confident your changes are
-correct, you may override the web-test requirement to merge your pull request.
+如果看到类似信息，可能说明 Web 测试本身有问题，并非由你的改动引起。请提交 bug 报告。作为临时 workaround，如果其它检查都通过且你确信改动正确，可以选择放宽 web-test 的合并要求。

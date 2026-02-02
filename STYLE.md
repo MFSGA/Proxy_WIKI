@@ -1,271 +1,152 @@
-# Comprehensive Rust 🦀 Style Guide
+# 《Comprehensive Rust》🦀 风格指南
 
-The course has been expanded and improved by tons of volunteers like you! Thank
-you for that! To help ensure a consistent style throughout the course, we have
-written down some guidelines for you to follow.
+本课程由无数像你一样的志愿者扩展和改进，感谢你的贡献！为保持全书风格一致，我们整理了以下指南供你遵循。
 
-## Course Philosophy and Design
+## 课程理念与设计
 
-To contribute effectively, it's helpful to understand the core design principles
-of Comprehensive Rust. This is not a self-study book; it is a set of slides and
-notes for an **instructor-led course**.
+要有效贡献，首先需要理解《Comprehensive Rust》的核心设计原则。它并非自学书籍，而是一套面向**讲师授课**的幻灯片和讲稿。
 
-### Target Audience
+### 目标读者
 
-The course is designed for an audience of experienced software engineers who are
-new to Rust. We assume they have 2-3 years of experience in an imperative
-language like C, C++11+, Java 7+, Python, or Go.
+课程面向有经验、但不熟悉 Rust 的软件工程师。我们假设他们拥有 2-3 年使用命令式语言（如 C、C++11+、Java 7+、Python 或 Go）的经验。
 
-We **do not** assume familiarity with functional programming concepts or
-features from more modern languages like Swift or Kotlin. Course material should
-build upon the concepts that are likely to be familiar to this audience.
+我们**不**假设读者熟悉函数式编程概念，或 Swift、Kotlin 等现代语言的特性。课程内容应基于该受众可能熟悉的概念来构建。
 
-### Goals
+### 目标
 
-The goal of the course is to provide a solid foundation in Rust within a bounded
-time frame. This prepares students to continue learning effectively as they
-begin to apply their new skills on the job.
+课程目标是在有限的时间内提供扎实的 Rust 基础，帮助学员在工作中开始使用新技能并持续高效学习。
 
-### Pedagogical Principles
+### 教学原则
 
-We follow a few key principles to make the material effective for learning:
+为让学习更有效，我们遵循以下原则：
 
-- **Build on a Foundation:** New Rust concepts should be connected to what a
-  learner already knows, either from their prior language experience or from
-  earlier parts of this course.
-- **Provide a Working Mental Model (The "No Magic" Rule):** As much as possible,
-  avoid telling students to accept syntax or behavior that will be explained
-  later. For everything that appears on the slides or in exercises, we must
-  provide a working mental model that allows the student to understand and use
-  the concept.
-- **Use a [Spiral Approach](https://en.wikipedia.org/wiki/Spiral_approach):** To
-  avoid overwhelming the learner, it is highly encouraged to introduce a concept
-  by first providing basic facts and a simplified mental model. The topic can
-  then be revisited later to provide more detail. For example, very early in the
-  course we explain the basics of `println!`, mention that it is a macro so the
-  usage syntax is a bit unusual, but we don't go into details of format strings
-  or macros. We explain details of format strings later, once we have covered
-  traits and can mention the `Debug` and `Display` traits.
-- **Live, Interactive Instruction:** The instructor is expected to run and
-  modify the code on the slides, and use compiler errors as a teaching tool. The
-  audience is expected to frequently interrupt with questions, and the
-  instructor would often experiment with the code on the slide to illustrate the
-  answer.
+- **建立在已有基础之上：** 新的 Rust 概念应与学习者已知的内容相衔接，来源可以是他们的既有语言经验，或是课程先前的内容。
+- **提供可用的心智模型（“拒绝魔法”原则）：** 尽量避免让学生“先接受语法或行为，稍后再解释”。幻灯片或练习中出现的所有内容，都要给出可用的心智模型，帮助学生理解并使用该概念。
+- **采用[螺旋式教学](https://en.wikipedia.org/wiki/Spiral_approach)：** 为避免让学习者不知所措，建议先用基础事实和简化的心智模型引入概念，稍后再回到该主题补充细节。例如，课程早期解释 `println!` 的基础用法，并提及它是宏所以语法有些特殊，但不会深入格式字符串或宏的细节；待讲到特征时，再展开格式字符串细节并介绍 `Debug` 和 `Display` 特征。
+- **实时、互动式教学：** 讲师应运行并修改幻灯片上的代码，利用编译错误作为教学工具。听众应随时提问，讲师也会在幻灯片代码上实验，以展示答案。
 
-### Pacing and Structure
+### 节奏与结构
 
-The course is designed for approximately 5 hours of teaching per day, typically
-split into a 3-hour morning session and a 2-hour afternoon session.
+课程设计为每天约 5 小时授课，通常上午 3 小时、下午 2 小时。
 
-This pacing is important context for contributors. Material should be structured
-to fit this rhythm, with clear sections that can be taught in roughly 45-50
-minute blocks to accommodate short breaks and Q&A.
+这种节奏对贡献者很重要。材料应按此节奏结构化，分成大约 45-50 分钟一段的清晰模块，便于短暂休息和答疑。
 
-Each slide must include a `minutes` field in its frontmatter, which specifies
-the estimated teaching time for that slide. This helps ensure the overall pacing
-of the course remains consistent.
+每张幻灯片的前言区必须包含 `minutes` 字段，用于标注该幻灯片的预估教学时间，帮助保持整体节奏一致。
 
-### Course Structure
+### 课程结构
 
-The course starts with a core **Rust Fundamentals** curriculum, followed by a
-collection of specialized **deep dives**. All students take the Fundamentals
-course and can then opt into any deep dives that are relevant to them.
+课程从核心的**Rust 基础**开始，随后是若干专门的**深入专题**。所有学员都会学习基础课程，然后根据需求选择相关的深入专题。
 
-#### The Rust Fundamentals Course
+#### Rust 基础课程
 
-The **Rust Fundamentals** course provides a solid foundation in a strictly
-bounded, four-day time frame. This duration is firm, and its scope is carefully
-managed to focus on the most essential concepts for new Rust programmers.
+**Rust 基础**课程在严格限定的 4 天时间内打下扎实基础。这个时长是固定的，范围经过精心规划，聚焦新手最需要的关键概念。
 
-The overall progression of the course starts with the parts of the Rust language
-that should be conceptually familiar to most students from other languages. Then
-we move on to more difficult parts (for example, enums with payloads and
-generics), and parts that are unique to Rust (lifetimes and the borrow checker).
+课程整体进度从对大多数学生而言概念上熟悉的 Rust 语言部分开始，随后转向更具挑战的部分（例如携带数据的枚举和泛型），再到 Rust 特有的部分（生命周期和借用检查器）。
 
-Contributors should keep this structure in mind. The four-day schedule for the
-Fundamentals course is completely full, leaving no time slack for new topics.
-Proposals to add material to the Rust Fundamentals course must also include a
-plan to shorten or remove existing content. Refinements to existing topics are
-always welcome. Topics that are not essential for all new Rust programmers
-should be proposed as new deep dives.
+贡献者应牢记这一结构。基础课程的 4 天安排已排满，没有空余时间容纳新主题。若提议在基础课程中添加内容，必须同时提供缩短或移除现有内容的方案。改进已有主题始终欢迎。不适合所有新 Rust 程序员的内容，应提议为新的深入专题。
 
-#### Deep Dives
+#### 深入专题
 
-Specialized material can be added to _deep dives_. These cover things like Rust
-in Android, Bare-Metal Rust, etc., which are not necessarily something every
-Rust developer should know. More deep dives can be added in the future.
+专门内容可以放入“深入专题”，例如 Android 上的 Rust、裸机 Rust 等，这些并非每位 Rust 开发者都必须掌握。未来还可以添加更多深入专题。
 
-## Course Slides
+## 课程幻灯片
 
-Please take the following into account when updating the course material.
+更新课程材料时，请注意以下事项。
 
-### Vertical Space
+### 垂直空间
 
-What looks like pages in a browser, are actually slides in a presentation. It is
-important to keep this in mind when adding content: we only have limited
-vertical space. Scrolling up and down should be avoided since it is very jarring
-for people who attend the class.
+浏览器中看似页面，实际是演示中的幻灯片。添加内容时务必记住：垂直空间有限，应避免上下滚动，因为这会让听众感觉突兀。
 
-You can test the amount of space available using a simple tool. This tool can be
-used by clicking a toggle button next to the search button on left side of the
-navbar.
+可以使用一个简单工具测试可用空间：在导航栏左侧的搜索按钮旁边有一个切换按钮，点击即可。
 
-The rectangle has an aspect ratio similar to what you can see when you share
-your screen on a 16:9 display or projector.
+该矩形的宽高比类似在 16:9 显示器或投影上共享屏幕时所见的区域。
 
-Use the rectangle as a rough guide for how much you can fit on a single slide.
-If you find yourself adding too much detail, move the details to the speaker
-notes (see below).
+将矩形作为单张幻灯片可容纳内容的参考。如果发现内容过多，把细节移到讲师备注（见下文）。
 
-### One Core Idea Per Slide
+### 每张幻灯片聚焦一个核心点
 
-Ideally, each slide should focus on a single, clear takeaway. If a slide
-introduces a core concept and then explores an important but distinct tangent
-(e.g., a limitation or an advanced use case), that tangent should be moved to
-its own slide. This keeps the presentation focused and easier to follow.
+理想情况下，每张幻灯片应围绕一个清晰的核心要点。如果幻灯片引入核心概念后又探讨重要但不同的分支（如限制或高级用例），应将分支移到单独幻灯片，保持演示聚焦、易于跟进。
 
-Consider the instructor's workflow. If the speaker notes require a long or
-complex series of live edits, it can be difficult for the instructor to execute
-well every time. It may be better to add a new slide that presents the desired
-state of the code.
+考虑讲师的操作流程。如果讲师备注要求长串或复杂的现场编辑，讲师可能难以每次都执行到位。此时添加一张呈现目标代码状态的新幻灯片可能更好。
 
-### Pedagogical Flow
+### 教学流程
 
-When introducing a new concept, start with a simple, relatable, and concrete
-example. A good opening example grounds the concept for the learner and provides
-motivation for the more detailed explanation that will follow.
+引入新概念时，从简单、相关、具体的示例开始。好的开场示例能为学习者奠定概念基础，并为随后更详细的解释提供动机。
 
-### Use Meaningful Examples
+### 使用有意义的示例
 
-Code samples on the slides should be short and do something meaningful. Avoid
-using generic placeholders like `Foo`, `Bar`, and `Baz`. Using descriptive names
-from a real-world, even if simplified, domain makes the code easier to
-understand and relate to.
+幻灯片上的代码示例应简洁且“做点有意义的事”。避免 `Foo`、`Bar`、`Baz` 等通用占位符。即便是简化的真实领域描述性名称，也能让代码更易理解和共鸣。
 
-### Plan Interactive Code Snippets
+### 规划可互动的代码片段
 
-All Rust code blocks in the course are not static text but are live, editable
-playgrounds. An important teaching method is for the instructor to edit these
-snippets live to demonstrate concepts, introduce and fix errors, and explore
-variations based on student questions.
+课程中的所有 Rust 代码块都不是静态文本，而是可编辑的互动 playground。重要的教学方式之一，就是讲师现场编辑这些片段，展示概念、引入并修复错误、以及根据学生提问探索变化。
 
-Contributors should design their slides with this interactivity in mind. The
-initial state of the code should be a good starting point for a live
-demonstration.
+贡献者设计幻灯片时应考虑这种互动性。代码的初始状态应是适合现场演示的良好起点。
 
-### `mdbook` and `mdbook-course` Conventions
+### `mdbook` 与 `mdbook-course` 约定
 
-The project uses `mdbook` features in specific ways, as well as a custom
-preprocessor, `mdbook-course`. The following conventions are mandatory:
+项目对 `mdbook` 功能和自定义预处理器 `mdbook-course` 有特定用法，以下约定必须遵守：
 
-- **YAML Frontmatter:** Every slide file **must** include YAML frontmatter at
-  the top. At a minimum, this must include the `minutes` field to specify the
-  estimated teaching time.
-- **Outline Helpers:** Pages that serve as an index for a session or segment
-  **must** use the `{{%session outline%}}` or `{{%segment outline%}}` helpers.
-- **File Includes:** Code for exercises and their solutions **must** be included
-  from external files using the standard `mdbook` `{{#include ...}}` helper.
-- **Translation Directives:** To prevent an element (such as a paragraph, code
-  block, or list item) from being translated, place a
-  `<!-- mdbook-xgettext: skip -->` comment on a line by itself, followed by a
-  blank line, immediately before the element.
+- **YAML 前言：** 每个幻灯片文件顶部**必须**包含 YAML 前言。至少要有 `minutes` 字段，用于标注预估教学时间。
+- **大纲辅助：** 作为某个 session 或 segment 索引的页面，**必须**使用 `{{%session outline%}}` 或 `{{%segment outline%}}` 辅助。
+- **文件引入：** 练习及其解答的代码**必须**使用标准 `mdbook` 的 `{{#include ...}}` 辅助从外部文件引入。
+- **翻译指令：** 若要阻止某个元素（段落、代码块或列表项）被翻译，在该元素前单独一行放置 `<!-- mdbook-xgettext: skip -->` 注释，并跟一个空行。
 
-For a complete explanation of the custom helpers and all available frontmatter
-fields, please refer to the [`mdbook-course` README](mdbook-course/README.md).
+关于自定义辅助和所有可用前言字段的完整说明，请参阅 [`mdbook-course` README](mdbook-course/README.md)。
 
-### Language and Tone
+### 语言与语气
 
-The courses are written in American English, so write "initialize", not
-"initialise".
+课程使用美式英语，例如用 “initialize” 而非 “initialise”。
 
-Use an informal, friendly, and concise tone. Remember that the courses are meant
-to be taught by an experienced programmer to other experienced programmers. When
-possible, prefer terminology used in
-[the official Rust Book](https://doc.rust-lang.org/book/). If a less common but
-necessary term is used, provide a brief definition.
+语气应非正式、友好且简洁。记住课程面向经验丰富的程序员，由同样经验丰富的程序员授课。可能的话，优先使用[官方 Rust 书](https://doc.rust-lang.org/book/)中的术语。如果必须使用较少见但必要的术语，请简要给出定义。
 
-#### Glossary
+#### 术语表
 
-The `src/glossary.md` file contains definitions for key Rust terms used
-throughout the course. When editing course content, use the glossary to anchor
-concepts and ensure consistency in terminology. Terms should be defined and used
-consistently with their glossary entries.
+`src/glossary.md` 包含课程中关键 Rust 术语的定义。编辑课程内容时，使用术语表来锚定概念，并确保术语一致。术语应与术语表的定义保持一致且一致使用。
 
-## Exercises
+## 练习
 
-At the end of some sections, learners will actively engage with the material by
-completing a small exercise. The goal of an exercise is to provide hands-on
-practice with the concepts just taught.
+在部分章节末尾，学习者会通过完成小练习主动参与学习。练习的目标是对刚学到的概念进行实践。
 
-Please keep the following principles in mind when creating or updating
-exercises:
+创建或更新练习时，请牢记以下原则：
 
-- **Focused Scope:** An exercise should focus on the topic of the preceding
-  section. It should not require knowledge of concepts that have not yet been
-  taught.
-- **Short Duration:** An exercise should be solvable by the target audience in
-  approximately 10-15 minutes. The goal is a quick, successful application of
-  knowledge, not a complex project.
-- **Clear Instructions:** The problem description should be clear and
-  unambiguous.
+- **聚焦范围：** 练习应聚焦前一节的主题，不应要求尚未教授的知识。
+- **时长短：** 练习应让目标受众在约 10-15 分钟内完成。目标是快速成功的知识应用，而非复杂项目。
+- **指令清晰：** 题目描述要清晰、明确。
 
-## Speaker Notes
+## 讲师备注
 
-We have extended `mdbook` with support for speaker notes: content added between
-`<details> ... </details>` tags is rendered in a special box that can be
-collapsed or removed entirely from the slide.
+我们扩展了 `mdbook`，支持讲师备注：放在 `<details> ... </details>` 标签之间的内容会渲染在可折叠或可移除的特殊框中。
 
-- Speaker notes suggest a narrative structure for the instructor.
+- 讲师备注为讲师提供叙事结构。
 
-- The speaker notes should expand on the topic of the slide. Use them to provide
-  interesting background information for both the instructor and for students
-  who look at the material outside of a class. Remember that many more people
-  will read the course by themselves, so make the notes complete and useful even
-  when there is no Rust expert around.
+- 讲师备注应拓展幻灯片主题。用它们为讲师及课外阅读的学生提供有趣的背景信息。记住会有更多人自行阅读课程，因此即便没有 Rust 专家在场，备注也应完整、有用。
 
-- For slides with evolving code examples, the notes provide a clear,
-  step-by-step flow for how the code is modified and presented. This is a
-  suggested flow for the instructor's live-coding session within the slide's
-  interactive playground. This includes:
+- 对于代码逐步演化的幻灯片，备注应提供清晰的逐步流程，说明代码如何修改和呈现。这是讲师在幻灯片互动 playground 中的建议现场编码流程，包括：
 
-  - The order in which to introduce concepts, how to motivate them.
+  - 引入概念的顺序及动机。
+  - 代码示例的背景：若不明显，说明它试图解决的问题。
+  - 如何演示代码的变化（如无法编译或展示 bug 的代码）。
+  - 如何在幻灯片上修改代码以展示所讲概念。
+  - 何时暂停并用问题与课堂互动。
 
-  - Framing of the code example: the problem it tries to solve, if not obvious.
+- 讲师备注应作为讲师的快速参考，而非逐字稿。讲师查看备注的时间有限，因此内容应简明、易扫读。
 
-  - How to demonstrate variations of the code example (e.g., code that does not
-    compile or illustrates a bug).
+  **避免**面向朗读的长篇叙事段落：
+  > **反例：** _“在这个例子中，我们定义了一个名为 `StrExt` 的特征。它只有一个方法 `is_palindrome`，接收 `&self` 并返回布尔值，表示字符串正反是否相同……”_
 
-  - How to change the code on the slide to illustrate the concepts being taught.
-
-  - Where to pause and engage the class with questions.
-
-- Speaker notes should serve as a quick reference for instructors, not a
-  verbatim script. Because instructors have limited time to glance at notes, the
-  content should be concise and easy to scan.
-
-  **Avoid** long, narrative paragraphs meant to be read aloud:
-  > **Bad:** _"In this example, we define a trait named `StrExt`. This trait has
-  > a single method, `is_palindrome`, which takes a `&self` receiver and returns
-  > a boolean value indicating if the string is the same forwards and
-  > backwards..."_
-
-  **Instead, prefer** bullet points with background information or actionable
-  **teaching prompts**:
-  > **Good:**
+  **更推荐**用带背景信息或可执行的**教学提示**的要点：
+  > **示例：**
   >
-  > - Note: The `Ext` suffix is a common convention.
-  > - Ask: What happens if the `use` statement is removed?
-  > - Demo: Comment out the `use` statement to show the compiler error.
+  > - 提示：`Ext` 后缀是常见约定。
+  > - 提问：如果去掉 `use` 语句会怎样？
+  > - 演示：注释掉 `use` 语句，展示编译错误。
 
-- Nevertheless, include all of the necessary teaching prompts for the instructor
-  in the speaker notes. Unlike the main content, the speaker notes don't have to
-  fit on a single slide.
+- 不过，务必在讲师备注中包含讲师所需的全部教学提示。与主内容不同，讲师备注不必适配单张幻灯片的空间。
 
-### More to Explore
+### “More to Explore”
 
-Use the "More to Explore" section for valuable topics that are outside the main
-scope of the class. The content should be placed within the `<details>` block as
-shown below:
+“More to Explore” 部分用于放置超出课堂主线但有价值的内容。内容应如示例放在 `<details>` 块内：
 
 ```markdown
 <details>
@@ -279,49 +160,33 @@ shown below:
 </details>
 ```
 
-This section can contain a deeper explanation of a concept or provide specific
-pointers to external resources. A link should be accompanied by a brief
-explanation of what the resource contains and why it is relevant. A vague
-reference is not helpful, but a specific one can be a great tool for
-self-learners.
+此部分可以包含概念的更深入解释，或指向外部资源的具体推荐。链接应附带简短说明，解释资源包含什么、为何相关。模糊的引用没有帮助，具体的指引则是自学者的好工具。
 
-## Code Blocks Mechanics
+## 代码块规范
 
-Code blocks are a critical part of the course. To ensure they are consistent and
-behave as expected, please follow these conventions.
+代码块是课程的核心部分。为确保一致并按预期工作，请遵循以下约定。
 
-### Language Identifiers
+### 语言标识
 
-Use the following language identifiers for fenced code blocks:
+对围栏代码块使用以下语言标识：
 
-- **`rust`**: For Rust code examples.
-- **`shell`**: For shell commands. Use a `$` prompt for consistency. Omit the
-  prompt for multi-line commands or when the output is shown.
-- **`bob`**: For ASCII art diagrams generated by `mdbook-bob`.
-- **`ignore`**: For code snippets that are not complete, self-contained programs
-  or are for illustrative purposes only and should not be compiled.
+- **`rust`**：Rust 代码示例。
+- **`shell`**：Shell 命令。为一致性使用 `$` 提示符。对多行命令或展示输出的情况可省略提示符。
+- **`bob`**：由 `mdbook-bob` 生成的 ASCII 图表。
+- **`ignore`**：非完整、自包含程序或仅用于说明的代码片段，不应编译。
 
-### mdbook Annotations
+### mdbook 注解
 
-You can add annotations to Rust code blocks to control how they are tested and
-displayed:
+可以为 Rust 代码块添加注解，以控制测试和展示方式：
 
-- **`editable`**: Makes the code block an interactive playground where users can
-  edit and run the code. This should be used for most Rust examples.
-- **`compile_fail`**: Indicates that the code is expected to fail compilation.
-  This is used to demonstrate specific compiler errors.
-- **`should_panic`**: Indicates that the code is expected to panic when run.
-- **`warnunused`**: Re-enables `unused` lints for a code block. By default, the
-  course's test runner disables lints for unused variables, imports, etc., to
-  avoid distracting warnings. Use this annotation only when a warning is part of
-  the lesson.
+- **`editable`**：使代码块成为可编辑的 playground，供用户编辑运行。大多数 Rust 示例应使用此注解。
+- **`compile_fail`**：表示代码预期无法编译，用于展示特定编译错误。
+- **`should_panic`**：表示代码运行时预期会 panic。
+- **`warnunused`**：为代码块重新启用 `unused` 相关 lint。课程的测试运行器默认禁用未使用变量、导入等 lint，以避免分散注意力。仅在警告是教学内容时使用此注解。
 
-### Rust Code Formatting
+### Rust 代码格式
 
-When showing Rust code inline, please use the same spacing as `rustfmt`: `3 * x`
-instead of `3*x`. However, feel free to remove newlines when it can make the
-code more compact and easier to understand, e.g., you can define a struct on one
-line if it is not the focus of your example:
+内联展示 Rust 代码时，请使用与 `rustfmt` 相同的间距：`3 * x` 而非 `3*x`。不过，若能让代码更紧凑、易理解，可以去掉换行，例如可在一行定义结构体（前提是结构体不是例子的重点）：
 
 <!-- dprint-ignore-start -->
 
@@ -331,32 +196,20 @@ struct Person { name: String }
 
 <!-- dprint-ignore-end -->
 
-Enclose the code block in `<!-- dprint-ignore-start -->` and
-`<!-- dprint-ignore-end -->` to suppress the automatic formatting. Please use
-this sparingly.
+使用 `<!-- dprint-ignore-start -->` 和 `<!-- dprint-ignore-end -->` 包裹代码块，以抑制自动格式化。请谨慎使用此技巧。
 
-## Translations
+## 翻译
 
-This section is about what you write in the translation. We describe
-[how to create or update translations elsewhere](TRANSLATIONS.md).
+本节讨论翻译时需要写什么。关于[如何创建或更新翻译](TRANSLATIONS.md)，请参见其他文档。
 
-When translating the course, please take the following into account:
+翻译课程时，请注意：
 
-- Do not translate:
-  - The course name ("Comprehensive Rust 🦀"). If the name is not easily
-    understood in your language, please add the translated version after the
-    original name.
-  - Variable names (you _should_ translate the comments, though.)
+- 不要翻译：
+  - 课程名称（“Comprehensive Rust 🦀”）。若在你的语言中不易理解，请在原名后补充译名。
+  - 变量名（但**应**翻译注释）。
 
-- If the Rust Book has been
-  [translated into your language](https://doc.rust-lang.org/book/appendix-06-translation.html),
-  please use the same vocabulary.
+- 如果 Rust 之书已有[你的语言的翻译](https://doc.rust-lang.org/book/appendix-06-translation.html)，请使用相同术语。
 
-- The text you write is in Markdown format. Make sure to preserve the original
-  formatting in the translation by marking text as `` `code` ``, `_emphasis_`
-  and `**strong emphasis**` like in the original.
+- 你的文本是 Markdown 格式。请保持原格式，如 `` `code` ``、`_强调_`、`**加粗**` 等。
 
-- If you find mistakes or things that sound awkward in the original English
-  text, please submit PRs to fix them in the English text! Fixing typos in the
-  translation is great, but we want everybody to benefit from the fixes and that
-  is why we need the fix to be made in the English text too.
+- 如果发现原英文文本有错误或表述不佳，请提交 PR 修正英文文本！修复译文中的错别字固然好，但我们希望所有人都能受益，因此需要同时修复英文。

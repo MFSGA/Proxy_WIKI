@@ -1,21 +1,18 @@
 # mdbook-course
 
-This is an mdBook preprocessor to handle some specific details of Comprehensive
-Rust.
+这是一个 mdBook 预处理器，用于处理 Comprehensive Rust 中的一些特定细节。
 
-It provides three binaries:
+它提供三个二进制程序：
 
-- `mdbook-course` -- the actual preprocessor
-- `course-schedule` -- prints the course schedule with timings
-- `course-content` -- dumps all course content to stdout, in order
+- `mdbook-course` —— 实际的预处理器
+- `course-schedule` —— 输出包含时间安排的课程日程
+- `course-content` —— 按顺序把全部课程内容输出到 stdout
 
 ## Frontmatter
 
-The preprocessor parses "frontmatter" -- YAML between `---` at the beginning of
-a Markdown file -- and removes it from the rendered result.
+该预处理器会解析“frontmatter”（位于 Markdown 文件开头、由 `---` 包裹的 YAML），并在渲染结果中移除它。
 
-Frontmatter is optional, and can contain any of the following fields, defined
-below:
+Frontmatter 为可选项，可包含以下字段：
 
 ```yaml
 minutes: NNN
@@ -24,23 +21,15 @@ course: COURSE NAME
 session: SESSION NAME
 ```
 
-## Course Structure
+## 课程结构
 
-A book can contain multiple _courses_. Each course is made up of _sessions_,
-which are blocks of instructional time (and include breaks). Typically two
-sessions are taught per day, morning and afternoon.
+一本书可以包含多个 _course_。每个 course 由若干 _session_ 组成，它们是授课时间的块（包含休息）。通常每天两节课，上午与下午各一节。
 
-Each session is comprised of _segments_, which are slides on a related theme.
-Breaks are scheduled between segments.
+每个 session 由若干 _segment_ 组成，它们对应一组主题相关的幻灯片。segment 之间会安排休息。
 
-Each segment is comprised of _slides_. A slide can be made up of one or more
-mdBook chapters.
+每个 segment 由若干 _slide_ 组成。一个 slide 可以包含一个或多个 mdBook 章节。
 
-The course structure is derived from the mdBook structure. Each top-level mdBook
-"section" is treated as a segment, and may optionally begin a new session or
-course. Within each section, the first chapter and subsequent second-level
-chapters are each treated as a slide. Any further-nested chapters are treated as
-parts of the parent slide. For example:
+课程结构来自 mdBook 的章节结构。每个顶层 mdBook “section” 视为一个 segment，并可选择开启新的 session 或 course。在每个 section 中，首个章节与其后的二级章节都被视为 slide。更深层的章节会作为上层 slide 的组成部分。例如：
 
 ```ignore
 - [Frobnication](frobnication.md)
@@ -52,26 +41,19 @@ parts of the parent slide. For example:
     - [Solution](frobnication/Solution.md)
 ```
 
-In this segment, there are four slides: "Frobnication", "Integer Frobnication",
-"Frob Expansion", and "Exercise". The last two slides are made up of multiple
-chapters.
+在这个 segment 中有四个 slide：“Frobnication”、“Integer Frobnication”、“Frob Expansion” 和 “Exercise”。最后两个 slide 由多个章节组成。
 
-The first chapter of a segment can use the `course` and `session` fields in its
-frontmatter to indicate that it is the first segment in a session or course.
+segment 的首个章节可以在 frontmatter 中使用 `course` 与 `session` 字段，用来表明它是某个 session 或 course 的首个 segment。
 
-## Timing
+## 时间安排
 
-Each chapter should specify an estimate of the instructional time it will
-require in the `minutes` field. This information is summed, with breaks
-automatically added between segments, to give time estimates for segments,
-sessions, and courses.
+每个章节应在 `minutes` 字段里给出预计讲授时长。该信息会被汇总，并在 segment 之间自动加入休息，从而得到 segment、session 与 course 的时间估计。
 
-Each session should list a `target_minutes` that is the target duration of the
-session.
+每个 session 应指定一个 `target_minutes` 作为目标时长。
 
-## Directives
+## 指令
 
-Within the course material, the following directives can be used:
+课程内容中可以使用以下指令：
 
 ```
 {{%segment outline}}
@@ -80,12 +62,8 @@ Within the course material, the following directives can be used:
 {{%course outline COURSENAME}}
 ```
 
-These will be replaced with a markdown outline of the current segment, session,
-or course. The last directive can refer to another course by name and is used in
-the "Running the Course" section.
+它们会被替换为当前 segment、session 或 course 的 Markdown 大纲。最后一个指令可以引用其他 course 名称，用于“Running the Course”章节。
 
-# Course-Schedule Comments
+# Course-Schedule 备注
 
-The `course-schedule` binary generates Markdown output that is included in a
-GitHub pull request comment, based on the information provided in the above
-format.
+`course-schedule` 二进制会生成 Markdown 输出，并根据上述格式的信息作为 GitHub PR 评论的一部分。

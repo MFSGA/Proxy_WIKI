@@ -1,8 +1,8 @@
-# Protocol
+# 协议
 
-## Overview
+## 概览
 
-| Protocol | Default Transport | Authentication | Strengths | Typical Constraints |
+| 协议 | 默认传输 | 认证方式 | 优势 | 常见限制 |
 | --- | --- | --- | --- | --- |
 | SOCKS5 | TCP control + optional UDP | Optional username/password | Works with almost any TCP app, UDP associate mode | Clear-text by default, needs TLS/obfs elsewhere |
 | HTTP(S) CONNECT | TCP over HTTP/1.1 or HTTP/2 | Basic auth, bearer token, mutual TLS | Blends with web traffic, easy to deploy on gateways | Only proxies TCP, relies on intermediary keeping long-lived tunnels |
@@ -12,9 +12,9 @@
 | VLESS | TLS/XTLS over TCP or MKCP | UUID-based identity | Flexible multiplexing, optional XTLS auto-split | No encryption without TLS/XTLS layer, ecosystem-specific tooling |
 | Reality (TLS camouflage) | TLS 1.3-like handshake | Public key + short ID (plus upstream auth) | Certificate-less TLS mimicry, resistant to passive probing | Depends on client fingerprint matching, tied to Xray tooling |
 
-Detailed breakdowns now live in dedicated files; each follows the same structure (highlights, flow, configuration snippet, strengths, and limitations) to make comparisons straightforward.
+详细拆解已放在独立文件中；每个文件遵循一致结构（亮点、流程、配置片段、优势与限制），便于对比。
 
-## Deep Dives
+## 深入阅读
 
 - [SOCKS5](./protocols/socks5.md) – General-purpose TCP/UDP proxy with flexible method negotiation.
 - [HTTP CONNECT Proxy](./protocols/http.md) – HTTPS-friendly tunnels that ride over standard web ports.

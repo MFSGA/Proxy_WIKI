@@ -1,291 +1,208 @@
-# Translations of Comprehensive Rust 🦀
+# 《Comprehensive Rust》翻译指南 🦀
 
-We would love to have your help with translating the course into other
-languages! Please see the [translations page] for the existing translations.
+我们非常期待你能帮助把课程翻译成其他语言！已有的翻译请查看[翻译页面][translations page]。
 
 [translations page]: https://google.github.io/comprehensive-rust/running-the-course/translations.html
 
-We use the [Gettext] system for translations. This means that you don't modify
-the Markdown files directly: instead you modify `.po` files in a `po/`
-directory. The `.po` files are small text-based translation databases.
+我们使用 [Gettext] 系统进行翻译。这意味着你无需直接修改 Markdown 文件，而是修改 `po/` 目录下的 `.po` 文件。这些 `.po` 文件是基于文本的小型翻译数据库。
 
-> **Tip:** You should not edit the `.po` files by hand. Instead use a PO editor,
-> such as [Poedit](https://poedit.net/). There are also several online editors
-> available. This will ensure that the file is encoded correctly.
+> **提示：** 不要手动编辑 `.po` 文件，请使用 PO 编辑器，例如 [Poedit](https://poedit.net/)。也有多个在线编辑器可用。这样可以确保文件编码正确。
 
-> **Important:** You need to run `dprint fmt` after editing the PO file. This
-> ensures consistent formatting of the file. You need to install the Gettext
-> tools for this, see the Preparation section below.
+> **重要：** 编辑 PO 文件后需要运行 `dprint fmt`，以确保文件格式一致。你需要安装 Gettext 工具，具体见下方的准备部分。
 
-There is a `.po` file for each language. They are named after the [ISO 639]
-language codes: Danish would go into `po/da.po`, Korean would go into
-`po/ko.po`, etc. The `.po` files contain all the English text plus the
-translations. They are initialized from a `messages.pot` file (a PO template)
-which contains only the English text.
+每种语言都有一个 `.po` 文件，以 [ISO 639] 语言代码命名：丹麦语使用 `po/da.po`，韩语使用 `po/ko.po`，以此类推。`.po` 文件包含所有英文文本以及对应的翻译。它们由只包含英文文本的 `messages.pot` 模板文件初始化。
 
-We will show how to update and manipulate the `.po` and `.pot` files using the
-GNU Gettext utilities below.
+下面将展示如何使用 GNU Gettext 工具更新和处理 `.po` 与 `.pot` 文件。
 
 [Gettext]: https://www.gnu.org/software/gettext/manual/html_node/index.html
 [ISO 639]: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 
-## Preparation
+## 准备工作
 
-Please make sure you can [build the course](README.md#building). You will also
-need the `msgmerge` and `msgcat` Gettext tool installed. Please see our
-[contribution guide](CONTRIBUTING.md#formatting) for details.
+请确保你能[构建课程](README.md#building)。你还需要安装 Gettext 工具中的 `msgmerge` 和 `msgcat`。详情请见我们的[贡献指南](CONTRIBUTING.md#formatting)。
 
-## Creating and Updating Translations
+## 创建和更新翻译
 
-First, you need to know how to update the `.pot` and `.po` files.
+首先，你需要了解如何更新 `.pot` 和 `.po` 文件。
 
-You should never touch the auto-generated `book/xgettext/messages.pot` file. You
-should also never edit the `msgid` entries in a `po/xx.po` file. If you find
-mistakes, you need to update the original English text instead. The fixes to the
-English text will flow into the `.po` files the next time the translators update
-them.
+切勿修改自动生成的 `book/xgettext/messages.pot` 文件，也不要编辑 `po/xx.po` 文件中的 `msgid` 条目。如果发现错误，需要先修正原始英文文本。修正后的英文会在翻译者下次更新 `.po` 文件时流入其中。
 
-> **Tip:** See our [style guide](STYLE.md) for some things to keep in mind when
-> writing the translation.
+> **提示：** 编写翻译时请参阅我们的[风格指南](STYLE.md)。
 
-### Generating the PO Template
+### 生成 PO 模板
 
-To extract the original English text and generate a `messages.pot` file, you
-build the book. This will automatically invoke the `mdbook-xgettext` renderer:
+要提取原始英文文本并生成 `messages.pot` 文件，先构建书籍，这会自动调用 `mdbook-xgettext` 渲染器：
 
 ```shell
 mdbook build
 ```
 
-You will find the generated POT file as `book/xgettext/messages.pot`.
+生成的 POT 文件位于 `book/xgettext/messages.pot`。
 
-### Initialize a New Translation
+### 初始化新翻译
 
-To start a new translation, first generate the `book/xgettext/messages.pot`
-file. Then use `msginit` to create a `xx.po` file for the fictional `xx`
-language:
+要开始一个新翻译，先生成 `book/xgettext/messages.pot` 文件，然后使用 `msginit` 为假设的 `xx` 语言创建 `xx.po`：
 
 ```shell
 msginit -i book/xgettext/messages.pot -l xx -o po/xx.po
 ```
 
-You can also simply copy `book/xgettext/messages.pot` to `po/xx.po`. Then update
-the file header (the first entry with `msgid ""`) to the correct language.
+你也可以直接将 `book/xgettext/messages.pot` 复制到 `po/xx.po`，然后把文件头（`msgid ""` 的第一条记录）更新为正确的语言。
 
-> **Tip:** You can use the
-> [`cloud-translate`](https://github.com/mgeisler/cloud-translate) tool to
-> quickly machine-translate a new translation. Install it with
+> **提示：** 可以使用 [`cloud-translate`](https://github.com/mgeisler/cloud-translate) 工具快速机器翻译。通过以下命令安装：
 >
 > ```shell
 > cargo install cloud-translate
 > ```
 >
-> Untranslated entries will be sent through GCP Cloud Translate. Some of the
-> translations will be wrong after this, so you must inspect them by hand
-> afterwards.
+> 未翻译的条目会发送到 GCP Cloud Translate。部分翻译会有误，之后必须人工检查。
 
-Next, please update the file `.github/labeler.yml` to include the new language:
+接下来，请更新 `.github/labeler.yml` 以加入新语言：
 
 ```diff
 +"translation/xx":
-+  - changed-files:
-+      - any-glob-to-any-file: po/xx.po
+  - changed-files:
+      - any-glob-to-any-file: po/xx.po
 ```
 
-### Refreshing an Existing Translation
+### 刷新现有翻译
 
-As the English text changes, translations gradually become outdated. The
-translations contain a POT-Creation-Date header which tells you when they were
-last updated with new English messages.
+随着英文内容更新，翻译会逐渐过时。翻译中包含一个 POT-Creation-Date 头，标记上次同步英文消息的时间。
 
-To update the `po/xx.po` file with new messages, first extract the English text
-into a `book/xgettext/messages.pot` template file. Then run
+要用最新消息更新 `po/xx.po`，先提取英文文本生成 `book/xgettext/messages.pot` 模板，然后运行：
 
 ```shell
 msgmerge --update po/xx.po book/xgettext/messages.pot
 ```
 
-Notice that the POT-Creation-Date field is updated to the current time and date.
-This becomes the new baseline for the translation: new English text added
-afterwards will not show up in your translation, including completely new pages.
+注意 POT-Creation-Date 字段会更新为当前时间。这将成为翻译的新基准：之后新增的英文不会出现在你的翻译中，包括全新的页面。
 
-When running `msgmerge`, unchanged messages stay intact, deleted messages are
-marked as old, and updated messages are marked "fuzzy". A fuzzy entry is not
-used when we publish a translation! You have to go over the fuzzy entries by
-hand and verify that the translation is correct the fuzzy marker.
+运行 `msgmerge` 时，未变的条目保持不变，被删除的条目会标记为旧条目，更新的条目会标记为 “fuzzy”。标记为 fuzzy 的条目在发布时不会被使用！你必须手工检查这些条目，确认翻译无误并去掉 fuzzy 标记。
 
-> **Note:** Your PRs should either be the result of running `msgmerge` or the
-> result of new translation work on the PO file for your language. Avoid mixing
-> the two since it often creates a very large diff, which is hard or impossible
-> to review.
+> **注意：** 你的 PR 应该要么是运行 `msgmerge` 的结果，要么是对该语言 PO 文件的新翻译工作。避免混合两者，因为这样通常会产生非常大的 diff，难以审核。
 
-### Editing a Translation
+### 编辑翻译
 
-You should install a PO editor to edit the `.po` file for your language. The
-files are simple text files, but it helps to use a dedicated editor since it
-will take care of escaping things like `"` correctly.
+请安装 PO 编辑器来编辑你所用语言的 `.po` 文件。这些文件是简单的文本文件，但专用编辑器会帮你正确转义诸如 `"` 之类的字符。
 
-There are many PO editors available. [Poedit](https://poedit.net/) is a popular
-cross-platform choice, but you can also find several online editors.
+PO 编辑器有很多。[Poedit](https://poedit.net/) 是一个跨平台的流行选择，你也能找到多个在线编辑器。
 
-### Formatting a Translation
+### 格式化翻译
 
-If the file is not formatted correct, you will get an error on the PR. Make sure
-to follow the [steps](#preparation) to install [Gettext] and
-[`dprint`](https://dprint.dev/) and then run:
+如果文件格式不正确，PR 会报错。请按[准备工作](#准备工作)安装 [Gettext] 和 [`dprint`](https://dprint.dev/)，然后运行：
 
 ```shell
 dprint fmt po/xx.po
 ```
 
-This will automatically format the `.po` file for you. Commit the formatting fix
-and push to your branch. Your PR should now be error free.
+这会自动为你格式化 `.po` 文件。提交格式修复并推送分支，PR 应该就不会再有格式问题。
 
-## Using Translations
+## 使用翻译
 
-This will show you how to use the translations to generate localized HTML
-output.
+本节说明如何使用翻译生成本地化 HTML 输出。
 
-> **Note:** `mdbook` will use original untranslated entries for all entries
-> marked as "fuzzy" (visible as "Needs work" in Poedit). This is especially
-> important when using
-> [`cloud-translate`](https://github.com/mgeisler/cloud-translate) for initial
-> translation as all entries will be marked as "fuzzy".
+> **注意：** 对于所有标记为 “fuzzy”（在 Poedit 中显示为 “Needs work”）的条目，`mdbook` 会使用原始的未翻译内容。这在使用 [`cloud-translate`](https://github.com/mgeisler/cloud-translate) 初始化翻译时尤其重要，因为所有条目都会被标记为 fuzzy。
 
-### Building a Translation
+### 构建翻译
 
-Make sure you have gone through the [build setup](./README.md#building) at least
-once.
+确保至少执行过一次[构建设置](./README.md#building)。
 
-To use the `po/xx.po` file for your output, run the following command:
+要在输出中使用 `po/xx.po`，运行：
 
 ```shell
 MDBOOK_BOOK__LANGUAGE=xx mdbook build -d book/xx
 ```
 
-This will tell the `mdbook-gettext` preprocessor to translate the book using the
-`po/xx.po` file. The HTML output can be found in `book/xx/html/`.
+这会告诉 `mdbook-gettext` 预处理器使用 `po/xx.po` 翻译书籍。HTML 输出可在 `book/xx/html/` 找到。
 
-### Serving a Translation
+### 预览翻译
 
-Like normal, you can use `mdbook serve` to view your translation as you work on
-it. You use the same command as with `mdbook build` above:
+与平时一样，可以用 `mdbook serve` 边翻译边查看，命令与上面的 `mdbook build` 相同：
 
 ```shell
 MDBOOK_BOOK__LANGUAGE=xx mdbook serve -d book/xx
 ```
 
-When you update the `po/xx.po` file, the translated book will automatically
-reload.
+当你更新 `po/xx.po` 文件时，译文会自动重新加载。
 
-## Reviewing Translations
+## 审阅翻译
 
-When a new translation is started, we look for people who can help review it.
-These reviewers are often Googlers, but they don't have to be. To automatically
-get an email when new PRs are created for your language, please add yourself to
-the [CODEOWNERS] file.
+启动新翻译时，我们会寻找可以帮助审阅的同学。审阅者通常是 Googler，但不限于此。若希望在你的语言有新 PR 时自动收到邮件，请将自己添加到 [CODEOWNERS] 文件。
 
-When reviewing a translation, please keep in mind that translations are a labour
-of love. Someone spends their free time translating the course because they want
-to bring Rust to users who speak their language.
+审阅翻译时，请记住翻译是一项爱的劳动。有人花费空闲时间翻译课程，只为让更多人能用自己的语言学习 Rust。
 
-Nothing is published right away after a PR lands for a new in-progress language.
-It is therefore safe to merge the PR as long as the translation is reasonable.
-This is often better than leaving 50+ comments since this can be overwhelming
-for the contributor. Instead, please work with the contributor to improve things
-in follow-up PRs.
+新的进行中语言在 PR 合并后不会立即发布。因此，只要翻译大致合理就可以放心合并。相比留下 50+ 条评论，让贡献者在后续 PR 中改进往往更好。
 
-### GitHub Suggestions
+### GitHub 建议
 
-When reviewing a translation PR, please use the
-[GitHub suggestion feature](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/commenting-on-a-pull-request).
-This feature allows you to directly write how you think a line or paragraph
-should be phrased. Use the left-most button in the toolbar to create a
-suggestion.
+审阅翻译 PR 时，请使用
+[GitHub 提示功能](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/commenting-on-a-pull-request)。
+此功能允许你直接写出你认为某行或段落应该怎样表述。使用工具栏最左侧的按钮创建建议。
 
-The PR author can
-[apply the changes with a single click](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/incorporating-feedback-in-your-pull-request)
-afterwards, drastically reducing the number of round-trips needed in a review.
+PR 作者可以
+[一键应用修改](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/incorporating-feedback-in-your-pull-request)，
+大幅减少审阅往返。
 
-### Incomplete Translations
+### 不完整的翻译
 
-When the first 1-2 days of the course have been translated, we can publish the
-translation and link it from the [translations page]. The idea is to celebrate
-the hard work, even if it is incomplete.
+当课程前 1-2 天内容已完成翻译时，我们就可以发布译文并从[翻译页面][translations page]链接过去。这样可以庆祝辛勤付出，即便翻译尚未完工。
 
 [CODEOWNERS]: https://github.com/google/comprehensive-rust/blob/main/.github/CODEOWNERS
 
-## Publication Workflow
+## 发布流程
 
-> This section is for the developers of Comprehensive Rust, but it might give
-> you valuable background information on how the translations are published.
+> 本节面向《Comprehensive Rust》的开发者，但也能帮助你了解翻译发布流程。
 
-When a change is made to the `main` branch, the [`publish.yml`] GitHub CI
-workflow starts.
+当 `main` 分支有变更时，会触发 [`publish.yml`] GitHub CI 工作流程。
 
-The `publish` job in this workflow will:
+工作流程中的 `publish` 任务会：
 
-- Install dependencies as described in [`CONTRIBUTING`](CONTRIBUTING.md).
-
-- Build every translation of the course, including the original English, using
-  [`build.sh`]. The English HTML ends up in `book/html/`, the HTML for the `xx`
-  language ends up in `book/xx/html/`.
-
-- Publish the entire `book/html/` directory to
-  https://google.github.io/comprehensive-rust/.
+- 按 [`CONTRIBUTING`](CONTRIBUTING.md) 的描述安装依赖。
+- 使用 [`build.sh`] 构建课程的所有翻译，包括原始英文。英文 HTML 输出位于 `book/html/`，`xx` 语言的 HTML 输出位于 `book/xx/html/`。
+- 将整个 `book/html/` 目录发布到 https://google.github.io/comprehensive-rust/。
 
 [`build.sh`]: https://github.com/google/comprehensive-rust/blob/main/.github/workflows/build.sh
 
 ### `build.sh`
 
-The `build.sh` script is used both when testing code from a PR (with
-[`build.yml`]) and when publishing the finished book (with [`publish.yml`]).
+[`build.yml`] 用于测试 PR 代码，[`publish.yml`] 用于发布成品，这两个流程都会使用 `build.sh`。
 
 [`build.yml`]: https://github.com/google/comprehensive-rust/blob/main/.github/workflows/build.yml
 [`publish.yml`]: https://github.com/google/comprehensive-rust/blob/main/.github/workflows/publish.yml
 
-The job of the script is to call `mdbook build`, but with a few extra steps:
+该脚本的任务是调用 `mdbook build`，但会多做一些准备：
 
-- It will enable the PDF output using `mdbook-pandoc`. This is disabled by
-  default to make it easier for people to run `mdbook build` without having to
-  configure LaTeX.
+- 会启用 `mdbook-pandoc` 以生成 PDF 输出。默认关闭此功能，方便大家无需配置 LaTeX 也能运行 `mdbook build`。
 
-#### Restoring Translations
+#### 还原翻译
 
-When building a translation (languages other than English), `build.sh` will
-restore all Markdown files to how they looked at the time recorded in the
-POT-Creation-Date header.
+构建非英文翻译时，`build.sh` 会将所有 Markdown 文件还原到 POT-Creation-Date 记录的版本。
 
-This means that:
+这意味着：
 
-- A translation does not degrade when the English text is changed.
-- A translation will not received the latest fixes to the English text.
+- 英文文本更新时，翻译不会退化。
+- 翻译不会收到最新的英文修正。
 
-The script restores the Markdown with a simple
+脚本通过一条简单的命令完成还原：
 
 ```sh
 $ git restore --source $LAST_COMMIT src/ third_party/
 ```
 
-command, where `$LAST_COMMIT` is the commit at the time of the POT-Creation-Date
-header.
+其中 `$LAST_COMMIT` 是 POT-Creation-Date 所在的提交。
 
-A consequence of this is that we use the latest theme, CSS, JavaScript, etc for
-each translation.
+因此，每个翻译都会使用最新的主题、CSS、JavaScript 等。
 
-After `build.sh` was run, the working copy is left in this dirty state. Beware
-of this if you want to build the English version next, as you will have to clean
-up manually.
+运行完 `build.sh` 后，工作区会处于未清理状态。如果你想接着构建英文版本，需要手动清理。
 
-## Status reports
+## 状态报告
 
-Two translation status reports are automatically generated:
+会自动生成两份翻译状态报告：
 
-- [Translation status as checked in][translation-report]
-- [Translation status after syncing to the latest version of the source with msgmerge][synced-translation-report]
+- [按仓库记录的翻译状态][translation-report]
+- [使用 msgmerge 同步到最新英文后的翻译状态][synced-translation-report]
 
-You can also generate this report locally to see the effect of your local
-changes:
+你也可以在本地生成此报告，以查看本地更改的效果：
 
 ```shell
 i18n-report translation-report.html po/*.po

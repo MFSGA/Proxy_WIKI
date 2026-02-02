@@ -1,13 +1,13 @@
-# Chimera Server
+# Chimera 服务端
 
-## Mission and Capabilities
-`Chimera` serves as the high-performance ingress tier that terminates client sessions, enforces policies, and bridges traffic to target destinations. It is optimized for multi-tenant deployments where each ingress port may advertise multiple proxy protocols simultaneously. Chimera emphasizes: minimal handshake latency, fine-grained access control, horizontal scalability, and integrated observability.
+## 使命与能力
+`Chimera` 是高性能入口层，用于终止客户端会话、执行策略并将流量桥接到目标目的地。它针对多租户部署优化，每个入口端口可同时公布多种代理协议。Chimera 强调：最小握手延迟、细粒度访问控制、横向扩展能力与一体化可观测性。
 
-## Component Breakdown
-The server is organized into listener frontends, authentication middleware, routing fabric, and egress adaptors. Listener frontends accept TCP, TLS, QUIC, or WebSocket connections and delegate deciphering to protocol handlers derived from `chimera_core`. Authentication middleware layers include static tokens, mTLS, external OIDC checks, and short-lived capability tickets. The routing fabric maps authenticated sessions to upstream clusters, optionally applying geo-aware or latency-aware load balancing. Egress adaptors speak raw TCP/UDP, HTTP/2, or custom backhaul protocols. Pluggable filters allow L7 inspection, rate limiting, and protocol translation.
+## 组件拆解
+服务端由监听前端、认证中间件、路由织网与出口适配器构成。监听前端接受 TCP、TLS、QUIC 或 WebSocket 连接，并交由源自 `chimera_core` 的协议处理器解密。认证中间件包含静态令牌、mTLS、外部 OIDC 校验与短期能力票据。路由织网将认证后的会话映射到上游集群，可选用地理或延迟感知负载均衡。出口适配器支持裸 TCP/UDP、HTTP/2 或自定义回程协议。可插拔过滤器可用于 L7 检查、限流与协议转换。
 
-## Deployment and Scaling
-Chimera nodes can run bare-metal, in containers, or under orchestration (Kubernetes, Nomad). A stateless design lets operators scale horizontally; sticky sessions are handled through consistent hashing of client identifiers. Configuration is delivered via declarative manifests that describe listeners, credentials, and routing tables, with hot-reload support. The project documents blueprints for single-region clusters, active-active multi-region, and edge POP deployments, including how to terminate QUIC at the edge while backhauling over TCP.
+## 部署与扩展
+Chimera 节点可运行在裸机、容器或编排平台（Kubernetes、Nomad）上。无状态设计便于水平扩展；粘性会话通过对客户端标识的一致性哈希实现。配置通过声明式清单下发，描述监听器、凭据与路由表，并支持热重载。项目提供单区域集群、双活多区域与边缘 POP 部署的蓝图，包括在边缘终止 QUIC 并通过 TCP 回程的实践。
 
-## Security and Compliance
-Security guidance covers TLS certificate management, key rotation, mixed-protocol ports, and selective logging to honor privacy regulations. Built-in auditing records connection metadata, rule decisions, and administrative actions. Compliance appendices explain how to integrate Chimera logs with SIEM platforms, enforce retention policies, and implement regulatory controls such as lawful interception hooks when required.
+## 安全与合规
+安全指南覆盖 TLS 证书管理、密钥轮换、混合协议端口与选择性日志，以符合隐私法规。内置审计会记录连接元数据、规则决策与管理操作。合规附录说明如何将 Chimera 日志接入 SIEM 平台、执行保留策略，并在必要时实现合法拦截钩子等监管控制。

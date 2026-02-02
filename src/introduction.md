@@ -1,3 +1,3 @@
-# Introduction
+# 引言
 
-This documentation set explains the proxy ecosystem maintained in this repository, focusing on three primary projects: `chimera_client`, `Chimera`, and `chimera_server`. Each module targets a different layer of the overall stack—client experience, server-side ingress, and reusable protocol logic—yet they share a common goal: delivering reliable, high-performance connectivity under diverse network conditions. The following chapters describe how the pieces fit together, what problems each component solves, and how teams can deploy and extend them.
+本套文档解释了本仓库维护的代理生态，重点关注三大项目：`chimera_client`、`Chimera` 与 `chimera_server`。每个模块面向整个栈的不同层面——客户端体验、服务端入口以及可复用的协议逻辑——但它们共享同一个目标：在复杂多变的网络环境下提供可靠且高性能的连接能力。接下来的章节将说明各部分如何协作、每个组件解决的问题，以及团队如何部署和扩展它们。

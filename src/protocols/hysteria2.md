@@ -1,30 +1,30 @@
-## References
+## 参考
 
 - https://v2.hysteria.network/zh/docs/developers/Protocol/
 
-# Hysteria 2 Protocol Specification
+# Hysteria 2 协议规范
 
-Hysteria is a TCP & UDP proxy based on QUIC, designed for speed, security and censorship resistance. This document describes the protocol used by Hysteria starting with version 2.0.0, sometimes internally referred to as the "v4" protocol. From here on, we will call it "the protocol" or "the Hysteria protocol".
+Hysteria 是基于 QUIC 的 TCP 与 UDP 代理，专为速度、安全性与抗审查设计。本文档描述 Hysteria 2.0.0 起使用的协议，有时在内部也被称为“v4”协议。下文将其称为“协议”或“Hysteria 协议”。
 
-## Requirements Language
+## 规范性术语
 
-The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119: https://tools.ietf.org/html/rfc2119
+本文档中的关键词 "MUST"、"MUST NOT"、"REQUIRED"、"SHALL"、"SHALL NOT"、"SHOULD"、"SHOULD NOT"、"RECOMMENDED"、"MAY" 与 "OPTIONAL" 的含义遵循 RFC 2119： https://tools.ietf.org/html/rfc2119
 
-## Underlying Protocol & Wire Format
+## 底层协议与线格式
 
-The Hysteria protocol MUST be implemented on top of the standard QUIC transport protocol (RFC 9000) with the Unreliable Datagram Extension (RFC 9221).
+Hysteria 协议必须建立在标准 QUIC 传输协议（RFC 9000）及其不可靠数据报扩展（RFC 9221）之上。
 
-All multibyte numbers use Big Endian format.
+所有多字节数字使用大端序。
 
-All variable-length integers ("varints") are encoded/decoded as defined in QUIC (RFC 9000).
+所有可变长度整数（"varints"）的编码/解码遵循 QUIC（RFC 9000）的定义。
 
-## Authentication & HTTP/3 masquerading
+## 认证与 HTTP/3 伪装
 
-One of the key features of the Hysteria protocol is that to a third party without proper authentication credentials (whether it's a middleman or an active prober), a Hysteria proxy server behaves just like a standard HTTP/3 web server. Additionally, the encrypted traffic between the client and the server appears indistinguishable from normal HTTP/3 traffic.
+Hysteria 协议的关键特性之一是：对于没有正确认证凭据的第三方（无论是中间人还是主动探测者），Hysteria 代理服务器看起来与标准 HTTP/3 Web 服务器无异。此外，客户端与服务端之间的加密流量也与正常 HTTP/3 流量不可区分。
 
-Therefore, a Hysteria server MUST implement an HTTP/3 server (RFC 9114) and handle HTTP requests as any standard web server would. To prevent active probers from detecting common response patterns in Hysteria servers, implementations SHOULD advise users to either host actual content or set it up as a reverse proxy for other sites.
+因此，Hysteria 服务器必须实现 HTTP/3 服务器（RFC 9114），并像标准 Web 服务器一样处理 HTTP 请求。为避免主动探测识别 Hysteria 服务器常见响应模式，实现应建议用户托管真实内容或设置为其他站点的反向代理。
 
-An actual Hysteria client, upon connection, MUST send the following HTTP/3 request to the server:
+真实的 Hysteria 客户端在连接时必须向服务器发送如下 HTTP/3 请求：
 
 ```text
 :method: POST
@@ -35,13 +35,13 @@ Hysteria-CC-RX: [uint]
 Hysteria-Padding: [string]
 ```
 
-`Hysteria-Auth`: Authentication credentials.
+`Hysteria-Auth`：认证凭据。
 
-`Hysteria-CC-RX`: Client's maximum receive rate in bytes per second. A value of 0 indicates unknown.
+`Hysteria-CC-RX`：客户端最大接收速率（字节/秒）。值为 0 表示未知。
 
-`Hysteria-Padding`: A random padding string of variable length.
+`Hysteria-Padding`：长度可变的随机填充字符串。
 
-The Hysteria server MUST identify this special request, and, instead of attempting to serve content or forwarding it to an upstream site, it MUST authenticate the client using the provided information. If authentication is successful, the server MUST send the following response (HTTP status code 233):
+Hysteria 服务器必须识别此特殊请求，并且不应尝试提供内容或转发到上游站点，而必须使用所提供的信息进行认证。认证成功时，服务器必须返回如下响应（HTTP 状态码 233）：
 
 ```text
 :status: 233 HyOK
@@ -50,27 +50,27 @@ Hysteria-CC-RX: [uint/"auto"]
 Hysteria-Padding: [string]
 ```
 
-`Hysteria-UDP`: Whether the server supports UDP relay.
+`Hysteria-UDP`：服务端是否支持 UDP 转发。
 
-`Hysteria-CC-RX`: Server's maximum receive rate in bytes per second. A value of 0 indicates unlimited; "auto" indicates the server refuses to provide a value and ask the client to use congestion control to determine the rate on its own.
+`Hysteria-CC-RX`：服务端最大接收速率（字节/秒）。值为 0 表示无限制；"auto" 表示服务端拒绝提供值，要求客户端使用拥塞控制自行测定速率。
 
-`Hysteria-Padding`: A random padding string of variable length.
+`Hysteria-Padding`：长度可变的随机填充字符串。
 
-See the Congestion Control section for more information on how to use the `Hysteria-CC-RX` values.
+有关如何使用 `Hysteria-CC-RX` 的更多信息，请参阅拥塞控制章节。
 
-`Hysteria-Padding` is optional and is only intended to obfuscate the request/response pattern. It SHOULD be ignored by both sides.
+`Hysteria-Padding` 为可选项，仅用于混淆请求/响应模式。双方都应忽略该字段。
 
-If authentication fails, the server MUST either act like a standard web server that does not understand the request, or in the case of being a reverse proxy, forward the request to the upstream site and return the response to the client.
+若认证失败，服务端必须像不理解该请求的标准 Web 服务器一样响应，或者在作为反向代理时将请求转发至上游并返回响应。
 
-The client MUST check the status code to determine if the authentication was successful. If the status code is anything other than 233, the client MUST consider authentication to have failed and disconnect from the server.
+客户端必须检查状态码判断认证是否成功。若状态码不是 233，客户端必须视为认证失败并断开连接。
 
-After (and only after) a client passes authentication, the server MUST consider this QUIC connection to be a Hysteria proxy connection. It MUST then start processing proxy requests from the client as described in the next section.
+只有在客户端通过认证之后，服务端才应将该 QUIC 连接视为 Hysteria 代理连接，并开始按下一节描述处理代理请求。
 
-## Proxy Requests
+## 代理请求
 
 ### TCP
 
-For each TCP connection, the client MUST create a new QUIC bidirectional stream and send the following TCPRequest message:
+每个 TCP 连接，客户端必须创建新的 QUIC 双向流，并发送如下 TCPRequest 消息：
 
 ```text
 [varint] 0x401 (TCPRequest ID)
@@ -80,7 +80,7 @@ For each TCP connection, the client MUST create a new QUIC bidirectional stream 
 [bytes] Random padding
 ```
 
-The server MUST respond with a TCPResponse message:
+服务器必须返回 TCPResponse 消息：
 
 ```text
 [uint8] Status (0x00 = OK, 0x01 = Error)
@@ -90,11 +90,11 @@ The server MUST respond with a TCPResponse message:
 [bytes] Random padding
 ```
 
-If the status is OK, the server MUST then begin forwarding data between the client and the specified TCP address until either side closes the connection. If the status is Error, the server MUST close the QUIC stream.
+若状态为 OK，服务端必须开始在客户端与指定 TCP 目标之间转发数据，直到任一端关闭连接。若状态为 Error，服务端必须关闭 QUIC 流。
 
 ### UDP
 
-UDP packets MUST be encapsulated in the following UDPMessage format and sent over QUIC's unreliable datagram (for both client-to-server and server-to-client):
+UDP 数据包必须封装为以下 UDPMessage 格式，并通过 QUIC 不可靠数据报通道发送（客户端到服务端及服务端到客户端）：
 
 ```text
 [uint32] Session ID
@@ -106,53 +106,52 @@ UDP packets MUST be encapsulated in the following UDPMessage format and sent ove
 [bytes] Payload
 ```
 
-The client MUST use a unique Session ID for each UDP session. The server SHOULD assign a unique UDP port to each Session ID, unless it has another mechanism to differentiate packets from different sessions (e.g., symmetric NAT, varying outbound IP addresses, etc.).
+客户端必须为每个 UDP 会话使用唯一 Session ID。服务端应为每个 Session ID 分配唯一 UDP 端口，除非具备其他机制区分不同会话的数据包（例如对称 NAT、不同出口 IP 等）。
 
-The protocol does not provide an explicit way to close a UDP session. While a client can retain and reuse a Session ID indefinitely, the server SHOULD release and reassign the port associated with the Session ID after a period of inactivity or some other criteria. If the client sends a UDP packet to a Session ID that is no longer recognized by the server, the server MUST treat it as a new session and assign a new port.
+协议没有显式关闭 UDP 会话的方法。客户端可以无限期保留并复用 Session ID，但服务端应在一段时间无活动后释放并重新分配与该 Session ID 关联的端口，或采用其他标准。当客户端发送到服务端已不认识的 Session ID 时，服务端必须将其视为新会话并分配新端口。
 
-If a server does not support UDP relay, it SHOULD silently discard all UDP messages received from the client.
+若服务端不支持 UDP 转发，应静默丢弃客户端发来的所有 UDP 消息。
 
-#### Fragmentation
+#### 分片
 
-Due to the limit imposed by QUIC's unreliable datagram channel, any UDP packet that exceeds QUIC's maximum datagram size MUST either be fragmented or discarded.
+由于 QUIC 不可靠数据报通道的大小限制，任何超过 QUIC 最大数据报大小的 UDP 包必须分片或丢弃。
 
-For fragmented packets, each fragment MUST carry the same unique Packet ID. The Fragment ID, starting from 0, indicates the index out of the total Fragment Count. Both the server and client MUST wait for all fragments of a fragmented packet to arrive before processing them. If one or more fragments of a packet are lost, the entire packet MUST be discarded.
+对于分片包，每个分片必须携带相同的 Packet ID。Fragment ID 从 0 开始，表示当前分片在总分片数中的索引。服务端与客户端都必须等待该包的所有分片到达后再处理；若有分片丢失，则整个包必须被丢弃。
 
-For packets that are not fragmented, the Fragment Count MUST be set to 1. In this case, the values of Packet ID and Fragment ID are irrelevant.
+对于未分片的包，Fragment count 必须为 1。在这种情况下，Packet ID 与 Fragment ID 的值无关紧要。
 
-## Congestion Control
+## 拥塞控制
 
-A unique feature of Hysteria is the ability to set the tx/rx (upload/download) rate on the client side. During authentication, the client sends its rx rate to the server via the `Hysteria-CC-RX` header. The server can use this to determine its transmission rate to the client, and vice versa by returning its rx rate to the client through the same header.
+Hysteria 的一项独特功能是允许客户端设置 tx/rx（上行/下行）速率。在认证阶段，客户端通过 `Hysteria-CC-RX` 头部向服务端发送其 rx 速率。服务端可据此决定向客户端的发送速率，客户端也可以通过服务端返回的同名头部获知对方的 rx 速率。
 
-Three special cases are:
+三种特殊情况：
 
-- If the client sends 0, it doesn't know its own rx rate. The server MUST use a congestion control algorithm (e.g., BBR, Cubic) to adjust its transmission rate.
-- If the server responds with 0, it has no bandwidth limit. The client MAY transmit at any rate it wants.
-- If the server responds with "auto", it chooses not to specify a rate. The client MUST use a congestion control algorithm to adjust its transmission rate.
+- 若客户端发送 0，表示不知道自身 rx 速率，服务端必须使用拥塞控制算法（例如 BBR、Cubic）调整发送速率。
+- 若服务端返回 0，表示没有带宽限制，客户端可以任意速率发送。
+- 若服务端返回 "auto"，表示不指定速率，客户端必须使用拥塞控制算法调整发送速率。
 
-## "Salamander" Obfuscation
+## “Salamander” 混淆
 
-The Hysteria protocol supports an optional obfuscation layer codenamed "Salamander".
+Hysteria 协议支持可选混淆层，代号 “Salamander”。
 
-"Salamander" encapsulates all QUIC packets in the following format:
+“Salamander” 会将所有 QUIC 数据包封装为如下格式：
 
 ```text
 [8 bytes] Salt
 [bytes] Payload
 ```
 
-For each QUIC packet, the obfuscator MUST calculate the BLAKE2b-256 hash of a randomly generated 8-byte salt appended to a user-provided pre-shared key.
+对于每个 QUIC 数据包，混淆器必须计算随机生成的 8 字节 salt 与用户提供的预共享密钥拼接后的 BLAKE2b-256 哈希：
 
 ```text
 hash = BLAKE2b-256(key + salt)
 ```
 
-The hash is then used to obfuscate the payload using the following algorithm:
+然后使用如下算法对 payload 进行混淆：
 
 ```text
 for i in range(0, len(payload)):
     payload[i] ^= hash[i % 32]
 ```
 
-The deobfuscator MUST use the same algorithms to calculate the salted hash and deobfuscate the payload. Any invalid packet MUST be discarded.
-
+解混淆器必须使用相同算法计算带 salt 的哈希并还原 payload。任何无效数据包必须被丢弃。

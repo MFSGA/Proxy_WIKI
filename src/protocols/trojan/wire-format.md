@@ -1,12 +1,12 @@
-# Trojan Wire Format
+# Trojan 线格式
 
-### TLS Handshake
-- The client performs a normal TLS handshake first.
-- If the handshake fails, the server closes the connection like a regular HTTPS server.
-- Some implementations also return an nginx-like response to plain HTTP probes.
+### TLS 握手
+- 客户端先执行标准 TLS 握手。
+- 若握手失败，服务端像常规 HTTPS 服务一样关闭连接。
+- 一些实现也会对纯 HTTP 探测返回类似 nginx 的响应。
 
-### Initial Request
-After TLS is established, the first application data packet is:
+### 初始请求
+TLS 建立后，第一个应用数据包格式为：
 
 ```text
 +-----------------------+---------+----------------+---------+----------+
@@ -17,7 +17,7 @@ After TLS is established, the first application data packet is:
 ```
 
 ### Trojan Request
-Trojan Request uses a SOCKS5-like format:
+Trojan Request 使用 SOCKS5 类似的格式：
 
 ```text
 +-----+------+----------+----------+
@@ -27,13 +27,13 @@ Trojan Request uses a SOCKS5-like format:
 +-----+------+----------+----------+
 ```
 
-- CMD values: 0x01 CONNECT, 0x03 UDP ASSOCIATE.
-- ATYP values: 0x01 IPv4, 0x03 DOMAINNAME, 0x04 IPv6.
-- DST.ADDR is the destination address, DST.PORT is network byte order.
-- SOCKS5 field details: https://tools.ietf.org/html/rfc1928
+- CMD 取值：0x01 CONNECT，0x03 UDP ASSOCIATE。
+- ATYP 取值：0x01 IPv4，0x03 DOMAINNAME，0x04 IPv6。
+- DST.ADDR 为目标地址，DST.PORT 为网络字节序。
+- SOCKS5 字段详情：https://tools.ietf.org/html/rfc1928
 
-### UDP Associate Framing
-When CMD is UDP ASSOCIATE, each UDP datagram is framed in the TLS stream as:
+### UDP Associate 封装
+当 CMD 为 UDP ASSOCIATE 时，每个 UDP 数据报会在 TLS 流中封装为：
 
 ```text
 +------+----------+----------+--------+---------+----------+
@@ -43,9 +43,9 @@ When CMD is UDP ASSOCIATE, each UDP datagram is framed in the TLS stream as:
 +------+----------+----------+--------+---------+----------+
 ```
 
-- Length is the payload size in network byte order.
-- Payload is the raw UDP datagram.
+- Length 为 payload 字节数（网络字节序）。
+- Payload 为原始 UDP 数据报。
 
-### Notes
-- The first TLS record can include payload immediately after the request, reducing packet count and length patterns.
-- Clients often expose a local SOCKS5 proxy and translate local SOCKS5 requests into Trojan requests.
+### 备注
+- 第一个 TLS 记录可在请求后立即携带 payload，减少包数量与长度特征。
+- 客户端通常提供本地 SOCKS5 代理，并将本地请求转换为 Trojan 请求。
