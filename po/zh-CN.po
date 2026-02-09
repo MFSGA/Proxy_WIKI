@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Proxy Wiki\n"
-"POT-Creation-Date: 2026-01-17T21:24:52+08:00\n"
+"POT-Creation-Date: 2026-01-18T21:17:58+08:00\n"
 "PO-Revision-Date: 2025-11-08 01:15+0800\n"
 "Last-Translator: chimera_rust@proton.me\n"
 "Language-Team: Language zh-CN\n"
@@ -17,7 +17,7 @@ msgstr "目录"
 
 #: src/SUMMARY.md src/preface.md
 msgid "Preface"
-msgstr "项目前言"
+msgstr "前言"
 
 #: src/SUMMARY.md src/introduction.md
 msgid "Introduction"
@@ -76,14 +76,18 @@ msgid ""
 "The landscape of proxy applications has become crowded and fragmented, so—"
 "out of personal interest—I decided to consolidate the ones I use into a "
 "single stack."
-msgstr "代理应用的版图已变得拥挤且碎片化，因此——出于个人兴趣——我决定将我使用的那些整合成一个单一的栈。"
+msgstr ""
+"代理应用的版图已变得拥挤且碎片化，因此——出于个人兴趣——我决定将我使用的那些整"
+"合成一个单一的百科全书式的应用。"
 
 #: src/preface.md
 msgid ""
-"`chimera_Client` takes inspiration from the open-source [clash-rs](https://"
+"`Chimera_Client` takes inspiration from the open-source [clash-rs](https://"
 "github.com/Watfaq/clash-rs) project, with the long-term goal of matching "
 "[Mihomo](https://github.com/MetaCubeX/mihomo)'s feature set."
-msgstr "`chimera_Client` 借鉴了开源 [clash-rs](https://github.com/Watfaq/clash-rs) 项目，长期目标是对齐 [Mihomo](https://github.com/MetaCubeX/mihomo) 的功能集。"
+msgstr ""
+"`Chimera_Client` 借鉴了开源 [clash-rs](https://github.com/Watfaq/clash-rs) 项"
+"目，长期目标是对齐 [Mihomo](https://github.com/MetaCubeX/mihomo) 的功能集。"
 
 #: src/preface.md
 msgid ""
@@ -91,14 +95,19 @@ msgid ""
 "nyanpasu) project, but the key difference is that my top priority is first-"
 "class support for the `chimera_client` engine itself, which can largely be "
 "considered the `clash-rs` core."
-msgstr "`Chimera` 参考了 [clash-nyanpasu](https://github.com/libnyanpasu/clash-nyanpasu) 项目，但关键区别在于我的首要目标是对 `chimera_client` 引擎本身提供一流支持，它在很大程度上可视为 `clash-rs` 的核心。"
+msgstr ""
+"`Chimera` 参考了 [clash-nyanpasu](https://github.com/libnyanpasu/clash-"
+"nyanpasu) 项目，但关键区别在于我的首要目标是对 `chimera_client` 引擎本身提供"
+"一流支持，它在很大程度上可视为 `clash-rs` 的核心。"
 
 #: src/preface.md
 msgid ""
 "`Chimera_Server` project can be viewed as a Rust implementation of [xray-"
 "core](https://github.com/XTLS/Xray-core), with compatibility with the "
 "original `xray-core` remaining the end goal."
-msgstr "`Chimera_Server` 项目可视为 [xray-core](https://github.com/XTLS/Xray-core) 的 Rust 实现，并以保持与原版 `xray-core` 兼容为最终目标。"
+msgstr ""
+"`Chimera_Server` 项目可视为 [xray-core](https://github.com/XTLS/Xray-core) "
+"的 Rust 实现，并以保持与原版 `xray-core` 兼容为最终目标。"
 
 #: src/preface.md
 msgid "Project Links"
@@ -160,7 +169,7 @@ msgid ""
 "telemetry emitted at each layer shares identifiers so that request flows "
 "remain traceable end to end."
 msgstr ""
-"由于整个栈以 `chimera_core` 为中心，对加密套件、多路复用策略或配置架构的升级"
+"由于整个栈以 `chimera_core` 为中心，对加密套件、多路复用策略或配置模式的升级"
 "会立即在两端生效，最大限度减少版本偏差。可观测性也被统一：各层发出的遥测共享"
 "标识符，使请求链路能够端到端追踪。"
 
@@ -204,8 +213,8 @@ msgstr ""
 "Clash YAML 解析为强类型的 Rust 结构，并用 `chimera_core` 的 schema 校验，随后"
 "支持热更新。控制器层提供本地 HTTP API 和可选 TUI，使设备端可以检查规则。传输"
 "引擎封装每种受支持的协议（如 Shadowsocks、VMess、Trojan、Reality/QUIC），并通"
-"过`chimera_core` 共享加密套件与握手逻辑。策略运行时根据用户规则构建决策树，执"
-"行DNS 策略，将匹配流量交给相应的传输引擎。"
+"过 `chimera_core` 共享加密套件与握手逻辑。策略运行时根据用户规则构建决策树，"
+"执行 DNS 策略，将匹配流量交给相应的传输引擎。"
 
 #: src/chimera_client.md
 msgid "Protocol Coverage and Features"
@@ -260,7 +269,8 @@ msgid ""
 msgstr ""
 "客户端为主流桌面平台提供二进制，并提供容器镜像用于服务器端路由或 CI 测试。"
 "Linux 上有轻量级系统服务封装守护进程，负责自动重启与密钥轮换。移动端通过绑定"
-"向Flutter 与 React Native 外壳暴露控制器 API。配置同步依赖 GitOps 友好的清单"
+"向 Flutter 和 React Native 壳应用暴露控制器 API。配置同步依赖 GitOps 友好的清"
+"单"
 "与可选的远程配置 URL，使大规模部署能够按计划拉取签名更新。"
 
 #: src/chimera_client.md
@@ -377,7 +387,7 @@ msgid ""
 "fixes consistent across binaries."
 msgstr ""
 "`chimera_server` 是共享的 Rust crate，为客户端和服务端项目提供协议原语、配置"
-"架构、密码套件以及通用工具。通过集中这些能力，生态系统避免重复逻辑，确保协议"
+"模式、密码套件以及通用工具。通过集中这些能力，生态系统避免重复逻辑，确保协议"
 "合规，并让安全修复在各二进制中保持一致。"
 
 #: src/chimera_server.md
@@ -398,16 +408,16 @@ msgid ""
 "Crypto and handshake utilities: AEAD ciphers, key derivation, certificate "
 "pinning helpers, TLS fingerprint templates, and QUIC transport parameters."
 msgstr ""
-"加密与握手工具：AEAD 密码、密钥派生、证书固定辅助、TLS 指纹模板以及 QUIC 传输"
-"参数。"
+"加密与握手工具：AEAD 加密算法、密钥派生、证书固定辅助、TLS 指纹模板以及 QUIC "
+"传输参数。"
 
 #: src/chimera_server.md
 msgid ""
 "Transport abstractions: traits for stream/session lifecycles, multiplexing "
 "interfaces, buffer management, and async runtime adapters."
 msgstr ""
-"传输抽象：流/会话生命周期的 trait、多路复用接口、缓冲区管理以及异步运行时适配"
-"器。"
+"传输抽象：用于流/会话生命周期的 trait 接口、多路复用接口、缓冲区管理以及异步"
+"运行时适配器。"
 
 #: src/chimera_server.md
 msgid ""
@@ -418,7 +428,7 @@ msgstr ""
 
 #: src/chimera_server.md
 msgid "API Surface and Extensibility"
-msgstr "API 面与可扩展性"
+msgstr "API 接口与可扩展性"
 
 #: src/chimera_server.md
 msgid ""
@@ -481,7 +491,7 @@ msgstr "可选用户名/密码"
 
 #: src/protocol.md
 msgid "Works with almost any TCP app, UDP associate mode"
-msgstr "几乎适配任何 TCP 应用，支持 UDP ASSOCIATE 模式"
+msgstr "几乎兼容任何 TCP 应用，支持 UDP ASSOCIATE 模式"
 
 #: src/protocol.md
 msgid "Clear-text by default, needs TLS/obfs elsewhere"
@@ -610,6 +620,51 @@ msgstr ""
 msgid "Official RFC"
 msgstr "官方 RFC"
 
+#: src/protocols/socks5.md
+msgid ""
+"The SOCKS version 5 protocol is specified primarily in **[RFC 1928](https://"
+"www.rfc-editor.org/rfc/rfc1928)**."
+msgstr ""
+"SOCKS 第 5 版协议主要由 **[RFC 1928](https://www.rfc-editor.org/rfc/"
+"rfc1928)** 规定。"
+
+#: src/protocols/socks5.md
+msgid "**Key related RFCs:**"
+msgstr "**关键 RFC：**"
+
+#: src/protocols/socks5.md
+msgid ""
+"**[RFC 1928 — SOCKS Protocol Version 5](https://www.rfc-editor.org/rfc/"
+"rfc1928)** (core protocol, addressing, UDP ASSOCIATE, authentication "
+"negotiation)"
+msgstr ""
+"**[RFC 1928 — SOCKS Protocol Version 5](https://www.rfc-editor.org/rfc/"
+"rfc1928)**（核心协议、寻址、UDP ASSOCIATE、认证协商）"
+
+#: src/protocols/socks5.md
+msgid ""
+"**[RFC 1929 — Username/Password Authentication for SOCKS V5](https://www.rfc-"
+"editor.org/rfc/rfc1929)** (optional authentication method)"
+msgstr ""
+"**[RFC 1929 — Username/Password Authentication for SOCKS V5](https://www.rfc-"
+"editor.org/rfc/rfc1929)**（可选的用户名/密码认证方法）"
+
+#: src/protocols/socks5.md
+msgid ""
+"**[RFC 1961 — GSS-API Authentication Method for SOCKS V5](https://www.rfc-"
+"editor.org/rfc/rfc1961)** (optional authentication)"
+msgstr ""
+"**[RFC 1961 — GSS-API Authentication Method for SOCKS V5](https://www.rfc-"
+"editor.org/rfc/rfc1961)**（可选认证）"
+
+#: src/protocols/socks5.md
+msgid ""
+"**[RFC 3089 — SOCKS-based IPv6/IPv4 Gateway](https://www.rfc-editor.org/rfc/"
+"rfc3089)** (interoperability for IPv6 scenarios)"
+msgstr ""
+"**[RFC 3089 — SOCKS-based IPv6/IPv4 Gateway](https://www.rfc-editor.org/rfc/"
+"rfc3089)**（IPv6 场景下的互操作性）"
+
 #: src/protocols/socks5.md src/protocols/http.md src/protocols/trojan.md
 #: src/protocols/vless.md
 msgid "Highlights"
@@ -693,7 +748,36 @@ msgstr "UDP ASSOCIATE 要求客户端持续监听本地端口，部分防火墙�
 
 #: src/protocols/socks5.md
 msgid "Authentication is static unless wrapped in a management layer."
-msgstr "认证通常是静态的，除非外层包裹管理层。"
+msgstr "认证通常是静态的，除非再加一层管理机制。"
+
+#: src/protocols/socks5.md src/protocols/trojan.md
+#: src/protocols/trojan/traffic-handling.md src/protocols/hysteria2.md
+msgid "References"
+msgstr "参考资料"
+
+#: src/protocols/socks5.md
+msgid "https://www.rfc-editor.org/rfc/rfc1928"
+msgstr "https://www.rfc-editor.org/rfc/rfc1928"
+
+#: src/protocols/socks5.md
+msgid "https://www.rfc-editor.org/rfc/rfc1929"
+msgstr "https://www.rfc-editor.org/rfc/rfc1929"
+
+#: src/protocols/socks5.md
+msgid "https://www.rfc-editor.org/rfc/rfc1961"
+msgstr "https://www.rfc-editor.org/rfc/rfc1961"
+
+#: src/protocols/socks5.md
+msgid "https://www.rfc-editor.org/rfc/rfc3089"
+msgstr "https://www.rfc-editor.org/rfc/rfc3089"
+
+#: src/protocols/socks5.md
+msgid "Appendices"
+msgstr "附录"
+
+#: src/protocols/socks5.md
+msgid "RFC 1928 (Full Text)"
+msgstr "RFC 1928（全文）"
 
 #: src/protocols/http.md
 msgid ""
@@ -797,7 +881,9 @@ msgstr "客户端与服务器完成标准 TLS 握手（SNI/ALPN 按配置）。"
 msgid ""
 "Client sends `hex(SHA224(password))` + CRLF + Trojan Request + CRLF (+ "
 "optional payload)."
-msgstr "客户端发送 `hex(SHA224(password))` + CRLF + Trojan Request + CRLF（+ 可选负载）。"
+msgstr ""
+"客户端发送 `hex(SHA224(password))` + CRLF + Trojan Request + CRLF（+ 可选负"
+"载）。"
 
 #: src/protocols/trojan.md
 msgid ""
@@ -857,11 +943,6 @@ msgid ""
 "Fallback behavior must be configured to keep probes indistinguishable from "
 "real HTTPS."
 msgstr "必须配置回落行为，使探测与真实 HTTPS 无法区分。"
-
-#: src/protocols/trojan.md src/protocols/trojan/traffic-handling.md
-#: src/protocols/hysteria2.md
-msgid "References"
-msgstr "参考资料"
 
 #: src/protocols/trojan.md
 msgid "https://trojan-gfw.github.io/trojan/protocol"
@@ -953,7 +1034,8 @@ msgstr "首个 TLS 记录可在请求后立即携带负载，从而减少数据�
 msgid ""
 "Clients often expose a local SOCKS5 proxy and translate local SOCKS5 "
 "requests into Trojan requests."
-msgstr "客户端通常会提供本地 SOCKS5 代理，并将本地 SOCKS5 请求转换为 Trojan 请求。"
+msgstr ""
+"客户端通常会提供本地 SOCKS5 代理，并将本地 SOCKS5 请求转换为 Trojan 请求。"
 
 #: src/protocols/trojan/traffic-handling.md
 msgid "Trojan Traffic Handling"
@@ -977,7 +1059,9 @@ msgid ""
 "If the packet is not a valid Trojan request (wrong structure or password), "
 "the server treats it as \"other protocols\" and forwards the decrypted TLS "
 "stream to a preset endpoint (default `127.0.0.1:80`)."
-msgstr "如果该数据包不是有效的 Trojan 请求（结构或密码错误），服务器会将其视为\"其他协议\"，并把解密后的 TLS 流转发到预设端点（默认 `127.0.0.1:80`）。"
+msgstr ""
+"如果该数据包不是有效的 Trojan 请求（结构或密码错误），服务器会将其视为“其他"
+"协议”，并把解密后的 TLS 流转发到预设端点（默认 `127.0.0.1:80`）。"
 
 #: src/protocols/trojan/traffic-handling.md
 msgid ""
@@ -1015,7 +1099,9 @@ msgstr "使用有效证书时，流量受 TLS 保护，看起来像普通 HTTPS�
 msgid ""
 "For HTTP destinations, there is only one RTT after the TLS handshake; non-"
 "HTTP traffic often looks like HTTPS keepalive or WebSocket."
-msgstr "对于 HTTP 目的地，TLS 握手后只有一个 RTT；非 HTTP 流量常表现为 HTTPS 保活或 WebSocket。"
+msgstr ""
+"对于 HTTP 目的地，TLS 握手后只有一个 RTT；非 HTTP 流量常表现为 HTTPS 保活或"
+"WebSocket。"
 
 #: src/protocols/trojan/traffic-handling.md
 msgid ""
@@ -1042,7 +1128,10 @@ msgid ""
 "Hysteria starting with version 2.0.0, sometimes internally referred to as "
 "the \"v4\" protocol. From here on, we will call it \"the protocol\" or \"the "
 "Hysteria protocol\"."
-msgstr "Hysteria 是基于 QUIC 的 TCP 与 UDP 代理，旨在提供速度、安全性与抗审查能力。本文档描述 Hysteria 自 2.0.0 版本起使用的协议，内部有时称为\"v4\"协议。下文将其称为\"该协议\"或\"Hysteria 协议\"。"
+msgstr ""
+"Hysteria 是基于 QUIC 的 TCP 与 UDP 代理，旨在提供速度、安全性与抗审查能力。本"
+"文档描述 Hysteria 自 2.0.0 版本起使用的协议，内部有时称为\"v4\"协议。下文将其"
+"称为\"该协议\"或\"Hysteria 协议\"。"
 
 #: src/protocols/hysteria2.md
 msgid "Requirements Language"
@@ -1054,7 +1143,11 @@ msgid ""
 "\"SHOULD\", \"SHOULD NOT\", \"RECOMMENDED\", \"MAY\", and \"OPTIONAL\" in "
 "this document are to be interpreted as described in RFC 2119: https://tools."
 "ietf.org/html/rfc2119"
-msgstr "本文档中的关键词\"MUST\"、\"MUST NOT\"、\"REQUIRED\"、\"SHALL\"、\"SHALL NOT\"、\"SHOULD\"、\"SHOULD NOT\"、\"RECOMMENDED\"、\"MAY\"和\"OPTIONAL\"的含义应按 RFC 2119 解释：https://tools.ietf.org/html/rfc2119"
+msgstr ""
+"本文档中的关键词\"MUST\"、\"MUST NOT\"、\"REQUIRED\"、\"SHALL\"、\"SHALL "
+"NOT\"、\"SHOULD\"、\"SHOULD NOT\"、\"RECOMMENDED\"、\"MAY\" 和 \"OPTIONAL\"的"
+"含"
+"义应按 RFC 2119 解释：https://tools.ietf.org/html/rfc2119"
 
 #: src/protocols/hysteria2.md
 msgid "Underlying Protocol & Wire Format"
@@ -1065,17 +1158,19 @@ msgid ""
 "The Hysteria protocol MUST be implemented on top of the standard QUIC "
 "transport protocol (RFC 9000) with the Unreliable Datagram Extension (RFC "
 "9221)."
-msgstr "Hysteria 协议 MUST 构建在标准 QUIC 传输协议（RFC 9000）之上，并使用不可靠数据报扩展（RFC 9221）。"
+msgstr ""
+"Hysteria 协议 MUST 构建在标准 QUIC 传输协议（RFC 9000）之上，并使用不可靠数据"
+"报扩展（RFC 9221）。"
 
 #: src/protocols/hysteria2.md
 msgid "All multibyte numbers use Big Endian format."
-msgstr "所有多字节数字使用大端序格式。"
+msgstr "所有多字节数字均使用大端字节序。"
 
 #: src/protocols/hysteria2.md
 msgid ""
 "All variable-length integers (\"varints\") are encoded/decoded as defined in "
 "QUIC (RFC 9000)."
-msgstr "所有可变长度整数（\"varints\"）按 QUIC（RFC 9000）定义进行编码/解码。"
+msgstr "所有变长整数（\"varints\"）按 QUIC（RFC 9000）定义进行编码/解码。"
 
 #: src/protocols/hysteria2.md
 msgid "Authentication & HTTP/3 masquerading"
@@ -1088,7 +1183,10 @@ msgid ""
 "active prober), a Hysteria proxy server behaves just like a standard HTTP/3 "
 "web server. Additionally, the encrypted traffic between the client and the "
 "server appears indistinguishable from normal HTTP/3 traffic."
-msgstr "Hysteria 协议的一个关键特性是：对于没有正确认证凭据的第三方（无论是中间人还是主动探测者），Hysteria 代理服务器的行为就像标准的 HTTP/3 Web 服务器。此外，客户端与服务器之间的加密流量看起来与正常 HTTP/3 流量无法区分。"
+msgstr ""
+"Hysteria 协议的一个关键特性是：对于没有正确认证凭据的第三方（无论是中间人还是"
+"主动探测者），Hysteria 代理服务器的行为就像标准的 HTTP/3 Web 服务器。此外，客"
+"户端与服务器之间的加密流量看起来与正常 HTTP/3 流量无法区分。"
 
 #: src/protocols/hysteria2.md
 msgid ""
@@ -1097,7 +1195,11 @@ msgid ""
 "probers from detecting common response patterns in Hysteria servers, "
 "implementations SHOULD advise users to either host actual content or set it "
 "up as a reverse proxy for other sites."
-msgstr "因此，Hysteria 服务器 MUST 实现一个 HTTP/3 服务器（RFC 9114），并像标准 Web 服务器一样处理 HTTP 请求。为防止主动探测者发现 Hysteria 服务器的常见响应模式，实现 SHOULD 建议用户要么托管真实内容，要么将其设置为其他站点的反向代理。"
+msgstr ""
+"因此，Hysteria 服务器 MUST 实现一个 HTTP/3 服务器（RFC 9114），并像标准 Web "
+"服务器一样处理 HTTP 请求。为防止主动探测者发现 Hysteria 服务器的常见响应模"
+"式，实现方 SHOULD 建议用户要么托管真实内容，要么将其设置为其他站点的反向代"
+"理。"
 
 #: src/protocols/hysteria2.md
 msgid ""
@@ -1126,7 +1228,10 @@ msgid ""
 "authenticate the client using the provided information. If authentication is "
 "successful, the server MUST send the following response (HTTP status code "
 "233):"
-msgstr "Hysteria 服务器 MUST 识别该特殊请求，并且不会尝试提供内容或转发到上游站点，而是 MUST 使用所提供的信息对客户端进行认证。若认证成功，服务器 MUST 发送以下响应（HTTP 状态码 233）："
+msgstr ""
+"Hysteria 服务器 MUST 识别该特殊请求，并且不会尝试提供内容或转发到上游站点，而"
+"是 MUST 使用所提供的信息对客户端进行认证。若认证成功，服务器 MUST 发送以下响"
+"应（HTTP 状态码 233）："
 
 #: src/protocols/hysteria2.md
 msgid ""
@@ -1154,19 +1259,22 @@ msgid ""
 "of 0 indicates unlimited; \"auto\" indicates the server refuses to provide a "
 "value and ask the client to use congestion control to determine the rate on "
 "its own."
-msgstr "`Hysteria-CC-RX`：服务器最大接收速率（字节/秒）。值为 0 表示无限制；\"auto\" 表示服务器拒绝提供该值，并要求客户端使用拥塞控制自行确定速率。"
+msgstr ""
+"`Hysteria-CC-RX`：服务器最大接收速率（字节/秒）。值为 0 表示无限制；\"auto\" "
+"表示服务器拒绝提供该值，并要求客户端使用拥塞控制自行确定速率。"
 
 #: src/protocols/hysteria2.md
 msgid ""
 "See the Congestion Control section for more information on how to use the "
 "`Hysteria-CC-RX` values."
-msgstr "关于如何使用 `Hysteria-CC-RX` 的取值，详见\"拥塞控制\"章节。"
+msgstr "关于如何使用 `Hysteria-CC-RX` 的取值，详见“拥塞控制”章节。"
 
 #: src/protocols/hysteria2.md
 msgid ""
 "`Hysteria-Padding` is optional and is only intended to obfuscate the request/"
 "response pattern. It SHOULD be ignored by both sides."
-msgstr "`Hysteria-Padding` 为可选项，仅用于混淆请求/响应模式，双方 SHOULD 忽略它。"
+msgstr ""
+"`Hysteria-Padding` 为可选项，仅用于混淆请求/响应模式，双方 SHOULD 忽略它。"
 
 #: src/protocols/hysteria2.md
 msgid ""
@@ -1174,14 +1282,18 @@ msgid ""
 "server that does not understand the request, or in the case of being a "
 "reverse proxy, forward the request to the upstream site and return the "
 "response to the client."
-msgstr "如果认证失败，服务器 MUST 要么表现得像不理解该请求的标准 Web 服务器，要么在其为反向代理的情况下，将请求转发到上游站点并将响应返回给客户端。"
+msgstr ""
+"如果认证失败，服务器 MUST 要么表现得像不理解该请求的标准 Web 服务器，要么在其"
+"作为反向代理时，将请求转发到上游站点并将响应返回给客户端。"
 
 #: src/protocols/hysteria2.md
 msgid ""
 "The client MUST check the status code to determine if the authentication was "
 "successful. If the status code is anything other than 233, the client MUST "
 "consider authentication to have failed and disconnect from the server."
-msgstr "客户端 MUST 检查状态码以判断认证是否成功。若状态码不是 233，客户端 MUST 认为认证失败并断开与服务器的连接。"
+msgstr ""
+"客户端 MUST 检查状态码以判断认证是否成功。若状态码不是 233，客户端 MUST 认为"
+"认证失败并断开与服务器的连接。"
 
 #: src/protocols/hysteria2.md
 msgid ""
@@ -1189,7 +1301,9 @@ msgid ""
 "consider this QUIC connection to be a Hysteria proxy connection. It MUST "
 "then start processing proxy requests from the client as described in the "
 "next section."
-msgstr "客户端通过认证之后（且仅在之后），服务器 MUST 将该 QUIC 连接视为 Hysteria 代理连接，并 MUST 按下一节所述开始处理来自客户端的代理请求。"
+msgstr ""
+"客户端通过认证之后（且仅在之后），服务器 MUST 将该 QUIC 连接视为 Hysteria 代"
+"理连接，并 MUST 按下一节所述开始处理来自客户端的代理请求。"
 
 #: src/protocols/hysteria2.md
 msgid "Proxy Requests"
@@ -1203,7 +1317,9 @@ msgstr "TCP"
 msgid ""
 "For each TCP connection, the client MUST create a new QUIC bidirectional "
 "stream and send the following TCPRequest message:"
-msgstr "对于每个 TCP 连接，客户端 MUST 创建一个新的 QUIC 双向流，并发送以下 TCPRequest 消息："
+msgstr ""
+"对于每个 TCP 连接，客户端 MUST 创建一个新的 QUIC 双向流，并发送以下 "
+"TCPRequest 消息："
 
 #: src/protocols/hysteria2.md
 msgid "The server MUST respond with a TCPResponse message:"
@@ -1214,7 +1330,9 @@ msgid ""
 "If the status is OK, the server MUST then begin forwarding data between the "
 "client and the specified TCP address until either side closes the "
 "connection. If the status is Error, the server MUST close the QUIC stream."
-msgstr "如果状态为 OK，服务器 MUST 随后在客户端与指定的 TCP 地址之间转发数据，直到任一方关闭连接。如果状态为 Error，服务器 MUST 关闭该 QUIC 流。"
+msgstr ""
+"如果状态为 OK，服务器 MUST 随后在客户端与指定的 TCP 地址之间转发数据，直到任"
+"一方关闭连接。如果状态为 Error，服务器 MUST 关闭该 QUIC 流。"
 
 #: src/protocols/hysteria2.md
 msgid "UDP"
@@ -1225,7 +1343,9 @@ msgid ""
 "UDP packets MUST be encapsulated in the following UDPMessage format and sent "
 "over QUIC's unreliable datagram (for both client-to-server and server-to-"
 "client):"
-msgstr "UDP 数据包 MUST 按以下 UDPMessage 格式封装，并通过 QUIC 的不可靠数据报发送（客户端到服务器和服务器到客户端均如此）："
+msgstr ""
+"UDP 数据包 MUST 按以下 UDPMessage 格式封装，并通过 QUIC 的不可靠数据报发送"
+"（客户端到服务器和服务器到客户端均如此）："
 
 #: src/protocols/hysteria2.md
 msgid ""
@@ -1233,7 +1353,10 @@ msgid ""
 "SHOULD assign a unique UDP port to each Session ID, unless it has another "
 "mechanism to differentiate packets from different sessions (e.g., symmetric "
 "NAT, varying outbound IP addresses, etc.)."
-msgstr "客户端 MUST 为每个 UDP 会话使用唯一的 Session ID。服务器 SHOULD 为每个 Session ID 分配唯一的 UDP 端口，除非它有其他机制区分来自不同会话的数据包（例如对称 NAT、不同的出站 IP 地址等）。"
+msgstr ""
+"客户端 MUST 为每个 UDP 会话使用唯一的 Session ID。服务器 SHOULD 为每个 "
+"Session ID 分配唯一的 UDP 端口，除非它有其他机制区分来自不同会话的数据包（例"
+"如对称 NAT、不同的出站 IP 地址等）。"
 
 #: src/protocols/hysteria2.md
 msgid ""
@@ -1243,13 +1366,18 @@ msgid ""
 "of inactivity or some other criteria. If the client sends a UDP packet to a "
 "Session ID that is no longer recognized by the server, the server MUST treat "
 "it as a new session and assign a new port."
-msgstr "该协议未提供显式关闭 UDP 会话的方法。客户端可以无限期地保留并复用 Session ID，但服务器 SHOULD 在一段时间不活动或基于其他条件后释放并重新分配与该 Session ID 关联的端口。如果客户端向服务器已不再识别的 Session ID 发送 UDP 数据包，服务器 MUST 将其视为新会话并分配新的端口。"
+msgstr ""
+"该协议未提供显式关闭 UDP 会话的方法。客户端可以无限期地保留并复用 Session "
+"ID，但服务器 SHOULD 在一段时间不活动或基于其他条件后释放并重新分配与该 "
+"Session ID 关联的端口。如果客户端向服务器已不再识别的 Session ID 发送 UDP 数"
+"据包，服务器 MUST 将其视为新会话并分配新的端口。"
 
 #: src/protocols/hysteria2.md
 msgid ""
 "If a server does not support UDP relay, it SHOULD silently discard all UDP "
 "messages received from the client."
-msgstr "如果服务器不支持 UDP 中继，它 SHOULD 静默丢弃从客户端接收到的所有 UDP 消息。"
+msgstr ""
+"如果服务器不支持 UDP 中继，它 SHOULD 静默丢弃从客户端接收到的所有 UDP 消息。"
 
 #: src/protocols/hysteria2.md
 msgid "Fragmentation"
@@ -1260,7 +1388,9 @@ msgid ""
 "Due to the limit imposed by QUIC's unreliable datagram channel, any UDP "
 "packet that exceeds QUIC's maximum datagram size MUST either be fragmented "
 "or discarded."
-msgstr "由于 QUIC 不可靠数据报通道的限制，任何超过 QUIC 最大数据报大小的 UDP 数据包 MUST 要么分片，要么被丢弃。"
+msgstr ""
+"由于 QUIC 不可靠数据报通道的限制，任何超过 QUIC 最大数据报大小的 UDP 数据包 "
+"MUST 要么分片，要么被丢弃。"
 
 #: src/protocols/hysteria2.md
 msgid ""
@@ -1269,13 +1399,19 @@ msgid ""
 "Fragment Count. Both the server and client MUST wait for all fragments of a "
 "fragmented packet to arrive before processing them. If one or more fragments "
 "of a packet are lost, the entire packet MUST be discarded."
-msgstr "对于分片的数据包，每个分片 MUST 携带相同的唯一 Packet ID。Fragment ID 从 0 开始，表示在总 Fragment Count 中的索引。服务器与客户端 MUST 等待该分片包的所有分片到齐后再处理；如果丢失一个或多个分片，整个数据包 MUST 被丢弃。"
+msgstr ""
+"对于分片的数据包，每个分片 MUST 携带相同的唯一 Packet ID。Fragment ID 从 0 开"
+"始，表示在总 Fragment Count 中的索引。服务器与客户端 MUST 等待该分片数据包的"
+"所有"
+"分片到齐后再处理；如果丢失一个或多个分片，整个数据包 MUST 被丢弃。"
 
 #: src/protocols/hysteria2.md
 msgid ""
 "For packets that are not fragmented, the Fragment Count MUST be set to 1. In "
 "this case, the values of Packet ID and Fragment ID are irrelevant."
-msgstr "对于未分片的数据包，Fragment Count MUST 设为 1。在这种情况下，Packet ID 和 Fragment ID 的值无关紧要。"
+msgstr ""
+"对于未分片的数据包，Fragment Count MUST 设为 1。在这种情况下，Packet ID 和 "
+"Fragment ID 的值无关紧要。"
 
 #: src/protocols/hysteria2.md
 msgid "Congestion Control"
@@ -1288,7 +1424,10 @@ msgid ""
 "its rx rate to the server via the `Hysteria-CC-RX` header. The server can "
 "use this to determine its transmission rate to the client, and vice versa by "
 "returning its rx rate to the client through the same header."
-msgstr "Hysteria 的一个独特特性是允许在客户端设置 tx/rx（上传/下载）速率。认证过程中，客户端通过 `Hysteria-CC-RX` 头向服务器发送其 rx 速率。服务器可据此确定向客户端的发送速率，并通过同一头返回其 rx 速率，反之亦然。"
+msgstr ""
+"Hysteria 的一项独特能力是允许在客户端设置 tx/rx（上传/下载）速率。认证过程"
+"中，客户端通过 `Hysteria-CC-RX` 头向服务器发送其 rx 速率。服务器可据此确定向"
+"客户端的发送速率，并通过同一头返回其 rx 速率，反之亦然。"
 
 #: src/protocols/hysteria2.md
 msgid "Three special cases are:"
@@ -1299,7 +1438,9 @@ msgid ""
 "If the client sends 0, it doesn't know its own rx rate. The server MUST use "
 "a congestion control algorithm (e.g., BBR, Cubic) to adjust its transmission "
 "rate."
-msgstr "如果客户端发送 0，表示它不知道自身的 rx 速率。服务器 MUST 使用拥塞控制算法（如 BBR、Cubic）来调整其发送速率。"
+msgstr ""
+"如果客户端发送 0，表示它不知道自身的 rx 速率。服务器 MUST 使用拥塞控制算法"
+"（如 BBR、Cubic）来调整其发送速率。"
 
 #: src/protocols/hysteria2.md
 msgid ""
@@ -1312,7 +1453,9 @@ msgid ""
 "If the server responds with \"auto\", it chooses not to specify a rate. The "
 "client MUST use a congestion control algorithm to adjust its transmission "
 "rate."
-msgstr "如果服务器返回\"auto\"，表示它选择不指定速率。客户端 MUST 使用拥塞控制算法来调整其发送速率。"
+msgstr ""
+"如果服务器返回 \"auto\"，表示它选择不指定速率。客户端 MUST 使用拥塞控制算法来"
+"调整其发送速率。"
 
 #: src/protocols/hysteria2.md
 msgid "\"Salamander\" Obfuscation"
@@ -1322,7 +1465,7 @@ msgstr "\"Salamander\" 混淆"
 msgid ""
 "The Hysteria protocol supports an optional obfuscation layer codenamed "
 "\"Salamander\"."
-msgstr "Hysteria 协议支持一个可选的混淆层，代号为\"Salamander\"。"
+msgstr "Hysteria 协议支持一个可选的混淆层，代号为 \"Salamander\"。"
 
 #: src/protocols/hysteria2.md
 msgid "\"Salamander\" encapsulates all QUIC packets in the following format:"
@@ -1332,7 +1475,9 @@ msgstr "\"Salamander\" 将所有 QUIC 数据包封装为以下格式："
 msgid ""
 "For each QUIC packet, the obfuscator MUST calculate the BLAKE2b-256 hash of "
 "a randomly generated 8-byte salt appended to a user-provided pre-shared key."
-msgstr "对于每个 QUIC 数据包，混淆器 MUST 计算将随机生成的 8 字节盐值追加到用户提供的预共享密钥后的 BLAKE2b-256 哈希。"
+msgstr ""
+"对于每个 QUIC 数据包，混淆器 MUST 计算将随机生成的 8 字节盐值追加到用户提供的"
+"预共享密钥后的 BLAKE2b-256 哈希。"
 
 #: src/protocols/hysteria2.md
 msgid ""
@@ -1343,7 +1488,9 @@ msgstr "随后使用该哈希按以下算法对负载进行混淆："
 msgid ""
 "The deobfuscator MUST use the same algorithms to calculate the salted hash "
 "and deobfuscate the payload. Any invalid packet MUST be discarded."
-msgstr "去混淆器 MUST 使用相同的算法计算带盐哈希并还原负载。任何无效的数据包 MUST 被丢弃。"
+msgstr ""
+"去混淆器 MUST 使用相同的算法计算带盐哈希并还原负载。任何无效的数据包 MUST 被"
+"丢弃。"
 
 #: src/protocols/vless.md
 msgid ""
@@ -1361,7 +1508,7 @@ msgstr "通常与 TLS、XTLS 或 Reality 传输层搭配，用于加密与伪装
 msgid ""
 "Supports multiplexing, fallback routes, and advanced routing rules within "
 "the Xray core ecosystem."
-msgstr "在 Xray core 生态内支持多路复用、回退路由和高级路由规则。"
+msgstr "在 Xray-core 生态内支持多路复用、回退路由和高级路由规则。"
 
 #: src/protocols/vless.md
 msgid ""
