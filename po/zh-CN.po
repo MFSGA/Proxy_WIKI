@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Proxy Wiki\n"
-"POT-Creation-Date: 2026-01-18T21:17:58+08:00\n"
+"POT-Creation-Date: 2026-02-10T00:00:23+08:00\n"
 "PO-Revision-Date: 2025-11-08 01:15+0800\n"
 "Last-Translator: chimera_rust@proton.me\n"
 "Language-Team: Language zh-CN\n"
@@ -28,8 +28,21 @@ msgid "System Topology"
 msgstr "系统拓扑"
 
 #: src/SUMMARY.md src/chimera_client.md
-msgid "chimera_client Client"
+#, fuzzy
+msgid "Chimera_Client"
 msgstr "chimera_client 客户端"
+
+#: src/SUMMARY.md src/chimera_client/ports.md
+msgid "Ports and Listeners"
+msgstr "端口与监听器"
+
+#: src/SUMMARY.md src/chimera_client/dns.md
+msgid "DNS Module"
+msgstr "DNS 模块"
+
+#: src/SUMMARY.md src/chimera_client/tun.md
+msgid "Tun Module"
+msgstr "Tun 模块"
 
 #: src/SUMMARY.md src/chimera.md
 msgid "Chimera Server"
@@ -67,9 +80,17 @@ msgstr "流量处理"
 msgid "Hysteria 2"
 msgstr "Hysteria 2"
 
+#: src/SUMMARY.md src/protocol.md src/protocols/tuic.md
+msgid "TUIC"
+msgstr ""
+
 #: src/SUMMARY.md src/protocol.md src/protocols/vless.md
 msgid "VLESS"
 msgstr "VLESS"
+
+#: src/SUMMARY.md src/protocols/reality.md
+msgid "Reality"
+msgstr ""
 
 #: src/preface.md
 msgid ""
@@ -81,8 +102,9 @@ msgstr ""
 "合成一个单一的百科全书式的应用。"
 
 #: src/preface.md
+#, fuzzy
 msgid ""
-"`Chimera_Client` takes inspiration from the open-source [clash-rs](https://"
+"`chimera_Client` takes inspiration from the open-source [clash-rs](https://"
 "github.com/Watfaq/clash-rs) project, with the long-term goal of matching "
 "[Mihomo](https://github.com/MetaCubeX/mihomo)'s feature set."
 msgstr ""
@@ -217,8 +239,73 @@ msgstr ""
 "执行 DNS 策略，将匹配流量交给相应的传输引擎。"
 
 #: src/chimera_client.md
+#, fuzzy
+msgid "Module Configuration Guide"
+msgstr "配置指南"
+
+#: src/chimera_client.md
+msgid ""
+"`chimera_client` keeps configuration aligned with its module boundaries, so "
+"each functional area has its own block in the Clash-style YAML. This makes "
+"changes easier to reason about, and limits the blast radius of hot-reload "
+"updates."
+msgstr ""
+
+#: src/chimera_client.md
+msgid ""
+"Core runtime and profile: set global defaults such as mode selection, "
+"service ports, logging verbosity, IPv6/allow-lan toggles, and reload "
+"behavior."
+msgstr ""
+
+#: src/chimera_client.md
+msgid ""
+"Inbound listeners: define local HTTP/SOCKS/TUN/transparent ports, bind "
+"addresses, UDP enablement, and device interface selection. See [Ports and "
+"Listeners](./chimera_client/ports.md)."
+msgstr ""
+
+#: src/chimera_client.md
+msgid ""
+"Controller and UX: configure the API bind host/port, authentication tokens, "
+"and optional TUI or desktop shell toggles."
+msgstr ""
+
+#: src/chimera_client.md
+msgid ""
+"DNS pipeline: declare upstream resolvers, cache sizing, fake-IP versus real-"
+"IP strategy, fallback behavior, and policy-based resolver selection. See "
+"[DNS Module](./chimera_client/dns.md)."
+msgstr ""
+
+#: src/chimera_client.md
+msgid ""
+"Policy engine: order rules, attach rule providers, choose a default group, "
+"and map traffic to outbound groups."
+msgstr ""
+
+#: src/chimera_client.md
+msgid ""
+"Transport engines: specify per-protocol parameters like cipher suites, "
+"transports (TCP/WS/gRPC/QUIC), multiplexing, and TLS fingerprint options; "
+"reuse defaults to keep profiles consistent."
+msgstr ""
+
+#: src/chimera_client.md
+msgid ""
+"Observability: enable structured logs, metrics, and trace exports, with "
+"sampling and retention tuned per environment."
+msgstr ""
+
+#: src/chimera_client.md
+msgid ""
+"Update and sync: manage remote profile URLs, signature verification, polling "
+"intervals, and rollback on invalid configs."
+msgstr ""
+
+#: src/chimera_client.md
 msgid "Protocol Coverage and Features"
-msgstr "协议覆盖与特性"
+msgstr "当前支持的协议与特性"
 
 #: src/chimera_client.md
 msgid ""
@@ -270,8 +357,7 @@ msgstr ""
 "客户端为主流桌面平台提供二进制，并提供容器镜像用于服务器端路由或 CI 测试。"
 "Linux 上有轻量级系统服务封装守护进程，负责自动重启与密钥轮换。移动端通过绑定"
 "向 Flutter 和 React Native 壳应用暴露控制器 API。配置同步依赖 GitOps 友好的清"
-"单"
-"与可选的远程配置 URL，使大规模部署能够按计划拉取签名更新。"
+"单与可选的远程配置 URL，使大规模部署能够按计划拉取签名更新。"
 
 #: src/chimera_client.md
 msgid "Performance, Observability, and Troubleshooting"
@@ -291,6 +377,1037 @@ msgstr ""
 "员可以导出连接统计、延迟分位数和规则命中次数用于仪表盘。性能调优指南涵盖 DNS "
 "缓存大小、规则树裁剪、各协议并发上限，以及在路由器上运行时的 CPU 亲和性设置。"
 "故障排查章节会讲解常见失效场景，如 TLS 指纹不匹配、DNS 污染或控制器认证错误。"
+
+#: src/chimera_client.md
+#, fuzzy
+msgid "Reference Repositories"
+msgstr "参考资料"
+
+#: src/chimera_client.md
+#, fuzzy
+msgid "The `chimera_client` source lives here:"
+msgstr "chimera_client 客户端"
+
+#: src/chimera_client.md
+#, fuzzy
+msgid "`chimera_client`: <https://github.com/MFSGA/Chimera_Client>"
+msgstr "`xray-core`: <https://github.com/XTLS/Xray-core>"
+
+#: src/chimera_client/ports.md src/protocol.md
+msgid "Overview"
+msgstr "概览"
+
+#: src/chimera_client/ports.md
+msgid ""
+"Ports define where local applications, dashboards, and DNS resolvers connect "
+"to `chimera_client`. The naming follows Clash-style configuration, while "
+"`chimera_client` currently uses underscore keys for the same concepts."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "Port Map"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "Clash key"
+msgstr ""
+
+#: src/chimera_client/ports.md
+#, fuzzy
+msgid "chimera_client key"
+msgstr "chimera_client 客户端"
+
+#: src/chimera_client/ports.md
+msgid "Role"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "`port` / `http-port`"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "`port`"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "HTTP CONNECT proxy for browsers and system proxy settings."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "`socks-port`"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "`socks_port`"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid ""
+"SOCKS5 proxy for general applications; UDP associate support is optional."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "`mixed-port`"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "`mixed_port`"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "Combined HTTP + SOCKS5 listener on one port."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "`redir-port`"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "`redir_port`"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "Linux TCP transparent redirect (iptables REDIRECT)."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "`tproxy-port`"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "`tproxy_port`"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "Linux TPROXY for TCP/UDP transparent proxying."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "`external-controller`"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "`external_controller`"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "REST API port for dashboards and automation."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "`dns.listen`"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "Local DNS listener for fake-IP or policy DNS."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "What Each Port Does"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "HTTP proxy port"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid ""
+"Accepts HTTP CONNECT requests and plain HTTP proxy traffic. It is the "
+"default choice for browsers and OS-level proxy settings."
+msgstr ""
+
+#: src/chimera_client/ports.md
+#, fuzzy
+msgid "SOCKS5 port"
+msgstr "SOCKS5"
+
+#: src/chimera_client/ports.md
+msgid ""
+"Accepts SOCKS5 connections from applications that speak SOCKS natively. It "
+"is commonly used by developer tools and power users."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "Mixed port"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid ""
+"Accepts both HTTP and SOCKS5 on a single port. Use this to simplify local "
+"proxy configuration when only one port can be configured."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "Redir port"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid ""
+"Used for TCP transparent proxying on Linux via iptables REDIRECT. It only "
+"captures TCP and requires kernel-level redirection rules."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "TProxy port"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid ""
+"Used for Linux TPROXY to capture both TCP and UDP. It requires policy "
+"routing and `fwmark` rules, and is often paired with TUN or redirection "
+"tooling."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "Controller port"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid ""
+"Exposes the REST API used by dashboards, mobile shells, and automation. Bind "
+"it to localhost unless remote access is required."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "DNS listen port"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid ""
+"Accepts DNS queries from the system or from a TUN stack. It is typically "
+"paired with fake-IP or split-horizon DNS rules."
+msgstr ""
+
+#: src/chimera_client/ports.md
+#, fuzzy
+msgid "chimera_client Support Notes"
+msgstr "chimera_client 客户端"
+
+#: src/chimera_client/ports.md
+msgid ""
+"`socks_port` is the only inbound port wired today; UDP associate is "
+"currently disabled."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid ""
+"`port`, `mixed_port`, `redir_port`, and `tproxy_port` are reserved for "
+"compatibility but not yet implemented."
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid ""
+"The DNS server and controller listener are under active development; keep "
+"them local unless you are testing."
+msgstr ""
+
+#: src/chimera_client/ports.md
+#, fuzzy
+msgid "Configuration Examples"
+msgstr "配置片段"
+
+#: src/chimera_client/ports.md
+#, fuzzy
+msgid "Minimal chimera_client"
+msgstr "chimera_client 客户端"
+
+#: src/chimera_client/ports.md
+msgid "bind_address"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "\"127.0.0.1\""
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "allow_lan"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "socks_port"
+msgstr ""
+
+#: src/chimera_client/ports.md src/chimera_client/dns.md
+msgid "dns"
+msgstr ""
+
+#: src/chimera_client/ports.md src/chimera_client/dns.md
+#: src/chimera_client/tun.md
+msgid "enable"
+msgstr ""
+
+#: src/chimera_client/ports.md src/chimera_client/dns.md
+msgid "ipv6"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "Clash or Mihomo Layout (Reference)"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "port"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "socks-port"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "mixed-port"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "redir-port"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "tproxy-port"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "external-controller"
+msgstr ""
+
+#: src/chimera_client/ports.md
+msgid "127.0.0.1:9090"
+msgstr ""
+
+#: src/chimera_client/ports.md src/chimera_client/dns.md
+msgid "listen"
+msgstr ""
+
+#: src/chimera_client/ports.md src/chimera_client/dns.md
+msgid "127.0.0.1:1053"
+msgstr ""
+
+#: src/chimera_client/dns.md src/chimera_client/tun.md
+msgid "Scope and Goals"
+msgstr "范围与目标"
+
+#: src/chimera_client/dns.md
+msgid ""
+"The DNS module is responsible for domain resolution before policy routing. "
+"Its goals are predictable rule matching, low latency, and safe resolution "
+"under hostile or unreliable networks. Configuration typically lives under a "
+"`dns` block in the Clash-style YAML and can be hot-reloaded."
+msgstr ""
+
+#: src/chimera_client/dns.md
+#, fuzzy
+msgid "Configuration Areas"
+msgstr "配置片段"
+
+#: src/chimera_client/dns.md
+msgid ""
+"Upstream resolvers: define UDP, DoH, or DoT endpoints, and choose which "
+"transport is allowed per environment."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Resolution mode: select fake-IP versus real-IP behavior, and configure the "
+"fake-IP pool plus domain filters that must bypass synthesis."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Split-horizon policies: map domain suffixes or rule sets to specific "
+"resolvers, including private zones and regional endpoints."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Fallback strategy: add fallback resolvers and health checks for blocked, "
+"poisoned, or slow upstreams."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Cache behavior: tune TTL caps, cache size, and prefetch rules to reduce "
+"latency without stale answers."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Safety controls: enable hosts overrides, blocklists, or ECS avoidance to "
+"limit leakage and improve consistency."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Bootstrap resolvers: keep a small plain DNS list so DoH or DoT endpoints can "
+"be resolved without circular dependencies."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "Resolution Modes"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Fake-IP mode: synthesizes IPs so traffic can be steered by domain rules even "
+"after apps connect by IP. This works best with TUN or transparent proxying "
+"but requires careful fake-IP filtering for local or IP-sensitive services."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Real-IP mode: returns actual addresses to applications, which is simpler for "
+"LAN workflows and strict DNS consumers but reduces the ability to enforce "
+"domain rules after connection."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Hybrid usage: keep fake-IP enabled for general traffic and add explicit fake-"
+"IP filters for mDNS, LAN suffixes, or time sync domains."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "Resolver Selection Flow"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "Apply hosts overrides and consult the in-memory cache."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "Select a resolver based on domain policies or rule sets."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "Query primary resolvers in order or in parallel."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "If responses fail validation or time out, trigger fallback resolvers."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "Cache the response with TTL caps and return it to the caller."
+msgstr ""
+
+#: src/chimera_client/dns.md
+#, fuzzy
+msgid "Configuration References"
+msgstr "配置片段"
+
+#: src/chimera_client/dns.md
+#, fuzzy
+msgid "chimera_client (current)"
+msgstr "chimera_client 客户端"
+
+#: src/chimera_client/dns.md
+msgid ""
+"The current implementation relies on the system resolver. Keep DNS disabled "
+"unless you are testing the in-progress DNS server, and override IPv6 only if "
+"you need to suppress AAAA answers."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "Mihomo / Clash (reference projects)"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"This block mirrors the Clash-compatible DNS schema as used by Mihomo. It is "
+"usable in those projects and serves as a target shape for chimera_client "
+"parity."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "enhanced-mode"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "fake-ip"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "fake-ip-range"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "198.18.0.1/16"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "fake-ip-filter"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "\"*.lan\""
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "\"*.local\""
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "default-nameserver"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "nameserver"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "https://dns.alidns.com/dns-query"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "tls://1.1.1.1:853"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "fallback"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "fallback-filter"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "geoip"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "geoip-code"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "CN"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "Operational Guidance"
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Prefer explicit resolver policies when different traffic classes require "
+"distinct egress paths."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Keep fake-IP exclusions narrow to avoid bypassing rule evaluation "
+"unintentionally."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Use a small bootstrap resolver list for DoH or DoT endpoints that must "
+"resolve at startup."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Tune cache caps with observed traffic patterns rather than using defaults "
+"blindly."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Monitor fallback usage; spikes often indicate upstream blocks or transport "
+"failures."
+msgstr ""
+
+#: src/chimera_client/dns.md src/chimera_client/tun.md
+msgid "Troubleshooting Checklist"
+msgstr "故障排查清单"
+
+#: src/chimera_client/dns.md
+msgid ""
+"Confirm the local DNS listener is reachable (for example, `dig @127.0.0.1 -p "
+"1053 example.com`)."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Verify the system resolver or TUN stack actually points at the client "
+"listener."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid "Revisit fake-IP filters for domains that must keep real IPs."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Inspect logs for upstream timeouts, TLS handshake errors, or poisoned "
+"responses."
+msgstr ""
+
+#: src/chimera_client/dns.md
+msgid ""
+"Temporarily force a single UDP resolver to isolate DoH or DoT connectivity "
+"issues."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"TUN mode captures Layer-3 traffic from the host and sends it into the proxy "
+"pipeline without requiring each application to be proxy-aware. Compared with "
+"HTTP/SOCKS listeners, TUN is the closest to \"system-wide proxy\" behavior "
+"and is usually combined with policy routing and DNS control."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"This page follows `clash-rs` semantics and config keys so future "
+"`chimera_client` parity is straightforward."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Current Project Status"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"`chimera_client` (current mainline) does not yet expose a `tun` block in its "
+"config parser."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"The TUN section below is the clash-rs-aligned target shape and operational "
+"guidance, not a statement that all fields are already active in "
+"`chimera_client`."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"Today, use SOCKS/listener-based workflows in `chimera_client` unless you are "
+"validating an in-progress TUN branch."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Configuration Schema (Clash-rs Aligned)"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "tun"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "device-id"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "\"dev://utun1989\""
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "route-all"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "gateway"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "\"198.18.0.1/24\""
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "gateway-v6"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "\"fd00:fac::1/64\""
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "mtu"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "so-mark"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "route-table"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "dns-hijack"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"# dns-hijack:\n"
+"  #   - 1.1.1.1:53\n"
+"  #   - 8.8.8.8:53\n"
+"  # routes:\n"
+"  #   - 1.1.1.1/32\n"
+"  #   - 2001:4860:4860::8888/128\n"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Key Fields and Semantics"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Key"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Type"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Default"
+msgstr ""
+
+#: src/chimera_client/tun.md src/protocols/trojan/wire-format.md
+msgid "Notes"
+msgstr "注意事项"
+
+#: src/chimera_client/tun.md
+msgid "`enable`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`bool`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`false`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Enables TUN runtime."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`device-id`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`string`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`utun1989`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"Accepts `dev://<name>`, `fd://<n>`, or plain name (treated as device name)."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`gateway`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`CIDR string`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`198.18.0.1/24`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "IPv4 address/prefix assigned to the TUN interface."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`gateway-v6`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "unset"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Optional IPv6 address/prefix for dual-stack TUN."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`route-all`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Route all host traffic through TUN."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`routes`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`list<CIDR>`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "empty"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Used when `route-all: false` to route only selected prefixes."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`mtu`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`u16`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "platform default"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Runtime uses `1500` by default (`65535` on Windows) if unset."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`so-mark`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`u32`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Linux fwmark for loop prevention / policy routing integration."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`route-table`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`2468`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Linux policy-routing table used by TUN route-all path."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`dns-hijack`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`bool` or `list`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Enables DNS interception behavior in TUN path."
+msgstr ""
+
+#: src/chimera_client/tun.md
+#, fuzzy
+msgid "Device-ID Formats"
+msgstr "报文格式"
+
+#: src/chimera_client/tun.md
+msgid "`dev://utun1989` or `utun1989`: create/use named TUN device."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`dev://tun0`: common Linux style."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"`fd://3`: use an existing file descriptor, useful when another component "
+"owns TUN creation."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "On macOS, the device name must use the `utun` prefix."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Routing Behavior"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`route-all: true`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"Linux: uses policy routing rules and a dedicated route table (`route-table`)."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "macOS/Windows: installs broad default-route entries through TUN."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"DNS hijack integration is tied to this path on Linux (policy rule for "
+"destination port `53`)."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "`route-all: false`"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Only CIDRs in `routes` are routed through TUN."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"This is safer for partial rollout and avoids taking over all host traffic."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "If both are configured, `route-all` takes precedence operationally."
+msgstr ""
+
+#: src/chimera_client/tun.md
+#, fuzzy
+msgid "DNS Interaction"
+msgstr "简介"
+
+#: src/chimera_client/tun.md
+msgid ""
+"`dns-hijack` controls DNS interception in TUN flow, but it does not replace "
+"a working DNS module config."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"For predictable domain-based routing, pair TUN with DNS settings (`dns."
+"enable`, resolver list, fake-IP strategy where needed)."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"In practice, `dns-hijack: true` is commonly paired with fake-IP mode in "
+"Clash-style deployments."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Linux Notes (Policy Routing)"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Ensure `iproute2` (`ip` command) is available."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Run with sufficient privileges (CAP_NET_ADMIN or root-equivalent)."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"Prefer setting `so-mark` and keep it consistent with your external policy "
+"rules to avoid proxy loops."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Quick checks:"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Example Profiles"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Full-tunnel profile"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Split-route profile"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "\"dev://tun0\""
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "routes"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "1.1.1.1/32"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "8.8.8.8/32"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "FD-based profile"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "\"fd://3\""
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"Verify process privileges first; TUN creation and route changes fail "
+"silently in many restricted environments."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"Confirm the interface exists (`ip addr`, `ifconfig`, or platform equivalent)."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Validate route/rule installation after startup."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"If DNS appears broken, verify the DNS listener is reachable and the system "
+"resolver path actually passes through TUN."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"If traffic loops or stalls, check `so-mark`/policy-rule alignment and "
+"existing host firewall rules."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "References and Alignment Notes"
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"Clash-rs config schema: `clash-lib/src/config/def.rs` (`TunConfig`, "
+"defaults, `dns-hijack` shape)."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"Clash-rs config conversion: `clash-lib/src/config/internal/convert/tun.rs`."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"Clash-rs tun runtime and device parsing: `clash-lib/src/proxy/tun/inbound."
+"rs`."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"Clash-rs route behavior: `clash-lib/src/proxy/tun/routes/{linux,macos,"
+"windows}.rs`."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid "Clash-rs sample profile: `clash-bin/tests/data/config/tun.yaml`."
+msgstr ""
+
+#: src/chimera_client/tun.md
+msgid ""
+"Chimera_Client current parser snapshot: `clash-lib/src/config/def.rs` (no "
+"`tun` block yet on mainline)."
+msgstr ""
 
 #: src/chimera.md
 msgid "Mission and Capabilities"
@@ -461,10 +1578,6 @@ msgstr ""
 "迟、吞吐量和内存占用，为回归检测提供基线。"
 
 #: src/protocol.md
-msgid "Overview"
-msgstr "概览"
-
-#: src/protocol.md
 msgid "Default Transport"
 msgstr "默认传输"
 
@@ -473,7 +1586,8 @@ msgid "Authentication"
 msgstr "认证"
 
 #: src/protocol.md src/protocols/socks5.md src/protocols/http.md
-#: src/protocols/trojan.md src/protocols/vless.md
+#: src/protocols/trojan.md src/protocols/tuic.md src/protocols/vless.md
+#: src/protocols/reality.md
 msgid "Strengths"
 msgstr "优势"
 
@@ -550,6 +1664,18 @@ msgid "Requires open UDP ports, MTU tuning important"
 msgstr "需要开放 UDP 端口，MTU 调优很重要"
 
 #: src/protocol.md
+msgid "UUID or token-based auth"
+msgstr ""
+
+#: src/protocol.md
+msgid "0-RTT friendly, multiplexed streams, low handshake overhead"
+msgstr ""
+
+#: src/protocol.md
+msgid "Needs UDP reachability, QUIC fingerprinting varies by implementation"
+msgstr ""
+
+#: src/protocol.md
 msgid "TLS/XTLS over TCP or MKCP"
 msgstr "基于 TCP 或 MKCP 的 TLS/XTLS"
 
@@ -564,6 +1690,27 @@ msgstr "灵活的多路复用，可选 XTLS 自动拆分"
 #: src/protocol.md
 msgid "No encryption without TLS/XTLS layer, ecosystem-specific tooling"
 msgstr "缺少 TLS/XTLS 层则无加密，工具生态较为特定"
+
+#: src/protocol.md
+msgid "Reality (TLS camouflage)"
+msgstr ""
+
+#: src/protocol.md
+#, fuzzy
+msgid "TLS 1.3-like handshake"
+msgstr "TLS 握手"
+
+#: src/protocol.md
+msgid "Public key + short ID (plus upstream auth)"
+msgstr ""
+
+#: src/protocol.md
+msgid "Certificate-less TLS mimicry, resistant to passive probing"
+msgstr ""
+
+#: src/protocol.md
+msgid "Depends on client fingerprint matching, tied to Xray tooling"
+msgstr ""
 
 #: src/protocol.md
 msgid ""
@@ -610,11 +1757,23 @@ msgstr ""
 
 #: src/protocol.md
 msgid ""
+"[TUIC](./protocols/tuic.md) – QUIC-based proxy with multiplexing and "
+"aggressive latency tuning."
+msgstr ""
+
+#: src/protocol.md
+msgid ""
 "[VLESS](./protocols/vless.md) – UUID-auth protocol with configurable "
 "transports such as TLS, XTLS, or Reality."
 msgstr ""
 "[VLESS](./protocols/vless.md) – 基于 UUID 认证的协议，传输层可配置 TLS、XTLS "
 "或 Reality。"
+
+#: src/protocol.md
+msgid ""
+"[Reality](./protocols/reality.md) – TLS camouflage layer used by Xray "
+"transports without certificates."
+msgstr ""
 
 #: src/protocols/socks5.md
 msgid "Official RFC"
@@ -666,7 +1825,7 @@ msgstr ""
 "rfc3089)**（IPv6 场景下的互操作性）"
 
 #: src/protocols/socks5.md src/protocols/http.md src/protocols/trojan.md
-#: src/protocols/vless.md
+#: src/protocols/tuic.md src/protocols/vless.md src/protocols/reality.md
 msgid "Highlights"
 msgstr "亮点"
 
@@ -687,7 +1846,7 @@ msgid "Widely supported by browsers, curl, SSH, and VPN clients."
 msgstr "被浏览器、curl、SSH 和 VPN 客户端广泛支持。"
 
 #: src/protocols/socks5.md src/protocols/http.md src/protocols/trojan.md
-#: src/protocols/vless.md
+#: src/protocols/tuic.md src/protocols/vless.md src/protocols/reality.md
 msgid "Flow"
 msgstr "流程"
 
@@ -714,7 +1873,8 @@ msgstr "客户端携带目标信息发送 `CONNECT`、`BIND` 或 `UDP ASSOCIATE`
 msgid "Server replies with success/failure code and starts relaying traffic."
 msgstr "服务器返回成功/失败码并开始转发流量。"
 
-#: src/protocols/socks5.md src/protocols/http.md src/protocols/vless.md
+#: src/protocols/socks5.md src/protocols/http.md src/protocols/tuic.md
+#: src/protocols/vless.md src/protocols/reality.md
 msgid "Configuration Snippet"
 msgstr "配置片段"
 
@@ -731,7 +1891,7 @@ msgid "Minimal framing overhead keeps latency low."
 msgstr "最小的封装开销保持低延迟。"
 
 #: src/protocols/socks5.md src/protocols/http.md src/protocols/trojan.md
-#: src/protocols/vless.md
+#: src/protocols/tuic.md src/protocols/vless.md src/protocols/reality.md
 msgid "Limitations"
 msgstr "限制"
 
@@ -1021,10 +2181,6 @@ msgid "Payload is the raw UDP datagram."
 msgstr "Payload 为原始 UDP 数据报。"
 
 #: src/protocols/trojan/wire-format.md
-msgid "Notes"
-msgstr "注意事项"
-
-#: src/protocols/trojan/wire-format.md
 msgid ""
 "The first TLS record can include payload immediately after the request, "
 "reducing packet count and length patterns."
@@ -1060,8 +2216,8 @@ msgid ""
 "the server treats it as \"other protocols\" and forwards the decrypted TLS "
 "stream to a preset endpoint (default `127.0.0.1:80`)."
 msgstr ""
-"如果该数据包不是有效的 Trojan 请求（结构或密码错误），服务器会将其视为“其他"
-"协议”，并把解密后的 TLS 流转发到预设端点（默认 `127.0.0.1:80`）。"
+"如果该数据包不是有效的 Trojan 请求（结构或密码错误），服务器会将其视为“其他协"
+"议”，并把解密后的 TLS 流转发到预设端点（默认 `127.0.0.1:80`）。"
 
 #: src/protocols/trojan/traffic-handling.md
 msgid ""
@@ -1146,8 +2302,7 @@ msgid ""
 msgstr ""
 "本文档中的关键词\"MUST\"、\"MUST NOT\"、\"REQUIRED\"、\"SHALL\"、\"SHALL "
 "NOT\"、\"SHOULD\"、\"SHOULD NOT\"、\"RECOMMENDED\"、\"MAY\" 和 \"OPTIONAL\"的"
-"含"
-"义应按 RFC 2119 解释：https://tools.ietf.org/html/rfc2119"
+"含义应按 RFC 2119 解释：https://tools.ietf.org/html/rfc2119"
 
 #: src/protocols/hysteria2.md
 msgid "Underlying Protocol & Wire Format"
@@ -1402,8 +2557,7 @@ msgid ""
 msgstr ""
 "对于分片的数据包，每个分片 MUST 携带相同的唯一 Packet ID。Fragment ID 从 0 开"
 "始，表示在总 Fragment Count 中的索引。服务器与客户端 MUST 等待该分片数据包的"
-"所有"
-"分片到齐后再处理；如果丢失一个或多个分片，整个数据包 MUST 被丢弃。"
+"所有分片到齐后再处理；如果丢失一个或多个分片，整个数据包 MUST 被丢弃。"
 
 #: src/protocols/hysteria2.md
 msgid ""
@@ -1492,6 +2646,69 @@ msgstr ""
 "去混淆器 MUST 使用相同的算法计算带盐哈希并还原负载。任何无效的数据包 MUST 被"
 "丢弃。"
 
+#: src/protocols/tuic.md
+msgid ""
+"QUIC-based proxy protocol that uses TLS 1.3 for encryption and stream "
+"multiplexing."
+msgstr ""
+
+#: src/protocols/tuic.md
+msgid "Supports 0-RTT resumption and UDP relay over QUIC datagrams."
+msgstr ""
+
+#: src/protocols/tuic.md
+msgid "Designed for aggressive latency tuning with modern congestion control."
+msgstr ""
+
+#: src/protocols/tuic.md
+msgid ""
+"Client opens a QUIC connection to the server and completes the TLS 1.3 "
+"handshake."
+msgstr ""
+
+#: src/protocols/tuic.md
+msgid "Client authenticates with a UUID/token configured on the server."
+msgstr ""
+
+#: src/protocols/tuic.md
+#, fuzzy
+msgid ""
+"Client opens bidirectional QUIC streams for TCP requests and uses datagrams "
+"for UDP relay."
+msgstr "认证后，客户端打开双向流用于 TCP 代理，或使用数据报处理 UDP。"
+
+#: src/protocols/tuic.md
+#, fuzzy
+msgid "Server validates auth, then forwards traffic to upstream destinations."
+msgstr "服务器校验 UUID 后，建立到目的地的流或数据报隧道。"
+
+#: src/protocols/tuic.md
+msgid "Low handshake overhead with 0-RTT and multiplexed streams."
+msgstr ""
+
+#: src/protocols/tuic.md
+#, fuzzy
+msgid "Handles UDP natively without extra encapsulation layers."
+msgstr "仅支持 TCP；不经额外封装无法转发 UDP 流。"
+
+#: src/protocols/tuic.md
+msgid "Good performance on lossy or high-latency mobile networks."
+msgstr ""
+
+#: src/protocols/tuic.md
+#, fuzzy
+msgid "Requires UDP reachability and QUIC-friendly network paths."
+msgstr "需要稳定的 UDP 可达性；一些企业网络会阻断出站 UDP。"
+
+#: src/protocols/tuic.md
+msgid ""
+"QUIC fingerprints vary by implementation and can be throttled or blocked."
+msgstr ""
+
+#: src/protocols/tuic.md
+msgid "MTU and packet pacing tuning are often required for best results."
+msgstr ""
+
 #: src/protocols/vless.md
 msgid ""
 "Lightweight stateless protocol from Project V that uses UUIDs for client "
@@ -1568,6 +2785,77 @@ msgid ""
 "Security relies heavily on the chosen transport; bare VLESS without TLS "
 "offers no encryption."
 msgstr "安全性高度依赖所选传输层；不带 TLS 的裸 VLESS 没有加密。"
+
+#: src/protocols/reality.md
+msgid ""
+"TLS camouflage layer from the Xray ecosystem that imitates a TLS 1.3 "
+"handshake without issuing a certificate."
+msgstr ""
+
+#: src/protocols/reality.md
+msgid ""
+"Uses a server public key and short ID to bind the handshake to a real-"
+"looking TLS fingerprint."
+msgstr ""
+
+#: src/protocols/reality.md
+msgid ""
+"Commonly paired with VLESS or Trojan to provide authentication and routing "
+"on top of the transport."
+msgstr ""
+
+#: src/protocols/reality.md
+msgid ""
+"Client selects a cover domain and configures the server public key + short "
+"ID."
+msgstr ""
+
+#: src/protocols/reality.md
+msgid ""
+"Client initiates a TLS 1.3-like handshake (uTLS fingerprint) with SNI set to "
+"the cover domain."
+msgstr ""
+
+#: src/protocols/reality.md
+#, fuzzy
+msgid "Server validates the short ID and key exchange to accept the session."
+msgstr "服务器校验密码与请求，然后连接到目标。"
+
+#: src/protocols/reality.md
+msgid ""
+"On success, the connection upgrades to the chosen proxy protocol (for "
+"example VLESS)."
+msgstr ""
+
+#: src/protocols/reality.md
+msgid ""
+"Avoids certificate issuance and rotation while keeping TLS-like handshake "
+"behavior."
+msgstr ""
+
+#: src/protocols/reality.md
+msgid ""
+"Harder to fingerprint via passive inspection when the TLS client fingerprint "
+"matches common browsers."
+msgstr ""
+
+#: src/protocols/reality.md
+msgid "Integrates with XTLS flow control for reduced overhead."
+msgstr ""
+
+#: src/protocols/reality.md
+msgid ""
+"Requires compatible client fingerprints; mismatches can break connectivity."
+msgstr ""
+
+#: src/protocols/reality.md
+msgid "Mostly confined to the Xray tooling ecosystem."
+msgstr ""
+
+#: src/protocols/reality.md
+msgid ""
+"Effectiveness depends on the chosen cover domain and correct configuration."
+msgstr ""
 
 #~ msgid ""
 #~ "The landscape of proxy applications has become crowded and fragmented, so—"
@@ -1667,11 +2955,6 @@ msgstr "安全性高度依赖所选传输层；不带 TLS 的裸 VLESS 没有加
 #~ "带 ALPN `h3` 的 TLS 1.3 握手在 QUIC 内进行；服务器通过密码或令牌认证。"
 
 #~ msgid ""
-#~ "Once authenticated, the client opens bidirectional streams for TCP "
-#~ "proxying or datagrams for UDP."
-#~ msgstr "认证后，客户端打开双向流用于 TCP 代理，或使用数据报处理 UDP。"
-
-#~ msgid ""
 #~ "Adaptive congestion algorithm tunes pacing; optional packet loss recovery "
 #~ "retransmits as needed."
 #~ msgstr "自适应拥塞算法调整发送节奏；可选丢包恢复按需重传。"
@@ -1688,11 +2971,6 @@ msgstr "安全性高度依赖所选传输层；不带 TLS 的裸 VLESS 没有加
 #~ msgid ""
 #~ "Built-in obfuscation and padding resist simple traffic fingerprinting."
 #~ msgstr "内置混淆与填充抵抗简单流量指纹。"
-
-#~ msgid ""
-#~ "Requires stable UDP reachability; some enterprise networks block outbound "
-#~ "UDP."
-#~ msgstr "需要稳定的 UDP 可达性；一些企业网络会阻断出站 UDP。"
 
 #~ msgid ""
 #~ "Needs path MTU tuning to avoid fragmentation; 1200 bytes is a safe "
