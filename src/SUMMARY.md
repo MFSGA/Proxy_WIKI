@@ -18,4 +18,5 @@
   - [Hysteria 2](./protocols/hysteria2.md)
   - [TUIC](./protocols/tuic.md)
   - [VLESS](./protocols/vless.md)
+  - [xHTTP Transport](./protocols/xhttp.md)
   - [Reality](./protocols/reality.md)
