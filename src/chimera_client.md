@@ -13,7 +13,7 @@ Internally, the client splits into configuration ingestion, controller APIs, tra
 - Inbound listeners: define local HTTP/SOCKS/TUN/transparent ports, bind addresses, UDP enablement, and device interface selection. See [Ports and Listeners](./chimera_client/ports.md).
 - Controller and UX: configure the API bind host/port, authentication tokens, and optional TUI or desktop shell toggles.
 - DNS pipeline: declare upstream resolvers, cache sizing, fake-IP versus real-IP strategy, fallback behavior, and policy-based resolver selection. See [DNS Module](./chimera_client/dns.md).
-- Policy engine: order rules, attach rule providers, choose a default group, and map traffic to outbound groups.
+- Policy engine: order rules, attach rule providers, choose a default group, and map traffic to outbound groups. See [Rule Types and Their Effects](./chimera_client/rules.md).
 - Transport engines: specify per-protocol parameters like cipher suites, transports (TCP/WS/gRPC/QUIC), multiplexing, and TLS fingerprint options; reuse defaults to keep profiles consistent.
 - Observability: enable structured logs, metrics, and trace exports, with sampling and retention tuned per environment.
 - Update and sync: manage remote profile URLs, signature verification, polling intervals, and rollback on invalid configs.
