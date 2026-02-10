@@ -7,6 +7,7 @@
   - [Ports and Listeners](./chimera_client/ports.md)
   - [DNS Module](./chimera_client/dns.md)
   - [Tun Module](./chimera_client/tun.md)
+  - [Rule Types and Their Effects](./chimera_client/rules.md)
 - [Chimera Server](./chimera.md)
 - [Chimera_Server Library](./chimera_server.md)
 - [Protocol](./protocol.md)
