@@ -1,48 +1,68 @@
 # Ports and Listeners
 
 ## Overview
-Ports define where local applications, dashboards, and DNS resolvers connect to `chimera_client`. The naming follows Clash-style configuration, while `chimera_client` currently uses underscore keys for the same concepts.
+Ports define how local applications, dashboards, and DNS resolvers enter `chimera_client`.
+This page cross-references Clash-rs and Mihomo semantics, then states the current `chimera_client` status explicitly.
 
-## Port Map
-| Clash key | chimera_client key | Role |
+## Key Mapping
+| Clash / Mihomo key | chimera_client key | Purpose |
 | --- | --- | --- |
-| `port` / `http-port` | `port` | HTTP CONNECT proxy for browsers and system proxy settings. |
-| `socks-port` | `socks_port` | SOCKS5 proxy for general applications; UDP associate support is optional. |
-| `mixed-port` | `mixed_port` | Combined HTTP + SOCKS5 listener on one port. |
-| `redir-port` | `redir_port` | Linux TCP transparent redirect (iptables REDIRECT). |
-| `tproxy-port` | `tproxy_port` | Linux TPROXY for TCP/UDP transparent proxying. |
-| `external-controller` | `external_controller` | REST API port for dashboards and automation. |
-| `dns.listen` | `dns.listen` | Local DNS listener for fake-IP or policy DNS. |
+| `port` / `http-port` | `port` | HTTP CONNECT/plain proxy listener |
+| `socks-port` | `socks_port` | SOCKS5 listener |
+| `mixed-port` | `mixed_port` | Shared HTTP+SOCKS listener |
+| `redir-port` | `redir_port` | Linux TCP transparent REDIRECT |
+| `tproxy-port` | `tproxy_port` | Linux TPROXY (TCP/UDP) |
+| `external-controller` | `external_controller` | REST controller endpoint |
+| `dns.listen` | `dns.listen` | Local DNS socket |
 
-## What Each Port Does
-### HTTP proxy port
-Accepts HTTP CONNECT requests and plain HTTP proxy traffic. It is the default choice for browsers and OS-level proxy settings.
+## Behavior by Listener Type
+### HTTP proxy (`port` / `http-port`)
+- Typical browser/system-proxy entrypoint.
+- Expects HTTP CONNECT and HTTP proxy semantics.
 
-### SOCKS5 port
-Accepts SOCKS5 connections from applications that speak SOCKS natively. It is commonly used by developer tools and power users.
+### SOCKS5 (`socks-port`)
+- Most widely compatible app-level inbound.
+- Supports direct app integration without kernel routing changes.
 
-### Mixed port
-Accepts both HTTP and SOCKS5 on a single port. Use this to simplify local proxy configuration when only one port can be configured.
+### Mixed (`mixed-port`)
+- Single port for both HTTP and SOCKS protocols.
+- Useful where clients only allow one proxy endpoint setting.
 
-### Redir port
-Used for TCP transparent proxying on Linux via iptables REDIRECT. It only captures TCP and requires kernel-level redirection rules.
+### Redir (`redir-port`)
+- Linux TCP transparent capture via iptables REDIRECT.
+- Does not capture UDP by itself.
 
-### TProxy port
-Used for Linux TPROXY to capture both TCP and UDP. It requires policy routing and `fwmark` rules, and is often paired with TUN or redirection tooling.
+### TProxy (`tproxy-port`)
+- Transparent TCP+UDP capture path on Linux.
+- Requires policy routing (`fwmark` + route table) and firewall integration.
 
-### Controller port
-Exposes the REST API used by dashboards, mobile shells, and automation. Bind it to localhost unless remote access is required.
+### External controller (`external-controller`)
+- Management API for dashboards and automation.
+- Prefer loopback binding unless remote access is required.
 
-### DNS listen port
-Accepts DNS queries from the system or from a TUN stack. It is typically paired with fake-IP or split-horizon DNS rules.
+### DNS listen (`dns.listen`)
+- Local resolver socket used by fake-IP/split-DNS workflows.
+- Usually paired with TUN or transparent proxy mode.
 
-## chimera_client Support Notes
-- `socks_port` is the only inbound port wired today; UDP associate is currently disabled.
-- `port`, `mixed_port`, `redir_port`, and `tproxy_port` are reserved for compatibility but not yet implemented.
-- The DNS server and controller listener are under active development; keep them local unless you are testing.
+## Compatibility Status Matrix
+| Feature | chimera_client now | clash-rs / Mihomo |
+| --- | --- | --- |
+| SOCKS5 inbound | Available | Available |
+| SOCKS UDP associate | Limited / disabled in current notes | Available |
+| HTTP inbound | Reserved/planned | Available |
+| Mixed inbound | Reserved/planned | Available |
+| Redir inbound | Reserved/planned | Available |
+| TProxy inbound | Reserved/planned | Available |
+| External controller | Under active development | Mature |
+| Local DNS listener | Under active development | Mature |
+
+## Recommended Usage Today
+- Prefer `socks_port` as the stable ingress.
+- Keep management and DNS bindings on `127.0.0.1` during development.
+- Treat non-SOCKS inbounds as compatibility keys unless your branch explicitly enables them.
 
 ## Configuration Examples
-### Minimal chimera_client
+### Minimal `chimera_client` profile (current-safe)
 ```yaml
 bind_address: "127.0.0.1"
 allow_lan: false
@@ -52,7 +72,7 @@ dns:
   ipv6: false
 ```
 
-### Clash or Mihomo Layout (Reference)
+### Clash / Mihomo reference layout
 ```yaml
 port: 7890
 socks-port: 7891
@@ -63,3 +83,10 @@ external-controller: 127.0.0.1:9090
 dns:
   listen: 127.0.0.1:1053
 ```
+
+## Migration Notes
+When importing a profile from Mihomo or clash-rs:
+1. keep original keys for readability,
+2. map to `chimera_client` accepted keys where necessary,
+3. disable inbounds not yet active,
+4. verify with live connection tests before enabling LAN exposure.
