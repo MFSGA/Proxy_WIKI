@@ -1,40 +1,84 @@
 # Chimera_Client
 
 ## Role and Objectives
-`chimera_client` is a Rust reimplementation of the popular Clash client, optimized for low-latency rule evaluation and resource-constrained environments. It exposes the familiar Clash configuration language while embracing Rust’s safety guarantees, making it suitable for desktop, mobile (via bindings), and headless automation scenarios. The client focuses on three pillars: broad protocol compatibility, deterministic policy routing, and easy operator ergonomics.
+`chimera_client` is the Clash-compatible client runtime in the Chimera ecosystem.
+Its design goal is practical compatibility with existing Clash/Mihomo profiles, while using Rust’s type safety and async ecosystem to build a maintainable codebase.
+
+For operators, this means:
+- Preserve familiar configuration and policy mental models.
+- Improve implementation clarity through explicit schema and module boundaries.
+- Enable incremental parity: start from stable basics (e.g., SOCKS inbound + rules), then close feature gaps against `clash-rs` and Mihomo.
+
+## Relationship to Clash-rs and Mihomo
+`chimera_client` documentation treats `clash-rs` and Mihomo as the two most important references:
+
+- **clash-rs**: Rust-native reference for parser/runtime behavior and config semantics.
+- **Mihomo**: de-facto production reference for broad ecosystem compatibility and advanced operational features.
+
+In this chapter, each module page clearly marks:
+1. what works in `chimera_client` now,
+2. what is Clash/Mihomo-compatible target behavior,
+3. and what migration precautions to apply today.
 
 ## Architecture Overview
-Internally, the client splits into configuration ingestion, controller APIs, transport engines, and policy runtime. The configuration loader parses Clash YAML into strongly typed Rust structures, validates them with `chimera_core` schemas, and hot-reloads updates. The controller layer provides both a local HTTP API and optional TUI, enabling on-device rule inspection. Transport engines encapsulate each supported protocol (e.g., Shadowsocks, VMess, Trojan, Reality/QUIC); they share cipher suites and handshake logic via `chimera_core`. The policy runtime builds a decision tree from user rules, executes DNS strategies, and feeds matching traffic into the appropriate transport engine.
+Internally, the client is organized into four layers:
 
-## Module Configuration Guide
-`chimera_client` keeps configuration aligned with its module boundaries, so each functional area has its own block in the Clash-style YAML. This makes changes easier to reason about, and limits the blast radius of hot-reload updates.
+1. **Configuration layer**
+   - Parses Clash-style YAML into typed Rust structures.
+   - Handles defaults, validation, and hot-reload boundaries.
+2. **Inbound/controller layer**
+   - Owns local listeners (SOCKS/HTTP/mixed/TUN as parity evolves).
+   - Exposes management APIs for status, switching, and diagnostics.
+3. **Policy and DNS layer**
+   - Evaluates rule chains with first-match semantics.
+   - Provides DNS strategy primitives (system resolver today; Clash-style DNS target).
+4. **Outbound transport layer**
+   - Executes protocol handshakes and stream forwarding.
+   - Encapsulates protocol-specific knobs while sharing common TLS/socket utilities.
 
-- Core runtime and profile: set global defaults such as mode selection, service ports, logging verbosity, IPv6/allow-lan toggles, and reload behavior.
-- Inbound listeners: define local HTTP/SOCKS/TUN/transparent ports, bind addresses, UDP enablement, and device interface selection. See [Ports and Listeners](./chimera_client/ports.md).
-- Controller and UX: configure the API bind host/port, authentication tokens, and optional TUI or desktop shell toggles.
-- DNS pipeline: declare upstream resolvers, cache sizing, fake-IP versus real-IP strategy, fallback behavior, and policy-based resolver selection. See [DNS Module](./chimera_client/dns.md).
-- Policy engine: order rules, attach rule providers, choose a default group, and map traffic to outbound groups. See [Rule Types and Their Effects](./chimera_client/rules.md).
-- Transport engines: specify per-protocol parameters like cipher suites, transports (TCP/WS/gRPC/QUIC), multiplexing, and TLS fingerprint options; reuse defaults to keep profiles consistent.
-- Observability: enable structured logs, metrics, and trace exports, with sampling and retention tuned per environment.
-- Update and sync: manage remote profile URLs, signature verification, polling intervals, and rollback on invalid configs.
+This split mirrors common Clash-family architecture and reduces coupling between parser, runtime, and protocol engines.
 
+## Module Guide
+Each functional area is documented independently:
 
-## Protocol Coverage and Features
-`chimera_client` aims for interoperability with the most common proxy ecosystems:
+- **Ports and listeners**: key mapping and current inbound support.
+  See [Ports and Listeners](./chimera_client/ports.md).
+- **DNS module**: fake-IP vs real-IP models, resolver policy, and current implementation status.
+  See [DNS Module](./chimera_client/dns.md).
+- **TUN module**: route-all/split-route semantics and Linux policy-routing notes.
+  See [Tun Module](./chimera_client/tun.md).
+- **Rules module**: rule taxonomy, ordering strategy, and provider-based policy composition.
+  See [Rule Types and Their Effects](./chimera_client/rules.md).
 
-- Traditional: HTTP(S), SOCKS5, and TCP/UDP relays.
-- Modern encrypted: Shadowsocks/SSR, VMess/VLESS (TCP/WS/gRPC/QUIC), Trojan, NaïveProxy, TUIC, Hysteria v2.
-- Advanced transports: Reality TLS fingerprinting, multiplexed QUIC sessions, and custom obfuscation plugins.
+## Compatibility Snapshot (English Docs, Current)
+| Area | chimera_client (current) | clash-rs / Mihomo reference |
+| --- | --- | --- |
+| Inbound listeners | `socks_port` available; others partial/in progress | Full Clash-family listener matrix |
+| DNS | Primarily system resolver path; Clash-style block documented as target | Mature fake-IP/real-IP/split resolver workflows |
+| TUN | Documented target model; not fully active on mainline | Mature cross-platform implementations |
+| Rules | Core Clash rule language documented and aligned | Full rule/provider ecosystem |
 
-Each protocol implementation documents cipher options, authentication requirements, multiplexing behavior, and fallbacks. Users can mix outbound types in a single configuration and chain proxies for complex routing.
+Use this table as a reading index: module pages go deeper with examples and caveats.
 
 ## Deployment Patterns
-The client ships binaries for major desktop platforms and offers container images for server-side routing or CI testing. A lightweight system service wraps the daemon on Linux to manage automatic restarts and secret rotation. For mobile, bindings expose the controller API to Flutter and React Native shells. Configuration synchronization relies on GitOps-friendly manifests plus optional remote profile URLs, enabling fleets to pull signed updates on schedule.
+Current recommended pattern for production-like use:
 
-## Performance, Observability, and Troubleshooting
-`chimera_client` integrates structured logging, OpenTelemetry traces, and per-rule metrics. Operators can export connection stats, latency percentiles, and rule hit counts for dashboards. Performance tuning guidance covers DNS cache sizing, rule tree pruning, per-protocol concurrency caps, and CPU affinity when running on routers. Troubleshooting chapters walk through common failure modes such as TLS fingerprint mismatches, DNS poisoning, or controller authentication errors.
+- Start with SOCKS-based local proxying.
+- Keep DNS conservative unless you are validating an in-progress DNS branch.
+- Use explicit rule ordering and small provider sets first, then scale.
+- Add TUN only when parity branch and environment prerequisites are verified.
+
+For CI/testing, keep one minimal profile and one Clash/Mihomo-parity profile to detect parser/runtime divergence early.
+
+## Performance and Operational Focus
+The long-term performance strategy is aligned with Clash-family workloads:
+- predictable low-overhead rule matching,
+- bounded memory behavior in long-lived sessions,
+- and high observability for policy debugging.
+
+When introducing parity features (DNS/TUN/listeners), prioritize deterministic behavior and debuggability over implicit "magic" defaults.
 
 ## Reference Repositories
-The `chimera_client` source lives here:
-
 - `chimera_client`: <https://github.com/MFSGA/Chimera_Client>
+- `clash-rs`: <https://github.com/Watfaq/clash-rs>
+- `mihomo`: <https://github.com/MetaCubeX/mihomo>
