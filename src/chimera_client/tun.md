@@ -44,6 +44,69 @@ tun:
 | `route-table` | `u32` | `2468` | Linux policy-routing table used by TUN route-all path. |
 | `dns-hijack` | `bool` or `list` | `false` | Enables DNS interception behavior in TUN path. |
 
+## Per-Option Behavior (Clash-rs Source of Truth)
+This section expands every `tun` field from `TunConfig` in `clash-rs` and explains practical impact.
+
+### `enable`
+- Turns the whole TUN pipeline on/off.
+- `false` means all other `tun` fields are ignored at runtime.
+
+### `device-id`
+- Interface identifier and creation mode.
+- Accepted forms in clash-rs parser:
+  - `dev://<name>`: create/use a named TUN device.
+  - plain `<name>`: treated as `dev://<name>`.
+  - `fd://<n>`: adopt an already-open file descriptor (advanced embedding/systemd style).
+- Alias keys accepted by parser: `device-url`, `device`.
+
+### `gateway`
+- IPv4 CIDR assigned to TUN NIC, e.g. `198.18.0.1/24`.
+- This defines both local TUN IP and prefix used for routing decisions.
+
+### `gateway-v6`
+- Optional IPv6 CIDR for TUN NIC.
+- If omitted, IPv6 handling in TUN path is effectively disabled.
+
+### `route-all`
+- `true`: full-tunnel, install default-path style routes/rules.
+- `false`: split-tunnel, only prefixes in `routes` are sent to TUN.
+- If `route-all: true`, `routes` list becomes operationally irrelevant.
+
+### `routes`
+- CIDR list used for split-tunnel mode (`route-all: false`).
+- Typical use: route specific public resolvers, target regions, or service networks only.
+
+### `mtu`
+- TUN interface MTU override.
+- Leave unset for runtime/platform defaults; set explicitly when encountering fragmentation/PMTU issues.
+
+### `so-mark`
+- Linux-only fwmark attached to outbound packets.
+- Used with `ip rule`/`iptables`/`nftables` to avoid proxy loops and integrate custom policy routing.
+
+### `route-table`
+- Linux-only policy route table index used by clash-rs TUN route installation.
+- Default is `2468`; change when your system already uses that table number.
+
+### `dns-hijack`
+- `false`: do not redirect DNS in TUN path.
+- `true`: hijack UDP/53 queries to Clash DNS service.
+- `list`: clash-rs currently treats list mode as enabling hijack behavior (same effect as `true`).
+
+## Mihomo Gap Notes (Based on Public Tun Docs)
+Compared with the clash-rs schema above, the following items are not documented as first-class tun keys in mihomo (same-name or same-shape):
+
+1. `device-id` with `fd://<n>` file-descriptor form.
+   - Mihomo docs expose `device` but do not document fd-based takeover syntax.
+2. `gateway` / `gateway-v6` explicit interface-address assignment fields.
+   - Mihomo tun docs focus on route/rule controls and do not expose clash-rs-style gateway CIDR keys.
+3. `route-all` + `routes` exact pair.
+   - Mihomo uses `auto-route`, `route-address`, `route-exclude-address` style controls instead of clash-rs key shape.
+4. `route-table` exact naming.
+   - Mihomo exposes `iproute2-table-index` / `iproute2-rule-index`; functionally close but not the same key contract.
+
+> Note: `so-mark` in clash-rs and `routing-mark` in mihomo are conceptually similar (Linux packet mark), so this is a naming/compatibility difference, not a missing capability.
+
 ## Device-ID Formats
 - `dev://utun1989` or `utun1989`: create/use named TUN device.
 - `dev://tun0`: common Linux style.
@@ -127,3 +190,4 @@ tun:
 - Clash-rs route behavior: `clash-lib/src/proxy/tun/routes/{linux,macos,windows}.rs`.
 - Clash-rs sample profile: `clash-bin/tests/data/config/tun.yaml`.
 - Chimera_Client current parser snapshot: `clash-lib/src/config/def.rs` (no `tun` block yet on mainline).
+- Mihomo tun documentation (for key-shape comparison): `https://wiki.metacubex.one/config/inbound/tun/`.
