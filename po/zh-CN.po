@@ -49,12 +49,12 @@ msgid "Rule Types and Their Effects"
 msgstr "规则类型及其作用"
 
 #: src/SUMMARY.md src/chimera.md
-msgid "Chimera Server"
-msgstr "Chimera 服务器"
+msgid "Chimera GUI"
+msgstr "Chimera 图形化用户界面"
 
 #: src/SUMMARY.md
-msgid "Chimera_Server Library"
-msgstr "chimera_server 库"
+msgid "Chimera_Server"
+msgstr "chimera_server 服务端"
 
 #: src/SUMMARY.md src/protocol.md
 msgid "Protocol"
