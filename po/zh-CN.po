@@ -633,16 +633,16 @@ msgstr "socks_port"
 
 #: src/chimera_client/ports.md src/chimera_client/dns.md
 msgid "dns"
-msgstr ""
+msgstr "dns"
 
 #: src/chimera_client/ports.md src/chimera_client/dns.md
 #: src/chimera_client/tun.md
 msgid "enable"
-msgstr ""
+msgstr "enable"
 
 #: src/chimera_client/ports.md src/chimera_client/dns.md
 msgid "ipv6"
-msgstr ""
+msgstr "ipv6"
 
 #: src/chimera_client/ports.md
 msgid "Clash or Mihomo Layout (Reference)"
@@ -678,11 +678,11 @@ msgstr "127.0.0.1:9090"
 
 #: src/chimera_client/ports.md src/chimera_client/dns.md
 msgid "listen"
-msgstr ""
+msgstr "listen"
 
 #: src/chimera_client/ports.md src/chimera_client/dns.md
 msgid "127.0.0.1:1053"
-msgstr ""
+msgstr "127.0.0.1:1053"
 
 #: src/chimera_client/dns.md src/chimera_client/tun.md
 msgid "Scope and Goals"
@@ -694,228 +694,225 @@ msgid ""
 "Its goals are predictable rule matching, low latency, and safe resolution "
 "under hostile or unreliable networks. Configuration typically lives under a "
 "`dns` block in the Clash-style YAML and can be hot-reloaded."
-msgstr ""
+msgstr "DNS 模块负责在策略路由前完成域名解析。其目标是在敌对或不稳定网络下，依然实现可预测的规则命中、低延迟和安全解析。配置通常位于 Clash 风格 YAML 的 `dns` 块中，并支持热重载。"
 
 #: src/chimera_client/dns.md
-#, fuzzy
 msgid "Configuration Areas"
-msgstr "配置片段"
+msgstr "配置要点"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Upstream resolvers: define UDP, DoH, or DoT endpoints, and choose which "
 "transport is allowed per environment."
-msgstr ""
+msgstr "上游解析器：定义 UDP、DoH 或 DoT 端点，并按环境选择允许的传输方式。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Resolution mode: select fake-IP versus real-IP behavior, and configure the "
 "fake-IP pool plus domain filters that must bypass synthesis."
-msgstr ""
+msgstr "解析模式：在 fake-IP 与 real-IP 行为间选择，并配置 fake-IP 地址池与必须绕过合成的域名过滤规则。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Split-horizon policies: map domain suffixes or rule sets to specific "
 "resolvers, including private zones and regional endpoints."
-msgstr ""
+msgstr "分视域策略：将域名后缀或规则集映射到指定解析器，覆盖私有域和区域化端点。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Fallback strategy: add fallback resolvers and health checks for blocked, "
 "poisoned, or slow upstreams."
-msgstr ""
+msgstr "回退策略：为被阻断、被污染或缓慢的上游添加回退解析器与健康检查。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Cache behavior: tune TTL caps, cache size, and prefetch rules to reduce "
 "latency without stale answers."
-msgstr ""
+msgstr "缓存行为：调优 TTL 上限、缓存容量和预取规则，在避免陈旧结果的同时降低延迟。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Safety controls: enable hosts overrides, blocklists, or ECS avoidance to "
 "limit leakage and improve consistency."
-msgstr ""
+msgstr "安全控制：启用 hosts 覆盖、拦截列表或 ECS 规避，以减少泄露并提升一致性。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Bootstrap resolvers: keep a small plain DNS list so DoH or DoT endpoints can"
 " be resolved without circular dependencies."
-msgstr ""
+msgstr "引导解析器：保留一个小规模明文 DNS 列表，以便 DoH/DoT 端点可在无循环依赖时被解析。"
 
 #: src/chimera_client/dns.md
 msgid "Resolution Modes"
-msgstr ""
+msgstr "解析模式"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Fake-IP mode: synthesizes IPs so traffic can be steered by domain rules even"
 " after apps connect by IP. This works best with TUN or transparent proxying "
 "but requires careful fake-IP filtering for local or IP-sensitive services."
-msgstr ""
+msgstr "Fake-IP 模式：通过合成 IP，让应用在以 IP 建连后仍可按域名规则分流。该模式在 TUN 或透明代理场景下效果最佳，但需为本地服务或对 IP 敏感的服务精细配置 fake-IP 过滤。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Real-IP mode: returns actual addresses to applications, which is simpler for"
 " LAN workflows and strict DNS consumers but reduces the ability to enforce "
 "domain rules after connection."
-msgstr ""
+msgstr "Real-IP 模式：向应用返回真实地址，更适合局域网流程和严格 DNS 消费者，但会降低连接建立后继续执行域名规则的能力。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Hybrid usage: keep fake-IP enabled for general traffic and add explicit "
 "fake-IP filters for mDNS, LAN suffixes, or time sync domains."
-msgstr ""
+msgstr "混合用法：对通用流量启用 fake-IP，同时为 mDNS、局域网后缀或时间同步域名添加显式 fake-IP 过滤。"
 
 #: src/chimera_client/dns.md
 msgid "Resolver Selection Flow"
-msgstr ""
+msgstr "解析器选择流程"
 
 #: src/chimera_client/dns.md
 msgid "Apply hosts overrides and consult the in-memory cache."
-msgstr ""
+msgstr "先应用 hosts 覆盖规则，并查询内存缓存。"
 
 #: src/chimera_client/dns.md
 msgid "Select a resolver based on domain policies or rule sets."
-msgstr ""
+msgstr "根据域名策略或规则集选择解析器。"
 
 #: src/chimera_client/dns.md
 msgid "Query primary resolvers in order or in parallel."
-msgstr ""
+msgstr "按顺序或并行查询主解析器。"
 
 #: src/chimera_client/dns.md
 msgid "If responses fail validation or time out, trigger fallback resolvers."
-msgstr ""
+msgstr "若响应校验失败或超时，则触发回退解析器。"
 
 #: src/chimera_client/dns.md
 msgid "Cache the response with TTL caps and return it to the caller."
-msgstr ""
+msgstr "按 TTL 上限缓存响应并返回给调用方。"
 
 #: src/chimera_client/dns.md
-#, fuzzy
 msgid "Configuration References"
-msgstr "配置片段"
+msgstr "配置参考"
 
 #: src/chimera_client/dns.md
-#, fuzzy
 msgid "chimera_client (current)"
-msgstr "chimera_client 客户端"
+msgstr "chimera_client（当前）"
 
 #: src/chimera_client/dns.md
 msgid ""
 "The current implementation relies on the system resolver. Keep DNS disabled "
 "unless you are testing the in-progress DNS server, and override IPv6 only if"
 " you need to suppress AAAA answers."
-msgstr ""
+msgstr "当前实现依赖系统解析器。除非你在测试开发中的 DNS 服务器，否则请保持 DNS 关闭；仅在需要抑制 AAAA 响应时再覆写 IPv6。"
 
 #: src/chimera_client/dns.md
 msgid "Mihomo / Clash (reference projects)"
-msgstr ""
+msgstr "Mihomo / Clash（参考项目）"
 
 #: src/chimera_client/dns.md
 msgid ""
 "This block mirrors the Clash-compatible DNS schema as used by Mihomo. It is "
 "usable in those projects and serves as a target shape for chimera_client "
 "parity."
-msgstr ""
+msgstr "该配置块复刻了 Mihomo 使用的 Clash 兼容 DNS 结构。它可直接用于这些项目，也作为 chimera_client 对齐的目标形态。"
 
 #: src/chimera_client/dns.md
 msgid "enhanced-mode"
-msgstr ""
+msgstr "enhanced-mode"
 
 #: src/chimera_client/dns.md
 msgid "fake-ip"
-msgstr ""
+msgstr "fake-ip"
 
 #: src/chimera_client/dns.md
 msgid "fake-ip-range"
-msgstr ""
+msgstr "fake-ip-range"
 
 #: src/chimera_client/dns.md
 msgid "198.18.0.1/16"
-msgstr ""
+msgstr "198.18.0.1/16"
 
 #: src/chimera_client/dns.md
 msgid "fake-ip-filter"
-msgstr ""
+msgstr "fake-ip-filter"
 
 #: src/chimera_client/dns.md
 msgid "\"*.lan\""
-msgstr ""
+msgstr "\"*.lan\""
 
 #: src/chimera_client/dns.md
 msgid "\"*.local\""
-msgstr ""
+msgstr "\"*.local\""
 
 #: src/chimera_client/dns.md
 msgid "default-nameserver"
-msgstr ""
+msgstr "default-nameserver"
 
 #: src/chimera_client/dns.md
 msgid "nameserver"
-msgstr ""
+msgstr "nameserver"
 
 #: src/chimera_client/dns.md
 msgid "https://dns.alidns.com/dns-query"
-msgstr ""
+msgstr "https://dns.alidns.com/dns-query"
 
 #: src/chimera_client/dns.md
 msgid "tls://1.1.1.1:853"
-msgstr ""
+msgstr "tls://1.1.1.1:853"
 
 #: src/chimera_client/dns.md
 msgid "fallback"
-msgstr ""
+msgstr "fallback"
 
 #: src/chimera_client/dns.md
 msgid "fallback-filter"
-msgstr ""
+msgstr "fallback-filter"
 
 #: src/chimera_client/dns.md
 msgid "geoip"
-msgstr ""
+msgstr "geoip"
 
 #: src/chimera_client/dns.md
 msgid "geoip-code"
-msgstr ""
+msgstr "geoip-code"
 
 #: src/chimera_client/dns.md
 msgid "CN"
-msgstr ""
+msgstr "CN"
 
 #: src/chimera_client/dns.md
 msgid "Operational Guidance"
-msgstr ""
+msgstr "实操建议"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Prefer explicit resolver policies when different traffic classes require "
 "distinct egress paths."
-msgstr ""
+msgstr "当不同流量类别需要不同出口路径时，优先使用显式解析器策略。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Keep fake-IP exclusions narrow to avoid bypassing rule evaluation "
 "unintentionally."
-msgstr ""
+msgstr "保持 fake-IP 排除范围尽量精确，避免无意绕过规则评估。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Use a small bootstrap resolver list for DoH or DoT endpoints that must "
 "resolve at startup."
-msgstr ""
+msgstr "为必须在启动时解析的 DoH/DoT 端点，配置一个小规模引导解析器列表。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Tune cache caps with observed traffic patterns rather than using defaults "
 "blindly."
-msgstr ""
+msgstr "应基于观测到的流量模式调优缓存上限，而非盲目使用默认值。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Monitor fallback usage; spikes often indicate upstream blocks or transport "
 "failures."
-msgstr ""
+msgstr "监控回退使用率；突增通常意味着上游被封锁或传输失败。"
 
 #: src/chimera_client/dns.md src/chimera_client/tun.md src/protocols/xhttp.md
 msgid "Troubleshooting Checklist"
@@ -925,29 +922,29 @@ msgstr "故障排查清单"
 msgid ""
 "Confirm the local DNS listener is reachable (for example, `dig @127.0.0.1 -p"
 " 1053 example.com`)."
-msgstr ""
+msgstr "确认本地 DNS 监听器可达（例如：`dig @127.0.0.1 -p 1053 example.com`）。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Verify the system resolver or TUN stack actually points at the client "
 "listener."
-msgstr ""
+msgstr "确认系统解析器或 TUN 协议栈确实指向客户端监听器。"
 
 #: src/chimera_client/dns.md
 msgid "Revisit fake-IP filters for domains that must keep real IPs."
-msgstr ""
+msgstr "对必须保留真实 IP 的域名，重新检查 fake-IP 过滤规则。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Inspect logs for upstream timeouts, TLS handshake errors, or poisoned "
 "responses."
-msgstr ""
+msgstr "检查日志中是否存在上游超时、TLS 握手错误或污染响应。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Temporarily force a single UDP resolver to isolate DoH or DoT connectivity "
 "issues."
-msgstr ""
+msgstr "可临时强制使用单一 UDP 解析器，以隔离 DoH/DoT 连通性问题。"
 
 #: src/chimera_client/tun.md
 msgid ""
@@ -955,88 +952,88 @@ msgid ""
 "pipeline without requiring each application to be proxy-aware. Compared with"
 " HTTP/SOCKS listeners, TUN is the closest to \"system-wide proxy\" behavior "
 "and is usually combined with policy routing and DNS control."
-msgstr ""
+msgstr "TUN 模式会捕获主机的三层流量，并将其送入代理管线，无需每个应用具备代理能力。相比 HTTP/SOCKS 监听器，TUN 最接近“系统级代理”行为，通常与策略路由和 DNS 控制联合使用。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "This page follows `clash-rs` semantics and config keys so future "
 "`chimera_client` parity is straightforward."
-msgstr ""
+msgstr "本页遵循 `clash-rs` 的语义与配置键，以便后续 `chimera_client` 对齐更加直接。"
 
 #: src/chimera_client/tun.md
 msgid "Current Project Status"
-msgstr ""
+msgstr "当前项目状态"
 
 #: src/chimera_client/tun.md
 msgid ""
 "`chimera_client` (current mainline) does not yet expose a `tun` block in its"
 " config parser."
-msgstr ""
+msgstr "`chimera_client`（当前主线）在配置解析器中尚未暴露 `tun` 配置块。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "The TUN section below is the clash-rs-aligned target shape and operational "
 "guidance, not a statement that all fields are already active in "
 "`chimera_client`."
-msgstr ""
+msgstr "下方 TUN 章节是与 clash-rs 对齐的目标形态和运维指引，不代表 `chimera_client` 中所有字段都已生效。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Today, use SOCKS/listener-based workflows in `chimera_client` unless you are"
 " validating an in-progress TUN branch."
-msgstr ""
+msgstr "当前建议在 `chimera_client` 中使用基于 SOCKS/监听器的工作流，除非你正在验证开发中的 TUN 分支。"
 
 #: src/chimera_client/tun.md
 msgid "Configuration Schema (Clash-rs Aligned)"
-msgstr ""
+msgstr "配置结构（与 Clash-rs 对齐）"
 
 #: src/chimera_client/tun.md
 msgid "tun"
-msgstr ""
+msgstr "tun"
 
 #: src/chimera_client/tun.md
 msgid "device-id"
-msgstr ""
+msgstr "device-id"
 
 #: src/chimera_client/tun.md
 msgid "\"dev://utun1989\""
-msgstr ""
+msgstr "\"dev://utun1989\""
 
 #: src/chimera_client/tun.md
 msgid "route-all"
-msgstr ""
+msgstr "route-all"
 
 #: src/chimera_client/tun.md
 msgid "gateway"
-msgstr ""
+msgstr "gateway"
 
 #: src/chimera_client/tun.md
 msgid "\"198.18.0.1/24\""
-msgstr ""
+msgstr "\"198.18.0.1/24\""
 
 #: src/chimera_client/tun.md
 msgid "gateway-v6"
-msgstr ""
+msgstr "gateway-v6"
 
 #: src/chimera_client/tun.md
 msgid "\"fd00:fac::1/64\""
-msgstr ""
+msgstr "\"fd00:fac::1/64\""
 
 #: src/chimera_client/tun.md
 msgid "mtu"
-msgstr ""
+msgstr "mtu"
 
 #: src/chimera_client/tun.md
 msgid "so-mark"
-msgstr ""
+msgstr "so-mark"
 
 #: src/chimera_client/tun.md
 msgid "route-table"
-msgstr ""
+msgstr "route-table"
 
 #: src/chimera_client/tun.md
 msgid "dns-hijack"
-msgstr ""
+msgstr "dns-hijack"
 
 #: src/chimera_client/tun.md
 msgid ""
@@ -1046,23 +1043,23 @@ msgid ""
 "  # routes:\n"
 "  #   - 1.1.1.1/32\n"
 "  #   - 2001:4860:4860::8888/128\n"
-msgstr ""
+msgstr "# dns-hijack:\n  #   - 1.1.1.1:53\n  #   - 8.8.8.8:53\n  # routes:\n  #   - 1.1.1.1/32\n  #   - 2001:4860:4860::8888/128\n"
 
 #: src/chimera_client/tun.md
 msgid "Key Fields and Semantics"
-msgstr ""
+msgstr "关键字段与语义"
 
 #: src/chimera_client/tun.md
 msgid "Key"
-msgstr ""
+msgstr "键名"
 
 #: src/chimera_client/tun.md
 msgid "Type"
-msgstr ""
+msgstr "类型"
 
 #: src/chimera_client/tun.md
 msgid "Default"
-msgstr ""
+msgstr "默认值"
 
 #: src/chimera_client/tun.md src/protocols/trojan/wire-format.md
 msgid "Notes"
@@ -1070,350 +1067,348 @@ msgstr "注意事项"
 
 #: src/chimera_client/tun.md
 msgid "`enable`"
-msgstr ""
+msgstr "`enable`"
 
 #: src/chimera_client/tun.md
 msgid "`bool`"
-msgstr ""
+msgstr "`bool`"
 
 #: src/chimera_client/tun.md
 msgid "`false`"
-msgstr ""
+msgstr "`false`"
 
 #: src/chimera_client/tun.md
 msgid "Enables TUN runtime."
-msgstr ""
+msgstr "启用 TUN 运行时。"
 
 #: src/chimera_client/tun.md
 msgid "`device-id`"
-msgstr ""
+msgstr "`device-id`"
 
 #: src/chimera_client/tun.md
 msgid "`string`"
-msgstr ""
+msgstr "`string`"
 
 #: src/chimera_client/tun.md
 msgid "`utun1989`"
-msgstr ""
+msgstr "`utun1989`"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Accepts `dev://<name>`, `fd://<n>`, or plain name (treated as device name)."
-msgstr ""
+msgstr "支持 `dev://<name>`、`fd://<n>` 或纯名称（按设备名处理）。"
 
 #: src/chimera_client/tun.md
 msgid "`gateway`"
-msgstr ""
+msgstr "`gateway`"
 
 #: src/chimera_client/tun.md
 msgid "`CIDR string`"
-msgstr ""
+msgstr "`CIDR string`"
 
 #: src/chimera_client/tun.md
 msgid "`198.18.0.1/24`"
-msgstr ""
+msgstr "`198.18.0.1/24`"
 
 #: src/chimera_client/tun.md
 msgid "IPv4 address/prefix assigned to the TUN interface."
-msgstr ""
+msgstr "分配给 TUN 接口的 IPv4 地址/前缀。"
 
 #: src/chimera_client/tun.md
 msgid "`gateway-v6`"
-msgstr ""
+msgstr "`gateway-v6`"
 
 #: src/chimera_client/tun.md
 msgid "unset"
-msgstr ""
+msgstr "未设置"
 
 #: src/chimera_client/tun.md
 msgid "Optional IPv6 address/prefix for dual-stack TUN."
-msgstr ""
+msgstr "双栈 TUN 的可选 IPv6 地址/前缀。"
 
 #: src/chimera_client/tun.md
 msgid "`route-all`"
-msgstr ""
+msgstr "`route-all`"
 
 #: src/chimera_client/tun.md
 msgid "Route all host traffic through TUN."
-msgstr ""
+msgstr "将主机全部流量通过 TUN 路由。"
 
 #: src/chimera_client/tun.md
 msgid "`routes`"
-msgstr ""
+msgstr "`routes`"
 
 #: src/chimera_client/tun.md
 msgid "`list<CIDR>`"
-msgstr ""
+msgstr "`list<CIDR>`"
 
 #: src/chimera_client/tun.md
 msgid "empty"
-msgstr ""
+msgstr "空"
 
 #: src/chimera_client/tun.md
 msgid "Used when `route-all: false` to route only selected prefixes."
-msgstr ""
+msgstr "在 `route-all: false` 时使用，仅路由选定前缀。"
 
 #: src/chimera_client/tun.md
 msgid "`mtu`"
-msgstr ""
+msgstr "`mtu`"
 
 #: src/chimera_client/tun.md
 msgid "`u16`"
-msgstr ""
+msgstr "`u16`"
 
 #: src/chimera_client/tun.md
 msgid "platform default"
-msgstr ""
+msgstr "平台默认值"
 
 #: src/chimera_client/tun.md
 msgid "Runtime uses `1500` by default (`65535` on Windows) if unset."
-msgstr ""
+msgstr "若未设置，运行时默认使用 `1500`（Windows 为 `65535`）。"
 
 #: src/chimera_client/tun.md
 msgid "`so-mark`"
-msgstr ""
+msgstr "`so-mark`"
 
 #: src/chimera_client/tun.md
 msgid "`u32`"
-msgstr ""
+msgstr "`u32`"
 
 #: src/chimera_client/tun.md
 msgid "Linux fwmark for loop prevention / policy routing integration."
-msgstr ""
+msgstr "Linux fwmark，用于防环路和策略路由集成。"
 
 #: src/chimera_client/tun.md
 msgid "`route-table`"
-msgstr ""
+msgstr "`route-table`"
 
 #: src/chimera_client/tun.md
 msgid "`2468`"
-msgstr ""
+msgstr "`2468`"
 
 #: src/chimera_client/tun.md
 msgid "Linux policy-routing table used by TUN route-all path."
-msgstr ""
+msgstr "TUN 全局路由路径使用的 Linux 策略路由表。"
 
 #: src/chimera_client/tun.md
 msgid "`dns-hijack`"
-msgstr ""
+msgstr "`dns-hijack`"
 
 #: src/chimera_client/tun.md
 msgid "`bool` or `list`"
-msgstr ""
+msgstr "`bool` 或 `list`"
 
 #: src/chimera_client/tun.md
 msgid "Enables DNS interception behavior in TUN path."
-msgstr ""
+msgstr "在 TUN 路径中启用 DNS 劫持行为。"
 
 #: src/chimera_client/tun.md
-#, fuzzy
 msgid "Device-ID Formats"
-msgstr "报文格式"
+msgstr "Device-ID 格式"
 
 #: src/chimera_client/tun.md
 msgid "`dev://utun1989` or `utun1989`: create/use named TUN device."
-msgstr ""
+msgstr "`dev://utun1989` 或 `utun1989`：创建/使用具名 TUN 设备。"
 
 #: src/chimera_client/tun.md
 msgid "`dev://tun0`: common Linux style."
-msgstr ""
+msgstr "`dev://tun0`：常见 Linux 写法。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "`fd://3`: use an existing file descriptor, useful when another component "
 "owns TUN creation."
-msgstr ""
+msgstr "`fd://3`：使用现有文件描述符，适用于由其他组件创建 TUN 的场景。"
 
 #: src/chimera_client/tun.md
 msgid "On macOS, the device name must use the `utun` prefix."
-msgstr ""
+msgstr "在 macOS 上，设备名必须使用 `utun` 前缀。"
 
 #: src/chimera_client/tun.md
 msgid "Routing Behavior"
-msgstr ""
+msgstr "路由行为"
 
 #: src/chimera_client/tun.md
 msgid "`route-all: true`"
-msgstr ""
+msgstr "`route-all: true`"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Linux: uses policy routing rules and a dedicated route table (`route-"
 "table`)."
-msgstr ""
+msgstr "Linux：使用策略路由规则和独立路由表（`route-table`）。"
 
 #: src/chimera_client/tun.md
 msgid "macOS/Windows: installs broad default-route entries through TUN."
-msgstr ""
+msgstr "macOS/Windows：通过 TUN 安装较宽泛的默认路由项。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "DNS hijack integration is tied to this path on Linux (policy rule for "
 "destination port `53`)."
-msgstr ""
+msgstr "在 Linux 上，DNS 劫持集成绑定于该路径（目标端口 `53` 的策略规则）。"
 
 #: src/chimera_client/tun.md
 msgid "`route-all: false`"
-msgstr ""
+msgstr "`route-all: false`"
 
 #: src/chimera_client/tun.md
 msgid "Only CIDRs in `routes` are routed through TUN."
-msgstr ""
+msgstr "仅 `routes` 中的 CIDR 会通过 TUN 路由。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "This is safer for partial rollout and avoids taking over all host traffic."
-msgstr ""
+msgstr "这更适合分阶段上线，并避免接管主机全部流量。"
 
 #: src/chimera_client/tun.md
 msgid "If both are configured, `route-all` takes precedence operationally."
-msgstr ""
+msgstr "若两者同时配置，运行时以 `route-all` 为准。"
 
 #: src/chimera_client/tun.md
-#, fuzzy
 msgid "DNS Interaction"
-msgstr "简介"
+msgstr "DNS 交互"
 
 #: src/chimera_client/tun.md
 msgid ""
 "`dns-hijack` controls DNS interception in TUN flow, but it does not replace "
 "a working DNS module config."
-msgstr ""
+msgstr "`dns-hijack` 控制 TUN 流中的 DNS 劫持，但它不能替代可工作的 DNS 模块配置。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "For predictable domain-based routing, pair TUN with DNS settings "
 "(`dns.enable`, resolver list, fake-IP strategy where needed)."
-msgstr ""
+msgstr "要获得可预测的基于域名路由效果，应将 TUN 与 DNS 设置（`dns.enable`、解析器列表、按需 fake-IP 策略）配套使用。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "In practice, `dns-hijack: true` is commonly paired with fake-IP mode in "
 "Clash-style deployments."
-msgstr ""
+msgstr "在实践中，Clash 风格部署通常将 `dns-hijack: true` 与 fake-IP 模式搭配使用。"
 
 #: src/chimera_client/tun.md
 msgid "Linux Notes (Policy Routing)"
-msgstr ""
+msgstr "Linux 注意事项（策略路由）"
 
 #: src/chimera_client/tun.md
 msgid "Ensure `iproute2` (`ip` command) is available."
-msgstr ""
+msgstr "确保已安装 `iproute2`（`ip` 命令可用）。"
 
 #: src/chimera_client/tun.md
 msgid "Run with sufficient privileges (CAP_NET_ADMIN or root-equivalent)."
-msgstr ""
+msgstr "以足够权限运行（CAP_NET_ADMIN 或等效 root 权限）。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Prefer setting `so-mark` and keep it consistent with your external policy "
 "rules to avoid proxy loops."
-msgstr ""
+msgstr "建议设置 `so-mark`，并与外部策略规则保持一致，以避免代理环路。"
 
 #: src/chimera_client/tun.md
 msgid "Quick checks:"
-msgstr ""
+msgstr "快速检查："
 
 #: src/chimera_client/tun.md
 msgid "Example Profiles"
-msgstr ""
+msgstr "示例配置"
 
 #: src/chimera_client/tun.md
 msgid "Full-tunnel profile"
-msgstr ""
+msgstr "全隧道配置"
 
 #: src/chimera_client/tun.md
 msgid "Split-route profile"
-msgstr ""
+msgstr "分流配置"
 
 #: src/chimera_client/tun.md
 msgid "\"dev://tun0\""
-msgstr ""
+msgstr "\"dev://tun0\""
 
 #: src/chimera_client/tun.md
 msgid "routes"
-msgstr ""
+msgstr "routes"
 
 #: src/chimera_client/tun.md
 msgid "1.1.1.1/32"
-msgstr ""
+msgstr "1.1.1.1/32"
 
 #: src/chimera_client/tun.md
 msgid "8.8.8.8/32"
-msgstr ""
+msgstr "8.8.8.8/32"
 
 #: src/chimera_client/tun.md
 msgid "FD-based profile"
-msgstr ""
+msgstr "基于 FD 的配置"
 
 #: src/chimera_client/tun.md
 msgid "\"fd://3\""
-msgstr ""
+msgstr "\"fd://3\""
 
 #: src/chimera_client/tun.md
 msgid ""
 "Verify process privileges first; TUN creation and route changes fail "
 "silently in many restricted environments."
-msgstr ""
+msgstr "先确认进程权限；在许多受限环境中，TUN 创建和路由变更会静默失败。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Confirm the interface exists (`ip addr`, `ifconfig`, or platform "
 "equivalent)."
-msgstr ""
+msgstr "确认接口已存在（`ip addr`、`ifconfig` 或平台等效命令）。"
 
 #: src/chimera_client/tun.md
 msgid "Validate route/rule installation after startup."
-msgstr ""
+msgstr "启动后验证路由/规则是否正确安装。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "If DNS appears broken, verify the DNS listener is reachable and the system "
 "resolver path actually passes through TUN."
-msgstr ""
+msgstr "若 DNS 异常，请确认 DNS 监听器可达，且系统解析路径确实经过 TUN。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "If traffic loops or stalls, check `so-mark`/policy-rule alignment and "
 "existing host firewall rules."
-msgstr ""
+msgstr "若流量出现环路或卡顿，请检查 `so-mark`/策略规则的一致性以及主机现有防火墙规则。"
 
 #: src/chimera_client/tun.md
 msgid "References and Alignment Notes"
-msgstr ""
+msgstr "参考与对齐说明"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Clash-rs config schema: `clash-lib/src/config/def.rs` (`TunConfig`, "
 "defaults, `dns-hijack` shape)."
-msgstr ""
+msgstr "Clash-rs 配置结构：`clash-lib/src/config/def.rs`（`TunConfig`、默认值、`dns-hijack` 形态）。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Clash-rs config conversion: `clash-lib/src/config/internal/convert/tun.rs`."
-msgstr ""
+msgstr "Clash-rs 配置转换：`clash-lib/src/config/internal/convert/tun.rs`。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Clash-rs tun runtime and device parsing: `clash-"
 "lib/src/proxy/tun/inbound.rs`."
-msgstr ""
+msgstr "Clash-rs TUN 运行时与设备解析：`clash-lib/src/proxy/tun/inbound.rs`。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Clash-rs route behavior: `clash-"
 "lib/src/proxy/tun/routes/{linux,macos,windows}.rs`."
-msgstr ""
+msgstr "Clash-rs 路由行为：`clash-lib/src/proxy/tun/routes/{linux,macos,windows}.rs`。"
 
 #: src/chimera_client/tun.md
 msgid "Clash-rs sample profile: `clash-bin/tests/data/config/tun.yaml`."
-msgstr ""
+msgstr "Clash-rs 示例配置：`clash-bin/tests/data/config/tun.yaml`。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Chimera_Client current parser snapshot: `clash-lib/src/config/def.rs` (no "
 "`tun` block yet on mainline)."
-msgstr ""
+msgstr "Chimera_Client 当前解析器快照：`clash-lib/src/config/def.rs`（主线尚无 `tun` 配置块）。"
 
 #: src/chimera_client/rules.md
 msgid ""
