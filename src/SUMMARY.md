@@ -9,6 +9,7 @@
   - [Tun Module](./chimera_client/tun.md)
   - [Rule Types and Their Effects](./chimera_client/rules.md)
 - [Chimera Server](./chimera.md)
+  - [Service Mode Configuration](./chimera/service-mode.md)
 - [Chimera_Server Library](./chimera_server.md)
 - [Protocol](./protocol.md)
   - [SOCKS5](./protocols/socks5.md)
