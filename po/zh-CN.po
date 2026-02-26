@@ -3716,3 +3716,381 @@ msgstr ""
 
 #~ msgid "THis book"
 #~ msgstr "这本书"
+
+#: src/chimera/service-mode.md
+msgid "Service Mode Configuration"
+msgstr "服务模式配置"
+
+#: src/chimera/service-mode.md
+msgid "Scope and Intent"
+msgstr "范围与意图"
+
+#: src/chimera/service-mode.md
+msgid ""
+"In Chimera GUI, service mode runs the proxy core as a background system "
+"service while the GUI acts as the control surface. This separation is "
+"important when you need stable long-running behavior, elevated networking "
+"privileges, or startup-before-login workflows."
+msgstr ""
+"在 Chimera GUI 中，服务模式会将代理核心作为后台系统服务运行，而 GUI 作为控制界面。"
+"当你需要稳定的长期运行能力、更高的网络权限，或登录前启动的工作流时，这种分离非常重要。"
+
+#: src/chimera/service-mode.md
+msgid "Foreground Mode vs Service Mode"
+msgstr "前台模式 vs 服务模式"
+
+#: src/chimera/service-mode.md
+msgid "Mode"
+msgstr "模式"
+
+#: src/chimera/service-mode.md
+msgid "Runtime shape"
+msgstr "运行形态"
+
+#: src/chimera/service-mode.md
+msgid "Typical use"
+msgstr "典型用途"
+
+#: src/chimera/service-mode.md
+msgid "Main limitation"
+msgstr "主要限制"
+
+#: src/chimera/service-mode.md
+msgid "Foreground mode"
+msgstr "前台模式"
+
+#: src/chimera/service-mode.md
+msgid "GUI process owns the core directly"
+msgstr "由 GUI 进程直接持有核心"
+
+#: src/chimera/service-mode.md
+msgid "Development and quick profile checks"
+msgstr "开发与快速配置检查"
+
+#: src/chimera/service-mode.md
+msgid "Core stops when GUI exits or user logs out"
+msgstr "当 GUI 退出或用户注销时，核心会停止"
+
+#: src/chimera/service-mode.md
+msgid "Service mode"
+msgstr "服务模式"
+
+#: src/chimera/service-mode.md
+msgid ""
+"System service owns the core; GUI controls it via local IPC"
+msgstr "系统服务持有核心；GUI 通过本地 IPC 对其进行控制"
+
+#: src/chimera/service-mode.md
+msgid "Daily use, TUN/transparent routing, always-on setups"
+msgstr "日常使用、TUN/透明路由、常驻在线场景"
+
+#: src/chimera/service-mode.md
+msgid "Requires service install and permission management"
+msgstr "需要安装服务并管理权限"
+
+#: src/chimera/service-mode.md
+msgid "Why Enable Service Mode"
+msgstr "为什么启用服务模式"
+
+#: src/chimera/service-mode.md
+msgid "Keep traffic forwarding alive even if the GUI is closed."
+msgstr "即使 GUI 关闭，也能保持流量转发继续运行。"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Start proxy service automatically at boot/login with predictable lifecycle."
+msgstr "在开机/登录时自动启动代理服务，并保持可预期的生命周期。"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Support privileged paths (for example TUN, policy routing, transparent "
+"capture) more reliably."
+msgstr "更可靠地支持特权路径（例如 TUN、策略路由、透明捕获）。"
+
+#: src/chimera/service-mode.md
+msgid "Reduce behavior drift across user sessions on shared machines."
+msgstr "减少共享机器上不同用户会话之间的行为漂移。"
+
+#: src/chimera/service-mode.md
+msgid "Configuration Workflow in Chimera GUI"
+msgstr "Chimera GUI 中的配置流程"
+
+#: src/chimera/service-mode.md
+msgid "Prepare and validate your active profile in normal mode first."
+msgstr "先在普通模式下准备并验证当前启用的配置。"
+
+#: src/chimera/service-mode.md
+msgid "Open Chimera GUI settings and enable service mode."
+msgstr "打开 Chimera GUI 设置并启用服务模式。"
+
+#: src/chimera/service-mode.md
+msgid "Install/register the service when prompted by the GUI."
+msgstr "在 GUI 提示时安装/注册服务。"
+
+#: src/chimera/service-mode.md
+msgid "Choose startup policy:"
+msgstr "选择启动策略："
+
+#: src/chimera/service-mode.md
+msgid "Manual: start only when needed."
+msgstr "手动：仅在需要时启动。"
+
+#: src/chimera/service-mode.md
+msgid "Automatic: start at system boot (recommended for always-on use)."
+msgstr "自动：系统启动时即启动（推荐用于常驻在线场景）。"
+
+#: src/chimera/service-mode.md
+msgid "Apply settings and trigger a service restart from the GUI."
+msgstr "应用设置并在 GUI 中触发服务重启。"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Confirm the GUI can reconnect to the local control endpoint after restart."
+msgstr "确认重启后 GUI 能重新连接本地控制端点。"
+
+#: src/chimera/service-mode.md
+msgid "Key Options and Recommended Defaults"
+msgstr "关键选项与推荐默认值"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Option labels may vary slightly by platform/build, but the intent is usually"
+" the same:"
+msgstr "选项名称会因平台/构建略有差异，但含义通常一致："
+
+#: src/chimera/service-mode.md
+msgid "GUI option (common naming)"
+msgstr "GUI 选项（常见命名）"
+
+#: src/chimera/service-mode.md
+msgid "Suggested default"
+msgstr "建议默认值"
+
+#: src/chimera/service-mode.md
+msgid "`Enable Service Mode`"
+msgstr "`Enable Service Mode`"
+
+#: src/chimera/service-mode.md
+msgid "Switch core runtime ownership to system service"
+msgstr "将核心运行时归属切换为系统服务"
+
+#: src/chimera/service-mode.md
+msgid "On for long-term daily usage"
+msgstr "长期日常使用建议开启"
+
+#: src/chimera/service-mode.md
+msgid "`Install/Repair Service`"
+msgstr "`Install/Repair Service`"
+
+#: src/chimera/service-mode.md
+msgid "Register or repair service metadata"
+msgstr "注册或修复服务元数据"
+
+#: src/chimera/service-mode.md
+msgid "Run after first enable and after upgrades"
+msgstr "首次启用后以及升级后执行"
+
+#: src/chimera/service-mode.md
+msgid "`Start Service at Boot`"
+msgstr "`Start Service at Boot`"
+
+#: src/chimera/service-mode.md
+msgid "Auto-start service during system startup"
+msgstr "系统启动期间自动启动服务"
+
+#: src/chimera/service-mode.md
+msgid "On for TUN or gateway-style setups"
+msgstr "TUN 或网关式部署建议开启"
+
+#: src/chimera/service-mode.md
+msgid "`Keep Running After GUI Exit`"
+msgstr "`Keep Running After GUI Exit`"
+
+#: src/chimera/service-mode.md
+msgid "Leave service active when GUI closes"
+msgstr "GUI 关闭后保持服务运行"
+
+#: src/chimera/service-mode.md
+msgid "On"
+msgstr "开启"
+
+#: src/chimera/service-mode.md
+msgid "`Require Elevation on Apply`"
+msgstr "`Require Elevation on Apply`"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Prompt for admin/root rights when applying privileged changes"
+msgstr "在应用特权更改时提示获取管理员/root 权限"
+
+#: src/chimera/service-mode.md
+msgid "`Auto Recover on Crash`"
+msgstr "`Auto Recover on Crash`"
+
+#: src/chimera/service-mode.md
+msgid "Restart service process after abnormal exit"
+msgstr "异常退出后重启服务进程"
+
+#: src/chimera/service-mode.md
+msgid "Platform Notes"
+msgstr "平台说明"
+
+#: src/chimera/service-mode.md
+msgid "Windows"
+msgstr "Windows"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Service mode is usually backed by Windows Service Control Manager."
+msgstr "服务模式通常由 Windows 服务控制管理器（SCM）支撑。"
+
+#: src/chimera/service-mode.md
+msgid "Use an elevated shell for first-time install/repair if GUI prompts fail."
+msgstr "若 GUI 提示失败，首次安装/修复请使用提权终端执行。"
+
+#: src/chimera/service-mode.md
+msgid "Verify state with:"
+msgstr "使用以下命令验证状态："
+
+#: src/chimera/service-mode.md
+msgid "Linux"
+msgstr "Linux"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Service mode is typically managed by `systemd` (`chimera.service` or similar "
+"unit name)."
+msgstr "服务模式通常由 `systemd` 管理（`chimera.service` 或类似单元名）。"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Prefer explicit restart after profile changes that affect TUN/routing "
+"behavior."
+msgstr "对于会影响 TUN/路由行为的配置变更，建议显式重启服务。"
+
+#: src/chimera/service-mode.md
+msgid "macOS"
+msgstr "macOS"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Service mode is usually implemented through `launchd` (system daemon style)."
+msgstr "服务模式通常通过 `launchd` 实现（系统守护进程方式）。"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Ensure GUI and service binaries come from the same build channel/version."
+msgstr "确保 GUI 与服务二进制来自同一构建渠道/版本。"
+
+#: src/chimera/service-mode.md
+msgid "Rollout Strategy"
+msgstr "上线策略"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Start with SOCKS/listener-only profile and confirm baseline connectivity."
+msgstr "先从仅 SOCKS/监听器配置开始，并确认基线连通性。"
+
+#: src/chimera/service-mode.md
+msgid "Enable service mode and verify reconnect behavior after GUI restart."
+msgstr "启用服务模式，并验证 GUI 重启后的重连行为。"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Enable advanced options (TUN, DNS hijack, transparent capture) "
+"incrementally."
+msgstr "逐步启用高级选项（TUN、DNS 劫持、透明捕获）。"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Reboot once and verify auto-start, rule hit behavior, and DNS resolution "
+"stability."
+msgstr "重启一次，并验证自启动、规则命中行为以及 DNS 解析稳定性。"
+
+#: src/chimera/service-mode.md
+msgid "Symptom"
+msgstr "现象"
+
+#: src/chimera/service-mode.md
+msgid "Likely cause"
+msgstr "可能原因"
+
+#: src/chimera/service-mode.md
+msgid "Fix"
+msgstr "修复方法"
+
+#: src/chimera/service-mode.md
+msgid "Service cannot start"
+msgstr "服务无法启动"
+
+#: src/chimera/service-mode.md
+msgid "Missing admin/root privileges"
+msgstr "缺少管理员/root 权限"
+
+#: src/chimera/service-mode.md
+msgid "Reinstall/repair service with elevation"
+msgstr "以提权方式重新安装/修复服务"
+
+#: src/chimera/service-mode.md
+msgid "GUI shows \"disconnected from core\""
+msgstr "GUI 显示“disconnected from core”"
+
+#: src/chimera/service-mode.md
+msgid "Control endpoint mismatch or service crash loop"
+msgstr "控制端点不匹配或服务崩溃循环"
+
+#: src/chimera/service-mode.md
+msgid "Reapply service settings and inspect service logs"
+msgstr "重新应用服务设置并检查服务日志"
+
+#: src/chimera/service-mode.md
+msgid "TUN features do not take effect"
+msgstr "TUN 功能未生效"
+
+#: src/chimera/service-mode.md
+msgid "Service running but privileged route setup failed"
+msgstr "服务在运行，但特权路由配置失败"
+
+#: src/chimera/service-mode.md
+msgid "Check system logs and permission/capability grants"
+msgstr "检查系统日志与权限/能力授权"
+
+#: src/chimera/service-mode.md
+msgid "Profile changes seem ignored"
+msgstr "配置变更看似未生效"
+
+#: src/chimera/service-mode.md
+msgid "GUI saved config but service did not reload"
+msgstr "GUI 已保存配置，但服务未重载"
+
+#: src/chimera/service-mode.md
+msgid "Trigger explicit service restart from GUI"
+msgstr "在 GUI 中显式触发服务重启"
+
+#: src/chimera/service-mode.md
+msgid "Traffic stops after logout"
+msgstr "注销后流量中断"
+
+#: src/chimera/service-mode.md
+msgid "Foreground mode still active"
+msgstr "前台模式仍在运行"
+
+#: src/chimera/service-mode.md
+msgid "Recheck that service mode is enabled and installed"
+msgstr "重新确认服务模式已启用并完成安装"
+
+#: src/chimera/service-mode.md
+msgid "Operational Boundary"
+msgstr "运行边界"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Service mode changes process lifecycle and permission model, not proxy policy"
+" semantics."
+msgstr "服务模式改变的是进程生命周期和权限模型，而不是代理策略语义。"
+
+#: src/chimera/service-mode.md
+msgid ""
+"Your rules, DNS strategy, and outbound definitions are still determined by "
+"the active Chimera profile."
+msgstr "你的规则、DNS 策略和出站定义仍由当前生效的 Chimera 配置决定。"
