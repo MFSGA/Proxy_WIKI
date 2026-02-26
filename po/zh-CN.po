@@ -402,153 +402,157 @@ msgid ""
 " to `chimera_client`. The naming follows Clash-style configuration, while "
 "`chimera_client` currently uses underscore keys for the same concepts."
 msgstr ""
+"端口定义了本地应用、控制面板和 DNS 解析器连接到 `chimera_client` 的入口位置。"
+"命名沿用 Clash 风格配置，而 `chimera_client` 当前对同一概念使用下划线风格键名。"
 
 #: src/chimera_client/ports.md
 msgid "Port Map"
-msgstr ""
+msgstr "端口映射"
 
 #: src/chimera_client/ports.md
 msgid "Clash key"
-msgstr ""
+msgstr "Clash 键名"
 
 #: src/chimera_client/ports.md
-#, fuzzy
 msgid "chimera_client key"
-msgstr "chimera_client 客户端"
+msgstr "chimera_client 键名"
 
 #: src/chimera_client/ports.md
 msgid "Role"
-msgstr ""
+msgstr "作用"
 
 #: src/chimera_client/ports.md
 msgid "`port` / `http-port`"
-msgstr ""
+msgstr "`port` / `http-port`"
 
 #: src/chimera_client/ports.md
 msgid "`port`"
-msgstr ""
+msgstr "`port`"
 
 #: src/chimera_client/ports.md
 msgid "HTTP CONNECT proxy for browsers and system proxy settings."
-msgstr ""
+msgstr "用于浏览器和系统代理设置的 HTTP CONNECT 代理。"
 
 #: src/chimera_client/ports.md
 msgid "`socks-port`"
-msgstr ""
+msgstr "`socks-port`"
 
 #: src/chimera_client/ports.md
 msgid "`socks_port`"
-msgstr ""
+msgstr "`socks_port`"
 
 #: src/chimera_client/ports.md
 msgid ""
 "SOCKS5 proxy for general applications; UDP associate support is optional."
-msgstr ""
+msgstr "面向通用应用的 SOCKS5 代理；UDP Associate 支持为可选项。"
 
 #: src/chimera_client/ports.md
 msgid "`mixed-port`"
-msgstr ""
+msgstr "`mixed-port`"
 
 #: src/chimera_client/ports.md
 msgid "`mixed_port`"
-msgstr ""
+msgstr "`mixed_port`"
 
 #: src/chimera_client/ports.md
 msgid "Combined HTTP + SOCKS5 listener on one port."
-msgstr ""
+msgstr "在同一端口上合并 HTTP + SOCKS5 监听。"
 
 #: src/chimera_client/ports.md
 msgid "`redir-port`"
-msgstr ""
+msgstr "`redir-port`"
 
 #: src/chimera_client/ports.md
 msgid "`redir_port`"
-msgstr ""
+msgstr "`redir_port`"
 
 #: src/chimera_client/ports.md
 msgid "Linux TCP transparent redirect (iptables REDIRECT)."
-msgstr ""
+msgstr "Linux TCP 透明重定向（iptables REDIRECT）。"
 
 #: src/chimera_client/ports.md
 msgid "`tproxy-port`"
-msgstr ""
+msgstr "`tproxy-port`"
 
 #: src/chimera_client/ports.md
 msgid "`tproxy_port`"
-msgstr ""
+msgstr "`tproxy_port`"
 
 #: src/chimera_client/ports.md
 msgid "Linux TPROXY for TCP/UDP transparent proxying."
-msgstr ""
+msgstr "用于 TCP/UDP 透明代理的 Linux TPROXY。"
 
 #: src/chimera_client/ports.md
 msgid "`external-controller`"
-msgstr ""
+msgstr "`external-controller`"
 
 #: src/chimera_client/ports.md
 msgid "`external_controller`"
-msgstr ""
+msgstr "`external_controller`"
 
 #: src/chimera_client/ports.md
 msgid "REST API port for dashboards and automation."
-msgstr ""
+msgstr "供控制面板与自动化使用的 REST API 端口。"
 
 #: src/chimera_client/ports.md
 msgid "`dns.listen`"
-msgstr ""
+msgstr "`dns.listen`"
 
 #: src/chimera_client/ports.md
 msgid "Local DNS listener for fake-IP or policy DNS."
-msgstr ""
+msgstr "用于 fake-IP 或策略 DNS 的本地 DNS 监听器。"
 
 #: src/chimera_client/ports.md
 msgid "What Each Port Does"
-msgstr ""
+msgstr "各端口的作用"
 
 #: src/chimera_client/ports.md
 msgid "HTTP proxy port"
-msgstr ""
+msgstr "HTTP 代理端口"
 
 #: src/chimera_client/ports.md
 msgid ""
 "Accepts HTTP CONNECT requests and plain HTTP proxy traffic. It is the "
 "default choice for browsers and OS-level proxy settings."
 msgstr ""
+"接收 HTTP CONNECT 请求与普通 HTTP 代理流量。它是浏览器和操作系统级代理设置的默认选择。"
 
 #: src/chimera_client/ports.md
-#, fuzzy
 msgid "SOCKS5 port"
-msgstr "SOCKS5"
+msgstr "SOCKS5 端口"
 
 #: src/chimera_client/ports.md
 msgid ""
 "Accepts SOCKS5 connections from applications that speak SOCKS natively. It "
 "is commonly used by developer tools and power users."
 msgstr ""
+"接收原生支持 SOCKS 的应用发起的 SOCKS5 连接。常用于开发者工具和高级用户场景。"
 
 #: src/chimera_client/ports.md
 msgid "Mixed port"
-msgstr ""
+msgstr "混合端口"
 
 #: src/chimera_client/ports.md
 msgid ""
 "Accepts both HTTP and SOCKS5 on a single port. Use this to simplify local "
 "proxy configuration when only one port can be configured."
 msgstr ""
+"在单个端口上同时接收 HTTP 和 SOCKS5。仅能配置一个端口时，可用它简化本地代理设置。"
 
 #: src/chimera_client/ports.md
 msgid "Redir port"
-msgstr ""
+msgstr "Redir 端口"
 
 #: src/chimera_client/ports.md
 msgid ""
 "Used for TCP transparent proxying on Linux via iptables REDIRECT. It only "
 "captures TCP and requires kernel-level redirection rules."
 msgstr ""
+"用于 Linux 上通过 iptables REDIRECT 实现 TCP 透明代理。它仅捕获 TCP，且需要内核级重定向规则。"
 
 #: src/chimera_client/ports.md
 msgid "TProxy port"
-msgstr ""
+msgstr "TProxy 端口"
 
 #: src/chimera_client/ports.md
 msgid ""
@@ -556,75 +560,76 @@ msgid ""
 "routing and `fwmark` rules, and is often paired with TUN or redirection "
 "tooling."
 msgstr ""
+"用于 Linux TPROXY 以同时捕获 TCP 与 UDP。它需要策略路由和 `fwmark` 规则，并常与 TUN 或重定向工具配合。"
 
 #: src/chimera_client/ports.md
 msgid "Controller port"
-msgstr ""
+msgstr "控制器端口"
 
 #: src/chimera_client/ports.md
 msgid ""
 "Exposes the REST API used by dashboards, mobile shells, and automation. Bind"
 " it to localhost unless remote access is required."
 msgstr ""
+"暴露供仪表盘、移动端外壳和自动化使用的 REST API。除非需要远程访问，否则应绑定到 localhost。"
 
 #: src/chimera_client/ports.md
 msgid "DNS listen port"
-msgstr ""
+msgstr "DNS 监听端口"
 
 #: src/chimera_client/ports.md
 msgid ""
 "Accepts DNS queries from the system or from a TUN stack. It is typically "
 "paired with fake-IP or split-horizon DNS rules."
 msgstr ""
+"接收来自系统或 TUN 协议栈的 DNS 查询。通常与 fake-IP 或 split-horizon DNS 规则配套使用。"
 
 #: src/chimera_client/ports.md
-#, fuzzy
 msgid "chimera_client Support Notes"
-msgstr "chimera_client 客户端"
+msgstr "chimera_client 支持说明"
 
 #: src/chimera_client/ports.md
 msgid ""
 "`socks_port` is the only inbound port wired today; UDP associate is "
 "currently disabled."
-msgstr ""
+msgstr "目前仅接通 `socks_port` 入站端口；UDP Associate 当前处于禁用状态。"
 
 #: src/chimera_client/ports.md
 msgid ""
 "`port`, `mixed_port`, `redir_port`, and `tproxy_port` are reserved for "
 "compatibility but not yet implemented."
 msgstr ""
+"`port`、`mixed_port`、`redir_port` 和 `tproxy_port` 为兼容性保留键，但尚未实现。"
 
 #: src/chimera_client/ports.md
 msgid ""
 "The DNS server and controller listener are under active development; keep "
 "them local unless you are testing."
-msgstr ""
+msgstr "DNS 服务器和控制器监听器仍在积极开发中；除测试外请保持本地绑定。"
 
 #: src/chimera_client/ports.md
-#, fuzzy
 msgid "Configuration Examples"
-msgstr "配置片段"
+msgstr "配置示例"
 
 #: src/chimera_client/ports.md
-#, fuzzy
 msgid "Minimal chimera_client"
-msgstr "chimera_client 客户端"
+msgstr "最小化 chimera_client 配置"
 
 #: src/chimera_client/ports.md
 msgid "bind_address"
-msgstr ""
+msgstr "bind_address"
 
 #: src/chimera_client/ports.md
 msgid "\"127.0.0.1\""
-msgstr ""
+msgstr "\"127.0.0.1\""
 
 #: src/chimera_client/ports.md
 msgid "allow_lan"
-msgstr ""
+msgstr "allow_lan"
 
 #: src/chimera_client/ports.md
 msgid "socks_port"
-msgstr ""
+msgstr "socks_port"
 
 #: src/chimera_client/ports.md src/chimera_client/dns.md
 msgid "dns"
@@ -641,35 +646,35 @@ msgstr ""
 
 #: src/chimera_client/ports.md
 msgid "Clash or Mihomo Layout (Reference)"
-msgstr ""
+msgstr "Clash 或 Mihomo 布局（参考）"
 
 #: src/chimera_client/ports.md src/protocols/xhttp.md
 msgid "port"
-msgstr ""
+msgstr "port"
 
 #: src/chimera_client/ports.md
 msgid "socks-port"
-msgstr ""
+msgstr "socks-port"
 
 #: src/chimera_client/ports.md
 msgid "mixed-port"
-msgstr ""
+msgstr "mixed-port"
 
 #: src/chimera_client/ports.md
 msgid "redir-port"
-msgstr ""
+msgstr "redir-port"
 
 #: src/chimera_client/ports.md
 msgid "tproxy-port"
-msgstr ""
+msgstr "tproxy-port"
 
 #: src/chimera_client/ports.md
 msgid "external-controller"
-msgstr ""
+msgstr "external-controller"
 
 #: src/chimera_client/ports.md
 msgid "127.0.0.1:9090"
-msgstr ""
+msgstr "127.0.0.1:9090"
 
 #: src/chimera_client/ports.md src/chimera_client/dns.md
 msgid "listen"
