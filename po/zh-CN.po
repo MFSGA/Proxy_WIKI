@@ -110,7 +110,7 @@ msgstr "代理应用的版图已变得拥挤且碎片化，因此——出于个
 #: src/preface.md
 #, fuzzy
 msgid ""
-"`chimera_Client` takes inspiration from the open-source [clash-"
+"`Chimera_Client` takes inspiration from the open-source [clash-"
 "rs](https://github.com/Watfaq/clash-rs) project, with the long-term goal of "
 "matching [Mihomo](https://github.com/MetaCubeX/mihomo)'s feature set."
 msgstr ""
