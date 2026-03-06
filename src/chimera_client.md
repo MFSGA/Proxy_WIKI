@@ -1,5 +1,20 @@
 # Chimera_Client
 
+## Current Support Protocol and Transport
+- Trojan + WS
+- Hysteria2
+- Reality + tcp
+- Socks5
+- Http
+---
+
+## Will support
+- xhttp
+- grpc
+- vmess
+- wireguard
+- ssh
+
 ## Role and Objectives
 `chimera_client` is the Clash-compatible client runtime in the Chimera ecosystem.
 Its design goal is practical compatibility with existing Clash/Mihomo profiles, while using Rust’s type safety and async ecosystem to build a maintainable codebase.

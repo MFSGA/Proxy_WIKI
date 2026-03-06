@@ -1,13 +1,30 @@
-﻿# Chimera 服务端
+﻿# Chimera GUI
 
-## 使命与能力
-`Chimera` 作为高性能入口层，负责终止客户端会话、执行策略并把流量转发到目标目的地。它面向多租户部署进行了优化：单个入口端口可以同时暴露多种代理协议。Chimera 的核心关注点是：握手延迟最小化、细粒度访问控制、水平扩展能力与内建可观测性。
+## Design Goals
 
-## 组件拆分
-服务端由监听前端、认证中间件、路由织构和出口适配器组成。监听前端接收 TCP、TLS、QUIC 或 WebSocket 连接，并将协议解码委托给来自 `chimera_core` 的处理器。认证层支持静态令牌、mTLS、外部 OIDC 校验及短时能力票据。路由层会把已认证会话映射到上游集群，并可按地理位置或时延进行负载均衡。出口适配器支持原生 TCP/UDP、HTTP/2 或自定义回传协议。可插拔过滤器可用于 L7 检查、限速和协议转换。
+`Chimera` serves as a high-performance ingress layer responsible for terminating client sessions, enforcing policies, and forwarding traffic to the target destination. A single ingress port can simultaneously expose multiple proxy protocols.
 
-## 部署与扩展
-Chimera 节点可运行在裸机、容器或编排平台（Kubernetes、Nomad）中。由于是无状态设计，运维可以直接水平扩容；会话粘性通过对客户端标识做一致性哈希实现。配置采用声明式清单，描述监听器、凭据与路由表，并支持热重载。项目也提供了单区域集群、跨区域 active-active 以及边缘 POP 的部署蓝图，包括“边缘终止 QUIC、核心链路回传 TCP”的实践方式。
+The core design priorities of Chimera are:
 
-## 安全与合规
-安全实践涵盖 TLS 证书管理、密钥轮换、混合协议端口治理，以及为满足隐私法规而进行的选择性日志采集。内建审计会记录连接元数据、规则判定和管理操作。合规附录说明了如何把 Chimera 日志接入 SIEM、实施保留策略，并在有监管要求时启用合法监听接口。
+* minimizing handshake latency,
+* providing fine-grained access control,
+* ensuring cross-platform compatibility,
+* enabling horizontal scalability,
+* and offering built-in observability.
+
+## Currently Supported Platforms
+
+### First Tier
+- 🖥️ Windows ![Windows](https://img.shields.io/badge/Windows-supported-0078D6?logo=windows&logoColor=white)
+- 🐧 Ubuntu
+- 🍎 macOS
+
+### Second Tier
+- ❄️ NixOS
+
+## Currently Supported Protocols
+
+Please refer to [`Chimera_Client`](./chimera_client.md) and `clash-rs`.
+
+---
+
