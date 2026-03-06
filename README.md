@@ -21,7 +21,7 @@ exported as a static site.
 - `tests/`: WebdriverIO-based frontend regression tests (optional when touching theme JS; requires Node.js).
 
 ## Prerequisites
-- Rust toolchain (recommended via `rustup`; `cargo xtask install-tools` installs a pinned nightly and required mdBook plugins).
+- Rust toolchain (recommended via `rustup`; `cargo xtask install-tools` installs a pinned nightly and required mdBook plugins, including Mermaid support).
 - Optional: Node.js 18+ (needed for `cargo xtask web-tests`).
 - Optional: Gettext and `dprint` for updating/formatting translation files.
 
@@ -38,7 +38,7 @@ cargo xtask serve -l zh-CN     # live preview
 cargo xtask build -l zh-CN     # static output in book/zh-CN/
 ```
 
-- For English only, you can also run `mdbook serve -d book/` or `mdbook build -d book/`.
+- For English only, you can also run `mdbook serve -d book/` or `mdbook build -d book/` after installing the mdBook plugins via `cargo xtask install-tools`.
 - `cargo xtask rust-tests` runs `mdbook test` to validate code blocks (if present).
 - `cargo xtask web-tests` runs the WebdriverIO suite; install Node dependencies first (see `tests/package.json`).
 
