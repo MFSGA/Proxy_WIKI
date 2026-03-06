@@ -9,6 +9,7 @@
   - [Tun Module](./chimera_client/tun.md)
   - [Rule Types and Their Effects](./chimera_client/rules.md)
 - [Chimera GUI](./chimera.md)
+  - [Clash Runtime Configuration](./chimera/runtime_config.md)
   - [Service Mode Configuration](./chimera/service-mode.md)
 - [Chimera Server](./chimera_server.md)
 - [Protocol](./protocol.md)
