@@ -86,7 +86,7 @@ msgstr "Hysteria 2"
 
 #: src/SUMMARY.md src/protocol.md src/protocols/tuic.md
 msgid "TUIC"
-msgstr ""
+msgstr "TUIC"
 
 #: src/SUMMARY.md src/protocol.md src/protocols/vless.md
 msgid "VLESS"
@@ -98,7 +98,7 @@ msgstr "xHTTP 传输"
 
 #: src/SUMMARY.md src/protocols/reality.md
 msgid "Reality"
-msgstr ""
+msgstr "Reality"
 
 #: src/preface.md
 msgid ""
@@ -2060,15 +2060,15 @@ msgstr "需要开放 UDP 端口，MTU 调优很重要"
 
 #: src/protocol.md
 msgid "UUID or token-based auth"
-msgstr ""
+msgstr "基于 UUID 或令牌的认证"
 
 #: src/protocol.md
 msgid "0-RTT friendly, multiplexed streams, low handshake overhead"
-msgstr ""
+msgstr "支持 0-RTT、流复用且握手开销低"
 
 #: src/protocol.md
 msgid "Needs UDP reachability, QUIC fingerprinting varies by implementation"
-msgstr ""
+msgstr "需要 UDP 可达；QUIC 指纹会因实现不同而变化"
 
 #: src/protocol.md
 msgid "TLS/XTLS over TCP or MKCP"
@@ -2104,7 +2104,7 @@ msgstr "请求头/路径不一致会导致握手失败；相较裸 TCP 有额外
 
 #: src/protocol.md
 msgid "Reality (TLS camouflage)"
-msgstr ""
+msgstr "Reality（TLS 伪装）"
 
 #: src/protocol.md
 msgid "TLS 1.3-like handshake"
@@ -2112,15 +2112,15 @@ msgstr "类 TLS 1.3 握手"
 
 #: src/protocol.md
 msgid "Public key + short ID (plus upstream auth)"
-msgstr ""
+msgstr "公钥 + short ID（外加上游认证）"
 
 #: src/protocol.md
 msgid "Certificate-less TLS mimicry, resistant to passive probing"
-msgstr ""
+msgstr "无证书 TLS 拟态，对被动探测更具抵抗力"
 
 #: src/protocol.md
 msgid "Depends on client fingerprint matching, tied to Xray tooling"
-msgstr ""
+msgstr "依赖客户端指纹匹配，生态上与 Xray 工具链绑定"
 
 #: src/protocol.md
 msgid ""
@@ -2161,7 +2161,7 @@ msgstr "[Hysteria 2](./protocols/hysteria2.md) – 基于 QUIC 的传输，针�
 msgid ""
 "[TUIC](./protocols/tuic.md) – QUIC-based proxy with multiplexing and "
 "aggressive latency tuning."
-msgstr ""
+msgstr "[TUIC](./protocols/tuic.md) —— 基于 QUIC 的代理协议，支持多路复用并针对低延迟进行激进调优。"
 
 #: src/protocol.md
 msgid ""
@@ -2181,7 +2181,7 @@ msgstr ""
 msgid ""
 "[Reality](./protocols/reality.md) – TLS camouflage layer used by Xray "
 "transports without certificates."
-msgstr ""
+msgstr "[Reality](./protocols/reality.md) —— Xray 传输中使用的 TLS 伪装层，无需证书。"
 
 #: src/protocols/socks5.md
 msgid "Official RFC"
@@ -3025,25 +3025,25 @@ msgstr "去混淆器 MUST 使用相同的算法计算带盐哈希并还原负载
 msgid ""
 "QUIC-based proxy protocol that uses TLS 1.3 for encryption and stream "
 "multiplexing."
-msgstr ""
+msgstr "基于 QUIC 的代理协议，使用 TLS 1.3 进行加密与流复用。"
 
 #: src/protocols/tuic.md
 msgid "Supports 0-RTT resumption and UDP relay over QUIC datagrams."
-msgstr ""
+msgstr "支持 0-RTT 会话恢复，并通过 QUIC 数据报中继 UDP。"
 
 #: src/protocols/tuic.md
 msgid "Designed for aggressive latency tuning with modern congestion control."
-msgstr ""
+msgstr "配合现代拥塞控制，面向低延迟场景进行激进调优。"
 
 #: src/protocols/tuic.md
 msgid ""
 "Client opens a QUIC connection to the server and completes the TLS 1.3 "
 "handshake."
-msgstr ""
+msgstr "客户端向服务器建立 QUIC 连接并完成 TLS 1.3 握手。"
 
 #: src/protocols/tuic.md
 msgid "Client authenticates with a UUID/token configured on the server."
-msgstr ""
+msgstr "客户端使用服务器配置的 UUID/令牌完成认证。"
 
 #: src/protocols/tuic.md
 msgid ""
@@ -3057,7 +3057,7 @@ msgstr "服务器完成认证校验后，将流量转发到上游目的地。"
 
 #: src/protocols/tuic.md
 msgid "Low handshake overhead with 0-RTT and multiplexed streams."
-msgstr ""
+msgstr "通过 0-RTT 与流复用降低握手开销。"
 
 #: src/protocols/tuic.md
 msgid "Handles UDP natively without extra encapsulation layers."
@@ -3065,7 +3065,7 @@ msgstr "原生处理 UDP，无需额外封装层。"
 
 #: src/protocols/tuic.md
 msgid "Good performance on lossy or high-latency mobile networks."
-msgstr ""
+msgstr "在高丢包或高时延移动网络下通常表现更好。"
 
 #: src/protocols/tuic.md
 msgid "Requires UDP reachability and QUIC-friendly network paths."
@@ -3074,11 +3074,11 @@ msgstr "需要 UDP 可达且网络路径对 QUIC 友好。"
 #: src/protocols/tuic.md
 msgid ""
 "QUIC fingerprints vary by implementation and can be throttled or blocked."
-msgstr ""
+msgstr "QUIC 指纹会因实现而异，可能被限速或封锁。"
 
 #: src/protocols/tuic.md
 msgid "MTU and packet pacing tuning are often required for best results."
-msgstr ""
+msgstr "为获得最佳效果，通常需要调优 MTU 与发包节奏。"
 
 #: src/protocols/vless.md
 msgid ""
@@ -3205,11 +3205,11 @@ msgstr "含义"
 
 #: src/protocols/xhttp.md
 msgid "`network: xhttp`"
-msgstr ""
+msgstr "`network: xhttp`"
 
 #: src/protocols/xhttp.md
 msgid "client/server"
-msgstr ""
+msgstr "client/server"
 
 #: src/protocols/xhttp.md
 msgid "Enables xHTTP transport."
@@ -3217,7 +3217,7 @@ msgstr "启用 xHTTP 传输。"
 
 #: src/protocols/xhttp.md
 msgid "`path`"
-msgstr ""
+msgstr "`path`"
 
 #: src/protocols/xhttp.md
 msgid "HTTP request path used by transport, must match on both sides."
@@ -3225,11 +3225,11 @@ msgstr "传输使用的 HTTP 请求路径，客户端与服务端必须一致。
 
 #: src/protocols/xhttp.md
 msgid "`host`"
-msgstr ""
+msgstr "`host`"
 
 #: src/protocols/xhttp.md
 msgid "client"
-msgstr ""
+msgstr "client"
 
 #: src/protocols/xhttp.md
 msgid "Optional `Host` header override (for fronting/reverse proxy cases)."
@@ -3237,7 +3237,7 @@ msgstr "可选的 `Host` 请求头覆盖（用于前置/反向代理场景）。
 
 #: src/protocols/xhttp.md
 msgid "`mode`"
-msgstr ""
+msgstr "`mode`"
 
 #: src/protocols/xhttp.md
 msgid ""
@@ -3246,7 +3246,7 @@ msgstr "传输模式，通常为 `auto`（默认）或平台特定变体。"
 
 #: src/protocols/xhttp.md
 msgid "`extra.headers`"
-msgstr ""
+msgstr "`extra.headers`"
 
 #: src/protocols/xhttp.md
 msgid "Extra HTTP headers to mimic app/API traffic."
@@ -3254,7 +3254,7 @@ msgstr "额外 HTTP 请求头，用于模拟应用/API 流量。"
 
 #: src/protocols/xhttp.md
 msgid "`xmux`"
-msgstr ""
+msgstr "`xmux`"
 
 #: src/protocols/xhttp.md
 msgid "Multiplex tuning such as concurrency limits and connection reuse."
@@ -3262,7 +3262,7 @@ msgstr "多路复用调优项，如并发限制与连接复用。"
 
 #: src/protocols/xhttp.md
 msgid "`tls` / `reality`"
-msgstr ""
+msgstr "`tls` / `reality`"
 
 #: src/protocols/xhttp.md
 msgid "Encryption/camouflage layer strongly recommended in production."
@@ -3274,87 +3274,87 @@ msgstr "最小示例（客户端，Clash-Meta 风格）"
 
 #: src/protocols/xhttp.md
 msgid "proxies"
-msgstr ""
+msgstr "proxies"
 
 #: src/protocols/xhttp.md
 msgid "name"
-msgstr ""
+msgstr "name"
 
 #: src/protocols/xhttp.md
 msgid "vless-xhttp"
-msgstr ""
+msgstr "vless-xhttp"
 
 #: src/protocols/xhttp.md
 msgid "vless"
-msgstr ""
+msgstr "vless"
 
 #: src/protocols/xhttp.md
 msgid "server"
-msgstr ""
+msgstr "server"
 
 #: src/protocols/xhttp.md
 msgid "edge.example.com"
-msgstr ""
+msgstr "edge.example.com"
 
 #: src/protocols/xhttp.md
 msgid "uuid"
-msgstr ""
+msgstr "uuid"
 
 #: src/protocols/xhttp.md
 msgid "11111111-2222-3333-4444-555555555555"
-msgstr ""
+msgstr "11111111-2222-3333-4444-555555555555"
 
 #: src/protocols/xhttp.md
 msgid "tls"
-msgstr ""
+msgstr "tls"
 
 #: src/protocols/xhttp.md
 msgid "servername"
-msgstr ""
+msgstr "servername"
 
 #: src/protocols/xhttp.md
 msgid "cdn.example.com"
-msgstr ""
+msgstr "cdn.example.com"
 
 #: src/protocols/xhttp.md
 msgid "network"
-msgstr ""
+msgstr "network"
 
 #: src/protocols/xhttp.md
 msgid "xhttp"
-msgstr ""
+msgstr "xhttp"
 
 #: src/protocols/xhttp.md
 msgid "xhttp-opts"
-msgstr ""
+msgstr "xhttp-opts"
 
 #: src/protocols/xhttp.md
 msgid "/api/v1/sync"
-msgstr ""
+msgstr "/api/v1/sync"
 
 #: src/protocols/xhttp.md
 msgid "host"
-msgstr ""
+msgstr "host"
 
 #: src/protocols/xhttp.md
 msgid "mode"
-msgstr ""
+msgstr "mode"
 
 #: src/protocols/xhttp.md
 msgid "auto"
-msgstr ""
+msgstr "auto"
 
 #: src/protocols/xhttp.md
 msgid "headers"
-msgstr ""
+msgstr "headers"
 
 #: src/protocols/xhttp.md
 msgid "User-Agent"
-msgstr ""
+msgstr "User-Agent"
 
 #: src/protocols/xhttp.md
 msgid "okhttp/4.12.0"
-msgstr ""
+msgstr "okhttp/4.12.0"
 
 #: src/protocols/xhttp.md
 msgid "Minimal Example (Server, Xray style)"
@@ -3362,11 +3362,11 @@ msgstr "最小示例（服务端，Xray 风格）"
 
 #: src/protocols/xhttp.md
 msgid "\"inbounds\""
-msgstr ""
+msgstr "\"inbounds\""
 
 #: src/protocols/xhttp.md
 msgid "\"port\""
-msgstr ""
+msgstr "\"port\""
 
 #: src/protocols/xhttp.md
 msgid "\"protocol\""
@@ -3374,103 +3374,103 @@ msgstr "\"protocol\""
 
 #: src/protocols/xhttp.md
 msgid "\"vless\""
-msgstr ""
+msgstr "\"vless\""
 
 #: src/protocols/xhttp.md
 msgid "\"settings\""
-msgstr ""
+msgstr "\"settings\""
 
 #: src/protocols/xhttp.md
 msgid "\"clients\""
-msgstr ""
+msgstr "\"clients\""
 
 #: src/protocols/xhttp.md
 msgid "\"id\""
-msgstr ""
+msgstr "\"id\""
 
 #: src/protocols/xhttp.md
 msgid "\"11111111-2222-3333-4444-555555555555\""
-msgstr ""
+msgstr "\"11111111-2222-3333-4444-555555555555\""
 
 #: src/protocols/xhttp.md
 msgid "\"decryption\""
-msgstr ""
+msgstr "\"decryption\""
 
 #: src/protocols/xhttp.md
 msgid "\"none\""
-msgstr ""
+msgstr "\"none\""
 
 #: src/protocols/xhttp.md
 msgid "\"streamSettings\""
-msgstr ""
+msgstr "\"streamSettings\""
 
 #: src/protocols/xhttp.md
 msgid "\"network\""
-msgstr ""
+msgstr "\"network\""
 
 #: src/protocols/xhttp.md
 msgid "\"xhttp\""
-msgstr ""
+msgstr "\"xhttp\""
 
 #: src/protocols/xhttp.md
 msgid "\"security\""
-msgstr ""
+msgstr "\"security\""
 
 #: src/protocols/xhttp.md
 msgid "\"tls\""
-msgstr ""
+msgstr "\"tls\""
 
 #: src/protocols/xhttp.md
 msgid "\"tlsSettings\""
-msgstr ""
+msgstr "\"tlsSettings\""
 
 #: src/protocols/xhttp.md
 msgid "\"serverName\""
-msgstr ""
+msgstr "\"serverName\""
 
 #: src/protocols/xhttp.md
 msgid "\"cdn.example.com\""
-msgstr ""
+msgstr "\"cdn.example.com\""
 
 #: src/protocols/xhttp.md
 msgid "\"certificates\""
-msgstr ""
+msgstr "\"certificates\""
 
 #: src/protocols/xhttp.md
 msgid "\"certificateFile\""
-msgstr ""
+msgstr "\"certificateFile\""
 
 #: src/protocols/xhttp.md
 msgid "\"/etc/ssl/fullchain.pem\""
-msgstr ""
+msgstr "\"/etc/ssl/fullchain.pem\""
 
 #: src/protocols/xhttp.md
 msgid "\"keyFile\""
-msgstr ""
+msgstr "\"keyFile\""
 
 #: src/protocols/xhttp.md
 msgid "\"/etc/ssl/privkey.pem\""
-msgstr ""
+msgstr "\"/etc/ssl/privkey.pem\""
 
 #: src/protocols/xhttp.md
 msgid "\"xhttpSettings\""
-msgstr ""
+msgstr "\"xhttpSettings\""
 
 #: src/protocols/xhttp.md
 msgid "\"path\""
-msgstr ""
+msgstr "\"path\""
 
 #: src/protocols/xhttp.md
 msgid "\"/api/v1/sync\""
-msgstr ""
+msgstr "\"/api/v1/sync\""
 
 #: src/protocols/xhttp.md
 msgid "\"mode\""
-msgstr ""
+msgstr "\"mode\""
 
 #: src/protocols/xhttp.md
 msgid "\"auto\""
-msgstr ""
+msgstr "\"auto\""
 
 #: src/protocols/xhttp.md
 msgid "Deployment Notes"
@@ -3522,31 +3522,31 @@ msgstr "握手正常但吞吐差：请减少请求头冗余、调优 `xmux`，�
 msgid ""
 "TLS camouflage layer from the Xray ecosystem that imitates a TLS 1.3 "
 "handshake without issuing a certificate."
-msgstr ""
+msgstr "来自 Xray 生态的 TLS 伪装层，可在不签发证书的情况下模拟 TLS 1.3 握手。"
 
 #: src/protocols/reality.md
 msgid ""
 "Uses a server public key and short ID to bind the handshake to a real-"
 "looking TLS fingerprint."
-msgstr ""
+msgstr "使用服务端公钥与 short ID，将握手绑定到看似真实的 TLS 指纹。"
 
 #: src/protocols/reality.md
 msgid ""
 "Commonly paired with VLESS or Trojan to provide authentication and routing "
 "on top of the transport."
-msgstr ""
+msgstr "通常与 VLESS 或 Trojan 搭配，在传输层之上提供认证与路由能力。"
 
 #: src/protocols/reality.md
 msgid ""
 "Client selects a cover domain and configures the server public key + short "
 "ID."
-msgstr ""
+msgstr "客户端选择伪装域名，并配置服务端公钥 + short ID。"
 
 #: src/protocols/reality.md
 msgid ""
 "Client initiates a TLS 1.3-like handshake (uTLS fingerprint) with SNI set to"
 " the cover domain."
-msgstr ""
+msgstr "客户端发起类 TLS 1.3 握手（uTLS 指纹），并将 SNI 设为伪装域名。"
 
 #: src/protocols/reality.md
 msgid "Server validates the short ID and key exchange to accept the session."
@@ -3556,37 +3556,37 @@ msgstr "服务器校验 short ID 与密钥交换后接受该会话。"
 msgid ""
 "On success, the connection upgrades to the chosen proxy protocol (for "
 "example VLESS)."
-msgstr ""
+msgstr "成功后，连接升级为选定的代理协议（例如 VLESS）。"
 
 #: src/protocols/reality.md
 msgid ""
 "Avoids certificate issuance and rotation while keeping TLS-like handshake "
 "behavior."
-msgstr ""
+msgstr "在保持类 TLS 握手行为的同时，避免证书签发与轮换。"
 
 #: src/protocols/reality.md
 msgid ""
 "Harder to fingerprint via passive inspection when the TLS client fingerprint"
 " matches common browsers."
-msgstr ""
+msgstr "当 TLS 客户端指纹贴近常见浏览器时，更难被被动探测识别。"
 
 #: src/protocols/reality.md
 msgid "Integrates with XTLS flow control for reduced overhead."
-msgstr ""
+msgstr "可与 XTLS 流控集成以降低开销。"
 
 #: src/protocols/reality.md
 msgid ""
 "Requires compatible client fingerprints; mismatches can break connectivity."
-msgstr ""
+msgstr "需要兼容的客户端指纹；不匹配会导致连接失败。"
 
 #: src/protocols/reality.md
 msgid "Mostly confined to the Xray tooling ecosystem."
-msgstr ""
+msgstr "主要局限在 Xray 工具生态内。"
 
 #: src/protocols/reality.md
 msgid ""
 "Effectiveness depends on the chosen cover domain and correct configuration."
-msgstr ""
+msgstr "效果取决于伪装域名选择与配置正确性。"
 
 #~ msgid ""
 #~ "The landscape of proxy applications has become crowded and fragmented, "
