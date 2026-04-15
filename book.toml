@@ -75,8 +75,9 @@ additional-css = [
   "theme/css/language-picker.css",
   "theme/css/rtl.css",
 ]
-site-url = "/comprehensive-rust/"
-git-repository-url = "https://github.com/google/comprehensive-rust"
+# note
+site-url = "/"
+git-repository-url = "https://github.com/MFSGA/Proxy_WIKI"
 edit-url-template = "https://github.com/google/comprehensive-rust/edit/main/{path}"
 
 [output.html.fold]
