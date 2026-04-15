@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Proxy Wiki\n"
-"POT-Creation-Date: 2026-04-16T00:08:27+08:00\n"
+"POT-Creation-Date: 2026-04-16T00:17:04+08:00\n"
 "PO-Revision-Date: 2026-04-15 23:40+0800\n"
 "Last-Translator: chimera_rust@proton.me\n"
 "Language-Team: Language zh-CN\n"
@@ -196,6 +196,9 @@ msgid ""
 "reference for developers, intended to help them understand implementation "
 "details, extension capabilities, and support further development."
 msgstr ""
+"此外，每个项目的文档通常分为两大部分：一部分是面向普通用户的配置指南，用于快"
+"速上手和日常使用；另一部分是面向开发者的高级参考，旨在帮助他们理解实现细节、"
+"扩展能力，并支持后续开发。"
 
 #: src/system-topology.md
 msgid ""
@@ -226,7 +229,7 @@ msgstr ""
 
 #: src/chimera_client.md
 msgid "Current Support Protocol and Transport"
-msgstr ""
+msgstr "当前支持的协议与传输"
 
 #: src/chimera_client.md
 msgid "Trojan + WS"
@@ -242,35 +245,36 @@ msgstr "Reality + TCP"
 
 #: src/chimera_client.md
 msgid "Socks5"
-msgstr ""
+msgstr "SOCKS5"
 
 #: src/chimera_client.md
 msgid "Http"
-msgstr ""
+msgstr "HTTP"
+
+#: src/chimera_client.md
+#, fuzzy
+msgid "Xhttp"
+msgstr "Xhttp"
 
 #: src/chimera_client.md
 msgid "Will support"
-msgstr ""
-
-#: src/chimera_client.md src/protocols/xhttp.md
-msgid "xhttp"
-msgstr "xhttp"
+msgstr "未来支持"
 
 #: src/chimera_client.md
 msgid "grpc"
-msgstr ""
+msgstr "gRPC"
 
 #: src/chimera_client.md
 msgid "vmess"
-msgstr ""
+msgstr "VMess"
 
 #: src/chimera_client.md
 msgid "wireguard"
-msgstr ""
+msgstr "WireGuard"
 
 #: src/chimera_client.md
 msgid "ssh"
-msgstr ""
+msgstr "SSH"
 
 #: src/chimera_client.md
 msgid "Role and Objectives"
@@ -283,63 +287,69 @@ msgid ""
 "Mihomo profiles, while using Rust’s type safety and async ecosystem to build "
 "a maintainable codebase."
 msgstr ""
+"`chimera_client` 是 Chimera 生态中的 Clash 兼容客户端运行时。它的设计目标是在"
+"兼容现有 Clash/Mihomo 配置的同时，利用 Rust 的类型安全与异步生态构建一个可维"
+"护的代码库。"
 
 #: src/chimera_client.md
 msgid "For operators, this means:"
-msgstr ""
+msgstr "对运维人员而言，这意味着："
 
 #: src/chimera_client.md
 msgid "Preserve familiar configuration and policy mental models."
-msgstr ""
+msgstr "保留熟悉的配置与策略心智模型。"
 
 #: src/chimera_client.md
 msgid ""
 "Improve implementation clarity through explicit schema and module boundaries."
-msgstr ""
+msgstr "通过明确的 schema 与模块边界提升实现清晰度。"
 
 #: src/chimera_client.md
 msgid ""
 "Enable incremental parity: start from stable basics (e.g., SOCKS inbound + "
 "rules), then close feature gaps against `clash-rs` and Mihomo."
 msgstr ""
+"支持渐进式对齐：从稳定的基础能力（如 SOCKS 入站 + rules）开始，再逐步补齐与 "
+"`clash-rs` 和 Mihomo 之间的特性差距。"
 
 #: src/chimera_client.md
 msgid "Relationship to Clash-rs and Mihomo"
-msgstr ""
+msgstr "与 Clash-rs 和 Mihomo 的关系"
 
 #: src/chimera_client.md
 msgid ""
 "`chimera_client` documentation treats `clash-rs` and Mihomo as the two most "
 "important references:"
 msgstr ""
+"`chimera_client` 文档将 `clash-rs` 和 Mihomo 视为两个最重要的参考实现："
 
 #: src/chimera_client.md
 msgid ""
 "**clash-rs**: Rust-native reference for parser/runtime behavior and config "
 "semantics."
-msgstr ""
+msgstr "**clash-rs**：用于解析器 / 运行时行为和配置语义的 Rust 原生参考实现。"
 
 #: src/chimera_client.md
 msgid ""
 "**Mihomo**: de-facto production reference for broad ecosystem compatibility "
 "and advanced operational features."
-msgstr ""
+msgstr "**Mihomo**：广泛生态兼容性和高级运维特性的事实生产参考。"
 
 #: src/chimera_client.md
 msgid "In this chapter, each module page clearly marks:"
-msgstr ""
+msgstr "在本章中，每个模块页面都会明确标注："
 
 #: src/chimera_client.md
 msgid "what works in `chimera_client` now,"
-msgstr ""
+msgstr "`chimera_client` 当前已可用的内容，"
 
 #: src/chimera_client.md
 msgid "what is Clash/Mihomo-compatible target behavior,"
-msgstr ""
+msgstr "什么是与 Clash/Mihomo 兼容的目标行为，"
 
 #: src/chimera_client.md
 msgid "and what migration precautions to apply today."
-msgstr ""
+msgstr "以及当前应采取哪些迁移注意事项。"
 
 #: src/chimera_client.md
 msgid "Architecture Overview"
@@ -347,7 +357,7 @@ msgstr "架构概览"
 
 #: src/chimera_client.md
 msgid "Internally, the client is organized into four layers:"
-msgstr ""
+msgstr "在内部，客户端被组织为四层："
 
 #: src/chimera_client.md
 msgid "**Configuration layer**"
@@ -355,57 +365,59 @@ msgstr "**配置层**"
 
 #: src/chimera_client.md
 msgid "Parses Clash-style YAML into typed Rust structures."
-msgstr ""
+msgstr "将 Clash 风格 YAML 解析为类型化的 Rust 结构。"
 
 #: src/chimera_client.md
 msgid "Handles defaults, validation, and hot-reload boundaries."
-msgstr ""
+msgstr "处理默认值、校验与热重载边界。"
 
 #: src/chimera_client.md
 msgid "**Inbound/controller layer**"
-msgstr ""
+msgstr "**入站 / 控制层**"
 
 #: src/chimera_client.md
 msgid "Owns local listeners (SOCKS/HTTP/mixed/TUN as parity evolves)."
-msgstr ""
+msgstr "负责本地监听器（SOCKS/HTTP/mixed/TUN，随对齐进展逐步完善）。"
 
 #: src/chimera_client.md
 msgid "Exposes management APIs for status, switching, and diagnostics."
-msgstr ""
+msgstr "暴露用于状态查询、切换与诊断的管理 API。"
 
 #: src/chimera_client.md
 msgid "**Policy and DNS layer**"
-msgstr ""
+msgstr "**策略与 DNS 层**"
 
 #: src/chimera_client.md
 msgid "Evaluates rule chains with first-match semantics."
-msgstr ""
+msgstr "以首条命中语义执行规则链。"
 
 #: src/chimera_client.md
 msgid ""
 "Provides DNS strategy primitives (system resolver today; Clash-style DNS "
 "target)."
-msgstr ""
+msgstr "提供 DNS 策略原语（当前为系统解析器，目标是 Clash 风格 DNS）。"
 
 #: src/chimera_client.md
 msgid "**Outbound transport layer**"
-msgstr ""
+msgstr "**出站传输层**"
 
 #: src/chimera_client.md
 msgid "Executes protocol handshakes and stream forwarding."
-msgstr ""
+msgstr "执行协议握手与流转发。"
 
 #: src/chimera_client.md
 msgid ""
 "Encapsulates protocol-specific knobs while sharing common TLS/socket "
 "utilities."
-msgstr ""
+msgstr "封装协议特定参数，同时复用通用 TLS / socket 工具。"
 
 #: src/chimera_client.md
 msgid ""
 "This split mirrors common Clash-family architecture and reduces coupling "
 "between parser, runtime, and protocol engines."
 msgstr ""
+"这种划分与常见的 Clash 家族架构一致，并降低了解析器、运行时与协议引擎之间的耦"
+"合。"
 
 #: src/chimera_client.md
 msgid "Module Guide"
@@ -413,25 +425,31 @@ msgstr "模块指南"
 
 #: src/chimera_client.md
 msgid "Each functional area is documented independently:"
-msgstr ""
+msgstr "每个功能区域都独立成文："
 
 #: src/chimera_client.md
 msgid ""
 "**Ports and listeners**: key mapping and current inbound support. See [Ports "
 "and Listeners](./chimera_client/ports.md)."
 msgstr ""
+"**端口与监听器**：键名映射与当前入站支持情况。参见[端口与监听器](./"
+"chimera_client/ports.md)。"
 
 #: src/chimera_client.md
 msgid ""
 "**DNS module**: fake-IP vs real-IP models, resolver policy, and current "
 "implementation status. See [DNS Module](./chimera_client/dns.md)."
 msgstr ""
+"**DNS 模块**：fake-IP 与 real-IP 模型、解析器策略，以及当前实现状态。参见"
+"[DNS 模块](./chimera_client/dns.md)。"
 
 #: src/chimera_client.md
 msgid ""
 "**TUN module**: route-all/split-route semantics and Linux policy-routing "
 "notes. See [Tun Module](./chimera_client/tun.md)."
 msgstr ""
+"**TUN 模块**：route-all / split-route 语义与 Linux 策略路由说明。参见[Tun 模"
+"块](./chimera_client/tun.md)。"
 
 #: src/chimera_client.md
 msgid ""
@@ -444,11 +462,11 @@ msgstr ""
 
 #: src/chimera_client.md
 msgid "Compatibility Snapshot (English Docs, Current)"
-msgstr ""
+msgstr "兼容性概览（英文文档，当前）"
 
 #: src/chimera_client.md
 msgid "Area"
-msgstr ""
+msgstr "区域"
 
 #: src/chimera_client.md
 msgid "chimera_client (current)"
@@ -464,35 +482,35 @@ msgstr "入站监听器"
 
 #: src/chimera_client.md
 msgid "`socks_port` available; others partial/in progress"
-msgstr ""
+msgstr "`socks_port` 可用；其他项部分实现 / 开发中"
 
 #: src/chimera_client.md
 msgid "Full Clash-family listener matrix"
-msgstr ""
+msgstr "完整的 Clash 家族监听器矩阵"
 
 #: src/chimera_client.md
 msgid "DNS"
-msgstr ""
+msgstr "DNS"
 
 #: src/chimera_client.md
 msgid "Primarily system resolver path; Clash-style block documented as target"
-msgstr ""
+msgstr "主要走系统解析器路径；Clash 风格配置块作为目标形态记录"
 
 #: src/chimera_client.md
 msgid "Mature fake-IP/real-IP/split resolver workflows"
-msgstr ""
+msgstr "成熟的 fake-IP / real-IP / 分流解析工作流"
 
 #: src/chimera_client.md
 msgid "TUN"
-msgstr ""
+msgstr "TUN"
 
 #: src/chimera_client.md
 msgid "Documented target model; not fully active on mainline"
-msgstr ""
+msgstr "已记录目标模型；主线尚未完全启用"
 
 #: src/chimera_client.md
 msgid "Mature cross-platform implementations"
-msgstr ""
+msgstr "成熟的跨平台实现"
 
 #: src/chimera_client.md
 msgid "Rules"
@@ -500,7 +518,7 @@ msgstr "规则"
 
 #: src/chimera_client.md
 msgid "Core Clash rule language documented and aligned"
-msgstr ""
+msgstr "核心 Clash 规则语言已有文档并完成对齐"
 
 #: src/chimera_client.md
 msgid "Full rule/provider ecosystem"
@@ -510,7 +528,7 @@ msgstr "完整的规则 / provider 生态"
 msgid ""
 "Use this table as a reading index: module pages go deeper with examples and "
 "caveats."
-msgstr ""
+msgstr "可将此表作为阅读索引：各模块页面会进一步说明示例与注意事项。"
 
 #: src/chimera_client.md
 msgid "Deployment Patterns"
@@ -518,11 +536,11 @@ msgstr "部署模式"
 
 #: src/chimera_client.md
 msgid "Current recommended pattern for production-like use:"
-msgstr ""
+msgstr "当前推荐的类生产使用模式："
 
 #: src/chimera_client.md
 msgid "Start with SOCKS-based local proxying."
-msgstr ""
+msgstr "从基于 SOCKS 的本地代理开始。"
 
 #: src/chimera_client.md
 msgid ""
@@ -531,45 +549,49 @@ msgstr "除非你正在验证开发中的 DNS 分支，否则应对 DNS 配置�
 
 #: src/chimera_client.md
 msgid "Use explicit rule ordering and small provider sets first, then scale."
-msgstr ""
+msgstr "先使用显式规则顺序和较小的 provider 集，再逐步扩展。"
 
 #: src/chimera_client.md
 msgid ""
 "Add TUN only when parity branch and environment prerequisites are verified."
-msgstr ""
+msgstr "仅在对齐分支和环境前置条件都验证完成后再启用 TUN。"
 
 #: src/chimera_client.md
 msgid ""
 "For CI/testing, keep one minimal profile and one Clash/Mihomo-parity profile "
 "to detect parser/runtime divergence early."
 msgstr ""
+"对于 CI / 测试，建议同时保留一个最小配置和一个 Clash/Mihomo 对齐配置，以尽早"
+"发现解析器 / 运行时偏差。"
 
 #: src/chimera_client.md
 msgid "Performance and Operational Focus"
-msgstr ""
+msgstr "性能与运维重点"
 
 #: src/chimera_client.md
 msgid ""
 "The long-term performance strategy is aligned with Clash-family workloads:"
-msgstr ""
+msgstr "长期性能策略与 Clash 家族工作负载保持一致："
 
 #: src/chimera_client.md
 msgid "predictable low-overhead rule matching,"
-msgstr ""
+msgstr "可预测、低开销的规则匹配，"
 
 #: src/chimera_client.md
 msgid "bounded memory behavior in long-lived sessions,"
-msgstr ""
+msgstr "长生命周期会话下受控的内存行为，"
 
 #: src/chimera_client.md
 msgid "and high observability for policy debugging."
-msgstr ""
+msgstr "以及面向策略调试的高可观测性。"
 
 #: src/chimera_client.md
 msgid ""
 "When introducing parity features (DNS/TUN/listeners), prioritize "
 "deterministic behavior and debuggability over implicit \"magic\" defaults."
 msgstr ""
+"在引入对齐特性（DNS/TUN/监听器）时，应优先保证确定性行为和可调试性，而不是依"
+"赖隐式的“魔法”默认值。"
 
 #: src/chimera_client.md
 msgid "Reference Repositories"
@@ -599,7 +621,7 @@ msgstr ""
 
 #: src/chimera_client/ports.md
 msgid "Key Mapping"
-msgstr ""
+msgstr "键名映射"
 
 #: src/chimera_client/ports.md
 msgid "Clash / Mihomo key"
@@ -611,7 +633,7 @@ msgstr "chimera_client 键名"
 
 #: src/chimera_client/ports.md
 msgid "Purpose"
-msgstr ""
+msgstr "用途"
 
 #: src/chimera_client/ports.md
 msgid "`port` / `http-port`"
@@ -623,7 +645,7 @@ msgstr "`port`"
 
 #: src/chimera_client/ports.md
 msgid "HTTP CONNECT/plain proxy listener"
-msgstr ""
+msgstr "HTTP CONNECT / 明文代理监听器"
 
 #: src/chimera_client/ports.md src/chimera/runtime_config.md
 msgid "`socks-port`"
@@ -671,7 +693,7 @@ msgstr "`tproxy_port`"
 
 #: src/chimera_client/ports.md
 msgid "Linux TPROXY (TCP/UDP)"
-msgstr ""
+msgstr "Linux TPROXY（TCP/UDP）"
 
 #: src/chimera_client/ports.md src/chimera/runtime_config.md
 msgid "`external-controller`"
@@ -691,11 +713,11 @@ msgstr "`dns.listen`"
 
 #: src/chimera_client/ports.md
 msgid "Local DNS socket"
-msgstr ""
+msgstr "本地 DNS 套接字"
 
 #: src/chimera_client/ports.md
 msgid "Behavior by Listener Type"
-msgstr ""
+msgstr "按监听器类型划分的行为"
 
 #: src/chimera_client/ports.md
 msgid "HTTP proxy (`port` / `http-port`)"
@@ -703,11 +725,11 @@ msgstr "HTTP 代理（`port` / `http-port`）"
 
 #: src/chimera_client/ports.md
 msgid "Typical browser/system-proxy entrypoint."
-msgstr ""
+msgstr "典型的浏览器 / 系统代理入口。"
 
 #: src/chimera_client/ports.md
 msgid "Expects HTTP CONNECT and HTTP proxy semantics."
-msgstr ""
+msgstr "需要 HTTP CONNECT 与 HTTP 代理语义。"
 
 #: src/chimera_client/ports.md
 msgid "SOCKS5 (`socks-port`)"
@@ -715,11 +737,11 @@ msgstr "SOCKS5（`socks-port`）"
 
 #: src/chimera_client/ports.md
 msgid "Most widely compatible app-level inbound."
-msgstr ""
+msgstr "兼容性最广的应用层入站。"
 
 #: src/chimera_client/ports.md
 msgid "Supports direct app integration without kernel routing changes."
-msgstr ""
+msgstr "支持直接与应用集成，无需修改内核路由。"
 
 #: src/chimera_client/ports.md
 msgid "Mixed (`mixed-port`)"
@@ -727,11 +749,11 @@ msgstr "混合（`mixed-port`）"
 
 #: src/chimera_client/ports.md
 msgid "Single port for both HTTP and SOCKS protocols."
-msgstr ""
+msgstr "单一端口同时承载 HTTP 和 SOCKS 协议。"
 
 #: src/chimera_client/ports.md
 msgid "Useful where clients only allow one proxy endpoint setting."
-msgstr ""
+msgstr "适用于客户端只允许配置一个代理端点的场景。"
 
 #: src/chimera_client/ports.md
 msgid "Redir (`redir-port`)"
@@ -743,7 +765,7 @@ msgstr "通过 iptables REDIRECT 实现的 Linux TCP 透明捕获。"
 
 #: src/chimera_client/ports.md
 msgid "Does not capture UDP by itself."
-msgstr ""
+msgstr "本身不捕获 UDP。"
 
 #: src/chimera_client/ports.md
 msgid "TProxy (`tproxy-port`)"
@@ -751,12 +773,12 @@ msgstr "TProxy（`tproxy-port`）"
 
 #: src/chimera_client/ports.md
 msgid "Transparent TCP+UDP capture path on Linux."
-msgstr ""
+msgstr "Linux 上的透明 TCP+UDP 捕获路径。"
 
 #: src/chimera_client/ports.md
 msgid ""
 "Requires policy routing (`fwmark` + route table) and firewall integration."
-msgstr ""
+msgstr "需要策略路由（`fwmark` + route table）与防火墙集成。"
 
 #: src/chimera_client/ports.md
 msgid "External controller (`external-controller`)"
@@ -768,7 +790,7 @@ msgstr "供控制面板与自动化使用的管理 API。"
 
 #: src/chimera_client/ports.md
 msgid "Prefer loopback binding unless remote access is required."
-msgstr ""
+msgstr "除非需要远程访问，否则优先绑定回环地址。"
 
 #: src/chimera_client/ports.md
 msgid "DNS listen (`dns.listen`)"
@@ -776,19 +798,19 @@ msgstr "DNS 监听（`dns.listen`）"
 
 #: src/chimera_client/ports.md
 msgid "Local resolver socket used by fake-IP/split-DNS workflows."
-msgstr ""
+msgstr "用于 fake-IP / 分流 DNS 工作流的本地解析器套接字。"
 
 #: src/chimera_client/ports.md
 msgid "Usually paired with TUN or transparent proxy mode."
-msgstr ""
+msgstr "通常与 TUN 或透明代理模式配套使用。"
 
 #: src/chimera_client/ports.md
 msgid "Compatibility Status Matrix"
-msgstr ""
+msgstr "兼容性状态矩阵"
 
 #: src/chimera_client/ports.md
 msgid "Feature"
-msgstr ""
+msgstr "特性"
 
 #: src/chimera_client/ports.md src/chimera_client/dns.md
 msgid "chimera_client now"
@@ -796,7 +818,7 @@ msgstr "chimera_client 当前状态"
 
 #: src/chimera_client/ports.md
 msgid "clash-rs / Mihomo"
-msgstr ""
+msgstr "clash-rs / Mihomo"
 
 #: src/chimera_client/ports.md
 msgid "SOCKS5 inbound"
@@ -804,7 +826,7 @@ msgstr "SOCKS5 入站"
 
 #: src/chimera_client/ports.md
 msgid "Available"
-msgstr ""
+msgstr "可用"
 
 #: src/chimera_client/ports.md
 msgid "SOCKS UDP associate"
@@ -812,7 +834,7 @@ msgstr "SOCKS UDP Associate"
 
 #: src/chimera_client/ports.md
 msgid "Limited / disabled in current notes"
-msgstr ""
+msgstr "当前说明中受限 / 禁用"
 
 #: src/chimera_client/ports.md
 msgid "HTTP inbound"
@@ -820,7 +842,7 @@ msgstr "HTTP 入站"
 
 #: src/chimera_client/ports.md
 msgid "Reserved/planned"
-msgstr ""
+msgstr "预留 / 计划中"
 
 #: src/chimera_client/ports.md
 msgid "Mixed inbound"
@@ -840,11 +862,11 @@ msgstr "外部控制器"
 
 #: src/chimera_client/ports.md
 msgid "Under active development"
-msgstr ""
+msgstr "积极开发中"
 
 #: src/chimera_client/ports.md src/chimera_client/dns.md
 msgid "Mature"
-msgstr ""
+msgstr "成熟"
 
 #: src/chimera_client/ports.md
 msgid "Local DNS listener"
@@ -852,21 +874,21 @@ msgstr "本地 DNS 监听器"
 
 #: src/chimera_client/ports.md
 msgid "Recommended Usage Today"
-msgstr ""
+msgstr "当前推荐用法"
 
 #: src/chimera_client/ports.md
 msgid "Prefer `socks_port` as the stable ingress."
-msgstr ""
+msgstr "优先使用 `socks_port` 作为稳定入站。"
 
 #: src/chimera_client/ports.md
 msgid "Keep management and DNS bindings on `127.0.0.1` during development."
-msgstr ""
+msgstr "开发期间将管理和 DNS 绑定保持在 `127.0.0.1`。"
 
 #: src/chimera_client/ports.md
 msgid ""
 "Treat non-SOCKS inbounds as compatibility keys unless your branch explicitly "
 "enables them."
-msgstr ""
+msgstr "除非你的分支显式启用了它们，否则应将非 SOCKS 入站视为兼容性键。"
 
 #: src/chimera_client/ports.md
 msgid "Configuration Examples"
@@ -951,11 +973,11 @@ msgstr "迁移说明"
 
 #: src/chimera_client/ports.md
 msgid "When importing a profile from Mihomo or clash-rs:"
-msgstr ""
+msgstr "从 Mihomo 或 clash-rs 导入配置时："
 
 #: src/chimera_client/ports.md
 msgid "keep original keys for readability,"
-msgstr ""
+msgstr "保留原始键名以便阅读，"
 
 #: src/chimera_client/ports.md
 msgid "map to `chimera_client` accepted keys where necessary,"
@@ -963,11 +985,11 @@ msgstr "在必要时映射到 `chimera_client` 可接受的键名，"
 
 #: src/chimera_client/ports.md
 msgid "disable inbounds not yet active,"
-msgstr ""
+msgstr "禁用尚未激活的入站项，"
 
 #: src/chimera_client/ports.md
 msgid "verify with live connection tests before enabling LAN exposure."
-msgstr ""
+msgstr "在启用局域网暴露前先通过真实连接测试验证。"
 
 #: src/chimera_client/dns.md src/chimera_client/tun.md
 msgid "Scope and Goals"
@@ -979,33 +1001,37 @@ msgid ""
 "Clash-family clients, DNS behavior strongly affects rule hit accuracy, "
 "latency, and anti-pollution resilience."
 msgstr ""
+"DNS 模块决定在策略路由之前如何解析域名。在 Clash 家族客户端中，DNS 行为会显著"
+"影响规则命中精度、延迟以及抗污染能力。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "This page uses clash-rs and Mihomo as reference behavior, while marking "
 "current `chimera_client` maturity."
 msgstr ""
+"本页以 clash-rs 和 Mihomo 的行为作为参考，同时标注当前 `chimera_client` 的成"
+"熟度。"
 
 #: src/chimera_client/dns.md
 msgid "Why DNS Design Matters"
-msgstr ""
+msgstr "为什么 DNS 设计很重要"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Domain rules require stable mapping between query results and connection "
 "flow."
-msgstr ""
+msgstr "域名规则要求查询结果与连接流之间保持稳定映射。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Fake-IP mode can preserve domain intent even when apps later connect by IP."
-msgstr ""
+msgstr "即使应用后续按 IP 建连，fake-IP 模式仍可保留域名语义。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Resolver choice impacts censorship resistance, startup reliability, and "
 "privacy leakage."
-msgstr ""
+msgstr "解析器选择会影响抗封锁能力、启动可靠性和隐私泄露风险。"
 
 #: src/chimera_client/dns.md
 msgid "Configuration Areas"
@@ -1013,31 +1039,31 @@ msgstr "配置要点"
 
 #: src/chimera_client/dns.md
 msgid "**Upstreams**: UDP / DoH / DoT endpoints and ordering."
-msgstr ""
+msgstr "**上游**：UDP / DoH / DoT 端点及其顺序。"
 
 #: src/chimera_client/dns.md
 msgid "**Mode**: fake-IP vs real-IP."
-msgstr ""
+msgstr "**模式**：fake-IP 与 real-IP。"
 
 #: src/chimera_client/dns.md
 msgid "**Policy routing for DNS**: nameserver-policy and fallback strategy."
-msgstr ""
+msgstr "**基于 DNS 的策略路由**：nameserver-policy 与 fallback 策略。"
 
 #: src/chimera_client/dns.md
 msgid "**Cache strategy**: capacity, TTL bounds, prefetch behavior."
-msgstr ""
+msgstr "**缓存策略**：容量、TTL 边界与预取行为。"
 
 #: src/chimera_client/dns.md
 msgid "**Safety controls**: fake-IP filters, hosts overrides, ECS handling."
-msgstr ""
+msgstr "**安全控制**：fake-IP 过滤、hosts 覆盖与 ECS 处理。"
 
 #: src/chimera_client/dns.md
 msgid "**Bootstrap**: plain DNS for resolving encrypted DNS endpoints."
-msgstr ""
+msgstr "**引导**：用于解析加密 DNS 端点的明文 DNS。"
 
 #: src/chimera_client/dns.md
 msgid "Mode Comparison"
-msgstr ""
+msgstr "模式对比"
 
 #: src/chimera_client/dns.md src/chimera/service-mode.md
 msgid "Mode"
@@ -1045,11 +1071,11 @@ msgstr "模式"
 
 #: src/chimera_client/dns.md
 msgid "Advantages"
-msgstr ""
+msgstr "优势"
 
 #: src/chimera_client/dns.md
 msgid "Trade-offs"
-msgstr ""
+msgstr "取舍"
 
 #: src/chimera_client/dns.md src/chimera/service-mode.md
 msgid "Typical use"
@@ -1061,31 +1087,31 @@ msgstr "`fake-ip`"
 
 #: src/chimera_client/dns.md
 msgid "Better domain-rule retention after connect"
-msgstr ""
+msgstr "建连后能更好保留域名规则语义"
 
 #: src/chimera_client/dns.md
 msgid "Needs careful filter list"
-msgstr ""
+msgstr "需要仔细维护过滤列表"
 
 #: src/chimera_client/dns.md
 msgid "TUN / transparent proxy deployments"
-msgstr ""
+msgstr "TUN / 透明代理部署"
 
 #: src/chimera_client/dns.md
 msgid "`redir-host` / real-IP style"
-msgstr ""
+msgstr "`redir-host` / real-IP 风格"
 
 #: src/chimera_client/dns.md
 msgid "Simpler app compatibility"
-msgstr ""
+msgstr "更简单的应用兼容性"
 
 #: src/chimera_client/dns.md
 msgid "Domain intent can be lost after IP connect"
-msgstr ""
+msgstr "以 IP 建连后可能丢失域名语义"
 
 #: src/chimera_client/dns.md
 msgid "App-level proxy with conservative DNS goals"
-msgstr ""
+msgstr "面向保守 DNS 目标的应用层代理"
 
 #: src/chimera_client/dns.md
 msgid "Resolver Selection Flow (Reference)"
@@ -1097,7 +1123,7 @@ msgstr "检查 hosts 覆盖和缓存。"
 
 #: src/chimera_client/dns.md
 msgid "Choose resolver by policy (domain/set-based) or default list."
-msgstr ""
+msgstr "按策略（基于域名 / 集合）或默认列表选择解析器。"
 
 #: src/chimera_client/dns.md
 msgid "Query primary resolver(s)."
@@ -1105,51 +1131,51 @@ msgstr "查询主解析器。"
 
 #: src/chimera_client/dns.md
 msgid "Run fallback path when validation/latency criteria fail."
-msgstr ""
+msgstr "当校验 / 延迟条件失败时，执行回退路径。"
 
 #: src/chimera_client/dns.md
 msgid "Cache and return answer."
-msgstr ""
+msgstr "缓存并返回结果。"
 
 #: src/chimera_client/dns.md
 msgid "Compatibility Status"
-msgstr ""
+msgstr "兼容性状态"
 
 #: src/chimera_client/dns.md
 msgid "Capability"
-msgstr ""
+msgstr "能力"
 
 #: src/chimera_client/dns.md
 msgid "System resolver passthrough"
-msgstr ""
+msgstr "系统解析器透传"
 
 #: src/chimera_client/dns.md
 msgid "Primary path"
-msgstr ""
+msgstr "主要路径"
 
 #: src/chimera_client/dns.md
 msgid "Also supported"
-msgstr ""
+msgstr "也支持"
 
 #: src/chimera_client/dns.md
 msgid "Clash-style local DNS server"
-msgstr ""
+msgstr "Clash 风格本地 DNS 服务器"
 
 #: src/chimera_client/dns.md
 msgid "In progress"
-msgstr ""
+msgstr "开发中"
 
 #: src/chimera_client/dns.md
 msgid "Fake-IP workflow"
-msgstr ""
+msgstr "Fake-IP 工作流"
 
 #: src/chimera_client/dns.md
 msgid "Target state"
-msgstr ""
+msgstr "目标状态"
 
 #: src/chimera_client/dns.md
 msgid "Nameserver policy / fallback filter"
-msgstr ""
+msgstr "Nameserver 策略 / fallback 过滤"
 
 #: src/chimera_client/dns.md
 msgid "Configuration References"
@@ -1161,7 +1187,7 @@ msgstr "`chimera_client`（当前保守配置）"
 
 #: src/chimera_client/dns.md
 msgid "Clash/Mihomo-aligned target schema"
-msgstr ""
+msgstr "与 Clash/Mihomo 对齐的目标结构"
 
 #: src/chimera_client/dns.md
 msgid "enhanced-mode"
@@ -1233,11 +1259,11 @@ msgstr "实践建议"
 
 #: src/chimera_client/dns.md
 msgid "Start from real-IP/system resolver behavior for stability."
-msgstr ""
+msgstr "从 real-IP / 系统解析器行为起步以确保稳定性。"
 
 #: src/chimera_client/dns.md
 msgid "Enable fake-IP only after validating domain-rule workflows end-to-end."
-msgstr ""
+msgstr "仅在端到端验证完域名规则工作流后再启用 fake-IP。"
 
 #: src/chimera_client/dns.md
 msgid "Keep fake-IP exclusions narrow and auditable."
@@ -1247,7 +1273,7 @@ msgstr "保持 fake-IP 排除项尽量精确且可审计。"
 msgid ""
 "Track fallback hit ratio; sudden growth often means upstream degradation or "
 "blocking."
-msgstr ""
+msgstr "跟踪 fallback 命中率；突然升高通常意味着上游退化或被阻断。"
 
 #: src/chimera_client/dns.md src/chimera_client/tun.md
 #: src/chimera/service-mode.md src/protocols/xhttp.md
@@ -1281,12 +1307,14 @@ msgid ""
 "clash-rs: DNS schema and runtime behavior under `clash-lib/src/config` and "
 "DNS runtime modules."
 msgstr ""
+"clash-rs：`clash-lib/src/config` 及 DNS 运行时模块中的 DNS 结构与运行时行为。"
 
 #: src/chimera_client/dns.md
 msgid ""
 "Mihomo: production reference for enhanced-mode, nameserver-policy, and "
 "fallback-filter semantics."
 msgstr ""
+"Mihomo：enhanced-mode、nameserver-policy 与 fallback-filter 语义的生产参考。"
 
 #: src/chimera_client/tun.md
 msgid ""
@@ -1560,29 +1588,31 @@ msgstr "在 TUN 路径中启用 DNS 劫持行为。"
 
 #: src/chimera_client/tun.md
 msgid "Per-Option Behavior (Clash-rs Source of Truth)"
-msgstr ""
+msgstr "按选项说明的行为（以 Clash-rs 为准）"
 
 #: src/chimera_client/tun.md
 msgid ""
 "This section expands every `tun` field from `TunConfig` in `clash-rs` and "
 "explains practical impact."
 msgstr ""
+"本节会展开说明 `clash-rs` 中 `TunConfig` 的每个 `tun` 字段，并解释其实际影"
+"响。"
 
 #: src/chimera_client/tun.md
 msgid "Turns the whole TUN pipeline on/off."
-msgstr ""
+msgstr "控制整个 TUN 流水线的启用 / 关闭。"
 
 #: src/chimera_client/tun.md
 msgid "`false` means all other `tun` fields are ignored at runtime."
-msgstr ""
+msgstr "`false` 表示运行时会忽略其他所有 `tun` 字段。"
 
 #: src/chimera_client/tun.md
 msgid "Interface identifier and creation mode."
-msgstr ""
+msgstr "接口标识符与创建模式。"
 
 #: src/chimera_client/tun.md
 msgid "Accepted forms in clash-rs parser:"
-msgstr ""
+msgstr "clash-rs 解析器接受的形式："
 
 #: src/chimera_client/tun.md
 msgid "`dev://<name>`: create/use a named TUN device."
@@ -1590,75 +1620,75 @@ msgstr "`dev://<name>`：创建或使用具名 TUN 设备。"
 
 #: src/chimera_client/tun.md
 msgid "plain `<name>`: treated as `dev://<name>`."
-msgstr ""
+msgstr "纯 `<name>`：按 `dev://<name>` 处理。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "`fd://<n>`: adopt an already-open file descriptor (advanced embedding/"
 "systemd style)."
-msgstr ""
+msgstr "`fd://<n>`：接管一个已经打开的文件描述符（高级嵌入 / systemd 风格）。"
 
 #: src/chimera_client/tun.md
 msgid "Alias keys accepted by parser: `device-url`, `device`."
-msgstr ""
+msgstr "解析器接受的别名键：`device-url`、`device`。"
 
 #: src/chimera_client/tun.md
 msgid "IPv4 CIDR assigned to TUN NIC, e.g. `198.18.0.1/24`."
-msgstr ""
+msgstr "分配给 TUN 网卡的 IPv4 CIDR，例如 `198.18.0.1/24`。"
 
 #: src/chimera_client/tun.md
 msgid "This defines both local TUN IP and prefix used for routing decisions."
-msgstr ""
+msgstr "它同时定义本地 TUN IP 和用于路由决策的前缀。"
 
 #: src/chimera_client/tun.md
 msgid "Optional IPv6 CIDR for TUN NIC."
-msgstr ""
+msgstr "分配给 TUN 网卡的可选 IPv6 CIDR。"
 
 #: src/chimera_client/tun.md
 msgid "If omitted, IPv6 handling in TUN path is effectively disabled."
-msgstr ""
+msgstr "若省略，则 TUN 路径中的 IPv6 处理实际上会被禁用。"
 
 #: src/chimera_client/tun.md
 msgid "`true`: full-tunnel, install default-path style routes/rules."
-msgstr ""
+msgstr "`true`：全隧道，安装默认路径风格的路由 / 规则。"
 
 #: src/chimera_client/tun.md
 msgid "`false`: split-tunnel, only prefixes in `routes` are sent to TUN."
-msgstr ""
+msgstr "`false`：分流，仅将 `routes` 中的前缀送入 TUN。"
 
 #: src/chimera_client/tun.md
 msgid "If `route-all: true`, `routes` list becomes operationally irrelevant."
-msgstr ""
+msgstr "如果 `route-all: true`，则 `routes` 列表在运行时基本失去意义。"
 
 #: src/chimera_client/tun.md
 msgid "CIDR list used for split-tunnel mode (`route-all: false`)."
-msgstr ""
+msgstr "用于分流模式（`route-all: false`）的 CIDR 列表。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Typical use: route specific public resolvers, target regions, or service "
 "networks only."
-msgstr ""
+msgstr "典型用法：仅路由特定公共解析器、目标地区或服务网络。"
 
 #: src/chimera_client/tun.md
 msgid "TUN interface MTU override."
-msgstr ""
+msgstr "TUN 接口 MTU 覆盖值。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Leave unset for runtime/platform defaults; set explicitly when encountering "
 "fragmentation/PMTU issues."
-msgstr ""
+msgstr "不设置时使用运行时 / 平台默认值；遇到分片 / PMTU 问题时再显式设置。"
 
 #: src/chimera_client/tun.md
 msgid "Linux-only fwmark attached to outbound packets."
-msgstr ""
+msgstr "仅 Linux 使用，附加到出站数据包上的 fwmark。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Used with `ip rule`/`iptables`/`nftables` to avoid proxy loops and integrate "
 "custom policy routing."
-msgstr ""
+msgstr "与 `ip rule` / `iptables` / `nftables` 配合使用，以避免代理环路并集成自定义策略路由。"
 
 #: src/chimera_client/tun.md
 msgid ""
@@ -1668,60 +1698,60 @@ msgstr "仅 Linux 使用的策略路由表索引，由 clash-rs 的 TUN 路由�
 #: src/chimera_client/tun.md
 msgid ""
 "Default is `2468`; change when your system already uses that table number."
-msgstr ""
+msgstr "默认值为 `2468`；若你的系统已占用该表号，则应修改。"
 
 #: src/chimera_client/tun.md
 msgid "`false`: do not redirect DNS in TUN path."
-msgstr ""
+msgstr "`false`：不在 TUN 路径中重定向 DNS。"
 
 #: src/chimera_client/tun.md
 msgid "`true`: hijack UDP/53 queries to Clash DNS service."
-msgstr ""
+msgstr "`true`：将 UDP/53 查询劫持到 Clash DNS 服务。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "`list`: clash-rs currently treats list mode as enabling hijack behavior "
 "(same effect as `true`)."
-msgstr ""
+msgstr "`list`：clash-rs 当前会把列表模式视为启用劫持行为（效果与 `true` 相同）。"
 
 #: src/chimera_client/tun.md
 msgid "Mihomo Gap Notes (Based on Public Tun Docs)"
-msgstr ""
+msgstr "Mihomo 差异说明（基于公开 Tun 文档）"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Compared with the clash-rs schema above, the following items are not "
 "documented as first-class tun keys in mihomo (same-name or same-shape):"
-msgstr ""
+msgstr "与上面的 clash-rs 结构相比，以下项目在 mihomo 中未被记录为一等的 tun 键（同名或同形）："
 
 #: src/chimera_client/tun.md
 msgid "`device-id` with `fd://<n>` file-descriptor form."
-msgstr ""
+msgstr "带 `fd://<n>` 文件描述符形式的 `device-id`。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Mihomo docs expose `device` but do not document fd-based takeover syntax."
-msgstr ""
+msgstr "Mihomo 文档暴露了 `device`，但没有记录基于 fd 的接管语法。"
 
 #: src/chimera_client/tun.md
 msgid "`gateway` / `gateway-v6` explicit interface-address assignment fields."
-msgstr ""
+msgstr "`gateway` / `gateway-v6` 这类显式接口地址分配字段。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Mihomo tun docs focus on route/rule controls and do not expose clash-rs-"
 "style gateway CIDR keys."
-msgstr ""
+msgstr "Mihomo 的 tun 文档更关注 route / rule 控制，没有暴露 clash-rs 风格的 gateway CIDR 键。"
 
 #: src/chimera_client/tun.md
 msgid "`route-all` + `routes` exact pair."
-msgstr ""
+msgstr "`route-all` + `routes` 这对精确键。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Mihomo uses `auto-route`, `route-address`, `route-exclude-address` style "
 "controls instead of clash-rs key shape."
-msgstr ""
+msgstr "Mihomo 使用 `auto-route`、`route-address`、`route-exclude-address` 这类控制项，而不是 clash-rs 的键形态。"
 
 #: src/chimera_client/tun.md
 msgid "`route-table` exact naming."
@@ -1731,14 +1761,14 @@ msgstr "`route-table` 的准确命名。"
 msgid ""
 "Mihomo exposes `iproute2-table-index` / `iproute2-rule-index`; functionally "
 "close but not the same key contract."
-msgstr ""
+msgstr "Mihomo 暴露的是 `iproute2-table-index` / `iproute2-rule-index`；功能上接近，但键契约并不相同。"
 
 #: src/chimera_client/tun.md
 msgid ""
 "Note: `so-mark` in clash-rs and `routing-mark` in mihomo are conceptually "
 "similar (Linux packet mark), so this is a naming/compatibility difference, "
 "not a missing capability."
-msgstr ""
+msgstr "注意：clash-rs 中的 `so-mark` 与 mihomo 中的 `routing-mark` 在概念上相近（都是 Linux packet mark），因此这是命名 / 兼容性差异，而不是能力缺失。"
 
 #: src/chimera_client/tun.md
 msgid "Device-ID Formats"
@@ -1962,7 +1992,7 @@ msgstr ""
 msgid ""
 "Mihomo tun documentation (for key-shape comparison): `https://wiki.metacubex."
 "one/config/inbound/tun/`."
-msgstr ""
+msgstr "Mihomo tun 文档（用于键形态对比）：`https://wiki.metacubex.one/config/inbound/tun/`。"
 
 #: src/chimera_client/rules.md
 msgid ""
@@ -1979,11 +2009,11 @@ msgstr "规则求值模型"
 
 #: src/chimera_client/rules.md
 msgid "Input signals commonly include:"
-msgstr ""
+msgstr "常见的输入信号包括："
 
 #: src/chimera_client/rules.md
 msgid "domain indicators (SNI / Host),"
-msgstr ""
+msgstr "域名指示信息（SNI / Host），"
 
 #: src/chimera_client/rules.md
 msgid "resolved destination IP,"
@@ -1995,11 +2025,11 @@ msgstr "目标端口 / 源端口，"
 
 #: src/chimera_client/rules.md
 msgid "process identity (when platform supports it),"
-msgstr ""
+msgstr "进程身份（平台支持时），"
 
 #: src/chimera_client/rules.md
 msgid "GeoIP/GeoSite datasets,"
-msgstr ""
+msgstr "GeoIP / GeoSite 数据集，"
 
 #: src/chimera_client/rules.md
 msgid "and external rule-provider sets."
@@ -2022,7 +2052,7 @@ msgstr "`DOMAIN`"
 
 #: src/chimera_client/rules.md
 msgid "Exact hostname match."
-msgstr ""
+msgstr "精确主机名匹配。"
 
 #: src/chimera_client/rules.md
 msgid "rules"
@@ -2038,7 +2068,7 @@ msgstr "`DOMAIN-SUFFIX`"
 
 #: src/chimera_client/rules.md
 msgid "Suffix match (includes subdomains)."
-msgstr ""
+msgstr "后缀匹配（包含子域名）。"
 
 #: src/chimera_client/rules.md
 msgid "DOMAIN-SUFFIX,google.com,Proxy"
@@ -2050,7 +2080,7 @@ msgstr "`DOMAIN-KEYWORD`"
 
 #: src/chimera_client/rules.md
 msgid "Substring-based domain match. Use carefully to avoid overmatching."
-msgstr ""
+msgstr "基于子串的域名匹配。需谨慎使用以避免过度匹配。"
 
 #: src/chimera_client/rules.md
 msgid "DOMAIN-KEYWORD,openai,Proxy"
@@ -2090,7 +2120,7 @@ msgstr "`SRC-IP-CIDR`"
 
 #: src/chimera_client/rules.md
 msgid "Source subnet match (useful on routers/gateways)."
-msgstr ""
+msgstr "源子网匹配（对路由器 / 网关场景很有用）。"
 
 #: src/chimera_client/rules.md
 msgid "SRC-IP-CIDR,192.168.50.0/24,GameProxy"
@@ -2102,7 +2132,7 @@ msgstr "`GEOIP`"
 
 #: src/chimera_client/rules.md
 msgid "Country/region IP database match."
-msgstr ""
+msgstr "国家 / 地区 IP 数据库匹配。"
 
 #: src/chimera_client/rules.md
 msgid "GEOIP,CN,DIRECT"
@@ -2114,7 +2144,7 @@ msgstr "`GEOSITE`"
 
 #: src/chimera_client/rules.md
 msgid "Domain category/list match."
-msgstr ""
+msgstr "域名类别 / 列表匹配。"
 
 #: src/chimera_client/rules.md
 msgid "GEOSITE,geolocation-!cn,Proxy"
@@ -2130,7 +2160,7 @@ msgstr "`DST-PORT`"
 
 #: src/chimera_client/rules.md
 msgid "Destination-port-based routing."
-msgstr ""
+msgstr "基于目标端口的路由。"
 
 #: src/chimera_client/rules.md
 msgid "DST-PORT,443,Proxy"
@@ -2142,7 +2172,7 @@ msgstr "`SRC-PORT`"
 
 #: src/chimera_client/rules.md
 msgid "Source-port-based routing."
-msgstr ""
+msgstr "基于源端口的路由。"
 
 #: src/chimera_client/rules.md
 msgid "SRC-PORT,60000-60100,DIRECT"
@@ -2246,12 +2276,12 @@ msgstr "MATCH,DIRECT"
 
 #: src/chimera_client/rules.md
 msgid "Recommended Ordering"
-msgstr ""
+msgstr "推荐排序"
 
 #: src/chimera_client/rules.md
 msgid ""
 "Security blocks and guaranteed bypass (`REJECT`, private/local `DIRECT`)."
-msgstr ""
+msgstr "安全拦截和明确绕过（`REJECT`、私有 / 本地 `DIRECT`）。"
 
 #: src/chimera_client/rules.md
 msgid "Precise business rules (`DOMAIN`, `PROCESS-PATH`, `IP-CIDR`)."
@@ -2259,7 +2289,7 @@ msgstr "精确业务规则（`DOMAIN`、`PROCESS-PATH`、`IP-CIDR`）。"
 
 #: src/chimera_client/rules.md
 msgid "Provider/category rules (`RULE-SET`, `GEOSITE`)."
-msgstr ""
+msgstr "Provider / 类别规则（`RULE-SET`、`GEOSITE`）。"
 
 #: src/chimera_client/rules.md
 msgid "Broad heuristics (`DOMAIN-KEYWORD`, `GEOIP`)."
@@ -2271,7 +2301,7 @@ msgstr "最终的 `MATCH` 兜底规则。"
 
 #: src/chimera_client/rules.md
 msgid "Compatibility Notes (clash-rs + Mihomo)"
-msgstr ""
+msgstr "兼容性说明（clash-rs + Mihomo）"
 
 #: src/chimera_client/rules.md
 msgid "First-match-wins semantics are aligned."
@@ -2281,15 +2311,15 @@ msgstr "首条命中优先：一旦规则命中，后续规则将被忽略。"
 msgid ""
 "Rule syntax is largely portable, but behavior still depends on DNS mode and "
 "inbound type."
-msgstr ""
+msgstr "规则语法大体可移植，但实际行为仍依赖于 DNS 模式和入站类型。"
 
 #: src/chimera_client/rules.md
 msgid "Process-level rules are platform-sensitive; validate on each target OS."
-msgstr ""
+msgstr "进程级规则对平台敏感；应在每个目标操作系统上分别验证。"
 
 #: src/chimera_client/rules.md
 msgid "GeoIP/GeoSite freshness directly impacts correctness."
-msgstr ""
+msgstr "GeoIP / GeoSite 的新鲜度会直接影响正确性。"
 
 #: src/chimera_client/rules.md
 msgid "Minimal Mixed Example"
@@ -2321,21 +2351,21 @@ msgstr "保持规则意图清晰；避免在列表前部放置相互重叠的宽
 
 #: src/chimera_client/rules.md
 msgid "Version-control rule providers and refresh intervals."
-msgstr ""
+msgstr "对规则 provider 及其刷新间隔进行版本控制。"
 
 #: src/chimera_client/rules.md
 msgid "Enable connection decision logging when debugging mismatches."
-msgstr ""
+msgstr "在调试错配时开启连接决策日志。"
 
 #: src/chimera_client/rules.md
 msgid ""
 "Validate DNS strategy and rule strategy together, especially with fake-IP/"
 "TUN."
-msgstr ""
+msgstr "应联合验证 DNS 策略和规则策略，尤其是在 fake-IP / TUN 场景下。"
 
 #: src/chimera.md
 msgid "Design Goals"
-msgstr ""
+msgstr "设计目标"
 
 #: src/chimera.md
 msgid ""
@@ -2343,45 +2373,45 @@ msgid ""
 "terminating client sessions, enforcing policies, and forwarding traffic to "
 "the target destination. A single ingress port can simultaneously expose "
 "multiple proxy protocols."
-msgstr ""
+msgstr "`Chimera` 作为高性能入口层，负责终止客户端会话、执行策略，并将流量转发到目标地址。单个入口端口可同时暴露多种代理协议。"
 
 #: src/chimera.md
 msgid "The core design priorities of Chimera are:"
-msgstr ""
+msgstr "Chimera 的核心设计优先级包括："
 
 #: src/chimera.md
 msgid "minimizing handshake latency,"
-msgstr ""
+msgstr "最小化握手延迟，"
 
 #: src/chimera.md
 msgid "providing fine-grained access control,"
-msgstr ""
+msgstr "提供细粒度访问控制，"
 
 #: src/chimera.md
 msgid "ensuring cross-platform compatibility,"
-msgstr ""
+msgstr "确保跨平台兼容性，"
 
 #: src/chimera.md
 msgid "enabling horizontal scalability,"
-msgstr ""
+msgstr "支持水平扩展，"
 
 #: src/chimera.md
 msgid "offer built-in observability."
-msgstr ""
+msgstr "并提供内建可观测性。"
 
 #: src/chimera.md
 msgid "Currently Supported Platforms"
-msgstr ""
+msgstr "当前支持的平台"
 
 #: src/chimera.md
 msgid "First Tier"
-msgstr ""
+msgstr "第一梯队"
 
 #: src/chimera.md
 msgid ""
 "🖥️ Windows ![Windows](https://img.shields.io/badge/Windows-supported-0078D6?"
 "logo=windows&logoColor=white)"
-msgstr ""
+msgstr "🖥️ Windows ![Windows](https://img.shields.io/badge/Windows-supported-0078D6?logo=windows&logoColor=white)"
 
 #: src/chimera.md
 msgid "🐧 Ubuntu"
@@ -2405,83 +2435,83 @@ msgstr "当前支持的协议"
 
 #: src/chimera.md
 msgid "Please refer to [`Chimera_Client`](./chimera_client.md) and `clash-rs`."
-msgstr ""
+msgstr "请参阅 [`Chimera_Client`](./chimera_client.md) 和 `clash-rs`。"
 
 #: src/chimera/runtime_config.md
 msgid "Explanation of Chimera’s Runtime Configuration Generation Mechanism"
-msgstr ""
+msgstr "Chimera 运行时配置生成机制说明"
 
 #: src/chimera/runtime_config.md
 msgid "1. Key Takeaways"
-msgstr ""
+msgstr "1. 关键结论"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "The configuration consumed by the core (e.g., `chimera_client` / `mihomo`) "
 "at startup and during hot-reload is **not** read directly from `profiles."
 "yaml`. What the core actually uses is a runtime file:"
-msgstr ""
+msgstr "核心（例如 `chimera_client` / `mihomo`）在启动和热重载时使用的配置**不是**直接从 `profiles.yaml` 读取的。核心真正使用的是一个运行时文件："
 
 #: src/chimera/runtime_config.md
 msgid ""
 "`clash-config.yaml` (runtime configuration, located under `app_config_dir`)"
-msgstr ""
+msgstr "`clash-config.yaml`（运行时配置，位于 `app_config_dir` 下）"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "This file is first composed in memory by the backend, then written to disk, "
 "and finally passed to the core either via **startup arguments** or **Clash "
 "API hot-reload**."
-msgstr ""
+msgstr "这个文件首先由后端在内存中组装，然后写入磁盘，最后通过**启动参数**或**Clash API 热重载**传递给核心。"
 
 #: src/chimera/runtime_config.md
 msgid "2. Configuration Inputs (Raw Materials)"
-msgstr ""
+msgstr "2. 配置输入（原材料）"
 
 #: src/chimera/runtime_config.md
 msgid "The runtime configuration is built from four categories of inputs:"
-msgstr ""
+msgstr "运行时配置由四类输入构建而成："
 
 #: src/chimera/runtime_config.md
 msgid "Application settings: `chimera-config.yaml`"
-msgstr ""
+msgstr "应用设置：`chimera-config.yaml`"
 
 #: src/chimera/runtime_config.md
 msgid "Struct: `IVerge`"
-msgstr ""
+msgstr "结构体：`IVerge`"
 
 #: src/chimera/runtime_config.md
 msgid "Load entry: `backend/tauri/src/config/chimera/mod.rs` → `IVerge::new()`"
-msgstr ""
+msgstr "加载入口：`backend/tauri/src/config/chimera/mod.rs` → `IVerge::new()`"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "Purpose: controls field filtering, port strategy, TUN/system proxy behavior, "
 "etc."
-msgstr ""
+msgstr "用途：控制字段过滤、端口策略、TUN / 系统代理行为等。"
 
 #: src/chimera/runtime_config.md
 msgid "Clash Guard override template: `clash-guard-overrides.yaml`"
-msgstr ""
+msgstr "Clash Guard 覆盖模板：`clash-guard-overrides.yaml`"
 
 #: src/chimera/runtime_config.md
 msgid "Struct: `IClashTemp`"
-msgstr ""
+msgstr "结构体：`IClashTemp`"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "Load entry: `backend/tauri/src/config/clash/mod.rs` → `IClashTemp::new()`"
-msgstr ""
+msgstr "加载入口：`backend/tauri/src/config/clash/mod.rs` → `IClashTemp::new()`"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "Purpose: forcibly overrides critical fields (e.g., `mode`, `mixed-port`, "
 "`external-controller`, `secret`, etc.)"
-msgstr ""
+msgstr "用途：强制覆盖关键字段（例如 `mode`、`mixed-port`、`external-controller`、`secret` 等）。"
 
 #: src/chimera/runtime_config.md
 msgid "Profile metadata: `profiles.yaml`"
-msgstr ""
+msgstr "配置元数据：`profiles.yaml`"
 
 #: src/chimera/runtime_config.md
 msgid "Struct: `Profiles`"
@@ -2491,93 +2521,93 @@ msgstr "结构体：`Profiles`"
 msgid ""
 "Load entry: `backend/tauri/src/config/profile/profiles.rs` → `Profiles::"
 "new()`"
-msgstr ""
+msgstr "加载入口：`backend/tauri/src/config/profile/profiles.rs` → `Profiles::new()`"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "Purpose: records the currently active profile (`current`) and the profile "
 "list (`items`)"
-msgstr ""
+msgstr "用途：记录当前激活的配置（`current`）和配置列表（`items`）"
 
 #: src/chimera/runtime_config.md
 msgid "Concrete profile content files: `app_config_dir/profiles/*.yaml`"
-msgstr ""
+msgstr "具体配置内容文件：`app_config_dir/profiles/*.yaml`"
 
 #: src/chimera/runtime_config.md
 msgid "Load entry: `Profiles::current_mappings()`"
-msgstr ""
+msgstr "加载入口：`Profiles::current_mappings()`"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "Purpose: provides actual configuration content such as proxies, rules, DNS, "
 "TUN, etc."
-msgstr ""
+msgstr "用途：提供代理、规则、DNS、TUN 等实际配置内容。"
 
 #: src/chimera/runtime_config.md
 msgid "3. Startup Initialization Phase"
-msgstr ""
+msgstr "3. 启动初始化阶段"
 
 #: src/chimera/runtime_config.md
 msgid "3.1 Creating Base Files (If Missing)"
-msgstr ""
+msgstr "3.1 创建基础文件（如果缺失）"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "`backend/tauri/src/utils/init/mod.rs` → `init_config()` ensures the "
 "following files exist:"
-msgstr ""
+msgstr "`backend/tauri/src/utils/init/mod.rs` → `init_config()` 会确保以下文件存在："
 
 #: src/chimera/runtime_config.md
 msgid ""
 "`clash-guard-overrides.yaml` (generated by default via `IClashTemp::"
 "template()`)"
-msgstr ""
+msgstr "`clash-guard-overrides.yaml`（默认通过 `IClashTemp::template()` 生成）"
 
 #: src/chimera/runtime_config.md
 msgid "`chimera-config.yaml` (generated by default via `IVerge::template()`)"
-msgstr ""
+msgstr "`chimera-config.yaml`（默认通过 `IVerge::template()` 生成）"
 
 #: src/chimera/runtime_config.md
 msgid "`profiles.yaml` (an empty/default configuration)"
-msgstr ""
+msgstr "`profiles.yaml`（一个空 / 默认配置）"
 
 #: src/chimera/runtime_config.md
 msgid "3.2 Loading Global Configuration Objects"
-msgstr ""
+msgstr "3.2 加载全局配置对象"
 
 #: src/chimera/runtime_config.md
 msgid "`backend/tauri/src/config/core.rs` → `Config::global()` initializes:"
-msgstr ""
+msgstr "`backend/tauri/src/config/core.rs` → `Config::global()` 会初始化："
 
 #: src/chimera/runtime_config.md
 msgid "`Profiles::new()`"
-msgstr ""
+msgstr "`Profiles::new()`"
 
 #: src/chimera/runtime_config.md
 msgid "`IVerge::new()`"
-msgstr ""
+msgstr "`IVerge::new()`"
 
 #: src/chimera/runtime_config.md
 msgid "`IClashTemp::new()`"
-msgstr ""
+msgstr "`IClashTemp::new()`"
 
 #: src/chimera/runtime_config.md
 msgid "`IRuntime::new()`"
-msgstr ""
+msgstr "`IRuntime::new()`"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "`IRuntime` is the in-memory runtime configuration container; its `config` "
 "field is an `Option<Mapping>`."
-msgstr ""
+msgstr "`IRuntime` 是内存中的运行时配置容器；其 `config` 字段类型为 `Option<Mapping>`。"
 
 #: src/chimera/runtime_config.md
 msgid "4. Main Runtime Configuration Composition Flow"
-msgstr ""
+msgstr "4. 运行时配置主组装流程"
 
 #: src/chimera/runtime_config.md
 msgid "Main entry: `Config::generate()` (`backend/tauri/src/config/core.rs`)"
-msgstr ""
+msgstr "主入口：`Config::generate()`（`backend/tauri/src/config/core.rs`）"
 
 #: src/chimera/runtime_config.md
 msgid ""
@@ -2593,62 +2623,73 @@ msgid ""
 "  H --> I[\"Load at startup or hot-reload via PUT /configs\"]\n"
 "```"
 msgstr ""
+"```mermaid\n"
+"flowchart TD\n"
+"  A[\"开始 Config::generate\"] --> B[\"调用 enhance::enhance\"]\n"
+"  B --> C[\"读取当前配置的 YAML\"]\n"
+"  C --> D[\"merge_profiles：合并配置\"]\n"
+"  D --> E[\"（可选）基于白名单的字段过滤\"]\n"
+"  E --> F[\"覆盖关键字段（HANDLE_FIELDS）\"]\n"
+"  F --> G[\"写入内存中的运行时配置\"]\n"
+"  G --> H[\"输出 clash 配置 YAML\"]\n"
+"  H --> I[\"在启动时加载或通过 PUT /configs 热重载\"]\n"
+"```"
 
 #: src/chimera/runtime_config.md
 msgid "4.1 What `enhance::enhance()` Does"
-msgstr ""
+msgstr "4.1 `enhance::enhance()` 做了什么"
 
 #: src/chimera/runtime_config.md
 msgid "Location: `backend/tauri/src/enhance/mod.rs`"
-msgstr ""
+msgstr "位置：`backend/tauri/src/enhance/mod.rs`"
 
 #: src/chimera/runtime_config.md
 msgid "Core steps:"
-msgstr ""
+msgstr "核心步骤："
 
 #: src/chimera/runtime_config.md
 msgid "Load Clash Guard configuration"
-msgstr ""
+msgstr "加载 Clash Guard 配置"
 
 #: src/chimera/runtime_config.md
 msgid "`let clash_config = Config::clash().latest().0.clone()`"
-msgstr ""
+msgstr "`let clash_config = Config::clash().latest().0.clone()`"
 
 #: src/chimera/runtime_config.md
 msgid "Read current feature toggles/settings"
-msgstr ""
+msgstr "读取当前功能开关 / 设置"
 
 #: src/chimera/runtime_config.md
 msgid "such as `enable_clash_fields`, from `IVerge`"
-msgstr ""
+msgstr "例如从 `IVerge` 读取 `enable_clash_fields`"
 
 #: src/chimera/runtime_config.md
 msgid "Load the content of the currently active profile(s)"
-msgstr ""
+msgstr "加载当前激活配置的内容"
 
 #: src/chimera/runtime_config.md
 msgid "via `Profiles::current_mappings()`"
-msgstr ""
+msgstr "通过 `Profiles::current_mappings()`"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "this method iterates over `current`, reads `profiles/<file>.yaml` one by "
 "one, and converts them into `Mapping`"
-msgstr ""
+msgstr "该方法会遍历 `current`，逐个读取 `profiles/<file>.yaml`，并将其转换为 `Mapping`"
 
 #: src/chimera/runtime_config.md
 msgid "(Reserved) Execute profile chain scripts"
-msgstr ""
+msgstr "（预留）执行配置链脚本"
 
 #: src/chimera/runtime_config.md
 msgid "calls `process_chain(...)`"
-msgstr ""
+msgstr "调用 `process_chain(...)`"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "current implementation is a placeholder (no-op), returning the original "
 "config"
-msgstr ""
+msgstr "当前实现只是占位（no-op），会直接返回原始配置"
 
 #: src/chimera/runtime_config.md
 msgid "Merge multiple profile configurations"
@@ -2656,7 +2697,7 @@ msgstr "合并多个配置文件"
 
 #: src/chimera/runtime_config.md
 msgid "calls `merge_profiles(...)`"
-msgstr ""
+msgstr "调用 `merge_profiles(...)`"
 
 #: src/chimera/runtime_config.md
 msgid "current strategy:"
@@ -2664,47 +2705,47 @@ msgstr "当前策略："
 
 #: src/chimera/runtime_config.md
 msgid "first config: full `extend`"
-msgstr ""
+msgstr "第一份配置：完整 `extend`"
 
 #: src/chimera/runtime_config.md
 msgid "subsequent configs: only append `proxies` to the existing `proxies`"
-msgstr ""
+msgstr "后续配置：仅将 `proxies` 追加到现有的 `proxies`"
 
 #: src/chimera/runtime_config.md
 msgid "Whitelist field filtering (optional, controlled by a toggle)"
-msgstr ""
+msgstr "白名单字段过滤（可选，由开关控制）"
 
 #: src/chimera/runtime_config.md
 msgid "`use_whitelist_fields_filter(...)`"
-msgstr ""
+msgstr "`use_whitelist_fields_filter(...)`"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "when `enable_clash_fields = true`, only retains keys in `valid + default "
 "fields`"
-msgstr ""
+msgstr "当 `enable_clash_fields = true` 时，仅保留 `valid + default fields` 中的键"
 
 #: src/chimera/runtime_config.md
 msgid "Force-override Guard fields"
-msgstr ""
+msgstr "强制覆盖 Guard 字段"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "writes back fields listed in `HANDLE_FIELDS` from `IClashTemp` into the "
 "final config"
-msgstr ""
+msgstr "将 `IClashTemp` 中 `HANDLE_FIELDS` 列出的字段写回最终配置"
 
 #: src/chimera/runtime_config.md
 msgid "ensures critical control fields are centrally managed by the client"
-msgstr ""
+msgstr "确保关键控制字段由客户端集中管理"
 
 #: src/chimera/runtime_config.md
 msgid "4.2 Scope of `HANDLE_FIELDS` Overrides"
-msgstr ""
+msgstr "4.2 `HANDLE_FIELDS` 覆盖范围"
 
 #: src/chimera/runtime_config.md
 msgid "Defined in `backend/tauri/src/enhance/field.rs`:"
-msgstr ""
+msgstr "定义于 `backend/tauri/src/enhance/field.rs`："
 
 #: src/chimera/runtime_config.md src/protocols/xhttp.md
 msgid "`mode`"
@@ -2716,7 +2757,7 @@ msgstr "`allow-lan`"
 
 #: src/chimera/runtime_config.md
 msgid "`log-level`"
-msgstr ""
+msgstr "`log-level`"
 
 #: src/chimera/runtime_config.md
 msgid "`ipv6`"
@@ -2724,268 +2765,268 @@ msgstr "ipv6"
 
 #: src/chimera/runtime_config.md
 msgid "`secret`"
-msgstr ""
+msgstr "`secret`"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "This means that even if these fields exist in a profile, the final values "
 "will be overwritten by the corresponding values from `clash-guard-overrides."
 "yaml`."
-msgstr ""
+msgstr "这意味着，即使这些字段存在于配置文件中，其最终值也会被 `clash-guard-overrides.yaml` 中对应的值覆盖。"
 
 #: src/chimera/runtime_config.md
 msgid "5. Writing to Disk and File Locations"
-msgstr ""
+msgstr "5. 写入磁盘与文件位置"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "Entry: `Config::generate_file(ConfigType::Run)` (`backend/tauri/src/config/"
 "core.rs`)"
-msgstr ""
+msgstr "入口：`Config::generate_file(ConfigType::Run)`（`backend/tauri/src/config/core.rs`）"
 
 #: src/chimera/runtime_config.md
 msgid "Output in `Run` mode: `app_config_dir()/clash-config.yaml`"
-msgstr ""
+msgstr "`Run` 模式输出：`app_config_dir()/clash-config.yaml`"
 
 #: src/chimera/runtime_config.md
 msgid "Output in `Check` mode: `temp_dir()/clash-config-check.yaml`"
-msgstr ""
+msgstr "`Check` 模式输出：`temp_dir()/clash-config-check.yaml`"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "If generation fails, `Config::init_config()` provides a fallback: it writes "
 "`IClashTemp` directly as the runtime configuration."
-msgstr ""
+msgstr "如果生成失败，`Config::init_config()` 会提供回退方案：直接将 `IClashTemp` 写为运行时配置。"
 
 #: src/chimera/runtime_config.md
 msgid "6. How the Core Obtains This Configuration"
-msgstr ""
+msgstr "6. 核心如何获取这份配置"
 
 #: src/chimera/runtime_config.md
 msgid "6.1 Loaded at Startup"
-msgstr ""
+msgstr "6.1 启动时加载"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "`CoreManager::run_core()` → `Instance::try_new()` (`backend/tauri/src/core/"
 "clash/core.rs`):"
-msgstr ""
+msgstr "`CoreManager::run_core()` → `Instance::try_new()`（`backend/tauri/src/core/clash/core.rs`）："
 
 #: src/chimera/runtime_config.md
 msgid "Calls `Config::generate_file(ConfigType::Run)` to get the path"
-msgstr ""
+msgstr "调用 `Config::generate_file(ConfigType::Run)` 获取路径"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "Passes the path to the core process via `CoreInstanceBuilder."
 "config_path(config_path)`"
-msgstr ""
+msgstr "通过 `CoreInstanceBuilder.config_path(config_path)` 将该路径传给核心进程"
 
 #: src/chimera/runtime_config.md
 msgid "In other words: the core reads `clash-config.yaml` directly at startup."
-msgstr ""
+msgstr "换句话说：核心在启动时会直接读取 `clash-config.yaml`。"
 
 #: src/chimera/runtime_config.md
 msgid "6.2 Hot-Reload During Runtime"
-msgstr ""
+msgstr "6.2 运行时热重载"
 
 #: src/chimera/runtime_config.md
 msgid "`CoreManager::update_config()` flow:"
-msgstr ""
+msgstr "`CoreManager::update_config()` 的流程："
 
 #: src/chimera/runtime_config.md
 msgid "`Config::generate().await?` recomposes the in-memory config"
-msgstr ""
+msgstr "`Config::generate().await?` 重新组装内存中的配置"
 
 #: src/chimera/runtime_config.md
 msgid "`check_config().await?` validates syntax/usability using the check file"
-msgstr ""
+msgstr "`check_config().await?` 使用检查文件校验语法 / 可用性"
 
 #: src/chimera/runtime_config.md
 msgid "`generate_file(Run)` rewrites `clash-config.yaml`"
-msgstr ""
+msgstr "`generate_file(Run)` 重写 `clash-config.yaml`"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "Calls `PUT /configs` with body `{ \"path\": \"<absolute path>\" }` to "
 "instruct the core to reload"
-msgstr ""
+msgstr "调用 `PUT /configs`，并附带 `{ \"path\": \"<absolute path>\" }` 请求体，以指示核心重载"
 
 #: src/chimera/runtime_config.md
 msgid "Relevant code:"
-msgstr ""
+msgstr "相关代码："
 
 #: src/chimera/runtime_config.md
 msgid "`backend/tauri/src/core/clash/core.rs` → `update_config()`"
-msgstr ""
+msgstr "`backend/tauri/src/core/clash/core.rs` → `update_config()`"
 
 #: src/chimera/runtime_config.md
 msgid "`backend/tauri/src/core/clash/api.rs` → `put_configs(...)`"
-msgstr ""
+msgstr "`backend/tauri/src/core/clash/api.rs` → `put_configs(...)`"
 
 #: src/chimera/runtime_config.md
 msgid "7. User Actions That Trigger a Rebuild"
-msgstr ""
+msgstr "7. 会触发重建的用户操作"
 
 #: src/chimera/runtime_config.md
 msgid "7.1 Switching/Modifying Profile Selection"
-msgstr ""
+msgstr "7.1 切换 / 修改配置选择"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "Frontend `commands.patchProfilesConfig` → backend "
 "`patch_profiles_config(...)`:"
-msgstr ""
+msgstr "前端 `commands.patchProfilesConfig` → 后端 `patch_profiles_config(...)`："
 
 #: src/chimera/runtime_config.md
 msgid "Apply draft: `Config::profiles().draft().apply(...)`"
-msgstr ""
+msgstr "应用草稿：`Config::profiles().draft().apply(...)`"
 
 #: src/chimera/runtime_config.md
 msgid "Trigger `CoreManager::update_config()`"
-msgstr ""
+msgstr "触发 `CoreManager::update_config()`"
 
 #: src/chimera/runtime_config.md
 msgid "On success: `Config::profiles().apply()` + `save_file()`"
-msgstr ""
+msgstr "成功时：`Config::profiles().apply()` + `save_file()`"
 
 #: src/chimera/runtime_config.md
 msgid "On failure: `discard()` (rollback)"
-msgstr ""
+msgstr "失败时：`discard()`（回滚）"
 
 #: src/chimera/runtime_config.md
 msgid "7.2 Changing Settings (Certain Fields)"
-msgstr ""
+msgstr "7.2 修改设置（某些字段）"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "Frontend `commands.patchVergeConfig` → backend `feat::patch_verge(...)`:"
-msgstr ""
+msgstr "前端 `commands.patchVergeConfig` → 后端 `feat::patch_verge(...)`："
 
 #: src/chimera/runtime_config.md
 msgid "Writes an `IVerge` draft first"
-msgstr ""
+msgstr "先写入一份 `IVerge` 草稿"
 
 #: src/chimera/runtime_config.md
 msgid "Some fields (e.g., `enable_tun_mode`) may trigger:"
-msgstr ""
+msgstr "某些字段（例如 `enable_tun_mode`）可能触发："
 
 #: src/chimera/runtime_config.md
 msgid "`Config::generate()` + `run_core()` (restart scenario)"
-msgstr ""
+msgstr "`Config::generate()` + `run_core()`（重启场景）"
 
 #: src/chimera/runtime_config.md
 msgid "or `update_core_config()` (hot-update scenario)"
-msgstr ""
+msgstr "或 `update_core_config()`（热更新场景）"
 
 #: src/chimera/runtime_config.md
 msgid "7.3 Importing the First Profile"
-msgstr ""
+msgstr "7.3 导入第一份配置"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "After `import_profile(...)` succeeds, if there is no active profile yet, it "
 "automatically constructs `ProfilesBuilder.current = [new_uid]` and reuses "
 "`patch_profiles_config(...)` to trigger an update."
-msgstr ""
+msgstr "当 `import_profile(...)` 成功后，如果当前还没有激活配置，它会自动构造 `ProfilesBuilder.current = [new_uid]`，并复用 `patch_profiles_config(...)` 触发更新。"
 
 #: src/chimera/runtime_config.md
 msgid "8. Key Details and Common Misunderstandings"
-msgstr ""
+msgstr "8. 关键细节与常见误解"
 
 #: src/chimera/runtime_config.md
 msgid "`profiles.yaml` is **not** the final configuration used by the core"
-msgstr ""
+msgstr "`profiles.yaml` **不是**核心最终使用的配置"
 
 #: src/chimera/runtime_config.md
 msgid "it only stores profile metadata and the `current` pointer"
-msgstr ""
+msgstr "它只存储配置元数据和 `current` 指针"
 
 #: src/chimera/runtime_config.md
 msgid "Profile content files are **not** passed to the core verbatim"
-msgstr ""
+msgstr "配置内容文件**不会**原样传给核心"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "they become the runtime config only after merging, filtering, and guard "
 "overrides"
-msgstr ""
+msgstr "它们只有在经过合并、过滤和 guard 覆盖之后，才会变成运行时配置"
 
 #: src/chimera/runtime_config.md
 msgid "`external-controller` may have its port changed before startup"
-msgstr ""
+msgstr "`external-controller` 的端口可能会在启动前被修改"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "`prepare_external_controller_port()` checks port availability according to "
 "policy and switches ports if necessary"
-msgstr ""
+msgstr "`prepare_external_controller_port()` 会按策略检查端口可用性，并在必要时切换端口"
 
 #: src/chimera/runtime_config.md
 msgid "`verge_mixed_port` is primarily used for system proxy logic"
-msgstr ""
+msgstr "`verge_mixed_port` 主要用于系统代理逻辑"
 
 #: src/chimera/runtime_config.md
 msgid "it is **not** directly written to the runtime YAML’s `mixed-port`"
-msgstr ""
+msgstr "它**不会**被直接写入运行时 YAML 的 `mixed-port`"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "system proxy uses `verge_mixed_port` first, otherwise falls back to `Config::"
 "clash().get_mixed_port()`"
-msgstr ""
+msgstr "系统代理会优先使用 `verge_mixed_port`，否则回退到 `Config::clash().get_mixed_port()`"
 
 #: src/chimera/runtime_config.md
 msgid "`get_runtime_yaml()` returns `IRuntime.config` from memory"
-msgstr ""
+msgstr "`get_runtime_yaml()` 返回的是内存中的 `IRuntime.config`"
 
 #: src/chimera/runtime_config.md
 msgid "it is usually consistent with the recently written `clash-config.yaml`"
-msgstr ""
+msgstr "它通常与最近写入的 `clash-config.yaml` 保持一致"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "but fundamentally it comes from memory, not from re-reading disk each time"
-msgstr ""
+msgstr "但从根本上说，它来自内存，而不是每次都重新读取磁盘"
 
 #: src/chimera/runtime_config.md
 msgid "9. Current Implementation Limitations (As of the Codebase)"
-msgstr ""
+msgstr "9. 当前实现限制（以当前代码库为准）"
 
 #: src/chimera/runtime_config.md
 msgid "Chain script execution is currently a placeholder"
-msgstr ""
+msgstr "链式脚本执行目前仍是占位实现"
 
 #: src/chimera/runtime_config.md
 msgid "`process_chain(...)` does not actually rewrite the config yet"
-msgstr ""
+msgstr "`process_chain(...)` 目前尚未真正改写配置"
 
 #: src/chimera/runtime_config.md
 msgid "Global chain processing code is still commented out"
-msgstr ""
+msgstr "全局链处理代码仍处于注释状态"
 
 #: src/chimera/runtime_config.md
 msgid "only the scoped chain framework exists for now"
-msgstr ""
+msgstr "目前仅存在带作用域的链式框架"
 
 #: src/chimera/runtime_config.md
 msgid "`patch_clash_config` IPC is still `todo!()`"
-msgstr ""
+msgstr "`patch_clash_config` IPC 仍然是 `todo!()`"
 
 #: src/chimera/runtime_config.md
 msgid "the frontend will fail if it uses that IPC path"
-msgstr ""
+msgstr "如果前端使用该 IPC 路径，将会失败"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "Directly editing a profile file does not automatically trigger a hot-reload"
-msgstr ""
+msgstr "直接编辑配置文件不会自动触发热重载"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "`save_profile_file(...)` only writes the file; it does not call "
 "`update_config()`"
-msgstr ""
+msgstr "`save_profile_file(...)` 只会写入文件；它不会调用 `update_config()`"
 
 #: src/chimera/runtime_config.md
 msgid "10. Troubleshooting Checklist (Practical Order)"
@@ -2995,67 +3036,67 @@ msgstr "10. 故障排查清单（实用顺序）"
 msgid ""
 "If you suspect “the core is using the wrong configuration,” check in this "
 "order:"
-msgstr ""
+msgstr "如果你怀疑“核心使用了错误的配置”，请按以下顺序检查："
 
 #: src/chimera/runtime_config.md
 msgid "Confirm the active profile is correct"
-msgstr ""
+msgstr "确认当前激活的配置是否正确"
 
 #: src/chimera/runtime_config.md
 msgid "verify `profiles.yaml` → `current`"
-msgstr ""
+msgstr "检查 `profiles.yaml` → `current`"
 
 #: src/chimera/runtime_config.md
 msgid "Confirm the profile source content matches expectations"
-msgstr ""
+msgstr "确认配置源内容符合预期"
 
 #: src/chimera/runtime_config.md
 msgid "check `app_config_dir/profiles/*.yaml`"
-msgstr ""
+msgstr "检查 `app_config_dir/profiles/*.yaml`"
 
 #: src/chimera/runtime_config.md
 msgid "Check guard override items"
-msgstr ""
+msgstr "检查 guard 覆盖项"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "verify whether `HANDLE_FIELDS` in `clash-guard-overrides.yaml` overrides the "
 "values you intended"
-msgstr ""
+msgstr "确认 `clash-guard-overrides.yaml` 中的 `HANDLE_FIELDS` 是否覆盖了你预期的值"
 
 #: src/chimera/runtime_config.md
 msgid "Inspect the final runtime configuration"
-msgstr ""
+msgstr "检查最终运行时配置"
 
 #: src/chimera/runtime_config.md
 msgid "check `clash-config.yaml`"
-msgstr ""
+msgstr "检查 `clash-config.yaml`"
 
 #: src/chimera/runtime_config.md
 msgid "or call `get_runtime_yaml()` to view the in-memory version"
-msgstr ""
+msgstr "或调用 `get_runtime_yaml()` 查看内存中的版本"
 
 #: src/chimera/runtime_config.md
 msgid "Confirm a hot-reload actually occurred"
-msgstr ""
+msgstr "确认热重载是否真的发生"
 
 #: src/chimera/runtime_config.md
 msgid ""
 "verify `patch_profiles_config` / `patch_verge_config` / `restart_sidecar` "
 "was executed"
-msgstr ""
+msgstr "确认 `patch_profiles_config` / `patch_verge_config` / `restart_sidecar` 是否已执行"
 
 #: src/chimera/runtime_config.md
 msgid "check logs to see whether `PUT /configs` succeeded"
-msgstr ""
+msgstr "检查日志，确认 `PUT /configs` 是否成功"
 
 #: src/chimera/runtime_config.md
 msgid "If you see port-related issues"
-msgstr ""
+msgstr "如果你遇到端口相关问题"
 
 #: src/chimera/runtime_config.md
 msgid "check whether `external-controller` was rewritten by the port strategy"
-msgstr ""
+msgstr "检查 `external-controller` 是否被端口策略改写"
 
 #: src/chimera/service-mode.md
 msgid "Scope and Intent"
@@ -4902,6 +4943,10 @@ msgstr "cdn.example.com"
 #: src/protocols/xhttp.md
 msgid "network"
 msgstr "network"
+
+#: src/protocols/xhttp.md
+msgid "xhttp"
+msgstr "xhttp"
 
 #: src/protocols/xhttp.md
 msgid "xhttp-opts"

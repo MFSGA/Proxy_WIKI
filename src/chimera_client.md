@@ -6,10 +6,10 @@
 - Reality + tcp
 - Socks5
 - Http
+- Xhttp
 ---
 
 ## Will support
-- xhttp
 - grpc
 - vmess
 - wireguard
