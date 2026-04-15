@@ -1,4 +1,4 @@
-﻿# Chimera GUI
+# Chimera GUI
 
 ## Design Goals
 
@@ -10,7 +10,7 @@ The core design priorities of Chimera are:
 * providing fine-grained access control,
 * ensuring cross-platform compatibility,
 * enabling horizontal scalability,
-* and offering built-in observability.
+* offer built-in observability.
 
 ## Currently Supported Platforms
 
