@@ -34,7 +34,7 @@ msgstr "Chimera_Client"
 
 #: src/SUMMARY.md src/chimera_client/ports.md
 msgid "Ports and Listeners"
-msgstr "端口与监听器"
+msgstr "各种端口"
 
 #: src/SUMMARY.md src/chimera_client/dns.md
 msgid "DNS Module"
