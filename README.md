@@ -44,6 +44,7 @@ cargo xtask build -l zh-CN     # static output in book/zh-CN/
 
 ## Translation notes
 - Translation entries live in `po/<lang>.po`; `mdbook build` emits `book/xgettext/messages.pot`.
+- `scripts/update-zh.sh --stats` refreshes `po/zh-CN.po`, normalizes it, and reports untranslated/fuzzy counts.
 - Preview translations with `MDBOOK_BOOK__LANGUAGE=zh-CN mdbook serve -d book/zh-CN` or `cargo xtask serve -l zh-CN`.
 - See `TRANSLATIONS.md` and `STYLE.md` for details.
 
