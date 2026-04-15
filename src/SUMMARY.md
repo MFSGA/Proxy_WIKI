@@ -1,4 +1,4 @@
-﻿# Summary
+# Summary
 
 - [Preface](./preface.md)
 - [Introduction](./introduction.md)
@@ -21,5 +21,5 @@
   - [Hysteria 2](./protocols/hysteria2.md)
   - [TUIC](./protocols/tuic.md)
   - [VLESS](./protocols/vless.md)
-  - [xHTTP Transport](./protocols/xhttp.md)
+  - [XHTTP Transport](./protocols/xhttp.md)
   - [Reality](./protocols/reality.md)
