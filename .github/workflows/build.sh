@@ -3,7 +3,7 @@ set -Eeuo pipefail
 
 # Usage: build.sh <book-lang> <dest-dir>
 #
-# Build the course as of the date specified specified in the
+# Build the book as of the date specified in the
 # POT-Creation-Date header of po/$book_lang.po. The output can be
 # found in $dest_dir.
 #
@@ -16,7 +16,7 @@ book_lang=${1:?"Usage: $0 <book-lang> <dest-dir>"}
 dest_dir=${2:?"Usage: $0 <book-lang> <dest-dir>"}
 
 if [ "$book_lang" = "en" ]; then
-    echo "::group::Building English course"
+    echo "::group::Building English book"
 else
     pot_creation_date=$(grep --max-count 1 '^"POT-Creation-Date:' "po/$book_lang.po" | sed -E 's/".*: (.*)\\n"/\1/')
     pot_creation_date=${pot_creation_date:-now}
@@ -32,7 +32,7 @@ else
     # Set language and adjust site URL. Clear the redirects since they are
     # in sync with the source files, not the translation.
     export MDBOOK_BOOK__LANGUAGE=$book_lang
-    export MDBOOK_OUTPUT__HTML__SITE_URL=/comprehensive-rust/$book_lang/
+    export MDBOOK_OUTPUT__HTML__SITE_URL=/Proxy_WIKI/$book_lang/
     export MDBOOK_OUTPUT__HTML__REDIRECT='{}'
 
     # Include language-specific Pandoc configuration
@@ -41,13 +41,13 @@ else
     fi
 fi
 
-# Enable mdbook-pandoc to build PDF version of the course
+# Enable mdbook-pandoc to build a PDF version of the book
 export MDBOOK_OUTPUT__PANDOC__DISABLED=false
 
 mdbook build -d "$dest_dir"
 
-# todo: use pdf and exerciser path
-# mv "$dest_dir/pandoc/pdf/comprehensive-rust.pdf" "$dest_dir/html/"
-# (cd "$dest_dir/exerciser" && zip --recurse-paths ../html/comprehensive-rust-exercises.zip comprehensive-rust-exercises/)
+# todo: publish PDF and exerciser artifacts when those outputs are enabled.
+# mv "$dest_dir/pandoc/pdf/proxy-wiki.pdf" "$dest_dir/html/"
+# (cd "$dest_dir/exerciser" && zip --recurse-paths ../html/proxy-wiki-exercises.zip proxy-wiki-exercises/)
 
 echo "::endgroup::"

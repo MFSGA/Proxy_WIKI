@@ -51,7 +51,7 @@ jobs:
       - name: Install mdbook
         uses: ./.github/workflows/install-mdbook
 
-      - name: Build course in English
+      - name: Build book in English
         run: bash .github/workflows/build.sh en book
 
       - name: Build all translations
