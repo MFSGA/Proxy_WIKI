@@ -19,9 +19,8 @@ describe("Generic page", () => {
   it("should have search button and successfully provide search results on search", async () => {
     await expect($("#search-toggle")).toBeDisplayed();
     await $("#search-toggle").click();
-    await browser.keys(["Welcome"]);
-    // any of the <a> links in the searchresults is containing "Welcome"
-    await expect($("#searchresults").$("*=Welcome")).toBeDisplayed();
+    await browser.keys(["Chimera"]);
+    await expect($("#searchresults").$("*=Chimera")).toBeDisplayed();
   });
 
   it("should have language button and show language list on click", async () => {
