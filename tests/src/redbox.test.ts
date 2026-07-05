@@ -6,7 +6,7 @@ describe("Red Box", () => {
   const redBoxButton = () => $("#turn-off-red-box");
 
   beforeEach(async () => {
-    await browser.url("/hello-world.html");
+    await browser.url("/introduction.html");
     await browser.execute(() => sessionStorage.clear());
     // Clear any lingering state (like inline styles) from previous
     // tests. Reading https://webdriver.io/docs/api/browser/url,
@@ -38,14 +38,14 @@ describe("Red Box", () => {
 
   describe("URL Parameter", () => {
     it("should show red box", async () => {
-      await browser.url("/hello-world.html?show-red-box=true");
+      await browser.url("/introduction.html?show-red-box=true");
       await expect(redBox()).toBeDisplayed();
     });
 
     it("should override session storage", async () => {
       // Set session storage first to ensure the URL parameter takes precedence.
       await browser.execute(() => sessionStorage.setItem("showRedBox", "true"));
-      await browser.url("/hello-world.html?show-red-box=false");
+      await browser.url("/introduction.html?show-red-box=false");
       await expect(redBox()).not.toBeDisplayed();
     });
   });
@@ -88,7 +88,7 @@ describe("Red Box", () => {
 
   describe("Interactions", () => {
     it("should be able to be hidden with the keyboard after being shown with the URL", async () => {
-      await browser.url("/hello-world.html?show-red-box=true");
+      await browser.url("/introduction.html?show-red-box=true");
       await expect(redBox()).toBeDisplayed();
 
       await browser.toggleRedBox();
