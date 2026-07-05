@@ -5,8 +5,8 @@ authors = ["Dustin Mitchell <djmitche@google.com>"]
 edition = "2024"
 license = "Apache-2.0"
 publish = false
-repository = "https://github.com/google/comprehensive-rust"
-description = "An mdbook preprocessor for comprehensive-rust."
+repository = "https://github.com/MFSGA/Proxy_WIKI"
+description = "An mdBook preprocessor bundled for Proxy Wiki."
 
 [dependencies]
 anyhow = "1.0.100"

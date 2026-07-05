@@ -30,9 +30,7 @@ fn main() -> Result<()> {
 }
 
 #[derive(Parser)]
-#[command(
-    about = "Binary for executing tasks within the Comprehensive Rust project"
-)]
+#[command(about = "Binary for executing tasks within the Proxy Wiki project")]
 struct Cli {
     /// The task to execute
     #[command(subcommand)]
@@ -56,7 +54,7 @@ enum Task {
     },
     /// Tests all included Rust snippets.
     RustTests,
-    /// Starts a web server with the course.
+    /// Starts a web server with the book.
     Serve {
         /// ISO 639 language code (e.g. da for the Danish translation).
         #[arg(short, long)]
@@ -71,7 +69,7 @@ enum Task {
         #[arg(short = 'p', long = "port", default_value_t = 3000)]
         port: u16,
     },
-    /// Create a static version of the course.
+    /// Create a static version of the book.
     Build {
         /// ISO 639 language code (e.g. da for the Danish translation).
         #[arg(short, long)]
@@ -90,11 +88,9 @@ fn execute_task() -> Result<()> {
         Task::InstallTools { binstall } => install_tools(binstall),
         Task::WebTests { dir } => run_web_tests(dir),
         Task::RustTests => run_rust_tests(),
-        Task::Serve {
-            language,
-            output,
-            port,
-        } => start_web_server(language, output, port),
+        Task::Serve { language, output, port } => {
+            start_web_server(language, output, port)
+        }
         Task::Build { language, output } => build(language, output),
     }
 }
@@ -264,7 +260,7 @@ fn start_web_server(
 }
 
 fn build(language: Option<String>, output_arg: Option<PathBuf>) -> Result<()> {
-    println!("Building course...");
+    println!("Building book...");
     run_mdbook_command("build", language, output_arg, None)
 }
 

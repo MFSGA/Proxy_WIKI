@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Andrew Walbran <qwandor@google.com>"]
 edition = "2024"
 license = "Apache-2.0"
-repository = "https://github.com/google/comprehensive-rust"
+repository = "https://github.com/MFSGA/Proxy_WIKI"
 description = "A tool for extracting starter code for exercises from Markdown files."
 
 [dependencies]

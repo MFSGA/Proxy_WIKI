@@ -1,6 +1,7 @@
 # Build artifacts
 /book/
 target/
+.cargo-tools/
 *.bin
 
 # Translation artifacts
