@@ -22,7 +22,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Update Rust
         run: rustup update
@@ -42,7 +42,7 @@ jobs:
       languages: ${{ steps.find-languages.outputs.languages }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Find languages
         id: find-languages
@@ -67,7 +67,7 @@ jobs:
       LINK_CHECKED_LANGUAGES: '["en", "fa"]'
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0 # We need the full history for build.sh below.
 
@@ -118,7 +118,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
@@ -141,7 +141,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
