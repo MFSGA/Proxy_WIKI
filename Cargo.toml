@@ -3,7 +3,6 @@
 members = [
   "mdbook-course",
   "mdbook-exerciser",
-  "third_party/cxx/blobstore",
   "xtask",
 ]
 resolver = "2"

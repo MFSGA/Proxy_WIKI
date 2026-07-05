@@ -19,9 +19,8 @@ and mdbook configuration in `book.toml` like:
 
 ```toml
 [output.exerciser]
-output-directory = "comprehensive-rust-exercises"
+output-directory = "proxy-wiki-exercises"
 ```
 
-It will create a file
-`book/exerciser/comprehensive-rust-exercises/example/src/main.rs` with the
-appropriate contents.
+It will create a file `book/exerciser/proxy-wiki-exercises/example/src/main.rs`
+with the appropriate contents.

@@ -20,7 +20,7 @@ use mdbook_course::markdown::duration;
 fn main() {
     pretty_env_logger::init();
     let app = Command::new("mdbook-course")
-        .about("mdbook preprocessor for Comprehensive Rust")
+        .about("mdBook preprocessor for Proxy Wiki")
         .subcommand(Command::new("sessions").about("Show session summary (default)"))
         .subcommand(Command::new("segments").about("Show segment summary"))
         .subcommand(Command::new("pr").about("Show summary for a PR"));

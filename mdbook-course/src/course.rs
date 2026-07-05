@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Representation of Comprehensive Rust as a hierarchy of types.
+//! Representation of an mdBook as a hierarchy of timed sections.
 //!
 //! ```ignore
 //! Courses -- a collection of courses
