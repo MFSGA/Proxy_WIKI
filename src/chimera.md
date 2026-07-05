@@ -2,29 +2,59 @@
 
 ## Design Goals
 
-`Chimera` serves as a high-performance ingress layer responsible for terminating client sessions, enforcing policies, and forwarding traffic to the target destination. A single ingress port can simultaneously expose multiple proxy protocols.
+`Chimera` is the desktop control surface for the Chimera client ecosystem. It is
+built with Tauri, Rust, and React, and its job is to make daily proxy operation
+clearer: import profiles, switch nodes, select the proxy core, inspect runtime
+state, manage system integration, and keep the core/app updated.
 
 The core design priorities of Chimera are:
 
-* minimizing handshake latency,
-* providing fine-grained access control,
-* ensuring cross-platform compatibility,
-* enabling horizontal scalability,
-* offer built-in observability.
+- stable cross-platform desktop behavior,
+- clear profile and subscription management,
+- first-class support for `chimera-client` while retaining compatibility with
+  `clash-rs` and `mihomo`,
+- reliable core lifecycle management through child-process and service-mode
+  paths,
+- practical diagnostics through logs, connection views, core status, and
+  configuration-directory access.
+
+## Runtime Responsibilities
+
+Chimera manages local state and delegates packet/protocol handling to a selected
+core. The main responsibilities visible in the local codebase are:
+
+- profile import, update, deletion, viewing, editing, and runtime patching,
+- Clash-style runtime YAML generation from app settings plus active profile,
+- core selection among sidecars such as `mihomo`, `clash-rs`, and
+  `chimera-client`,
+- core start, stop, restart, recovery, version query, and update,
+- system proxy, deep link, notification, dialog, tray, and single-instance
+  integration,
+- service-mode install, uninstall, start, stop, restart, and status workflows.
 
 ## Currently Supported Platforms
 
 ### First Tier
-- 🖥️ Windows ![Windows](https://img.shields.io/badge/Windows-supported-0078D6?logo=windows&logoColor=white)
-- 🐧 Ubuntu
-- 🍎 macOS
+
+- Windows
+- macOS
+- Linux
 
 ### Second Tier
-- ❄️ NixOS
+
+- NixOS
 
 ## Currently Supported Protocols
 
-Please refer to [`Chimera_Client`](./chimera_client.md) and `clash-rs`.
+Chimera's protocol support is determined by the selected core. The README and
+sidecar manifest scripts currently focus on these common combinations:
+
+- `trojan + ws + tls`
+- `reality + tcp`
+- `hysteria2`
+- `xhttp`
+
+For the runtime behavior of `chimera-client` itself, see
+[`Chimera_Client`](./chimera_client.md).
 
 ---
-
