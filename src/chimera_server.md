@@ -1,16 +1,102 @@
-# chimera_server Library
+# Chimera_Server
 
 ## Purpose and Scope
-`chimera_server` is the shared Rust crate that provides protocol primitives, configuration schemas, crypto suites, and common utilities for both client and server projects. By centralizing these capabilities, the ecosystem avoids duplicated logic, ensures protocol compliance, and keeps security fixes consistent across binaries.
 
-## Key Modules
-- Configuration model: strongly typed structures plus serde-based serialization for Clash manifests, Chimera manifests, and shared policy fragments.
-- Crypto and handshake utilities: AEAD ciphers, key derivation, certificate pinning helpers, TLS fingerprint templates, and QUIC transport parameters.
-- Transport abstractions: traits for stream/session lifecycles, multiplexing interfaces, buffer management, and async runtime adapters.
-- Event bus: lightweight publish/subscribe mechanism so higher layers can tap into connection lifecycle events, metrics, and alerts.
+`Chimera_Server` is a Rust server core that aims to stay compatible with
+`xray-core` configuration shape and inbound protocol behavior. The current local
+README describes the project as focused on inbound parsing, inbound dispatch,
+and protocol semantics first; outbound, routing, and policy modules are still
+being expanded.
 
-## API Surface and Extensibility
-The crate exposes a stable Rust API along with optional C FFI bindings for other languages. Extension points allow third parties to register custom cipher suites, add routing annotations, or hook into telemetry emission. Versioning follows semver with clear migration guides whenever breaking changes occur, ensuring that `clash-rs` and `Chimera` can track upgrades smoothly.
+The workspace is split into:
 
-## Testing and Quality
-`chimera_server` maintains exhaustive unit tests for parsers, crypto primitives, and transport behaviors. Integration suites spin up in-memory client/server pairs to validate interoperability before changes land. Benchmarks measure handshake latency, throughput, and memory footprint across representative hardware, providing baselines for regression detection.
+| Crate                | Role                                                                                                         |
+| -------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `chimera_server_app` | Application entrypoint; reads config and starts the runtime.                                                 |
+| `chimera_server_lib` | Core library for config parsing, protocol handlers, runtime state, gRPC/API services, and transport helpers. |
+| `chimera_cli`        | Utility CLI; currently includes an `x25519` helper compatible with `xray x25519` usage.                      |
+
+## Configuration Model
+
+The server follows the xray-core-style JSON/JSON5 configuration model. Existing
+examples and tests focus on `inbounds` and related `streamSettings`:
+
+```json
+{
+  "inbounds": [
+    {
+      "tag": "vless-reality",
+      "protocol": "vless",
+      "listen": "0.0.0.0",
+      "port": 443,
+      "settings": {
+        "clients": [
+          { "id": "YOUR-UUID", "flow": "xtls-rprx-vision" }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "dest": "example.com:443",
+          "serverNames": ["example.com"],
+          "privateKey": "YOUR-PRIVATE-KEY",
+          "shortIds": ["0123456789abcdef"]
+        }
+      }
+    }
+  ]
+}
+```
+
+Prefer `json5` for local development because the repository examples and command
+line instructions use it.
+
+## Current Capability Map
+
+Local code and README evidence show active work around:
+
+- VMess, VLESS, Trojan, SOCKS, Hysteria2, TUIC, and XHTTP-related inbound
+  parsing/handling, gated by Cargo features where appropriate.
+- TLS, Reality, WebSocket, QUIC, HTTP/3, and XHTTP transport layers.
+- gRPC API services for runtime inspection/control when the `api` feature is
+  enabled.
+- traffic statistics and routing state scaffolding.
+
+Treat this as an implementation map, not a blanket compatibility guarantee. The
+project README explicitly says outbound, routing, and policy behavior are still
+under construction.
+
+## Running
+
+From the `Chimera_Server` workspace:
+
+```bash
+cargo run --package chimera_server_app -- --config path/to/config.json5
+```
+
+To generate Reality key material in an xray-compatible style:
+
+```bash
+cargo run -p chimera_cli -- x25519 --count 1 --format base64
+```
+
+## Examples
+
+The local server repository currently lists these example configs:
+
+- `examples/01-api.json5`
+- `examples/02_trojan_ws_tls_30919.json5`
+- `examples/03_vless_ws_tls_36050.json5`
+- `examples/04_vless_tcp_50584.json5`
+- `examples/05_vless_ws_56321.json5`
+- `examples/06-hysteria-43210.json5`
+
+## Development Checks
+
+```bash
+cargo build --all-features
+cargo fmt --all
+cargo clippy --all-targets --all-features -- -D warnings
+cargo test
+```
