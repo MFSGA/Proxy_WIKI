@@ -13,9 +13,8 @@
 # limitations under the License.
 """Find changed msgid fields without a change in POT-Creation-Date.
 
-When following the instructions in
-https://github.com/google/comprehensive-rust/blob/main/TRANSLATIONS.md,
-one of two things should happen:
+When following the instructions in TRANSLATIONS.md, one of two things should
+happen:
 
 - The `msgid` fields change because `msgmerge --update` was used. This
   will also update the POT-Creation-Date field since a new timestamp
@@ -81,7 +80,7 @@ for filename in os.popen("git diff --name-only").read().split():
             if saw_msgid and line_number in changed_lines:
                 print(f"Changed msgid in file {filename}:{line_number}!")
                 print(
-                    "Please read https://github.com/google/comprehensive-rust/blob/main/TRANSLATIONS.md#creating-and-updating-translations."
+                    "Please read TRANSLATIONS.md#creating-and-updating-translations."
                 )
                 exit(1)
 

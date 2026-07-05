@@ -36,42 +36,6 @@ jobs:
       - name: Test Rust code
         run: cargo test
 
-  bare-metal:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - directory: src/bare-metal/alloc-example
-            target: aarch64-unknown-none
-          - directory: src/bare-metal/aps/examples
-            target: aarch64-unknown-none
-          - directory: src/bare-metal/microcontrollers/examples
-            target: thumbv7em-none-eabihf
-          - directory: src/exercises/bare-metal/compass
-            target: thumbv7em-none-eabihf
-          - directory: src/exercises/bare-metal/rtc
-            target: aarch64-unknown-none
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Install toolchain
-        run: |
-          rustup update
-          rustup target add ${{ matrix.target }}
-
-      - name: Setup Rust cache
-        uses: ./.github/workflows/setup-rust-cache
-
-      - name: Install dependencies
-        uses: ./.github/workflows/apt-get-install
-        with:
-          packages: gcc-aarch64-linux-gnu
-
-      - name: Build Rust code
-        working-directory: ${{ matrix.directory }}
-        run: cargo build
-
   find-languages:
     runs-on: ubuntu-latest
     outputs:
@@ -135,13 +99,13 @@ jobs:
 
       - name: Build ${{ matrix.language }} translation
         run: |
-          bash .github/workflows/build.sh ${{ matrix.language }} book/comprehensive-rust-${{ matrix.language }}
+          bash .github/workflows/build.sh ${{ matrix.language }} book/proxy-wiki-${{ matrix.language }}
 
       # Upload the book now to retain it in case mdbook test fails.
       - name: Upload book
         uses: actions/upload-artifact@v6
         with:
-          name: comprehensive-rust-${{ matrix.language }}
+          name: proxy-wiki-${{ matrix.language }}
           path: book/
 
       - name: Test code snippets
@@ -167,10 +131,10 @@ jobs:
       - name: Download english book
         uses: actions/download-artifact@v7
         with:
-          name: comprehensive-rust-en
+          name: proxy-wiki-en
           path: book/
       - name: Test Javascript
-        run: cargo xtask web-tests --dir book/comprehensive-rust-en/html
+        run: cargo xtask web-tests --dir book/proxy-wiki-en/html
 
   po-diff:
     name: Translation diff
