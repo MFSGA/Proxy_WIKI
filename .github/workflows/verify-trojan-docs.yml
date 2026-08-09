@@ -1,0 +1,54 @@
+name: Verify Trojan docs
+
+on:
+  push:
+    branches:
+      - docs/trojan-wire-depth
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v5
+        with:
+          ref: docs/trojan-wire-depth
+
+      - name: Install gettext
+        uses: ./.github/workflows/apt-get-install
+        with:
+          packages: gettext
+
+      - name: Install cargo-binstall
+        uses: cargo-bins/cargo-binstall@main
+
+      - name: Install mdBook build dependencies
+        run: |
+          cargo binstall mdbook --version 0.4.52 --locked -y
+          cargo binstall mdbook-i18n-helpers --version 0.3.6 --locked -y
+          cargo binstall mdbook-mermaid --version 0.16.0 --locked -y
+          cargo binstall mdbook-svgbob --version 0.2.2 --locked -y
+          cargo install --path mdbook-course --locked
+          cargo install --path mdbook-exerciser --locked
+
+      - name: Validate zh-CN catalog
+        run: msgfmt --check --statistics --output-file=/dev/null po/zh-CN.po
+
+      - name: Build English mdBook
+        run: mdbook build -d book/check-en
+
+      - name: Test English code blocks
+        run: mdbook test
+
+      - name: Build zh-CN mdBook
+        env:
+          MDBOOK_BOOK__LANGUAGE: zh-CN
+        run: mdbook build -d book/check-zh-CN
+
+      - name: Test zh-CN code blocks
+        env:
+          MDBOOK_BOOK__LANGUAGE: zh-CN
+        run: mdbook test
