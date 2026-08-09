@@ -58,6 +58,7 @@ transport-security mechanism.
 | XHTTP | Transport method | HTTP-oriented request/response flows | Usually TLS or REALITY | Xray transport through HTTP-aware infrastructure |
 | gRPC Transport | Transport method | HTTP/2-compatible gRPC stream | Plain, TLS, or REALITY on current Server | Xray-compatible Hunk byte-stream transport |
 | HTTPUpgrade | Transport method | HTTP/1.1 upgrade preface, then raw TCP stream | Depends on outer security/inner protocol | HTTP-looking preface for an inner proxy stream |
+| Dokodemo-door | Server forwarding inbound | Raw TCP or UDP; optional transport wrappers on TCP | No built-in user authentication or encryption | Fixed-target forwarding or Linux original-destination interception |
 | REALITY | Transport-security mechanism | Supported Xray transports such as RAW/XHTTP/gRPC | REALITY key/short-ID + TLS-like handshake behavior | Xray transport security and camouflage |
 
 ## Current Chimera Reading Guide
@@ -79,6 +80,7 @@ not a substitute for checking the implementation repository before deployment.
 | XHTTP | Current capability | XHTTP-related transport work listed |
 | gRPC transport | No current outbound transport module | Current transport behind `grpc_transport`; Xray compatibility E2E exists; `multiMode` rejected |
 | HTTPUpgrade | No current outbound transport module | Current transport behind `httpupgrade`; raw stream after `101`; `acceptProxyProtocol`/`ed` rejected |
+| Dokodemo-door | Not a Client remote outbound protocol | Current TCP/UDP forwarding inbound; Linux-only `followRedirect` uses original destination |
 | REALITY | Current `Reality + TCP` capability | REALITY transport and VLESS + REALITY example listed |
 
 The important distinction is **capability presence versus compatibility
@@ -162,4 +164,5 @@ Do not start by changing all six layers at once.
 - [XHTTP Transport](./protocols/xhttp.md) — HTTP-oriented Xray transport method.
 - [gRPC Transport](./protocols/grpc-transport.md) — HTTP/2/gRPC Hunk wrapper around an inner proxy byte stream.
 - [HTTPUpgrade Transport](./protocols/httpupgrade.md) — HTTP/1.1 upgrade preface followed by raw inner-protocol bytes.
+- [Dokodemo-door](./protocols/dokodemo-door.md) — fixed-target and Linux original-destination TCP/UDP forwarding inbound.
 - [REALITY](./protocols/reality.md) — Xray transport-security mechanism.

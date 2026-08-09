@@ -84,9 +84,6 @@ TODOs merely because they once appeared in an older Wiki revision.
   for interoperability claims when the corresponding upstream protocols change.
 - Add external HTTPUpgrade interoperability coverage; current evidence is
   handler-level unit coverage rather than a dedicated external E2E test.
-- Add a concise Dokodemo-door implementation reference focused on server
-  forwarding semantics rather than forcing it into the same wire-protocol
-  template as authenticated proxies.
 - Add cross-links from each protocol page to its Client/Server implementation
   status and interoperability tests.
 

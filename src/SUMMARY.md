@@ -30,4 +30,5 @@
   - [XHTTP Transport](./protocols/xhttp.md)
   - [gRPC Transport](./protocols/grpc-transport.md)
   - [HTTPUpgrade Transport](./protocols/httpupgrade.md)
+  - [Dokodemo-door](./protocols/dokodemo-door.md)
   - [Reality](./protocols/reality.md)

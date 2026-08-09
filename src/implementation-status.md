@@ -61,6 +61,7 @@ core, while `Chimera_Server` is primarily an inbound/server core.
 | WebSocket | Transport module behind `ws` | Transport module behind `ws` | A transport is not a proxy protocol by itself. |
 | [gRPC transport](./protocols/grpc-transport.md) | Not present as a current Client outbound transport module | Server transport behind `grpc_transport`; Xray compatibility E2E exists | Single-stream Hunk mode is implemented; `multiMode` is explicitly rejected and several parsed gRPC tuning fields are not currently applied. |
 | [HTTPUpgrade](./protocols/httpupgrade.md) | No current Client outbound transport module | Server transport behind `httpupgrade`; handler unit tests exist | HTTP/1.1 `GET`/`101` preface then raw stream, not WebSocket framing; `acceptProxyProtocol` and `ed` are explicitly rejected. |
+| [Dokodemo-door](./protocols/dokodemo-door.md) | Not a current Client remote outbound protocol | TCP/UDP forwarding inbound with fixed-target and Linux original-destination modes; tests/examples exist | No proxy handshake/header of its own; `followRedirect` is Linux-only and UDP rejects stream security layers. |
 | TLS | Shared client transport/security support | Server security wrapper behind `tls` | TLS is a security/transport layer, not an identity-bearing proxy protocol. |
 | REALITY | Client implementation under `proxy/transport/reality` | Server implementation under `reality` plus inbound wrappers | Cross-project REALITY/Vision E2E and negative tests exist in the Server repository. |
 

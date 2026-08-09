@@ -19205,3 +19205,594 @@ msgstr "`Chimera_Server/chimera_server_lib/src/handler/tcp/tcp_handler_util.rs`�
 
 msgid "For portable Xray compatibility, compare these current implementation boundaries with the peer implementation rather than assuming every parsed `httpupgradeSettings` field is active at runtime."
 msgstr "为了获得可移植的 Xray 兼容性，应把这些当前实现边界与实际对端实现进行对照，而不是假设所有已解析的 `httpupgradeSettings` 字段都会在运行时生效。"
+
+msgid "Dokodemo-door"
+msgstr "Dokodemo-door"
+
+msgid "[Dokodemo-door](./protocols/dokodemo-door.md)"
+msgstr "[Dokodemo-door](./protocols/dokodemo-door.md)"
+
+msgid "Not a current Client remote outbound protocol"
+msgstr "不是当前 Client 的远程出站协议"
+
+msgid "TCP/UDP forwarding inbound with fixed-target and Linux original-destination modes; tests/examples exist"
+msgstr "提供固定目标和 Linux 原始目标两种模式的 TCP/UDP 转发入站，并已有测试/示例"
+
+msgid "No proxy handshake/header of its own; `followRedirect` is Linux-only and UDP rejects stream security layers."
+msgstr "自身没有代理握手/协议头；`followRedirect` 仅支持 Linux，UDP 会拒绝 stream security layer。"
+
+msgid "Server forwarding inbound"
+msgstr "Server 转发入站"
+
+msgid "Raw TCP or UDP; optional transport wrappers on TCP"
+msgstr "原始 TCP 或 UDP；TCP 可选额外传输封装"
+
+msgid "No built-in user authentication or encryption"
+msgstr "没有内置用户认证或加密"
+
+msgid "Fixed-target forwarding or Linux original-destination interception"
+msgstr "固定目标转发或 Linux 原始目标拦截"
+
+msgid "Not a Client remote outbound protocol"
+msgstr "不是 Client 远程出站协议"
+
+msgid "Current TCP/UDP forwarding inbound; Linux-only `followRedirect` uses original destination"
+msgstr "当前提供 TCP/UDP 转发入站；仅 Linux 的 `followRedirect` 使用原始目标地址"
+
+msgid "[Dokodemo-door](./protocols/dokodemo-door.md) — fixed-target and Linux original-destination TCP/UDP forwarding inbound."
+msgstr "[Dokodemo-door](./protocols/dokodemo-door.md) — 固定目标以及 Linux 原始目标地址 TCP/UDP 转发入站。"
+
+msgid "Dokodemo-door is a destination-forwarding inbound rather than an authenticated proxy wire protocol. A client connects or sends a UDP datagram to the inbound listener, and the server forwards the payload to either a configured target or the operating system's recovered original destination."
+msgstr "Dokodemo-door 是目标转发型入站，而不是带认证的代理线协议。客户端连接或向入站 listener 发送 UDP 数据报后，服务端把负载转发到配置目标，或转发到操作系统恢复出的原始目标地址。"
+
+msgid "There is no Dokodemo-specific request header, authentication negotiation, success reply, record framing, or encryption format. That absence is the most important fact for packet-level analysis: after any configured outer transport/security wrapper is removed, the bytes are the application's own bytes."
+msgstr "Dokodemo 没有专属请求头、认证协商、成功响应、记录分帧或加密格式。这个“没有”正是包级分析最重要的事实：移除任何已配置的外层传输/安全封装后，剩下的字节就是应用自身的字节。"
+
+msgid "This page documents the current `Chimera_Server` implementation and its Xray-shaped configuration surface."
+msgstr "本页记录当前 `Chimera_Server` 实现及其 Xray 风格配置范围。"
+
+msgid "Fixed-target TCP mode is conceptually:"
+msgstr "固定目标 TCP 模式在概念上是："
+
+msgid "Transparent redirect mode is instead:"
+msgstr "透明重定向模式则是："
+
+msgid "Dokodemo-door therefore answers **where to forward**. It does not define a new application protocol between the client and server."
+msgstr "因此 Dokodemo-door 解决的是**转发到哪里**，它并不会在客户端与服务端之间定义新的应用协议。"
+
+msgid "Configuration Fields"
+msgstr "配置字段"
+
+msgid "The current Server parses the following `settings` fields:"
+msgstr "当前 Server 解析以下 `settings` 字段："
+
+msgid "`address`"
+msgstr "`address`"
+
+msgid "Fixed forwarding target address when `followRedirect` is false."
+msgstr "`followRedirect` 为 false 时的固定转发目标地址。"
+
+msgid "Fixed forwarding target port when `followRedirect` is false."
+msgstr "`followRedirect` 为 false 时的固定转发目标端口。"
+
+msgid "`followRedirect`"
+msgstr "`followRedirect`"
+
+msgid "Use the socket's original destination instead of the configured target."
+msgstr "使用 socket 的原始目标地址，而不是配置目标。"
+
+msgid "When `address` is omitted, the current builder uses the inbound bind address as the target address. When `port` is omitted, it uses the inbound listen port as the target port."
+msgstr "省略 `address` 时，当前 builder 使用入站 bind address 作为目标地址；省略 `port` 时，使用入站 listen port 作为目标端口。"
+
+msgid "For ordinary fixed forwarding, configure both fields explicitly unless that fallback behavior is genuinely desired."
+msgstr "对于普通固定转发，除非确实需要这种 fallback 行为，否则应显式配置这两个字段。"
+
+msgid "Example: Fixed TCP Target"
+msgstr "示例：固定 TCP 目标"
+
+msgid "\"dokodemo-door-tcp\""
+msgstr "\"dokodemo-door-tcp\""
+
+msgid "\"dokodemo-door\""
+msgstr "\"dokodemo-door\""
+
+msgid "\"followRedirect\""
+msgstr "\"followRedirect\""
+
+msgid "A TCP client connecting to `127.0.0.1:11003` does not send a proxy destination header. The Server already knows the target `example.com:80` from configuration and forwards the client's first byte as target application data."
+msgstr "TCP 客户端连接 `127.0.0.1:11003` 时不会发送代理目标地址头。Server 已从配置知道目标 `example.com:80`，因此客户端第一个字节就会作为目标应用数据转发。"
+
+msgid "The current TCP handler returns a direct forwarding result containing:"
+msgstr "当前 TCP handler 返回一个直接转发结果，其中包含："
+
+msgid "the selected remote location;"
+msgstr "选定的远端位置；"
+
+msgid "the same accepted byte stream;"
+msgstr "同一条已接受字节流；"
+
+msgid "no protocol-specific success response;"
+msgstr "没有协议专属成功响应；"
+
+msgid "a `dokodemo-door` traffic context carrying the inbound tag."
+msgstr "携带 inbound tag 的 `dokodemo-door` traffic context。"
+
+msgid "No bytes are consumed by a Dokodemo request parser because no such parser exists."
+msgstr "Dokodemo 不会有请求 parser 消耗任何字节，因为根本不存在这种 parser。"
+
+msgid "`followRedirect` on TCP"
+msgstr "TCP 上的 `followRedirect`"
+
+msgid "When `followRedirect` is enabled, the handler declares that it requires an original destination in the TCP connection context."
+msgstr "启用 `followRedirect` 后，handler 会声明 TCP connection context 中必须存在 original destination。"
+
+msgid "On Linux, the listener obtains this using the socket original-destination mechanism:"
+msgstr "在 Linux 上，listener 通过 socket original-destination 机制取得它："
+
+msgid "IPv4 uses the original-destination socket information exposed through the Linux socket API;"
+msgstr "IPv4 使用 Linux socket API 暴露的 original-destination socket 信息；"
+
+msgid "IPv6 uses the corresponding IPv6 original-destination path;"
+msgstr "IPv6 使用对应的 IPv6 original-destination 路径；"
+
+msgid "the recovered IP and port become the Dokodemo forwarding target."
+msgstr "恢复出的 IP 与端口成为 Dokodemo 转发目标。"
+
+msgid "If the operating system does not provide an original destination, the TCP handler rejects the flow with an address-not-available error instead of falling back silently to the configured target."
+msgstr "如果操作系统没有提供原始目标地址，TCP handler 会用 address-not-available 错误拒绝流量，而不是静默退回配置目标。"
+
+msgid "On non-Linux platforms, the current Server rejects TCP `followRedirect` as unsupported."
+msgstr "在非 Linux 平台上，当前 Server 会把 TCP `followRedirect` 作为不支持功能拒绝。"
+
+msgid "Transparent Interception Is an OS Feature"
+msgstr "透明拦截属于操作系统能力"
+
+msgid "`followRedirect` does not itself create firewall/NAT interception rules. The operating system must first redirect traffic to the Dokodemo listener while preserving enough original-destination metadata for the Server to recover it."
+msgstr "`followRedirect` 本身不会创建 firewall/NAT 拦截规则。操作系统必须先把流量重定向到 Dokodemo listener，同时保留足够的 original-destination 元数据供 Server 恢复。"
+
+msgid "A working transparent deployment therefore has at least two independent pieces:"
+msgstr "因此可工作的透明部署至少包含两个相互独立的部分："
+
+msgid "A correct Dokodemo configuration cannot compensate for missing or incorrect OS interception rules."
+msgstr "正确的 Dokodemo 配置无法弥补缺失或错误的操作系统拦截规则。"
+
+msgid "TCP Transport Wrappers"
+msgstr "TCP 传输封装"
+
+msgid "For TCP mode, the current Server builder accepts these `streamSettings.network` values:"
+msgstr "TCP 模式下，当前 Server builder 接受以下 `streamSettings.network` 值："
+
+msgid "empty / `tcp`;"
+msgstr "空值 / `tcp`；"
+
+msgid "`httpupgrade`;"
+msgstr "`httpupgrade`；"
+
+msgid "`grpc`."
+msgstr "`grpc`。"
+
+msgid "The normal security-layer builder can also wrap the TCP path where the selected combination is valid."
+msgstr "当所选组合有效时，常规 security-layer builder 还可以进一步封装 TCP 路径。"
+
+msgid "This means Dokodemo-door can be the **inner forwarding handler** behind another transport. In that case, the wrapper consumes its own handshake bytes first, and only the resulting inner raw stream is forwarded to the configured/original target."
+msgstr "这意味着 Dokodemo-door 可以作为另一种传输之后的**内层转发 handler**。这种情况下，外层封装先消费自己的握手字节，只有得到的内层原始流才转发到配置/原始目标。"
+
+msgid "See [gRPC Transport](./grpc-transport.md) and [HTTPUpgrade Transport](./httpupgrade.md) for the transport-layer behavior."
+msgstr "传输层行为见 [gRPC 传输](./grpc-transport.md) 和 [HTTPUpgrade 传输](./httpupgrade.md)。"
+
+msgid "UDP Mode"
+msgstr "UDP 模式"
+
+msgid "UDP mode is selected with:"
+msgstr "通过以下配置选择 UDP 模式："
+
+msgid "\"udp\""
+msgstr "\"udp\""
+
+msgid "The current Server's generic UDP entry path supports Dokodemo-door and Shadowsocks at this stage."
+msgstr "当前 Server 的通用 UDP 入口路径在这一阶段支持 Dokodemo-door 和 Shadowsocks。"
+
+msgid "For Dokodemo UDP, `streamSettings.security` must be `none`. Applying a stream security layer to the UDP Dokodemo path is rejected during configuration building."
+msgstr "对于 Dokodemo UDP，`streamSettings.security` 必须为 `none`。在 UDP Dokodemo 路径上应用 stream security layer 会在配置构建阶段被拒绝。"
+
+msgid "Example: Fixed UDP Target"
+msgstr "示例：固定 UDP 目标"
+
+msgid "\"dokodemo-door-udp\""
+msgstr "\"dokodemo-door-udp\""
+
+msgid "Each client datagram is ordinary application UDP payload. There is no Dokodemo UDP header around it."
+msgstr "每个客户端数据报都是普通应用 UDP 负载，外面没有 Dokodemo UDP 头。"
+
+msgid "Fixed-target UDP Resolution"
+msgstr "固定目标 UDP 解析"
+
+msgid "When `followRedirect` is false, the Server resolves the configured target once while starting the UDP inbound and stores the resulting socket address for the relay path."
+msgstr "`followRedirect` 为 false 时，Server 在启动 UDP 入站时只解析一次配置目标，并保存所得 socket address 供 relay 路径使用。"
+
+msgid "The receive loop then treats every incoming datagram as payload for that fixed target, subject to routing/outbound selection."
+msgstr "之后 receive loop 把每个入站数据报都视为该固定目标的负载，同时仍受 routing/outbound 选择影响。"
+
+msgid "This is different from SOCKS5 UDP, where each client datagram can carry its own destination address."
+msgstr "这与 SOCKS5 UDP 不同，后者每个客户端数据报都可以携带自己的目标地址。"
+
+msgid "UDP Session Key"
+msgstr "UDP Session Key"
+
+msgid "For direct/freedom forwarding, the current relay reuses an outbound UDP session using a key composed of:"
+msgstr "对于 direct/freedom 转发，当前 relay 使用由以下字段组成的 key 复用出站 UDP session："
+
+msgid "Datagrams with the same tuple can therefore reuse the same outbound socket/session."
+msgstr "因此具有相同元组的数据报可以复用同一个出站 socket/session。"
+
+msgid "The current session channel capacity is 64 queued payloads and the idle timeout is 60 seconds. Successful sends and accepted responses reset the idle timer."
+msgstr "当前 session channel 容量为 64 个排队负载，idle timeout 为 60 秒。成功发送和被接受的响应都会重置 idle timer。"
+
+msgid "These values are current Chimera runtime policies, not fields in a Dokodemo wire format."
+msgstr "这些数值是当前 Chimera 运行时策略，不是 Dokodemo 线格式字段。"
+
+msgid "UDP Response Validation"
+msgstr "UDP 响应验证"
+
+msgid "A direct UDP session accepts a response only when the source socket address exactly matches the expected target address for that session."
+msgstr "direct UDP session 只有在响应源 socket address 与该 session 预期目标地址完全一致时才接受响应。"
+
+msgid "A response from an unexpected source is ignored rather than forwarded to the original client."
+msgstr "来自非预期源的响应会被忽略，而不是转发给原始客户端。"
+
+msgid "Valid response bytes are written directly back to the client's socket address without adding a Dokodemo or SOCKS header."
+msgstr "有效响应字节会直接写回客户端 socket address，不会添加 Dokodemo 或 SOCKS 头。"
+
+msgid "UDP Routing and Blackhole"
+msgstr "UDP 路由与 Blackhole"
+
+msgid "Before creating/reusing a direct UDP session, the Server applies its UDP outbound selection using information including:"
+msgstr "创建/复用 direct UDP session 之前，Server 会使用以下信息执行 UDP outbound 选择："
+
+msgid "inbound tag;"
+msgstr "inbound tag；"
+
+msgid "client address;"
+msgstr "客户端地址；"
+
+msgid "target socket address;"
+msgstr "目标 socket address；"
+
+msgid "target logical location."
+msgstr "目标逻辑位置。"
+
+msgid "A rule can therefore route Dokodemo UDP traffic to a blackhole outbound. In that case the payload is accounted for and dropped without creating the target relay session."
+msgstr "因此规则可以把 Dokodemo UDP 流量路由到 blackhole outbound。此时会统计该负载后直接丢弃，不创建目标 relay session。"
+
+msgid "The repository contains an Xray-compatible example specifically for Dokodemo UDP routing to blackhole."
+msgstr "仓库中包含专门演示 Dokodemo UDP 路由到 blackhole 的 Xray 兼容示例。"
+
+msgid "UDP `followRedirect`"
+msgstr "UDP `followRedirect`"
+
+msgid "On Linux, the current UDP implementation can enable original-destination reception on the listener socket. For each datagram it obtains:"
+msgstr "在 Linux 上，当前 UDP 实现可以在 listener socket 上启用 original-destination 接收。每个数据报都会取得："
+
+msgid "The original destination becomes both the routing target and the forwarding destination for that datagram/session."
+msgstr "原始目标地址同时成为该数据报/session 的路由目标与转发目标。"
+
+msgid "On non-Linux platforms, current UDP `followRedirect` is rejected as unsupported."
+msgstr "在非 Linux 平台上，当前 UDP `followRedirect` 会被作为不支持功能拒绝。"
+
+msgid "As with TCP, the OS must have redirected the datagram in a way that preserves recoverable original-destination metadata."
+msgstr "与 TCP 一样，操作系统必须以保留可恢复 original-destination 元数据的方式重定向数据报。"
+
+msgid "TCP vs UDP `followRedirect`"
+msgstr "TCP 与 UDP `followRedirect` 对比"
+
+msgid "Current platform"
+msgstr "当前平台"
+
+msgid "Linux only"
+msgstr "仅 Linux"
+
+msgid "Destination source"
+msgstr "目标来源"
+
+msgid "Accepted socket's original destination"
+msgstr "已接受 socket 的原始目标地址"
+
+msgid "Per-datagram original destination metadata"
+msgstr "每数据报的 original destination 元数据"
+
+msgid "Missing metadata"
+msgstr "缺少元数据时"
+
+msgid "Flow rejected"
+msgstr "拒绝该流"
+
+msgid "Receive/relay path fails rather than using fixed target"
+msgstr "receive/relay 路径失败，不会改用固定目标"
+
+msgid "Application framing"
+msgstr "应用分帧"
+
+msgid "Raw TCP bytes"
+msgstr "原始 TCP 字节"
+
+msgid "Raw UDP payload"
+msgstr "原始 UDP 负载"
+
+msgid "Dokodemo header"
+msgstr "Dokodemo 头"
+
+msgid "UDP original destination is per datagram because one listener can receive datagrams originally addressed to different targets. TCP gets one original destination from the accepted connection socket."
+msgstr "UDP 原始目标地址按数据报获取，因为一个 listener 可以收到原本发往不同目标的数据报。TCP 则从已接受连接 socket 上获取一个原始目标地址。"
+
+msgid "No Authentication Handshake"
+msgstr "没有认证握手"
+
+msgid "Dokodemo-door does not authenticate a remote proxy user. If the listener is reachable by an untrusted network and forwards to a fixed sensitive service, it can effectively expose that service through the listener."
+msgstr "Dokodemo-door 不会认证远程代理用户。如果 listener 可被不可信网络访问并转发到固定的敏感服务，它实际上可能通过该 listener 暴露该服务。"
+
+msgid "Security must come from deployment controls such as:"
+msgstr "安全性必须来自以下部署控制："
+
+msgid "bind/listen scope;"
+msgstr "bind/listen 范围；"
+
+msgid "firewall rules;"
+msgstr "firewall 规则；"
+
+msgid "outer TLS/REALITY/transport layers where appropriate for TCP;"
+msgstr "在适合的 TCP 场景使用外层 TLS/REALITY/传输层；"
+
+msgid "routing policy;"
+msgstr "路由策略；"
+
+msgid "target-service authentication."
+msgstr "目标服务自身认证。"
+
+msgid "Do not confuse a configured `Host`, gRPC service name, or transport path with Dokodemo user authentication."
+msgstr "不要把配置的 `Host`、gRPC service name 或 transport path 与 Dokodemo 用户认证混为一谈。"
+
+msgid "No Success Reply"
+msgstr "没有成功响应"
+
+msgid "There is no Dokodemo equivalent of the SOCKS5 `REP` response."
+msgstr "Dokodemo 没有与 SOCKS5 `REP` 响应等价的结构。"
+
+msgid "For fixed TCP forwarding, a client sees only normal target/application behavior after the Server succeeds in opening the outbound path. If target connection establishment fails, the observable effect is stream failure/close rather than a Dokodemo status packet."
+msgstr "固定 TCP 转发中，Server 成功打开出站路径后，客户端只会看到目标/应用的正常行为。如果目标连接建立失败，可观察到的是流失败/关闭，而不是 Dokodemo 状态包。"
+
+msgid "For UDP, there is likewise no control channel announcing success; datagrams are forwarded or dropped according to routing and runtime errors."
+msgstr "UDP 同样没有宣布成功的控制通道；数据报会根据路由和运行时错误被转发或丢弃。"
+
+msgid "State Machine: Fixed TCP"
+msgstr "状态机：固定 TCP"
+
+msgid "State Machine: Redirected TCP"
+msgstr "状态机：重定向 TCP"
+
+msgid "State Machine: UDP"
+msgstr "状态机：UDP"
+
+msgid "In plain fixed TCP mode, a capture at the Dokodemo listener looks like the underlying application protocol itself. For example, forwarding HTTP means the first client bytes may literally be:"
+msgstr "在明文固定 TCP 模式下，Dokodemo listener 上的抓包看起来就是底层应用协议本身。例如转发 HTTP 时，客户端最初的字节可能直接就是："
+
+msgid "There is no preceding Dokodemo signature."
+msgstr "前面不存在 Dokodemo 特征签名。"
+
+msgid "In fixed UDP mode, each captured UDP payload is likewise the application's datagram without a Dokodemo address envelope."
+msgstr "固定 UDP 模式下，每个抓到的 UDP 负载同样就是应用数据报，没有 Dokodemo 地址封装。"
+
+msgid "With HTTPUpgrade, gRPC, TLS, or another wrapper, capture interpretation must first remove that outer layer before reaching the raw target application bytes."
+msgstr "如果使用 HTTPUpgrade、gRPC、TLS 或其他封装，抓包分析必须先移除外层，才能到达原始目标应用字节。"
+
+msgid "Comparison with SOCKS5"
+msgstr "与 SOCKS5 对比"
+
+msgid "Client transport"
+msgstr "客户端传输"
+
+msgid "Client connects to SOCKS listener"
+msgstr "客户端连接 SOCKS listener"
+
+msgid "Client connects/sends to Dokodemo listener"
+msgstr "客户端连接/发送到 Dokodemo listener"
+
+msgid "Same ingress concept"
+msgstr "入口概念相同"
+
+msgid "Optional subnegotiation"
+msgstr "可选子协商"
+
+msgid "Removed/delegated to deployment"
+msgstr "已移除/委托给部署层"
+
+msgid "Client sends `CMD + ATYP + DST`"
+msgstr "客户端发送 `CMD + ATYP + DST`"
+
+msgid "Target is configured or recovered from OS original destination"
+msgstr "目标由配置指定或从操作系统原始目标地址恢复"
+
+msgid "`REP + BND`"
+msgstr "`REP + BND`"
+
+msgid "Raw after SOCKS handshake"
+msgstr "SOCKS 握手后为原始字节"
+
+msgid "Raw from first byte"
+msgstr "从第一个字节开始就是原始数据"
+
+msgid "Dokodemo has no protocol preface"
+msgstr "Dokodemo 没有协议前导"
+
+msgid "Address in every SOCKS UDP header"
+msgstr "每个 SOCKS UDP 头都包含地址"
+
+msgid "Fixed target or OS original destination"
+msgstr "固定目标或操作系统原始目标地址"
+
+msgid "UDP framing"
+msgstr "UDP 分帧"
+
+msgid "`RSV/FRAG/ATYP/DST/DATA`"
+msgstr "`RSV/FRAG/ATYP/DST/DATA`"
+
+msgid "Raw application payload"
+msgstr "原始应用负载"
+
+msgid "Fragmentation field"
+msgstr "分片字段"
+
+msgid "Transparent interception"
+msgstr "透明拦截"
+
+msgid "Not inherent to normal SOCKS operation"
+msgstr "普通 SOCKS 操作并不天然包含"
+
+msgid "Core use case for `followRedirect`"
+msgstr "`followRedirect` 的核心使用场景"
+
+msgid "Extra OS-integration mode"
+msgstr "额外操作系统集成模式"
+
+msgid "Protocol `REP` during request"
+msgstr "请求阶段使用协议 `REP`"
+
+msgid "Socket/handler/log failure"
+msgstr "Socket/handler/日志错误"
+
+msgid "Dokodemo-door is therefore closer to a programmable port forward / transparent redirect target than to a client-negotiated SOCKS proxy."
+msgstr "因此 Dokodemo-door 更接近可编程端口转发/透明重定向目标，而不是由客户端协商目标的 SOCKS 代理。"
+
+msgid "The current Server source contains tests for:"
+msgstr "当前 Server 源码包含以下测试："
+
+msgid "TCP `followRedirect` selecting the original destination;"
+msgstr "TCP `followRedirect` 选择原始目标地址；"
+
+msgid "TCP rejection when original destination context is missing;"
+msgstr "缺少 original destination context 时拒绝 TCP；"
+
+msgid "Linux TCP original-destination extraction path;"
+msgstr "Linux TCP original-destination 提取路径；"
+
+msgid "fixed-target UDP relay;"
+msgstr "固定目标 UDP relay；"
+
+msgid "UDP session reuse for the same flow;"
+msgstr "同一 flow 的 UDP session 复用；"
+
+msgid "forwarding multiple UDP responses;"
+msgstr "转发多个 UDP 响应；"
+
+msgid "Linux UDP `followRedirect` routing by original destination;"
+msgstr "Linux UDP `followRedirect` 按原始目标地址路由；"
+
+msgid "UDP routing/blackhole behavior;"
+msgstr "UDP routing/blackhole 行为；"
+
+msgid "Xray-compatible Dokodemo TCP and UDP example parsing/building."
+msgstr "Xray 兼容 Dokodemo TCP/UDP 示例的解析与构建。"
+
+msgid "The Xray-compatible examples include:"
+msgstr "Xray 兼容示例包括："
+
+msgid "`dokodemo-door-tcp.json5`;"
+msgstr "`dokodemo-door-tcp.json5`；"
+
+msgid "`dokodemo-door-udp.json5`;"
+msgstr "`dokodemo-door-udp.json5`；"
+
+msgid "`dokodemo-door-udp-routing-blackhole.json5`."
+msgstr "`dokodemo-door-udp-routing-blackhole.json5`。"
+
+msgid "This is stronger evidence than a protocol enum entry alone, although transparent interception still depends on real Linux firewall/socket behavior in deployment."
+msgstr "这比单独一个协议枚举条目更有证据力，但透明拦截在实际部署中仍依赖真实的 Linux firewall/socket 行为。"
+
+msgid "Current Compatibility Boundaries"
+msgstr "当前兼容性边界"
+
+msgid "The current implementation should be documented with these boundaries visible:"
+msgstr "记录当前实现时应明确展示以下边界："
+
+msgid "`followRedirect` is Linux-only for both TCP and UDP;"
+msgstr "TCP 和 UDP 的 `followRedirect` 都仅支持 Linux；"
+
+msgid "UDP Dokodemo does not support `streamSettings.security`;"
+msgstr "UDP Dokodemo 不支持 `streamSettings.security`；"
+
+msgid "supported network choices are UDP, TCP/default, HTTPUpgrade, and gRPC as allowed by the builder;"
+msgstr "builder 当前允许的 network 选择包括 UDP、TCP/default、HTTPUpgrade 和 gRPC；"
+
+msgid "there is no Dokodemo authentication/header/reply protocol;"
+msgstr "不存在 Dokodemo 认证/header/reply 协议；"
+
+msgid "fixed UDP target DNS resolution happens during inbound startup;"
+msgstr "固定 UDP 目标的 DNS 解析发生在入站启动阶段；"
+
+msgid "UDP sessions expire after 60 seconds of inactivity;"
+msgstr "UDP session 在空闲 60 秒后过期；"
+
+msgid "response packets from an unexpected target socket are ignored."
+msgstr "来自非预期目标 socket 的响应包会被忽略。"
+
+msgid "For fixed forwarding:"
+msgstr "对于固定转发："
+
+msgid "verify the listener bind address/port;"
+msgstr "检查 listener bind address/port；"
+
+msgid "verify configured `address` and `port` rather than relying on defaults unintentionally;"
+msgstr "检查配置的 `address` 与 `port`，避免无意依赖默认回退值；"
+
+msgid "verify target DNS resolution and reachability;"
+msgstr "检查目标 DNS 解析与可达性；"
+
+msgid "verify routing has not selected blackhole or an unintended outbound;"
+msgstr "检查 routing 没有选中 blackhole 或非预期 outbound；"
+
+msgid "for TCP wrappers, debug HTTPUpgrade/gRPC/TLS before Dokodemo forwarding;"
+msgstr "对于 TCP wrapper，应先排查 HTTPUpgrade/gRPC/TLS，再排查 Dokodemo 转发；"
+
+msgid "inspect the target application protocol directly because Dokodemo adds no inner framing."
+msgstr "由于 Dokodemo 不增加内层分帧，应直接检查目标应用协议。"
+
+msgid "For `followRedirect`:"
+msgstr "对于 `followRedirect`："
+
+msgid "confirm the host is Linux;"
+msgstr "确认主机是 Linux；"
+
+msgid "confirm firewall/policy-routing rules actually intercept traffic into the listener;"
+msgstr "确认 firewall/policy-routing 规则确实把流量拦截到 listener；"
+
+msgid "confirm original-destination metadata survives the interception mode;"
+msgstr "确认 original-destination 元数据在拦截模式中得以保留；"
+
+msgid "distinguish TCP socket original destination from UDP per-datagram destination metadata;"
+msgstr "区分 TCP socket original destination 与 UDP 每数据报 destination 元数据；"
+
+msgid "only then debug Server routing/target reachability."
+msgstr "然后再排查 Server routing/目标可达性。"
+
+msgid "A `followRedirect` failure is often an OS interception problem rather than a proxy wire-format problem."
+msgstr "`followRedirect` 失败往往是操作系统拦截问题，而不是代理线格式问题。"
+
+msgid "`Chimera_Server/chimera_server_lib/src/handler/dokodemo.rs`;"
+msgstr "`Chimera_Server/chimera_server_lib/src/handler/dokodemo.rs`；"
+
+msgid "`Chimera_Server/chimera_server_lib/src/beginning/mod.rs`;"
+msgstr "`Chimera_Server/chimera_server_lib/src/beginning/mod.rs`；"
+
+msgid "`Chimera_Server/examples/xray-compatible/dokodemo-door-tcp.json5`;"
+msgstr "`Chimera_Server/examples/xray-compatible/dokodemo-door-tcp.json5`；"
+
+msgid "`Chimera_Server/examples/xray-compatible/dokodemo-door-udp.json5`;"
+msgstr "`Chimera_Server/examples/xray-compatible/dokodemo-door-udp.json5`；"
+
+msgid "`Chimera_Server/examples/xray-compatible/dokodemo-door-udp-routing-blackhole.json5`;"
+msgstr "`Chimera_Server/examples/xray-compatible/dokodemo-door-udp-routing-blackhole.json5`；"
+
+msgid "`Chimera_Server/chimera_server_lib/tests/xray_compatible_examples.rs`."
+msgstr "`Chimera_Server/chimera_server_lib/tests/xray_compatible_examples.rs`。"
+
+msgid "For portable transparent-proxy behavior, also verify the Linux interception mechanism used by the deployment; Dokodemo-door can consume original-destination metadata but does not create the operating-system redirect rules that produce it."
+msgstr "为了获得可移植的透明代理行为，还应验证部署所使用的 Linux 拦截机制；Dokodemo-door 可以消费 original-destination 元数据，但不会创建产生这些元数据的操作系统重定向规则。"
