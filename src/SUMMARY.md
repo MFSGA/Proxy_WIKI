@@ -28,4 +28,6 @@
   - [VMess](./protocols/vmess.md)
   - [VLESS](./protocols/vless.md)
   - [XHTTP Transport](./protocols/xhttp.md)
+  - [gRPC Transport](./protocols/grpc-transport.md)
+  - [HTTPUpgrade Transport](./protocols/httpupgrade.md)
   - [Reality](./protocols/reality.md)

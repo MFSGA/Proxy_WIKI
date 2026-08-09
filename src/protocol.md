@@ -56,6 +56,8 @@ transport-security mechanism.
 | VMess | Remote proxy protocol | Ordered Xray transport stream | VMess AEAD user authentication + encrypted body records | Xray/V2Ray-compatible encrypted TCP/UDP proxying |
 | VLESS | Remote proxy protocol | RAW, XHTTP, gRPC, and other supported transports | Optional VLESS Encryption and/or separate TLS/REALITY layer | Xray-compatible identity and proxy dispatch |
 | XHTTP | Transport method | HTTP-oriented request/response flows | Usually TLS or REALITY | Xray transport through HTTP-aware infrastructure |
+| gRPC Transport | Transport method | HTTP/2-compatible gRPC stream | Plain, TLS, or REALITY on current Server | Xray-compatible Hunk byte-stream transport |
+| HTTPUpgrade | Transport method | HTTP/1.1 upgrade preface, then raw TCP stream | Depends on outer security/inner protocol | HTTP-looking preface for an inner proxy stream |
 | REALITY | Transport-security mechanism | Supported Xray transports such as RAW/XHTTP/gRPC | REALITY key/short-ID + TLS-like handshake behavior | Xray transport security and camouflage |
 
 ## Current Chimera Reading Guide
@@ -75,6 +77,8 @@ not a substitute for checking the implementation repository before deployment.
 | VMess | No current outbound enum variant | VMess AEAD inbound implementation listed |
 | VLESS | Current outbound capability | VLESS inbound and examples listed |
 | XHTTP | Current capability | XHTTP-related transport work listed |
+| gRPC transport | No current outbound transport module | Current transport behind `grpc_transport`; Xray compatibility E2E exists; `multiMode` rejected |
+| HTTPUpgrade | No current outbound transport module | Current transport behind `httpupgrade`; raw stream after `101`; `acceptProxyProtocol`/`ed` rejected |
 | REALITY | Current `Reality + TCP` capability | REALITY transport and VLESS + REALITY example listed |
 
 The important distinction is **capability presence versus compatibility
@@ -107,7 +111,10 @@ For the current VMess AEAD model, start with
 
 1. [VLESS](./protocols/vless.md) — proxy protocol, user identity, and optional
    VLESS Encryption.
-2. [XHTTP](./protocols/xhttp.md) — optional HTTP-oriented transport.
+2. Choose a transport when required: [XHTTP](./protocols/xhttp.md),
+   [gRPC](./protocols/grpc-transport.md), or
+   [HTTPUpgrade](./protocols/httpupgrade.md), according to the actual peer/core
+   support.
 3. [REALITY](./protocols/reality.md) — optional transport-security layer.
 
 Keeping proxy protocol, protocol-layer encryption, transport, and
@@ -153,4 +160,6 @@ Do not start by changing all six layers at once.
 - [VMess](./protocols/vmess.md) — current VMess AEAD authentication, encrypted records, TCP/UDP, and Mux layering.
 - [VLESS](./protocols/vless.md) — lightweight Xray proxy protocol, identity layer, and optional VLESS Encryption.
 - [XHTTP Transport](./protocols/xhttp.md) — HTTP-oriented Xray transport method.
+- [gRPC Transport](./protocols/grpc-transport.md) — HTTP/2/gRPC Hunk wrapper around an inner proxy byte stream.
+- [HTTPUpgrade Transport](./protocols/httpupgrade.md) — HTTP/1.1 upgrade preface followed by raw inner-protocol bytes.
 - [REALITY](./protocols/reality.md) — Xray transport-security mechanism.

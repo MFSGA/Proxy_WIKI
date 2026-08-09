@@ -82,8 +82,8 @@ TODOs merely because they once appeared in an older Wiki revision.
 
 - Pin the upstream AnyTLS and Shadowsocks specification/version references used
   for interoperability claims when the corresponding upstream protocols change.
-- Add dedicated transport pages for gRPC and HTTPUpgrade rather than describing
-  them only as incidental VLESS/Xray transport names.
+- Add external HTTPUpgrade interoperability coverage; current evidence is
+  handler-level unit coverage rather than a dedicated external E2E test.
 - Add a concise Dokodemo-door implementation reference focused on server
   forwarding semantics rather than forcing it into the same wire-protocol
   template as authenticated proxies.
