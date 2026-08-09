@@ -19796,3 +19796,732 @@ msgstr "`Chimera_Server/chimera_server_lib/tests/xray_compatible_examples.rs`。
 
 msgid "For portable transparent-proxy behavior, also verify the Linux interception mechanism used by the deployment; Dokodemo-door can consume original-destination metadata but does not create the operating-system redirect rules that produce it."
 msgstr "为了获得可移植的透明代理行为，还应验证部署所使用的 Linux 拦截机制；Dokodemo-door 可以消费 original-destination 元数据，但不会创建产生这些元数据的操作系统重定向规则。"
+
+msgid "Test Evidence and Interoperability Matrix"
+msgstr "测试证据与互操作矩阵"
+
+msgid "For the concrete tests behind interoperability claims, see [Test Evidence and Interoperability Matrix](./test-evidence.md)."
+msgstr "互操作声明所对应的具体测试见 [测试证据与互操作矩阵](./test-evidence.md)。"
+
+msgid "Server transport behind `grpc_transport`; Xray-client VLESS/gRPC external E2E exists"
+msgstr "Server 在 `grpc_transport` feature 下提供传输实现，并已有 Xray 客户端 VLESS/gRPC 外部 E2E"
+
+msgid "Single-stream Hunk mode is implemented; `multiMode` is explicitly rejected. Management-gRPC compatibility tests are separate evidence and must not be confused with proxy-transport tests."
+msgstr "已实现单流 Hunk 模式；`multiMode` 会被明确拒绝。管理 gRPC 兼容测试属于独立证据，不能与代理传输测试混淆。"
+
+msgid "Server transport behind `httpupgrade`; handler unit tests and Xray-client external E2E exist"
+msgstr "Server 在 `httpupgrade` feature 下提供传输实现，并已有 handler 单元测试和 Xray 客户端外部 E2E"
+
+msgid "This page records **what has actually been exercised by tests**, not merely what the parser or runtime can construct. It complements [Implementation Status and Source Evidence](./implementation-status.md): implementation status answers “does code exist?”, while this page answers “which peer/direction/behavior has test evidence?”."
+msgstr "本页记录的是**测试真正覆盖过什么**，而不只是 parser 或 runtime 能构造什么。它与 [实现状态与源码证据](./implementation-status.md) 互补：实现状态回答“代码是否存在”，本页回答“哪个对端/方向/行为已有测试证据”。"
+
+msgid "The matrix was audited from the current local `Chimera_Client` and `Chimera_Server` source trees. Test names are deliberately included because capability names are not always visible in filenames: several important protocol interoperability cases live inside a shared `xray_client_proxy_e2e.rs` suite."
+msgstr "该矩阵基于当前本地 `Chimera_Client` 与 `Chimera_Server` 源码树审计。这里刻意记录测试名，因为能力名称并不总能从文件名看出来：多个重要协议互操作场景都位于共享的 `xray_client_proxy_e2e.rs` 测试套件中。"
+
+msgid "Evidence Classes"
+msgstr "证据分类"
+
+msgid "Class"
+msgstr "类别"
+
+msgid "Unit"
+msgstr "单元测试"
+
+msgid "Exercises a parser, codec, state transition, or handler in-process."
+msgstr "在进程内测试 parser、codec、状态迁移或 handler。"
+
+msgid "Self-integration"
+msgstr "自集成"
+
+msgid "Starts Chimera components/instances on both sides without an independent peer implementation."
+msgstr "两端都启动 Chimera 组件/实例，不使用独立的第三方对端实现。"
+
+msgid "Cross-project"
+msgstr "跨项目"
+
+msgid "Exercises two different Chimera repositories together, such as Chimera Client → Chimera Server."
+msgstr "联合测试两个不同的 Chimera 仓库，例如 Chimera Client → Chimera Server。"
+
+msgid "External interoperability"
+msgstr "外部互操作"
+
+msgid "Exercises Chimera against an independent implementation such as Xray."
+msgstr "让 Chimera 与 Xray 等独立实现进行实际互操作测试。"
+
+msgid "Negative interoperability"
+msgstr "负向互操作"
+
+msgid "Verifies expected rejection/fallback/failure against a real peer or full process stack."
+msgstr "针对真实对端或完整进程栈验证预期的拒绝、fallback 或失败行为。"
+
+msgid "Example/build validation"
+msgstr "示例/构建验证"
+
+msgid "Proves a configuration example parses/builds, but does not prove network interoperability."
+msgstr "证明配置示例可以解析/构建，但不能证明网络互操作性。"
+
+msgid "These levels are cumulative only when the specific path is actually covered. A protocol with an external TCP test does not automatically have external UDP, TLS, fallback, multiplexing, or every cipher/transport variant tested."
+msgstr "只有具体路径真正被覆盖时，这些等级才可以累积。某协议有外部 TCP 测试，并不意味着 UDP、TLS、fallback、多路复用或所有密码算法/传输变体也都完成了外部测试。"
+
+msgid "Default Tests vs Explicit E2E"
+msgstr "默认测试与显式 E2E"
+
+msgid "Many `Chimera_Server` process-level interoperability tests carry `#[ignore]` because they launch Chimera and another binary such as Xray. This means:"
+msgstr "许多 `Chimera_Server` 进程级互操作测试带有 `#[ignore]`，因为它们会启动 Chimera 和 Xray 等另一个二进制。这意味着："
+
+msgid "the test is real executable interoperability evidence;"
+msgstr "该测试是真实可执行的互操作证据；"
+
+msgid "it is not necessarily part of the default fast `cargo test` run;"
+msgstr "它不一定属于默认的快速 `cargo test` 运行范围；"
+
+msgid "maintainers must run the ignored suite explicitly when changing the covered protocol path."
+msgstr "修改其覆盖的协议路径时，维护者必须显式运行 ignored 测试套件。"
+
+msgid "Do not translate “ignored” into “not useful” or “not implemented”. It means the test belongs to an explicit, slower/environment-dependent verification tier."
+msgstr "不要把“ignored”理解为“没用”或“未实现”。它表示该测试属于需要显式执行、速度更慢或依赖环境的验证层级。"
+
+msgid "Client-side Integration Matrix"
+msgstr "Client 侧集成矩阵"
+
+msgid "The following tests live in `Chimera_Client/clash-lib/tests`."
+msgstr "以下测试位于 `Chimera_Client/clash-lib/tests`。"
+
+msgid "Direction / peer"
+msgstr "方向 / 对端"
+
+msgid "Evidence"
+msgstr "证据"
+
+msgid "What it proves"
+msgstr "证明内容"
+
+msgid "AnyTLS TCP"
+msgstr "AnyTLS TCP"
+
+msgid "Chimera Client local SOCKS → Chimera AnyTLS outbound → Chimera AnyTLS inbound → target"
+msgstr "Chimera Client 本地 SOCKS → Chimera AnyTLS 出站 → Chimera AnyTLS 入站 → 目标"
+
+msgid "`anytls_integration_tests.rs::integration_test_anytls_tcp`"
+msgstr "`anytls_integration_tests.rs::integration_test_anytls_tcp`"
+
+msgid "Client AnyTLS TCP outbound and inbound interoperate through a real local socket path."
+msgstr "Client 的 AnyTLS TCP 出站与入站通过真实本地 socket 路径完成互操作。"
+
+msgid "AnyTLS UDP"
+msgstr "AnyTLS UDP"
+
+msgid "Chimera Client local SOCKS UDP → AnyTLS UoT v2 outbound → Chimera AnyTLS inbound → UDP target"
+msgstr "Chimera Client 本地 SOCKS UDP → AnyTLS UoT v2 出站 → Chimera AnyTLS 入站 → UDP 目标"
+
+msgid "`anytls_integration_tests.rs::integration_test_anytls_udp`"
+msgstr "`anytls_integration_tests.rs::integration_test_anytls_udp`"
+
+msgid "Current UDP-over-TCP v2 framing and session path work end to end within Client implementations."
+msgstr "当前 UDP-over-TCP v2 分帧与会话路径在 Client 实现内部可以端到端工作。"
+
+msgid "Shadowsocks TCP"
+msgstr "Shadowsocks TCP"
+
+msgid "Chimera Client local SOCKS → Shadowsocks outbound → Chimera Shadowsocks inbound → target"
+msgstr "Chimera Client 本地 SOCKS → Shadowsocks 出站 → Chimera Shadowsocks 入站 → 目标"
+
+msgid "`shadowsocks_integration_tests.rs::integration_test_shadowsocks_tcp`"
+msgstr "`shadowsocks_integration_tests.rs::integration_test_shadowsocks_tcp`"
+
+msgid "Client-side Shadowsocks TCP inbound/outbound integration."
+msgstr "Client 侧 Shadowsocks TCP 入站/出站集成。"
+
+msgid "Shadowsocks UDP"
+msgstr "Shadowsocks UDP"
+
+msgid "Local SOCKS UDP → Shadowsocks outbound/inbound → UDP target"
+msgstr "本地 SOCKS UDP → Shadowsocks 出站/入站 → UDP 目标"
+
+msgid "`integration_test_shadowsocks_udp`"
+msgstr "`integration_test_shadowsocks_udp`"
+
+msgid "Basic Client Shadowsocks UDP relay."
+msgstr "基础 Client Shadowsocks UDP 转发。"
+
+msgid "Shadowsocks UDP multi-target"
+msgstr "Shadowsocks UDP 多目标"
+
+msgid "One client path to multiple UDP targets"
+msgstr "一条客户端路径访问多个 UDP 目标"
+
+msgid "`integration_test_shadowsocks_udp_multi_target`"
+msgstr "`integration_test_shadowsocks_udp_multi_target`"
+
+msgid "Destination/session handling does not collapse all UDP traffic into one target."
+msgstr "目标/会话处理不会把全部 UDP 流量错误合并到同一个目标。"
+
+msgid "Shadowsocks UDP isolation"
+msgstr "Shadowsocks UDP 隔离"
+
+msgid "Multiple logical clients/sessions"
+msgstr "多个逻辑客户端/会话"
+
+msgid "`integration_test_shadowsocks_udp_session_isolation`"
+msgstr "`integration_test_shadowsocks_udp_session_isolation`"
+
+msgid "UDP session state remains isolated."
+msgstr "UDP 会话状态保持隔离。"
+
+msgid "Direct UDP multi-target"
+msgstr "Direct UDP 多目标"
+
+msgid "Local UDP path → direct"
+msgstr "本地 UDP 路径 → direct"
+
+msgid "`direct_udp_integration_tests.rs::ref_compat_udp_one_client_preserves_multiple_destinations`"
+msgstr "`direct_udp_integration_tests.rs::ref_compat_udp_one_client_preserves_multiple_destinations`"
+
+msgid "Direct UDP preserves per-datagram destinations."
+msgstr "Direct UDP 会保留每个数据报各自的目标地址。"
+
+msgid "Direct UDP client isolation"
+msgstr "Direct UDP 客户端隔离"
+
+msgid "Multiple clients → direct UDP"
+msgstr "多个客户端 → direct UDP"
+
+msgid "`ref_compat_udp_sessions_are_isolated_by_client`"
+msgstr "`ref_compat_udp_sessions_are_isolated_by_client`"
+
+msgid "Session keys distinguish client state."
+msgstr "Session key 可以区分不同客户端状态。"
+
+msgid "TUN + Fake-IP"
+msgstr "TUN + Fake-IP"
+
+msgid "TUN/Fake-IP → direct and SOCKS-style proxy path → real network targets"
+msgstr "TUN/Fake-IP → direct 与 SOCKS 风格代理路径 → 真实网络目标"
+
+msgid "`tun_fake_ip_real_tests.rs::tun_fake_ip_routes_direct_and_proxy_with_real_network`"
+msgstr "`tun_fake_ip_real_tests.rs::tun_fake_ip_routes_direct_and_proxy_with_real_network`"
+
+msgid "TUN/Fake-IP routing can drive both direct and proxied real network traffic."
+msgstr "TUN/Fake-IP 路由可以驱动 direct 和代理两种真实网络流量。"
+
+msgid "Real UDP/TCP DNS queries → Client DNS listener"
+msgstr "真实 UDP/TCP DNS 查询 → Client DNS listener"
+
+msgid "`dns_real_traffic_tests.rs`"
+msgstr "`dns_real_traffic_tests.rs`"
+
+msgid "DNS listener handles real UDP/TCP query traffic and concurrency."
+msgstr "DNS listener 可以处理真实 UDP/TCP 查询流量和并发。"
+
+msgid "These are primarily **self-integration** or real-network integration tests. They do not prove compatibility with Xray for AnyTLS or Shadowsocks Server behavior."
+msgstr "这些主要属于**自集成**或真实网络集成测试，并不能证明 AnyTLS 或 Shadowsocks Server 行为与 Xray 的兼容性。"
+
+msgid "Chimera Client → Chimera Server REALITY/Vision"
+msgstr "Chimera Client → Chimera Server REALITY/Vision"
+
+msgid "`Chimera_Server/chimera_server_app/tests/chimera_client_reality_vision_e2e.rs` is the dedicated cross-project suite for Chimera Client → Chimera Server."
+msgstr "`Chimera_Server/chimera_server_app/tests/chimera_client_reality_vision_e2e.rs` 是专门用于 Chimera Client → Chimera Server 的跨项目测试套件。"
+
+msgid "Positive coverage includes:"
+msgstr "正向覆盖包括："
+
+msgid "basic TCP and large payloads;"
+msgstr "基础 TCP 与大负载；"
+
+msgid "payload/framing boundaries;"
+msgstr "负载/分帧边界；"
+
+msgid "domain targets;"
+msgstr "域名目标；"
+
+msgid "TLS 1.3 application-data transition;"
+msgstr "TLS 1.3 Application Data 转换；"
+
+msgid "sequential and concurrent connections;"
+msgstr "顺序连接与并发连接；"
+
+msgid "multiple configured REALITY server names;"
+msgstr "多个已配置的 REALITY server name；"
+
+msgid "multiple short IDs;"
+msgstr "多个 short ID；"
+
+msgid "exact client version bounds."
+msgstr "精确的客户端版本边界。"
+
+msgid "The companion `chimera_client_reality_vision_negative_e2e.rs` verifies rejection for cases including:"
+msgstr "配套的 `chimera_client_reality_vision_negative_e2e.rs` 会验证以下场景的拒绝行为："
+
+msgid "client version below an explicit minimum;"
+msgstr "客户端版本低于显式最小值；"
+
+msgid "client version above an explicit maximum;"
+msgstr "客户端版本高于显式最大值；"
+
+msgid "wrong short ID;"
+msgstr "错误的 short ID；"
+
+msgid "wrong server name;"
+msgstr "错误的 server name；"
+
+msgid "wrong REALITY public key;"
+msgstr "错误的 REALITY 公钥；"
+
+msgid "wrong VLESS UUID;"
+msgstr "错误的 VLESS UUID；"
+
+msgid "missing required Vision flow;"
+msgstr "缺少必需的 Vision flow；"
+
+msgid "Vision flow presented to a plain VLESS account."
+msgstr "向普通 VLESS 账户提交 Vision flow。"
+
+msgid "These tests are marked ignored because they launch both project binaries. They are nevertheless the strongest evidence for the exact **Chimera Client ↔ Chimera Server** REALITY/Vision combination."
+msgstr "这些测试因为会启动两个项目的二进制而标记为 ignored，但它们仍是精确验证 **Chimera Client ↔ Chimera Server** REALITY/Vision 组合的最强证据。"
+
+msgid "Xray Client → Chimera Server Matrix"
+msgstr "Xray Client → Chimera Server 矩阵"
+
+msgid "The shared ignored suite `Chimera_Server/chimera_server_app/tests/xray_client_proxy_e2e.rs` contains several protocol cases. The filename is generic, so the individual test function is the important evidence anchor."
+msgstr "共享的 ignored 测试套件 `Chimera_Server/chimera_server_app/tests/xray_client_proxy_e2e.rs` 包含多个协议场景。文件名本身很泛，因此具体测试函数才是重要的证据锚点。"
+
+msgid "Direction"
+msgstr "方向"
+
+msgid "Test"
+msgstr "测试"
+
+msgid "Coverage"
+msgstr "覆盖范围"
+
+msgid "VLESS + REALITY + Vision"
+msgstr "VLESS + REALITY + Vision"
+
+msgid "Xray client → Chimera Server"
+msgstr "Xray 客户端 → Chimera Server"
+
+msgid "`xray_client_can_proxy_tcp_through_chimera_reality_vision`"
+msgstr "`xray_client_can_proxy_tcp_through_chimera_reality_vision`"
+
+msgid "TCP proxying through REALITY/Vision."
+msgstr "通过 REALITY/Vision 进行 TCP 代理。"
+
+msgid "VLESS + TLS + Vision"
+msgstr "VLESS + TLS + Vision"
+
+msgid "`xray_client_can_proxy_tcp_through_chimera_tls_vision`"
+msgstr "`xray_client_can_proxy_tcp_through_chimera_tls_vision`"
+
+msgid "TLS-wrapped Vision TCP."
+msgstr "TLS 封装的 Vision TCP。"
+
+msgid "Shadowsocks classic AEAD"
+msgstr "Shadowsocks 经典 AEAD"
+
+msgid "`xray_client_can_proxy_tcp_through_chimera_shadowsocks`"
+msgstr "`xray_client_can_proxy_tcp_through_chimera_shadowsocks`"
+
+msgid "Legacy/current classic AEAD TCP methods exercised by the loop in the test."
+msgstr "测试中的循环覆盖 legacy/当前经典 AEAD TCP 方法。"
+
+msgid "Shadowsocks multi-user classic"
+msgstr "Shadowsocks 经典多用户"
+
+msgid "Two Xray clients → one Chimera inbound"
+msgstr "两个 Xray 客户端 → 一个 Chimera 入站"
+
+msgid "`xray_clients_can_use_multiple_legacy_shadowsocks_users`"
+msgstr "`xray_clients_can_use_multiple_legacy_shadowsocks_users`"
+
+msgid "Multiple configured classic users select/authenticate independently."
+msgstr "多个已配置的经典用户能够独立选择和认证。"
+
+msgid "Shadowsocks 2022 EIH"
+msgstr "Shadowsocks 2022 EIH"
+
+msgid "`xray_clients_can_use_shadowsocks_2022_eih_users`"
+msgstr "`xray_clients_can_use_shadowsocks_2022_eih_users`"
+
+msgid "AEAD-2022 multi-user EIH user selection."
+msgstr "AEAD-2022 多用户 EIH 用户选择。"
+
+msgid "Shadowsocks 2022 TCP + AES UDP"
+msgstr "Shadowsocks 2022 TCP + AES UDP"
+
+msgid "`xray_client_can_proxy_tcp_and_aes_udp_through_chimera_shadowsocks_2022`"
+msgstr "`xray_client_can_proxy_tcp_and_aes_udp_through_chimera_shadowsocks_2022`"
+
+msgid "2022 TCP plus AES-2022 UDP interoperability."
+msgstr "2022 TCP 与 AES-2022 UDP 互操作。"
+
+msgid "VLESS over gRPC transport"
+msgstr "VLESS over gRPC 传输"
+
+msgid "`xray_client_can_proxy_tcp_through_chimera_grpc`"
+msgstr "`xray_client_can_proxy_tcp_through_chimera_grpc`"
+
+msgid "Xray VLESS gRPC/h2c client can traverse Chimera's proxy gRPC transport."
+msgstr "Xray VLESS gRPC/h2c 客户端可以通过 Chimera 的代理 gRPC 传输。"
+
+msgid "VLESS over HTTPUpgrade"
+msgstr "VLESS over HTTPUpgrade"
+
+msgid "`xray_client_can_proxy_tcp_through_chimera_httpupgrade`"
+msgstr "`xray_client_can_proxy_tcp_through_chimera_httpupgrade`"
+
+msgid "Xray VLESS HTTPUpgrade request/101/raw-stream path interoperates with Chimera."
+msgstr "Xray VLESS HTTPUpgrade 的 request/101/raw-stream 路径可与 Chimera 互操作。"
+
+msgid "`xray_client_can_proxy_tcp_and_udp_through_chimera_hysteria2`"
+msgstr "`xray_client_can_proxy_tcp_and_udp_through_chimera_hysteria2`"
+
+msgid "Both TCP and UDP proxying through the Server Hysteria 2 implementation."
+msgstr "同时覆盖通过 Server Hysteria 2 实现的 TCP 与 UDP 代理。"
+
+msgid "The same file also contains HTTP/Mixed inbound process-level coverage using direct HTTP CONNECT/forward-proxy/SOCKS clients rather than relying on an Xray proxy protocol for those local-proxy semantics."
+msgstr "同一文件还包含 HTTP/Mixed 入站的进程级覆盖；这些本地代理语义使用直接 HTTP CONNECT/forward-proxy/SOCKS 客户端测试，而不是依赖 Xray 代理协议。"
+
+msgid "Fallback and Negative Process Tests"
+msgstr "Fallback 与负向进程测试"
+
+msgid "`xray_client_proxy_e2e.rs` also exercises full-process fallback behavior that is easy to miss in a simple protocol matrix:"
+msgstr "`xray_client_proxy_e2e.rs` 还覆盖了简单协议矩阵中很容易遗漏的完整进程 fallback 行为："
+
+msgid "Case"
+msgstr "场景"
+
+msgid "Unauthenticated plain TCP reaches VLESS fallback"
+msgstr "未认证明文 TCP 到达 VLESS fallback"
+
+msgid "`unauthenticated_plain_tcp_reaches_vless_fallback`"
+msgstr "`unauthenticated_plain_tcp_reaches_vless_fallback`"
+
+msgid "TLS payload reaches VLESS Vision fallback"
+msgstr "TLS 负载到达 VLESS Vision fallback"
+
+msgid "`unauthenticated_tls_payload_reaches_vless_vision_fallback`"
+msgstr "`unauthenticated_tls_payload_reaches_vless_vision_fallback`"
+
+msgid "Trojan TLS fallback rule selection"
+msgstr "Trojan TLS fallback 规则选择"
+
+msgid "`unauthenticated_tls_payload_reaches_trojan_fallback_rules`"
+msgstr "`unauthenticated_tls_payload_reaches_trojan_fallback_rules`"
+
+msgid "REALITY SNI mismatch reaches destination fallback"
+msgstr "REALITY SNI 不匹配时到达目标 fallback"
+
+msgid "`plain_tls_client_falls_back_to_reality_dest_on_sni_mismatch`"
+msgstr "`plain_tls_client_falls_back_to_reality_dest_on_sni_mismatch`"
+
+msgid "Wrong REALITY short ID falls back"
+msgstr "REALITY short ID 错误时进入 fallback"
+
+msgid "`xray_client_with_wrong_reality_short_id_falls_back_to_dest`"
+msgstr "`xray_client_with_wrong_reality_short_id_falls_back_to_dest`"
+
+msgid "Wrong REALITY SNI falls back"
+msgstr "REALITY SNI 错误时进入 fallback"
+
+msgid "`xray_client_with_wrong_reality_sni_falls_back_to_dest`"
+msgstr "`xray_client_with_wrong_reality_sni_falls_back_to_dest`"
+
+msgid "Fallback evidence matters because “invalid auth is rejected” and “invalid auth is safely routed to the configured fallback” are different runtime behaviors."
+msgstr "Fallback 证据很重要，因为“无效认证被拒绝”和“无效认证被安全路由到配置的 fallback”是两种不同的运行时行为。"
+
+msgid "REALITY/Vision Xray Baseline Matrix"
+msgstr "REALITY/Vision Xray 基线矩阵"
+
+msgid "The Server also has dedicated ignored Xray-baseline suites:"
+msgstr "Server 还提供专门的 ignored Xray 基线测试套件："
+
+msgid "`reality_vision_matrix_e2e.rs`;"
+msgstr "`reality_vision_matrix_e2e.rs`；"
+
+msgid "`reality_vision_negative_e2e.rs`."
+msgstr "`reality_vision_negative_e2e.rs`。"
+
+msgid "They cover uTLS fingerprints, payload boundaries, domain/IPv6 targets, TLS 1.3 transitions, repeated sessions, half-close behavior, concurrency, multiple server names/short IDs, version bounds, and authentication/flow rejection cases."
+msgstr "这些测试覆盖 uTLS fingerprint、负载边界、域名/IPv6 目标、TLS 1.3 转换、重复会话、半关闭、并发、多个 server name/short ID、版本边界以及认证/flow 拒绝场景。"
+
+msgid "These suites compare behavior with an Xray-oriented baseline and are stronger evidence for subtle REALITY/Vision state transitions than a single happy-path connection test."
+msgstr "这些套件会与 Xray 导向的基线比较行为，因此对于细微 REALITY/Vision 状态迁移的证据强度高于单一 happy-path 连接测试。"
+
+msgid "XHTTP Interoperability Matrix"
+msgstr "XHTTP 互操作矩阵"
+
+msgid "`xhttp_matrix_e2e.rs` starts Chimera Server and Xray and generates a matrix of XHTTP cases. The matrix covers combinations including:"
+msgstr "`xhttp_matrix_e2e.rs` 会启动 Chimera Server 与 Xray，并生成 XHTTP 场景矩阵。矩阵覆盖的组合包括："
+
+msgid "`stream-one`, `packet-up`, `stream-up`, and `auto` modes;"
+msgstr "`stream-one`、`packet-up`、`stream-up` 与 `auto` 模式；"
+
+msgid "POST/GET/PATCH/PUT uplink methods where allowed;"
+msgstr "允许场景中的 POST/GET/PATCH/PUT 上行方法；"
+
+msgid "session ID placement in path/header/query/cookie;"
+msgstr "session ID 放置在 path/header/query/cookie；"
+
+msgid "sequence placement variants;"
+msgstr "sequence 放置变体；"
+
+msgid "body/header/cookie uplink data placement;"
+msgstr "body/header/cookie 上行数据放置；"
+
+msgid "header-size limits;"
+msgstr "header 大小限制；"
+
+msgid "padding obfuscation placements and methods;"
+msgstr "padding 混淆的位置与方法；"
+
+msgid "`noGRPCHeader` / `noSSEHeader` variants."
+msgstr "`noGRPCHeader` / `noSSEHeader` 变体。"
+
+msgid "These cases are ignored explicit E2E tests because they launch both Chimera and Xray."
+msgstr "这些场景因为会同时启动 Chimera 与 Xray，所以属于标记为 ignored 的显式 E2E 测试。"
+
+msgid "`xhttp_security_matrix_e2e.rs` separately verifies XHTTP with:"
+msgstr "`xhttp_security_matrix_e2e.rs` 会单独验证以下 XHTTP 安全组合："
+
+msgid "no security wrapper;"
+msgstr "无安全封装；"
+
+msgid "TLS;"
+msgstr "TLS；"
+
+msgid "REALITY."
+msgstr "REALITY。"
+
+msgid "`xhttp_protocol_matrix_e2e.rs` is primarily Chimera process-level behavioral/negative coverage for host/path rejection, padding validation, packet sequencing, body-size limits, duplicate stream-up, mode conflicts, CORS/options, and padding placement."
+msgstr "`xhttp_protocol_matrix_e2e.rs` 主要提供 Chimera 进程级行为/负向覆盖，包括 host/path 拒绝、padding 验证、报文序列、body 大小限制、重复 stream-up、模式冲突、CORS/options 以及 padding 放置。"
+
+msgid "gRPC: Proxy Transport vs Management API"
+msgstr "gRPC：代理传输与管理 API"
+
+msgid "The repository contains two unrelated features that both use gRPC terminology:"
+msgstr "仓库中存在两个互不相同、但都使用 gRPC 术语的功能："
+
+msgid "**proxy gRPC transport** — `beginning/grpc_transport.rs`, which wraps an inner proxy byte stream as Xray-style Hunk messages;"
+msgstr "**代理 gRPC 传输** — `beginning/grpc_transport.rs`，把内层代理字节流封装为 Xray 风格 Hunk 消息；"
+
+msgid "**management gRPC API** — Xray-compatible control-plane services for stats, handlers, routing, observatory, and related operations."
+msgstr "**管理 gRPC API** — 为统计、handler、routing、observatory 等操作提供兼容 Xray 的控制平面服务。"
+
+msgid "Use these evidence anchors correctly:"
+msgstr "应正确使用以下证据锚点："
+
+msgid "`xray_client_proxy_e2e.rs::xray_client_can_proxy_tcp_through_chimera_grpc`"
+msgstr "`xray_client_proxy_e2e.rs::xray_client_can_proxy_tcp_through_chimera_grpc`"
+
+msgid "Proxy **transport** interoperability."
+msgstr "代理**传输**互操作。"
+
+msgid "`beginning/grpc_transport.rs` unit tests"
+msgstr "`beginning/grpc_transport.rs` 单元测试"
+
+msgid "Hunk codec/incomplete-buffer behavior."
+msgstr "Hunk codec / 不完整缓冲行为。"
+
+msgid "`grpc_all_interfaces_e2e.rs`"
+msgstr "`grpc_all_interfaces_e2e.rs`"
+
+msgid "Management API behavior across many exposed interfaces."
+msgstr "覆盖多个已暴露接口的管理 API 行为。"
+
+msgid "`grpc_external_integration.rs`"
+msgstr "`grpc_external_integration.rs`"
+
+msgid "External management API process integration."
+msgstr "外部管理 API 进程集成。"
+
+msgid "`grpc_xray_compat_e2e.rs`"
+msgstr "`grpc_xray_compat_e2e.rs`"
+
+msgid "Management API behavioral comparison with Xray, including generated reports."
+msgstr "管理 API 与 Xray 的行为对比，包括生成的报告。"
+
+msgid "Do not cite the management API tests as proof that VLESS/gRPC proxy transport works. Conversely, a successful VLESS/gRPC proxy test says nothing about StatsService or HandlerService compatibility."
+msgstr "不要把管理 API 测试当作 VLESS/gRPC 代理传输可用的证明。反过来，VLESS/gRPC 代理测试成功也不能证明 StatsService 或 HandlerService 兼容。"
+
+msgid "SOCKS and HTTP/Mixed Evidence"
+msgstr "SOCKS 与 HTTP/Mixed 证据"
+
+msgid "`Chimera_Server/chimera_server_app/tests/socks_external_integration.rs` contains external-process SOCKS tests for:"
+msgstr "`Chimera_Server/chimera_server_app/tests/socks_external_integration.rs` 包含以下外部进程 SOCKS 测试："
+
+msgid "no-auth TCP round trip;"
+msgstr "无认证 TCP 往返；"
+
+msgid "username/password TCP round trip."
+msgstr "用户名/密码 TCP 往返。"
+
+msgid "`xray_client_proxy_e2e.rs::http_and_mixed_inbounds_proxy_tcp` starts real Chimera HTTP and mixed listeners and exercises:"
+msgstr "`xray_client_proxy_e2e.rs::http_and_mixed_inbounds_proxy_tcp` 会启动真实 Chimera HTTP 与 mixed listener，并测试："
+
+msgid "authenticated HTTP CONNECT;"
+msgstr "带认证的 HTTP CONNECT；"
+
+msgid "absolute-form HTTP forwarding;"
+msgstr "absolute-form HTTP 转发；"
+
+msgid "transparent-style HTTP request forwarding where enabled;"
+msgstr "启用时的 transparent-style HTTP 请求转发；"
+
+msgid "HTTP through mixed inbound;"
+msgstr "通过 mixed 入站的 HTTP；"
+
+msgid "SOCKS5 through mixed inbound."
+msgstr "通过 mixed 入站的 SOCKS5。"
+
+msgid "This is process-level protocol evidence even though it does not use Xray as the client for those local proxy requests."
+msgstr "即使这些本地代理请求没有使用 Xray 作为客户端，它们仍属于进程级协议证据。"
+
+msgid "TUIC Evidence"
+msgstr "TUIC 证据"
+
+msgid "`chimera_server_lib/src/handler/tuic/e2e_tests.rs::udp_stream_and_datagram_roundtrips_record_stats` exercises the current TUIC handler over QUIC and verifies:"
+msgstr "`chimera_server_lib/src/handler/tuic/e2e_tests.rs::udp_stream_and_datagram_roundtrips_record_stats` 会在 QUIC 上测试当前 TUIC handler，并验证："
+
+msgid "UDP stream relay;"
+msgstr "UDP stream 转发；"
+
+msgid "QUIC datagram relay;"
+msgstr "QUIC datagram 转发；"
+
+msgid "traffic-stat accounting."
+msgstr "流量统计计数。"
+
+msgid "This is strong in-repository E2E evidence for the implemented TUIC data path, but it is **not external TUIC interoperability evidence** with an independent client. Keep that distinction visible until such a test is added."
+msgstr "这是已实现 TUIC 数据路径较强的仓库内 E2E 证据，但它**不是与独立 TUIC 客户端进行的外部互操作证据**。在补充此类测试之前必须保留这个区别。"
+
+msgid "Dokodemo-door Evidence"
+msgstr "Dokodemo-door 证据"
+
+msgid "Dokodemo-door has no client wire protocol to compare against an external peer, so the relevant evidence is handler/socket/routing behavior rather than a protocol handshake."
+msgstr "Dokodemo-door 没有可与外部对端比较的客户端线协议，因此相关证据是 handler/socket/routing 行为，而不是协议握手。"
+
+msgid "Current tests include:"
+msgstr "当前测试包括："
+
+msgid "`handler/dokodemo.rs::follow_redirect_uses_original_destination`;"
+msgstr "`handler/dokodemo.rs::follow_redirect_uses_original_destination`；"
+
+msgid "`handler/dokodemo.rs::follow_redirect_rejects_missing_original_destination`;"
+msgstr "`handler/dokodemo.rs::follow_redirect_rejects_missing_original_destination`；"
+
+msgid "Linux original-destination extraction tests in the listener path;"
+msgstr "listener 路径中的 Linux original-destination 提取测试；"
+
+msgid "`beginning/udp.rs::dokodemo_udp_follow_redirect_routes_by_original_destination`;"
+msgstr "`beginning/udp.rs::dokodemo_udp_follow_redirect_routes_by_original_destination`；"
+
+msgid "`dokodemo_udp_relay_forwards_datagrams`;"
+msgstr "`dokodemo_udp_relay_forwards_datagrams`；"
+
+msgid "`dokodemo_udp_reuses_session_for_same_flow`;"
+msgstr "`dokodemo_udp_reuses_session_for_same_flow`；"
+
+msgid "`dokodemo_udp_session_forwards_multiple_responses`;"
+msgstr "`dokodemo_udp_session_forwards_multiple_responses`；"
+
+msgid "Xray-compatible TCP/UDP example parsing/building in `tests/xray_compatible_examples.rs`."
+msgstr "`tests/xray_compatible_examples.rs` 中的 Xray 兼容 TCP/UDP 示例解析/构建。"
+
+msgid "These tests validate the forwarding machinery; a real transparent deployment still depends on Linux firewall/policy-routing configuration outside the Rust process."
+msgstr "这些测试验证转发机制；真实透明代理部署仍依赖 Rust 进程之外的 Linux firewall/policy-routing 配置。"
+
+msgid "What Is Not Yet Proven"
+msgstr "尚未被证明的能力"
+
+msgid "The current test tree does **not** justify the following blanket claims:"
+msgstr "当前测试树**不能**支持以下笼统声明："
+
+msgid "AnyTLS interoperability with `Chimera_Server` — the Server has no AnyTLS inbound;"
+msgstr "AnyTLS 与 `Chimera_Server` 互操作——Server 当前没有 AnyTLS 入站；"
+
+msgid "Chimera Client gRPC or HTTPUpgrade outbound interoperability — those outbound transport modules are not currently present;"
+msgstr "Chimera Client 的 gRPC 或 HTTPUpgrade 出站互操作——当前没有这些出站传输模块；"
+
+msgid "external TUIC interoperability with an independent TUIC client;"
+msgstr "与独立 TUIC 客户端的外部 TUIC 互操作；"
+
+msgid "every Shadowsocks cipher parsed by Client is accepted by Server;"
+msgstr "Client 可解析的每种 Shadowsocks 密码算法都被 Server 接受；"
+
+msgid "every XHTTP field parsed from Xray-shaped configuration is implemented;"
+msgstr "从 Xray 风格配置解析出的每个 XHTTP 字段都已实现；"
+
+msgid "every ignored E2E runs in default CI simply because the source file exists."
+msgstr "仅因为源码文件存在，就认为每个 ignored E2E 都会在默认 CI 中运行。"
+
+msgid "Absence from this list does not necessarily mean a feature is broken. It means the Wiki should not upgrade a capability claim to “interop-tested” without a concrete test anchor."
+msgstr "某项能力没有出现在该列表中，并不一定意味着它已损坏；它表示在没有具体测试锚点之前，Wiki 不应把该能力声明提升为“已完成互操作测试”。"
+
+msgid "Running the Evidence Suites"
+msgstr "运行证据测试套件"
+
+msgid "From `Chimera_Client`, focused protocol integration tests can be run with commands such as:"
+msgstr "在 `Chimera_Client` 中，可以使用以下命令运行聚焦的协议集成测试："
+
+msgid "From `Chimera_Server`, the explicit ignored E2E tier can be exercised with:"
+msgstr "在 `Chimera_Server` 中，可以通过以下命令运行显式的 ignored E2E 层："
+
+msgid "A focused external proxy suite can be run with:"
+msgstr "可使用以下命令运行聚焦的外部代理测试套件："
+
+msgid "These process-level tests may require the expected peer binaries/test assets in the locations resolved by the repository's test harness. A test that cannot start its external dependency is an infrastructure failure, not evidence that the protocol itself failed."
+msgstr "这些进程级测试可能要求预期的对端二进制/测试资源位于仓库测试 harness 能解析到的位置。测试无法启动外部依赖属于基础设施失败，不能据此认定协议本身失败。"
+
+msgid "When a protocol or transport changes:"
+msgstr "当协议或传输发生变化时："
+
+msgid "identify the exact parser/runtime path that changed;"
+msgstr "确定发生变化的精确 parser/runtime 路径；"
+
+msgid "locate the strongest existing test that traverses that path;"
+msgstr "找到当前覆盖该路径的最强测试；"
+
+msgid "update or add a positive test;"
+msgstr "更新或新增正向测试；"
+
+msgid "add a negative test when authentication, bounds, fallback, replay, or malformed input is involved;"
+msgstr "涉及认证、边界、fallback、重放或格式错误输入时新增负向测试；"
+
+msgid "run the relevant ignored external/cross-project suite when applicable;"
+msgstr "适用时运行相关 ignored 外部/跨项目测试套件；"
+
+msgid "only then update this Wiki's interoperability label."
+msgstr "之后才能更新本 Wiki 的互操作标签。"
+
+msgid "If one test file contains several unrelated subsystems, cite the **test function**, not just the filename. The gRPC management/transport distinction and the shared `xray_client_proxy_e2e.rs` suite are the canonical examples of why this matters."
+msgstr "如果一个测试文件包含多个互不相关的子系统，应引用**测试函数**而不只是文件名。gRPC 管理 API/代理传输的区别，以及共享的 `xray_client_proxy_e2e.rs` 套件，就是为什么这一点很重要的典型例子。"
+
+msgid "The strongest current transport-level interoperability evidence is:"
+msgstr "当前最强的传输级互操作证据是："
+
+msgid "`chimera_server_app/tests/xray_client_proxy_e2e.rs` → `xray_client_can_proxy_tcp_through_chimera_grpc`, which starts Xray as the VLESS/gRPC client and Chimera as the server;"
+msgstr "`chimera_server_app/tests/xray_client_proxy_e2e.rs` → `xray_client_can_proxy_tcp_through_chimera_grpc`，它会把 Xray 作为 VLESS/gRPC 客户端、Chimera 作为服务端启动；"
+
+msgid "`chimera_server_lib/src/beginning/grpc_transport.rs` unit tests for Hunk round-trip encoding and incomplete-frame buffering."
+msgstr "`chimera_server_lib/src/beginning/grpc_transport.rs` 中针对 Hunk 往返编码与不完整帧缓冲的单元测试。"
+
+msgid "Do **not** use `grpc_all_interfaces_e2e.rs`, `grpc_external_integration.rs`, or `grpc_xray_compat_e2e.rs` as evidence for this proxy transport. Those files test the Server's Xray-compatible **management gRPC API**, which is a different control-plane subsystem despite sharing the word “gRPC”."
+msgstr "**不要**把 `grpc_all_interfaces_e2e.rs`、`grpc_external_integration.rs` 或 `grpc_xray_compat_e2e.rs` 当作该代理传输的证据。这些文件测试的是 Server 兼容 Xray 的**管理 gRPC API**；虽然同样使用“gRPC”一词，但它属于不同的控制平面子系统。"
+
+msgid "`Chimera_Server/chimera_server_app/tests/xray_client_proxy_e2e.rs`;"
+msgstr "`Chimera_Server/chimera_server_app/tests/xray_client_proxy_e2e.rs`；"
+
+msgid "`Chimera_Server/chimera_server_lib/src/beginning/grpc_transport.rs` test module."
+msgstr "`Chimera_Server/chimera_server_lib/src/beginning/grpc_transport.rs` 测试模块。"
+
+msgid "The current evidence has two layers:"
+msgstr "当前证据分为两层："
+
+msgid "`handler/httpupgrade.rs` unit coverage verifies that a valid upgrade succeeds, first inner-protocol bytes immediately following the HTTP headers are preserved, and an incorrect path is rejected;"
+msgstr "`handler/httpupgrade.rs` 单元测试验证有效 upgrade 能成功、紧跟 HTTP header 的首批内层协议字节会被保留、错误 path 会被拒绝；"
+
+msgid "`chimera_server_app/tests/xray_client_proxy_e2e.rs` → `xray_client_can_proxy_tcp_through_chimera_httpupgrade` starts Xray as a VLESS/HTTPUpgrade client and Chimera as the server, providing external interoperability evidence."
+msgstr "`chimera_server_app/tests/xray_client_proxy_e2e.rs` → `xray_client_can_proxy_tcp_through_chimera_httpupgrade` 会把 Xray 作为 VLESS/HTTPUpgrade 客户端、Chimera 作为服务端启动，从而提供外部互操作证据。"
+
+msgid "The external test is marked ignored because it launches both binaries and is intended for the explicit E2E suite rather than the default fast unit-test path."
+msgstr "该外部测试因为会启动两个二进制而标记为 ignored；它属于显式 E2E 套件，而不是默认的快速单元测试路径。"

@@ -271,13 +271,12 @@ An HTTP/2 DATA frame is not equivalent to one proxy packet, and one Hunk message
 
 ## Current Test Evidence
 
-`Chimera_Server` currently contains dedicated gRPC transport tests including:
+The strongest current transport-level interoperability evidence is:
 
-- `grpc_all_interfaces_e2e.rs`;
-- `grpc_external_integration.rs`;
-- `grpc_xray_compat_e2e.rs`.
+- `chimera_server_app/tests/xray_client_proxy_e2e.rs` → `xray_client_can_proxy_tcp_through_chimera_grpc`, which starts Xray as the VLESS/gRPC client and Chimera as the server;
+- `chimera_server_lib/src/beginning/grpc_transport.rs` unit tests for Hunk round-trip encoding and incomplete-frame buffering.
 
-The Xray compatibility E2E is the strongest current evidence that this transport is intended to match Xray's non-multi gRPC mode rather than merely implementing generic gRPC streaming.
+Do **not** use `grpc_all_interfaces_e2e.rs`, `grpc_external_integration.rs`, or `grpc_xray_compat_e2e.rs` as evidence for this proxy transport. Those files test the Server's Xray-compatible **management gRPC API**, which is a different control-plane subsystem despite sharing the word “gRPC”.
 
 ## Chimera_Client Status
 
@@ -331,8 +330,7 @@ Current Chimera behavior in this chapter is grounded in:
 - `Chimera_Server/chimera_server_lib/src/beginning/grpc_transport.rs`;
 - `Chimera_Server/chimera_server_lib/src/config/mod.rs`;
 - `Chimera_Server/chimera_server_lib/src/config/server_config/builder/mod.rs`;
-- `Chimera_Server/chimera_server_app/tests/grpc_all_interfaces_e2e.rs`;
-- `Chimera_Server/chimera_server_app/tests/grpc_external_integration.rs`;
-- `Chimera_Server/chimera_server_app/tests/grpc_xray_compat_e2e.rs`.
+- `Chimera_Server/chimera_server_app/tests/xray_client_proxy_e2e.rs`;
+- `Chimera_Server/chimera_server_lib/src/beginning/grpc_transport.rs` test module.
 
 For portable behavior, compare against the current Xray gRPC transport definition and the peer implementation used in deployment; the Server's parsed configuration surface is broader than its currently active runtime settings.

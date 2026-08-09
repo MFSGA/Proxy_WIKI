@@ -73,8 +73,6 @@ TODOs merely because they once appeared in an older Wiki revision.
   a VMess outbound proxy path.
 - Expand XHTTP documentation with the exact list of accepted and rejected Xray
   fields, including the current `downloadSettings` limitation.
-- Document the current gRPC transport subset, especially the rejected
-  `multiMode` configuration.
 - Document VLESS Vision direct-mode limitations and the conditions exercised by
   the existing REALITY/Vision E2E matrix.
 
@@ -82,16 +80,11 @@ TODOs merely because they once appeared in an older Wiki revision.
 
 - Pin the upstream AnyTLS and Shadowsocks specification/version references used
   for interoperability claims when the corresponding upstream protocols change.
-- Add external HTTPUpgrade interoperability coverage; current evidence is
-  handler-level unit coverage rather than a dedicated external E2E test.
 - Add cross-links from each protocol page to its Client/Server implementation
   status and interoperability tests.
 
 ## Test Evidence and Operations
 
-- Create a single test-evidence table mapping each advertised combination to its
-  integration/E2E test name, direction, peer implementation, and expected
-  negative cases.
 - Add an end-to-end troubleshooting guide that follows the actual layered
   topology: local listener/TUN → DNS/rules → outbound → transport/security →
   server inbound → target.

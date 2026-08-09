@@ -298,12 +298,10 @@ C → S: GET /path HTTP/1.1
        Host: ...
        Connection: Upgrade
        Upgrade: websocket
-       
 
 S → C: HTTP/1.1 101 Switching Protocols
        Connection: Upgrade
        Upgrade: websocket
-       
 
 C ↔ S: raw inner-protocol bytes
 ```
@@ -364,13 +362,12 @@ Therefore a `Chimera_Server` HTTPUpgrade listener currently needs another compat
 
 ## Current Test Evidence
 
-The Server contains unit coverage in `handler/httpupgrade.rs` that verifies at least:
+The current evidence has two layers:
 
-- a valid upgrade succeeds;
-- first inner-protocol bytes immediately following the HTTP headers are preserved;
-- an incorrect path is rejected.
+- `handler/httpupgrade.rs` unit coverage verifies that a valid upgrade succeeds, first inner-protocol bytes immediately following the HTTP headers are preserved, and an incorrect path is rejected;
+- `chimera_server_app/tests/xray_client_proxy_e2e.rs` → `xray_client_can_proxy_tcp_through_chimera_httpupgrade` starts Xray as a VLESS/HTTPUpgrade client and Chimera as the server, providing external interoperability evidence.
 
-There is no dedicated external HTTPUpgrade E2E file in the currently inspected `chimera_server_app/tests` set. That is weaker evidence than the current gRPC transport's Xray compatibility tests and should be reflected in compatibility claims.
+The external test is marked ignored because it launches both binaries and is intended for the explicit E2E suite rather than the default fast unit-test path.
 
 ## Security Notes
 

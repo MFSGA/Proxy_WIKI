@@ -40,6 +40,9 @@ This is a documentation audit marker, not a release compatibility promise.
 Re-check the source before relying on this table after protocol or runtime
 changes.
 
+For the concrete tests behind interoperability claims, see
+[Test Evidence and Interoperability Matrix](./test-evidence.md).
+
 ## Client and Server Protocol Matrix
 
 The matrix is deliberately directional. `Chimera_Client` is primarily a client
@@ -59,8 +62,8 @@ core, while `Chimera_Server` is primarily an inbound/server core.
 | TUIC v5 | No TUIC outbound variant in the current Client outbound enum | QUIC inbound implementation behind `tuic` with E2E tests | Keep TUIC version-specific behavior tied to the current server implementation. |
 | XHTTP | Client transport implementation used by VLESS | Server XHTTP transport with protocol/security matrix tests | Server deliberately rejects several Xray XHTTP fields that are not implemented yet, including `downloadSettings`. |
 | WebSocket | Transport module behind `ws` | Transport module behind `ws` | A transport is not a proxy protocol by itself. |
-| [gRPC transport](./protocols/grpc-transport.md) | Not present as a current Client outbound transport module | Server transport behind `grpc_transport`; Xray compatibility E2E exists | Single-stream Hunk mode is implemented; `multiMode` is explicitly rejected and several parsed gRPC tuning fields are not currently applied. |
-| [HTTPUpgrade](./protocols/httpupgrade.md) | No current Client outbound transport module | Server transport behind `httpupgrade`; handler unit tests exist | HTTP/1.1 `GET`/`101` preface then raw stream, not WebSocket framing; `acceptProxyProtocol` and `ed` are explicitly rejected. |
+| [gRPC transport](./protocols/grpc-transport.md) | Not present as a current Client outbound transport module | Server transport behind `grpc_transport`; Xray-client VLESS/gRPC external E2E exists | Single-stream Hunk mode is implemented; `multiMode` is explicitly rejected. Management-gRPC compatibility tests are separate evidence and must not be confused with proxy-transport tests. |
+| [HTTPUpgrade](./protocols/httpupgrade.md) | No current Client outbound transport module | Server transport behind `httpupgrade`; handler unit tests and Xray-client external E2E exist | HTTP/1.1 `GET`/`101` preface then raw stream, not WebSocket framing; `acceptProxyProtocol` and `ed` are explicitly rejected. |
 | [Dokodemo-door](./protocols/dokodemo-door.md) | Not a current Client remote outbound protocol | TCP/UDP forwarding inbound with fixed-target and Linux original-destination modes; tests/examples exist | No proxy handshake/header of its own; `followRedirect` is Linux-only and UDP rejects stream security layers. |
 | TLS | Shared client transport/security support | Server security wrapper behind `tls` | TLS is a security/transport layer, not an identity-bearing proxy protocol. |
 | REALITY | Client implementation under `proxy/transport/reality` | Server implementation under `reality` plus inbound wrappers | Cross-project REALITY/Vision E2E and negative tests exist in the Server repository. |
