@@ -29,8 +29,14 @@ jobs:
       - name: Install cargo-binstall
         uses: cargo-bins/cargo-binstall@main
 
-      - name: Install mdBook toolchain only
-        run: cargo xtask install-tools --binstall
+      - name: Install minimal mdBook toolchain
+        run: |
+          cargo binstall mdbook --version 0.4.52 --locked -y
+          cargo binstall mdbook-i18n-helpers --version 0.3.6 --locked -y
+          cargo binstall mdbook-mermaid --version 0.16.0 --locked -y
+          cargo binstall mdbook-svgbob --version 0.2.2 --locked -y
+          cargo install --path mdbook-course --locked
+          cargo install --path mdbook-exerciser --locked
 
       - name: Install PO helper
         run: python -m pip install --disable-pip-version-check polib
