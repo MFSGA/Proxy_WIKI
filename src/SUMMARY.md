@@ -6,6 +6,7 @@
 - [Implementation Status and Source Evidence](./implementation-status.md)
 - [Test Evidence and Interoperability Matrix](./test-evidence.md)
 - [End-to-End Troubleshooting](./troubleshooting.md)
+- [Deployment Security and Threat Model](./security-model.md)
 - [Chimera_Client](./chimera_client.md)
   - [Ports and Listeners](./chimera_client/ports.md)
   - [DNS Module](./chimera_client/dns.md)

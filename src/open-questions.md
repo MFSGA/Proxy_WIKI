@@ -85,6 +85,3 @@ TODOs merely because they once appeared in an older Wiki revision.
 
 ## Test Evidence and Operations
 
-- Add a deployment threat-model chapter covering local listener exposure,
-  credentials/keys, DNS leaks, TUN routing, fallback behavior, metadata logging,
-  UDP/QUIC resource limits, and privileged service IPC.

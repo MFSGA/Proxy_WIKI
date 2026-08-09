@@ -21302,3 +21302,813 @@ msgstr "以及 [测试证据与互操作矩阵](./test-evidence.md) 中整理的
 
 msgid "This page should be updated when a failure boundary, controller endpoint, feature gate, or test path changes in source."
 msgstr "当源码中的失败边界、controller endpoint、feature gate 或测试路径变化时，应同步更新本页。"
+
+msgid "Deployment Security and Threat Model"
+msgstr "部署安全与威胁模型"
+
+msgid "This page describes the security boundaries that matter when deploying the Chimera ecosystem. It is not a claim that one configuration is universally secure; it is a checklist for understanding **which component trusts whom, which secrets cross which boundary, and what an attacker can reach if one layer is exposed**."
+msgstr "本页描述部署 Chimera 生态时真正重要的安全边界。它并不声称某一种配置在所有场景都绝对安全，而是一份用于理解**哪个组件信任谁、哪些秘密跨越哪些边界，以及某一层暴露后攻击者能够触达什么**的检查清单。"
+
+msgid "Protocol cryptography is only one part of the system. A correctly encrypted VLESS/REALITY or Shadowsocks connection can still be undermined by an unauthenticated LAN listener, leaked controller secret, unsafe fallback target, DNS/TUN leak, over-privileged service, or logs containing reusable credentials."
+msgstr "协议密码学只是整个系统的一部分。即使 VLESS/REALITY 或 Shadowsocks 连接本身正确加密，也仍可能被未认证的 LAN listener、泄漏的 controller secret、不安全的 fallback 目标、DNS/TUN 泄漏、权限过高的 service 或包含可复用凭据的日志破坏。"
+
+msgid "Use this page together with [End-to-End Troubleshooting](./troubleshooting.md), [Implementation Status and Source Evidence](./implementation-status.md), and the protocol-specific security sections."
+msgstr "请结合 [端到端故障排查](./troubleshooting.md)、[实现状态与源码证据](./implementation-status.md) 以及各协议的安全章节阅读本页。"
+
+msgid "Trust Boundaries"
+msgstr "信任边界"
+
+msgid "A typical desktop deployment crosses these boundaries:"
+msgstr "典型桌面部署会跨越以下边界："
+
+msgid "Service mode inserts another privileged boundary:"
+msgstr "Service mode 会额外插入一个特权边界："
+
+msgid "Android inserts a VPN boundary:"
+msgstr "Android 则会插入一个 VPN 边界："
+
+msgid "Each arrow can have a different attacker and different authentication model. Do not treat “the proxy connection is encrypted” as protection for every arrow."
+msgstr "每一条箭头都可能面对不同攻击者和不同认证模型。不要把“代理连接已加密”误认为所有边界都因此得到保护。"
+
+msgid "Assets to Protect"
+msgstr "需要保护的资产"
+
+msgid "Treat these as security-sensitive assets:"
+msgstr "应把以下内容视为安全敏感资产："
+
+msgid "Shadowsocks passwords/PSKs and AEAD-2022 raw keys;"
+msgstr "Shadowsocks 密码/PSK 与 AEAD-2022 原始密钥；"
+
+msgid "AnyTLS passwords;"
+msgstr "AnyTLS 密码；"
+
+msgid "Trojan passwords;"
+msgstr "Trojan 密码；"
+
+msgid "VLESS/VMess user identifiers where they grant service access;"
+msgstr "能够授予服务访问权限的 VLESS/VMess 用户标识；"
+
+msgid "REALITY private keys, client public-key configuration, and short IDs;"
+msgstr "REALITY 私钥、客户端公钥配置和 short ID；"
+
+msgid "Hysteria 2 credentials;"
+msgstr "Hysteria 2 凭据；"
+
+msgid "TUIC UUID/password material;"
+msgstr "TUIC UUID/密码材料；"
+
+msgid "TLS private keys and client certificates;"
+msgstr "TLS 私钥与客户端证书；"
+
+msgid "Chimera controller/API bearer secrets;"
+msgstr "Chimera controller/API bearer secret；"
+
+msgid "subscription URLs containing access tokens;"
+msgstr "包含访问 token 的订阅 URL；"
+
+msgid "generated runtime configuration when it contains credentials;"
+msgstr "包含凭据时的生成运行时配置；"
+
+msgid "service IPC/control capability;"
+msgstr "service IPC/控制能力；"
+
+msgid "DNS/routing policy when it reveals or controls user traffic."
+msgstr "能够暴露或控制用户流量的 DNS/routing 策略。"
+
+msgid "A value does not need to be a conventional password to be reusable authentication material."
+msgstr "一个值不必是传统意义上的密码，也可能属于可复用认证材料。"
+
+msgid "Threat Actors"
+msgstr "威胁主体"
+
+msgid "Useful threat categories include:"
+msgstr "有用的威胁类别包括："
+
+msgid "Actor"
+msgstr "主体"
+
+msgid "Typical capability"
+msgstr "典型能力"
+
+msgid "Local unprivileged user/process"
+msgstr "本地非特权用户/进程"
+
+msgid "Connect to local listeners/APIs, read world-readable files, influence local DNS or environment."
+msgstr "连接本地 listener/API、读取全局可读文件、影响本地 DNS 或运行环境。"
+
+msgid "LAN peer"
+msgstr "LAN 对端"
+
+msgid "Reach listeners accidentally bound to LAN, probe unauthenticated SOCKS/HTTP/Dokodemo endpoints."
+msgstr "访问意外绑定到 LAN 的 listener，探测未认证 SOCKS/HTTP/Dokodemo endpoint。"
+
+msgid "On-path network observer"
+msgstr "链路中间观察者"
+
+msgid "See IPs, ports, timing, sizes, plaintext protocols without TLS, and possibly HTTP metadata."
+msgstr "观察 IP、端口、时序、大小、无 TLS 时的明文协议，以及可能的 HTTP 元数据。"
+
+msgid "Malicious proxy client"
+msgstr "恶意代理客户端"
+
+msgid "Send malformed/replayed/authentication-failing traffic and consume server resources."
+msgstr "发送格式错误、重放或认证失败流量，并消耗服务端资源。"
+
+msgid "Malicious/compromised proxy server"
+msgstr "恶意/被攻陷的代理服务端"
+
+msgid "Observe target destinations and plaintext after proxy decryption, return malicious content, manipulate DNS/routing behavior under its control."
+msgstr "观察代理解密后的目标地址和明文、返回恶意内容，并操纵其控制范围内的 DNS/routing 行为。"
+
+msgid "Reverse proxy/CDN/logging infrastructure"
+msgstr "反向代理/CDN/日志基础设施"
+
+msgid "Observe HTTP/XHTTP/gRPC metadata that is outside end-to-end encrypted inner payloads."
+msgstr "观察不属于端到端加密内层负载的 HTTP/XHTTP/gRPC 元数据。"
+
+msgid "Privileged local attacker"
+msgstr "本地特权攻击者"
+
+msgid "Control service/core lifecycle, routes, DNS, TUN, process memory, and configuration; protocol cryptography cannot protect against full local privilege compromise."
+msgstr "控制 service/core 生命周期、路由、DNS、TUN、进程内存和配置；协议密码学无法抵御完整的本地特权失陷。"
+
+msgid "The appropriate mitigation depends on which actor is in scope."
+msgstr "合适的缓解措施取决于威胁模型中包含哪类攻击者。"
+
+msgid "Local Proxy Listeners Are Security Boundaries"
+msgstr "本地代理 Listener 也是安全边界"
+
+msgid "SOCKS5, local HTTP proxy, and mixed listeners are often plaintext application-facing interfaces. If exposed beyond the intended host, they can become open proxies or leak credentials/traffic metadata."
+msgstr "SOCKS5、本地 HTTP proxy 和 mixed listener 通常是面向应用的明文接口。如果暴露到预期主机之外，它们可能变成开放代理，或泄漏凭据/流量元数据。"
+
+msgid "For local-only desktop use:"
+msgstr "对于仅本机使用的桌面部署："
+
+msgid "prefer loopback binding unless LAN access is intentionally required;"
+msgstr "除非确实需要 LAN 访问，否则优先绑定 loopback；"
+
+msgid "verify `allow-lan`/source policy and actual bind address;"
+msgstr "检查 `allow-lan`/来源策略和真实 bind address；"
+
+msgid "use listener authentication where the implementation and deployment require shared access;"
+msgstr "实现和部署需要共享访问时，为 listener 使用认证；"
+
+msgid "firewall LAN/WAN access even when the application configuration appears restrictive;"
+msgstr "即使应用配置看起来已经限制访问，也应通过 firewall 限制 LAN/WAN；"
+
+msgid "do not assume remote-protocol authentication protects the local listener."
+msgstr "不要假设远程协议认证会保护本地 listener。"
+
+msgid "A LAN peer that can use your local SOCKS listener does not need to know your remote VLESS UUID or Shadowsocks key; your Client will authenticate to the remote server on its behalf."
+msgstr "能够使用你本地 SOCKS listener 的 LAN 对端不需要知道远程 VLESS UUID 或 Shadowsocks 密钥；Client 会代表它向远端服务端完成认证。"
+
+msgid "Chimera_Client Controller/API"
+msgstr "Chimera_Client Controller/API"
+
+msgid "The Client controller is a control and observation surface, not a public application proxy."
+msgstr "Client controller 是控制与观测接口，不是公开的应用代理。"
+
+msgid "Current TCP API behavior requires a bearer token when a secret is configured, and the Client rejects unsafe non-loopback TCP API exposure without a secret. Non-loopback API exposure also requires explicit valid CORS origins."
+msgstr "当前 TCP API 在配置 secret 后要求 bearer token，并会拒绝没有 secret 的不安全非 loopback TCP API 暴露。非 loopback API 暴露还要求显式有效的 CORS origin。"
+
+msgid "Security guidance:"
+msgstr "安全建议："
+
+msgid "keep the controller on loopback unless remote administration is genuinely needed;"
+msgstr "除非确实需要远程管理，否则让 controller 保持在 loopback；"
+
+msgid "configure a high-entropy secret before non-loopback exposure;"
+msgstr "暴露到非 loopback 前配置高熵 secret；"
+
+msgid "restrict it with host firewall rules in addition to application authentication;"
+msgstr "除应用认证外，再使用主机 firewall 规则限制访问；"
+
+msgid "do not put bearer secrets in screenshots, logs, shell history, or bug reports;"
+msgstr "不要在截图、日志、shell history 或 bug report 中放入 bearer secret；"
+
+msgid "remember that `/connections`, `/proxies`, `/configs`, DNS queries, logs, and traffic information can reveal sensitive operational metadata even without raw payloads."
+msgstr "即使没有原始负载，也要记住 `/connections`、`/proxies`、`/configs`、DNS query、日志和流量信息可能暴露敏感运维元数据。"
+
+msgid "A compromised controller can expose much more than a passive packet capture."
+msgstr "controller 被攻陷后可能暴露的内容远多于被动抓包。"
+
+msgid "Service Mode and Privileged IPC"
+msgstr "Service Mode 与特权 IPC"
+
+msgid "`Chimera_Service` can start, stop, and restart selected cores using supplied configuration paths, report runtime status, and perform supported privileged network operations such as DNS changes."
+msgstr "`Chimera_Service` 可以使用提供的配置路径启动、停止和重启所选 core，报告运行状态，并执行受支持的特权网络操作，例如修改 DNS。"
+
+msgid "That makes the Desktop → Service IPC boundary security-sensitive."
+msgstr "因此 Desktop → Service IPC 边界具有安全敏感性。"
+
+msgid "Operational requirements include:"
+msgstr "运维要求包括："
+
+msgid "rely on the repository's local IPC ACL/security mechanisms rather than exposing the service control endpoint broadly;"
+msgstr "依赖仓库提供的本地 IPC ACL/安全机制，而不是广泛暴露 service 控制 endpoint；"
+
+msgid "keep Desktop, Service, shared IPC types, and core binaries from trusted build/update sources;"
+msgstr "确保 Desktop、Service、共享 IPC type 和 core 二进制来自可信构建/更新来源；"
+
+msgid "treat a config path supplied to a privileged service as security-sensitive input;"
+msgstr "把提交给特权 service 的配置路径视为安全敏感输入；"
+
+msgid "avoid world-writable generated-config directories;"
+msgstr "避免使用全局可写的生成配置目录；"
+
+msgid "verify service-account file permissions and executable paths;"
+msgstr "检查 service account 的文件权限和可执行文件路径；"
+
+msgid "distinguish service-process compromise from proxy-core compromise in incident response."
+msgstr "事故响应中区分 service 进程失陷和 proxy core 失陷。"
+
+msgid "Service mode increases operational privilege; it does not strengthen proxy protocol authentication by itself."
+msgstr "Service mode 会提高运维权限，但本身不会增强代理协议认证。"
+
+msgid "Android VPN/TUN Boundary"
+msgstr "Android VPN/TUN 边界"
+
+msgid "`AChimera` owns an Android `VpnService` and passes the TUN file descriptor to the embedded Rust core. The `protect(fd)` callback prevents the proxy core's own remote sockets from being captured by the VPN again."
+msgstr "`AChimera` 持有 Android `VpnService`，并把 TUN 文件描述符传给内嵌 Rust core。`protect(fd)` 回调用于避免代理 core 自己的远程 socket 再次被 VPN 捕获。"
+
+msgid "Security/reliability concerns include:"
+msgstr "安全/可靠性风险包括："
+
+msgid "incorrect route or DNS configuration can leak traffic outside the intended VPN path;"
+msgstr "错误的路由或 DNS 配置可能让流量泄漏到预期 VPN 路径之外；"
+
+msgid "failure to protect proxy sockets can create loops or unexpected routing;"
+msgstr "未能 protect 代理 socket 可能造成循环或非预期路由；"
+
+msgid "per-app include/exclude policy changes which applications are inside the trust boundary;"
+msgstr "按应用 include/exclude 策略会改变哪些应用处于该信任边界内；"
+
+msgid "profile files and remote subscription metadata remain sensitive application data;"
+msgstr "profile 文件和远程订阅元数据仍属于敏感应用数据；"
+
+msgid "Android VPN permission proves user authorization to create the VPN, not remote proxy identity."
+msgstr "Android VPN 权限只证明用户授权创建 VPN，并不能证明远程代理身份。"
+
+msgid "When the same profile behaves differently on desktop and Android, do not immediately weaken TLS/protocol checks to make Android work. Prove the VPN/TUN/protection path first."
+msgstr "同一 profile 在桌面与 Android 表现不同时，不要为了让 Android 能工作就立即削弱 TLS/协议检查；应先证明 VPN/TUN/protection 路径正常。"
+
+msgid "DNS Privacy and Routing Leaks"
+msgstr "DNS 隐私与路由泄漏"
+
+msgid "A proxy can carry application traffic while DNS still leaves through an unintended resolver."
+msgstr "即使应用流量已经走代理，DNS 仍可能通过非预期 resolver 离开。"
+
+msgid "Leak risks include:"
+msgstr "泄漏风险包括："
+
+msgid "application resolves locally before using a proxy;"
+msgstr "应用在使用代理前先进行了本地解析；"
+
+msgid "system DNS bypasses the Client DNS listener;"
+msgstr "系统 DNS 绕过 Client DNS listener；"
+
+msgid "TUN captures traffic but DNS hijack/routing does not match;"
+msgstr "TUN 已捕获流量，但 DNS hijack/routing 没有匹配；"
+
+msgid "Fake-IP reverse mapping fails and routing falls back unexpectedly;"
+msgstr "Fake-IP 反向映射失败并导致 routing 意外回退；"
+
+msgid "server-side domain resolution reveals destinations to the server's resolver even when the client used remote-domain semantics."
+msgstr "即使客户端使用远程域名语义，服务端侧域名解析仍会向服务端 resolver 暴露目标。"
+
+msgid "Decide explicitly **where names should be resolved** and test that path. DNS privacy is not automatically provided by SOCKS5, HTTP CONNECT, or a remote encrypted proxy protocol."
+msgstr "应显式决定**域名应该在哪里解析**并测试该路径。SOCKS5、HTTP CONNECT 或远程加密代理协议都不会自动提供 DNS 隐私。"
+
+msgid "TUN and Transparent Routing Risks"
+msgstr "TUN 与透明路由风险"
+
+msgid "TUN, redir, TProxy, and Dokodemo `followRedirect` move policy into operating-system routing/firewall state."
+msgstr "TUN、redir、TProxy 和 Dokodemo `followRedirect` 会把部分策略移动到操作系统 routing/firewall 状态中。"
+
+msgid "Common risks are:"
+msgstr "常见风险包括："
+
+msgid "traffic bypass because a route/table/rule is missing;"
+msgstr "因为缺少 route/table/rule 导致流量绕过；"
+
+msgid "routing loops;"
+msgstr "路由环路；"
+
+msgid "DNS escaping through an interface not covered by policy;"
+msgstr "DNS 通过策略未覆盖的接口泄漏；"
+
+msgid "accidentally capturing the proxy server connection itself;"
+msgstr "意外捕获代理服务端连接本身；"
+
+msgid "exposing a transparent listener to networks that should never reach it;"
+msgstr "把透明 listener 暴露给本不应访问它的网络；"
+
+msgid "assuming `followRedirect` creates interception rules when it only consumes original-destination metadata."
+msgstr "误以为 `followRedirect` 会创建拦截规则，实际上它只消费 original-destination 元数据。"
+
+msgid "Treat OS routes/firewall state as part of the security configuration, not as an implementation detail outside the proxy."
+msgstr "应把操作系统 route/firewall 状态视为安全配置的一部分，而不是代理之外无关紧要的实现细节。"
+
+msgid "Remote Listener Exposure"
+msgstr "远程 Listener 暴露"
+
+msgid "A server listener should expose only the protocol/transport actually intended for remote clients."
+msgstr "服务端 listener 应只暴露真正需要提供给远程客户端的协议/传输。"
+
+msgid "Controls include:"
+msgstr "控制措施包括："
+
+msgid "bind only required addresses/interfaces;"
+msgstr "只绑定需要的地址/接口；"
+
+msgid "firewall only required TCP/UDP ports;"
+msgstr "只在 firewall 放行需要的 TCP/UDP 端口；"
+
+msgid "remove obsolete inbounds and fallback listeners;"
+msgstr "删除已废弃的 inbound 和 fallback listener；"
+
+msgid "avoid exposing management APIs on the same trust level as public proxy inbounds;"
+msgstr "避免把管理 API 暴露在与公共代理 inbound 相同的信任级别；"
+
+msgid "verify IPv6 exposure separately from IPv4;"
+msgstr "分别验证 IPv6 与 IPv4 暴露情况；"
+
+msgid "treat QUIC/UDP reachability as a separate firewall surface from TCP."
+msgstr "把 QUIC/UDP 可达性视为独立于 TCP 的 firewall 攻击面。"
+
+msgid "A protocol's authentication failure behavior matters only after the attacker can reach the listener."
+msgstr "只有攻击者已经能够到达 listener 后，协议的认证失败行为才开始发挥作用。"
+
+msgid "TLS Security"
+msgstr "TLS 安全"
+
+msgid "For TLS-based transports/protocols:"
+msgstr "对于基于 TLS 的传输/协议："
+
+msgid "keep certificate verification enabled on clients unless there is a documented private trust model;"
+msgstr "除非有明确记录的私有信任模型，否则客户端保持证书验证开启；"
+
+msgid "validate SNI/server names deliberately;"
+msgstr "有意识地验证 SNI/server name；"
+
+msgid "protect server private keys with restrictive file permissions;"
+msgstr "使用严格文件权限保护服务端私钥；"
+
+msgid "rotate certificates/keys according to deployment policy;"
+msgstr "按部署策略轮换证书/密钥；"
+
+msgid "provide client certificate/key together when mTLS is required;"
+msgstr "需要 mTLS 时同时提供客户端证书/私钥；"
+
+msgid "keep ALPN aligned with the transport (`h2` is required by the current Server gRPC/TLS path)."
+msgstr "保持 ALPN 与传输一致（当前 Server gRPC/TLS 路径要求 `h2`）。"
+
+msgid "`skip-cert-verify` is a security downgrade, not a generic troubleshooting switch. If disabling it makes a connection work, fix the trust/SNI/certificate problem rather than leaving verification off."
+msgstr "`skip-cert-verify` 是安全降级，不是通用排障开关。如果关闭验证后连接才能工作，应修复 trust/SNI/证书问题，而不是长期保持验证关闭。"
+
+msgid "REALITY Security Boundary"
+msgstr "REALITY 安全边界"
+
+msgid "REALITY adds a transport-security/camouflage mechanism but does not replace the inner proxy account/flow checks."
+msgstr "REALITY 增加传输安全/伪装机制，但不会替代内层代理账户/flow 检查。"
+
+msgid "Protect:"
+msgstr "应保护："
+
+msgid "the REALITY private key;"
+msgstr "REALITY 私钥；"
+
+msgid "expected server names;"
+msgstr "预期 server name；"
+
+msgid "short IDs;"
+msgstr "short ID；"
+
+msgid "VLESS UUID/flow configuration separately."
+msgstr "并单独保护/管理 VLESS UUID/flow 配置。"
+
+msgid "Current Server tests deliberately cover cases where wrong server name, short ID, public key, client version, VLESS UUID, or Vision flow fail independently."
+msgstr "当前 Server 测试刻意覆盖 server name、short ID、公钥、客户端版本、VLESS UUID 或 Vision flow 各自独立错误的情况。"
+
+msgid "Fallback behavior is part of the security design. A mismatch may route traffic to the configured REALITY destination rather than simply closing. Ensure that destination is safe to expose and that fallback cannot be abused to reach an unintended internal service."
+msgstr "Fallback 行为是安全设计的一部分。发生不匹配时，流量可能被路由到已配置的 REALITY destination，而不是简单关闭。应确保该目标适合暴露，并避免 fallback 被滥用来访问非预期内部服务。"
+
+msgid "Shadowsocks Security"
+msgstr "Shadowsocks 安全"
+
+msgid "For classic AEAD:"
+msgstr "对于经典 AEAD："
+
+msgid "use modern AEAD methods supported by both peers;"
+msgstr "使用双方都支持的现代 AEAD 方法；"
+
+msgid "protect passwords/master keys;"
+msgstr "保护密码/master key；"
+
+msgid "never reuse salt/nonce material deliberately;"
+msgstr "不要主动复用 salt/nonce 材料；"
+
+msgid "keep replay defenses enabled."
+msgstr "保持重放防护开启。"
+
+msgid "For AEAD-2022:"
+msgstr "对于 AEAD-2022："
+
+msgid "the current Server treats configured Base64 material as raw PSK and enforces exact key length;"
+msgstr "当前 Server 把配置的 Base64 内容视为原始 PSK，并强制精确密钥长度；"
+
+msgid "timestamp validation makes clock synchronization relevant;"
+msgstr "时间戳验证使时钟同步变得重要；"
+
+msgid "session/packet replay windows are active security state;"
+msgstr "session/packet 重放窗口属于真实生效的安全状态；"
+
+msgid "multi-user EIH changes user selection and must use supported method combinations."
+msgstr "多用户 EIH 会改变用户选择流程，必须使用受支持的方法组合。"
+
+msgid "Do not advertise a Client-only cipher as Server-compatible without interoperability evidence."
+msgstr "没有互操作证据时，不要把仅 Client 支持的 cipher 宣称为 Server 兼容。"
+
+msgid "AnyTLS Security"
+msgstr "AnyTLS 安全"
+
+msgid "AnyTLS uses two distinct layers:"
+msgstr "AnyTLS 使用两个独立层次："
+
+msgid "TLS for encrypted transport/server identity;"
+msgstr "TLS 用于加密传输/服务端身份；"
+
+msgid "a deterministic 32-byte `SHA256(password)` authentication token inside TLS."
+msgstr "TLS 内部使用确定性的 32 字节 `SHA256(password)` 认证令牌。"
+
+msgid "Use a high-entropy password and keep TLS certificate verification enabled. The password hash is not a substitute for server certificate authentication."
+msgstr "使用高熵密码并保持 TLS 证书验证开启。密码哈希不能替代服务端证书认证。"
+
+msgid "The current Client inbound can send unknown-password traffic to a configured fallback **after TLS termination**. That fallback receives decrypted TLS application bytes. Point it only at a service intentionally designed to receive such traffic."
+msgstr "当前 Client 入站可以在 **TLS 终止之后**把未知密码流量送到配置的 fallback。该 fallback 会收到已经解密的 TLS 应用字节，因此只能指向有意设计来接收此类流量的服务。"
+
+msgid "Parsed-only fingerprint/idle-session fields must not be relied upon as active security controls in the current runtime."
+msgstr "不能把 Parsed-only 的 fingerprint/idle-session 字段当作当前运行时真正生效的安全控制。"
+
+msgid "Trojan Security"
+msgstr "Trojan 安全"
+
+msgid "Trojan depends on TLS plus its password-based proxy authentication. Protect both layers independently."
+msgstr "Trojan 依赖 TLS 和基于密码的代理认证；两个层次都应独立保护。"
+
+msgid "Fallback rules are security-sensitive because unauthenticated or mismatched traffic can be intentionally routed elsewhere. Validate fallback destination, path/type rules, and which fields are actually implemented by Chimera Server."
+msgstr "Fallback 规则具有安全敏感性，因为未认证或不匹配流量可能被有意路由到其他位置。应验证 fallback destination、path/type 规则以及 Chimera Server 真正实现了哪些字段。"
+
+msgid "A safe fallback target should not be an unauthenticated administrative or internal-only service merely because it is convenient for camouflage."
+msgstr "安全的 fallback 目标不应仅为了伪装方便就指向未认证的管理服务或内部专用服务。"
+
+msgid "VLESS and VMess Security"
+msgstr "VLESS 与 VMess 安全"
+
+msgid "A VLESS UUID identifies/authorizes a proxy user but basic VLESS does not by itself provide transport confidentiality. Use the intended VLESS Encryption and/or TLS/REALITY stack according to the deployment design."
+msgstr "VLESS UUID 用于标识/授权代理用户，但基础 VLESS 本身不提供传输机密性。应根据部署设计使用预期的 VLESS Encryption 和/或 TLS/REALITY 协议栈。"
+
+msgid "Keep flow mode and transport compatibility explicit; changing Vision/plain flow to bypass an error can change the security and traffic-shaping model."
+msgstr "应明确 flow 模式和传输兼容性；为了绕过错误而切换 Vision/plain flow 可能改变安全和流量形态模型。"
+
+msgid "VMess AEAD provides its own authenticated/encrypted request/body records and anti-replay/time-related state. Protect user IDs and do not re-enable historical insecure modes merely for compatibility."
+msgstr "VMess AEAD 自身提供经过认证/加密的请求与正文记录，以及防重放/时间相关状态。应保护用户 ID，不要仅为兼容而重新启用历史不安全模式。"
+
+msgid "For both protocols, outer transport camouflage is separate from inner proxy authentication."
+msgstr "对于这两个协议，外层传输伪装与内层代理认证是相互独立的。"
+
+msgid "Hysteria 2 and TUIC Security"
+msgstr "Hysteria 2 与 TUIC 安全"
+
+msgid "Hysteria 2 and TUIC build on QUIC/TLS and add their own proxy authentication/session semantics."
+msgstr "Hysteria 2 与 TUIC 建立在 QUIC/TLS 之上，并增加各自的代理认证/会话语义。"
+
+msgid "Security/resource considerations include:"
+msgstr "安全/资源方面需要考虑："
+
+msgid "UDP listener exposure and firewall policy;"
+msgstr "UDP listener 暴露和 firewall 策略；"
+
+msgid "credential protection;"
+msgstr "凭据保护；"
+
+msgid "QUIC handshake/resource cost under unauthenticated floods;"
+msgstr "未认证洪泛下的 QUIC 握手/资源成本；"
+
+msgid "limits on concurrent streams/sessions/associations;"
+msgstr "并发 stream/session/association 限制；"
+
+msgid "UDP amplification/resource abuse against reachable targets;"
+msgstr "针对可达目标的 UDP 放大/资源滥用；"
+
+msgid "idle/session cleanup;"
+msgstr "idle/session 清理；"
+
+msgid "target-routing policy."
+msgstr "目标路由策略。"
+
+msgid "Do not apply TCP-only rate/connection assumptions to a public QUIC listener."
+msgstr "不要把只适用于 TCP 的速率/连接假设套用到公开 QUIC listener。"
+
+msgid "XHTTP Metadata Exposure"
+msgstr "XHTTP 元数据暴露"
+
+msgid "XHTTP can place session IDs, sequence numbers, padding metadata, and sometimes uplink data chunks in HTTP-visible structures such as paths, query strings, headers, or cookies depending on configuration."
+msgstr "根据配置，XHTTP 可以把 session ID、sequence number、padding 元数据，有时还有上行数据块，放入 path、query string、header 或 cookie 等 HTTP 可见结构。"
+
+msgid "Even when the inner proxy stream is encrypted/authenticated, infrastructure around the HTTP layer may log metadata:"
+msgstr "即使内层代理流已经加密/认证，HTTP 层周围的基础设施仍可能记录元数据："
+
+msgid "reverse proxy access logs;"
+msgstr "反向代理访问日志；"
+
+msgid "CDN/WAF logs;"
+msgstr "CDN/WAF 日志；"
+
+msgid "HTTP header/query tracing;"
+msgstr "HTTP header/query tracing；"
+
+msgid "browser/developer tooling in unusual deployments."
+msgstr "特殊部署中的浏览器/开发工具。"
+
+msgid "Avoid putting reusable secrets into configurable XHTTP metadata keys/values. Review logging retention and redaction when using header/cookie/query placement."
+msgstr "避免把可复用秘密放入可配置 XHTTP 元数据 key/value。使用 header/cookie/query 放置方式时，应审查日志保留与脱敏策略。"
+
+msgid "`Host`, path, padding, and session metadata are transport validation/camouflage, not a replacement for inner proxy authentication."
+msgstr "`Host`、path、padding 和 session 元数据属于传输验证/伪装，不能替代内层代理认证。"
+
+msgid "gRPC and HTTPUpgrade Metadata"
+msgstr "gRPC 与 HTTPUpgrade 元数据"
+
+msgid "gRPC transport exposes service path, HTTP/2 metadata, timing, and message sizes to any infrastructure that can see the HTTP layer. TLS/REALITY can protect this on the network, but a terminating reverse proxy can still observe HTTP metadata."
+msgstr "gRPC 传输会向能够看到 HTTP 层的基础设施暴露 service path、HTTP/2 元数据、时序和消息大小。TLS/REALITY 可以保护网络链路，但终止 TLS 的反向代理仍可观察 HTTP 元数据。"
+
+msgid "HTTPUpgrade's `Host`, path, and `Upgrade` headers likewise provide transport matching/camouflage rather than cryptographic authentication. After `101`, current Chimera HTTPUpgrade carries raw inner-protocol bytes rather than WebSocket frames."
+msgstr "HTTPUpgrade 的 `Host`、path 和 `Upgrade` header 同样提供传输匹配/伪装，而不是密码学认证。`101` 之后，当前 Chimera HTTPUpgrade 承载原始内层协议字节，而不是 WebSocket frame。"
+
+msgid "Do not confuse “request reached the correct path” with “proxy user authenticated”."
+msgstr "不要把“请求到达正确 path”与“代理用户已认证”混为一谈。"
+
+msgid "Dokodemo-door Is Not an Authenticated Proxy"
+msgstr "Dokodemo-door 不是带认证的代理"
+
+msgid "Dokodemo-door has no user-authentication handshake of its own."
+msgstr "Dokodemo-door 自身没有用户认证握手。"
+
+msgid "A fixed-target Dokodemo listener exposed to an untrusted network can act as a direct port forward to the configured service. Protect it with bind scope, firewall policy, outer security where appropriate, and target-service authentication."
+msgstr "固定目标 Dokodemo listener 若暴露到不可信网络，就可能成为通往配置服务的直接端口转发。应使用 bind 范围、firewall 策略、适用的外层安全机制和目标服务认证保护它。"
+
+msgid "For Linux `followRedirect`, the OS interception rules determine which traffic enters the listener. A broad or incorrect redirect rule is a security policy bug even if the Rust handler behaves exactly as designed."
+msgstr "对于 Linux `followRedirect`，由操作系统拦截规则决定哪些流量进入 listener。即使 Rust handler 完全按设计运行，过宽或错误的 redirect 规则仍属于安全策略漏洞。"
+
+msgid "Fallback Safety"
+msgstr "Fallback 安全"
+
+msgid "Fallback is not just a compatibility feature. It changes what unauthenticated, malformed, or camouflage traffic can reach."
+msgstr "Fallback 不只是兼容功能，它会改变未认证、格式错误或伪装流量最终能够访问的目标。"
+
+msgid "For every fallback path, document:"
+msgstr "对每条 fallback 路径都应记录："
+
+msgid "triggering condition;"
+msgstr "触发条件；"
+
+msgid "destination service;"
+msgstr "目标服务；"
+
+msgid "whether bytes are raw encrypted transport bytes or already-decrypted application bytes;"
+msgstr "流量是原始加密传输字节，还是已经解密的应用字节；"
+
+msgid "whether original SNI/path metadata is preserved;"
+msgstr "原始 SNI/path 元数据是否保留；"
+
+msgid "whether the target service requires its own authentication;"
+msgstr "目标服务是否需要自身认证；"
+
+msgid "whether an attacker can intentionally trigger fallback repeatedly."
+msgstr "攻击者是否可以反复主动触发 fallback。"
+
+msgid "The Server E2E suite contains fallback cases because “reject” and “route to fallback” are materially different security outcomes."
+msgstr "Server E2E 套件包含 fallback 场景，因为“拒绝”和“路由到 fallback”在安全结果上有本质区别。"
+
+msgid "UDP and Amplification/Resource Abuse"
+msgstr "UDP 与放大/资源滥用"
+
+msgid "Public UDP/QUIC listeners need resource controls independent of TCP controls."
+msgstr "公开 UDP/QUIC listener 需要独立于 TCP 控制之外的资源控制。"
+
+msgid "Threats include:"
+msgstr "威胁包括："
+
+msgid "spoofed-source traffic where the network permits it;"
+msgstr "在网络允许源地址伪造时的 spoofed-source 流量；"
+
+msgid "high-rate unauthenticated QUIC handshakes;"
+msgstr "高频未认证 QUIC 握手；"
+
+msgid "creating many protocol associations/sessions;"
+msgstr "创建大量协议 association/session；"
+
+msgid "sending traffic toward high-amplification targets;"
+msgstr "向高放大目标发送流量；"
+
+msgid "retaining idle UDP state too long;"
+msgstr "空闲 UDP 状态保留过久；"
+
+msgid "oversized datagrams or fragmentation pressure."
+msgstr "超大数据报或分片压力。"
+
+msgid "Use firewall/rate controls, protocol authentication, bounded session state, idle expiry, and routing restrictions appropriate to the deployment."
+msgstr "应根据部署使用 firewall/速率控制、协议认证、有界 session 状态、空闲过期和路由限制。"
+
+msgid "Current implementations already contain protocol-specific replay/session/timeout controls in several paths, but those do not replace network-level abuse controls."
+msgstr "当前多个实现路径已经包含协议特有的重放/session/timeout 控制，但它们不能替代网络层面的滥用防护。"
+
+msgid "Logging and Redaction"
+msgstr "日志与脱敏"
+
+msgid "Logs are valuable for troubleshooting and can also become a data leak."
+msgstr "日志对故障排查很有价值，但同样可能成为数据泄漏来源。"
+
+msgid "Do not log or publish:"
+msgstr "不要记录或公开："
+
+msgid "raw passwords/PSKs/private keys;"
+msgstr "原始密码/PSK/私钥；"
+
+msgid "controller bearer secrets;"
+msgstr "controller bearer secret；"
+
+msgid "full subscription URLs containing tokens;"
+msgstr "包含 token 的完整订阅 URL；"
+
+msgid "complete generated configs without sanitization;"
+msgstr "未经脱敏的完整生成配置；"
+
+msgid "authentication tokens or deterministic password hashes when they can be reused;"
+msgstr "可复用的认证 token 或确定性密码哈希；"
+
+msgid "sensitive DNS/target history beyond the required operational retention."
+msgstr "超出必要运维保留周期的敏感 DNS/目标历史。"
+
+msgid "Be careful with structured logs containing target addresses, inbound tags, user identities, SNI, XHTTP metadata, and connection chains. Decide retention and access policy deliberately."
+msgstr "包含目标地址、inbound tag、用户身份、SNI、XHTTP 元数据和连接链的结构化日志需要谨慎处理，并明确制定保留与访问策略。"
+
+msgid "Configuration and File Permissions"
+msgstr "配置与文件权限"
+
+msgid "Generated configuration often contains everything needed to authenticate as the user."
+msgstr "生成配置往往包含以该用户身份完成认证所需的全部材料。"
+
+msgid "profile directories;"
+msgstr "profile 目录；"
+
+msgid "generated runtime YAML/JSON5;"
+msgstr "生成的运行时 YAML/JSON5；"
+
+msgid "TLS/REALITY key files;"
+msgstr "TLS/REALITY 密钥文件；"
+
+msgid "service data/config directories;"
+msgstr "service 数据/配置目录；"
+
+msgid "test fixtures containing real secrets;"
+msgstr "包含真实秘密的测试 fixture；"
+
+msgid "backups and crash reports."
+msgstr "备份和崩溃报告。"
+
+msgid "Use placeholders or dedicated test credentials in repository examples. Never copy production credentials into an interoperability test merely to make it realistic."
+msgstr "仓库示例应使用占位符或专用测试凭据。不要仅为了让互操作测试看起来更真实，就把生产凭据复制进去。"
+
+msgid "Updates and Build Provenance"
+msgstr "更新与构建来源"
+
+msgid "The ecosystem can run different core binaries and optional Cargo feature sets. Security review must therefore identify the **actual artifact**, not only the repository source."
+msgstr "该生态可以运行不同 core 二进制和不同可选 Cargo feature 集。因此安全审查必须确认**实际部署的构建产物**，而不能只看仓库源码。"
+
+msgid "Record:"
+msgstr "应记录："
+
+msgid "core type;"
+msgstr "core 类型；"
+
+msgid "version/commit;"
+msgstr "版本/commit；"
+
+msgid "enabled optional protocol features;"
+msgstr "已启用的可选协议 feature；"
+
+msgid "update source/channel;"
+msgstr "更新来源/channel；"
+
+msgid "checksum/signature verification process where available."
+msgstr "可用时的 checksum/签名验证流程。"
+
+msgid "A protocol implementation existing in source does not prove the deployed binary contains it, and a security fix in source does not protect an older deployed binary."
+msgstr "源码中存在某协议实现，并不能证明已部署二进制包含它；源码中的安全修复也无法保护尚未更新的旧二进制。"
+
+msgid "Deployment Baseline"
+msgstr "部署基线"
+
+msgid "A reasonable baseline for an Internet-facing deployment is:"
+msgstr "一个合理的互联网暴露部署基线是："
+
+msgid "bind local Client/controller listeners to loopback unless remote access is required;"
+msgstr "除非需要远程访问，否则把本地 Client/controller listener 绑定到 loopback；"
+
+msgid "firewall Server ports to only the required TCP/UDP surface;"
+msgstr "通过 firewall 只开放 Server 必需的 TCP/UDP 攻击面；"
+
+msgid "enable and validate protocol authentication;"
+msgstr "启用并验证协议认证；"
+
+msgid "enable TLS/REALITY where the protocol/transport design requires it;"
+msgstr "在协议/传输设计需要时启用 TLS/REALITY；"
+
+msgid "keep certificate verification enabled;"
+msgstr "保持证书验证开启；"
+
+msgid "protect credentials and generated config files;"
+msgstr "保护凭据和生成配置文件；"
+
+msgid "verify DNS/TUN routing does not bypass policy;"
+msgstr "验证 DNS/TUN routing 不会绕过策略；"
+
+msgid "review all fallback destinations;"
+msgstr "审查所有 fallback 目标；"
+
+msgid "bound UDP/QUIC/session resources;"
+msgstr "限制 UDP/QUIC/session 资源；"
+
+msgid "redact logs and bug reports;"
+msgstr "对日志和 bug report 做脱敏；"
+
+msgid "run the strongest relevant negative/interoperability tests after security-sensitive changes."
+msgstr "完成安全敏感改动后，运行最强的相关负向/互操作测试。"
+
+msgid "This baseline is intentionally layered. No single checkbox replaces the others."
+msgstr "该基线有意采用分层设计，任何一个单独选项都不能替代其他层。"
+
+msgid "Security Review Checklist"
+msgstr "安全审查清单"
+
+msgid "Before exposing a new inbound or client control surface, answer:"
+msgstr "暴露新的 inbound 或客户端控制接口前，应回答："
+
+msgid "Who can connect to it at the network layer?"
+msgstr "网络层面谁能够连接它？"
+
+msgid "What authenticates that peer?"
+msgstr "什么机制认证该对端？"
+
+msgid "Is the channel encrypted, and who terminates encryption?"
+msgstr "通道是否加密，由谁终止加密？"
+
+msgid "What metadata remains visible outside encryption?"
+msgstr "加密之外仍有哪些元数据可见？"
+
+msgid "What happens on authentication failure: close, drop, or fallback?"
+msgstr "认证失败时会发生什么：关闭、丢弃还是 fallback？"
+
+msgid "Can the caller choose an arbitrary destination?"
+msgstr "调用方能否选择任意目标地址？"
+
+msgid "Can UDP/QUIC behavior be abused for resource consumption or amplification?"
+msgstr "UDP/QUIC 行为能否被滥用于资源消耗或放大攻击？"
+
+msgid "Which secrets/config files are readable by the process and local users?"
+msgstr "进程和本地用户能够读取哪些秘密/配置文件？"
+
+msgid "What is logged?"
+msgstr "会记录哪些日志？"
+
+msgid "Which negative tests prove malformed/unauthorized traffic is handled as expected?"
+msgstr "哪些负向测试证明格式错误/未授权流量会按预期处理？"
+
+msgid "If any answer is unknown, treat it as an unresolved deployment risk rather than assuming a protocol name implies safety."
+msgstr "如果任一答案未知，应把它视为尚未解决的部署风险，而不是因为使用了某个协议名称就默认安全。"
+
+msgid "The implementation-specific boundaries in this page are derived from the current source and documentation work around:"
+msgstr "本页中的实现特定边界来自当前源码与以下文档审计工作："
+
+msgid "`Chimera_Client` listener/API authorization, DNS/TUN, optional protocol features, AnyTLS and Shadowsocks implementations;"
+msgstr "`Chimera_Client` listener/API 授权、DNS/TUN、可选协议 feature，以及 AnyTLS 和 Shadowsocks 实现；"
+
+msgid "`Chimera_Service` IPC/ACL and privileged core/network management;"
+msgstr "`Chimera_Service` IPC/ACL 与特权 core/网络管理；"
+
+msgid "`AChimera` `VpnService`, TUN ownership, and `protect(fd)` bridge;"
+msgstr "`AChimera` 的 `VpnService`、TUN 所有权和 `protect(fd)` 桥接；"
+
+msgid "`Chimera_Server` config validation, fallback handling, protocol/transport handlers, replay/session state, routing, and tests;"
+msgstr "`Chimera_Server` 配置验证、fallback 处理、协议/传输 handler、重放/session 状态、routing 与测试；"
+
+msgid "protocol chapters in this Wiki that document current wire/security behavior;"
+msgstr "本 Wiki 中记录当前线协议/安全行为的各协议章节；"
+
+msgid "negative and interoperability suites catalogued in [Test Evidence and Interoperability Matrix](./test-evidence.md)."
+msgstr "以及 [测试证据与互操作矩阵](./test-evidence.md) 中整理的负向和互操作测试套件。"
+
+msgid "When a field moves from Parsed-only/Rejected to active runtime behavior, or when a new listener/control endpoint is added, re-evaluate the corresponding trust boundary here."
+msgstr "当字段从 Parsed-only/Rejected 变为实际运行时行为，或新增 listener/control endpoint 时，应重新评估本页对应的信任边界。"
