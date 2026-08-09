@@ -23,13 +23,19 @@ REALITY                 -> transport security
 
 A REALITY deployment commonly includes:
 
-- a server-side private key,
-- the corresponding client-side public key,
+- a server-side X25519 private key,
+- the corresponding client-side X25519 public value, called `password` in
+  current Xray configuration (`publicKey` is the older field name),
 - one or more short IDs,
 - one or more permitted server names,
 - a target site/address used for handshake appearance and fallback behavior,
 - and a client TLS fingerprint setting in implementations that expose uTLS-like
   fingerprint controls.
+
+Current Xray can additionally configure an ML-DSA-65 signing key on the server
+and verification key on the client. This is an optional extra certificate
+verification layer; it does not replace the base REALITY X25519 key relation or
+the ClientHello authentication described below.
 
 These pieces belong to the same security configuration and must be kept
 consistent.
@@ -166,6 +172,51 @@ REALITY layer. A VLESS UUID is checked later, by VLESS, after REALITY has
 successfully produced the protected transport. Keeping these checks separate is
 important when diagnosing failures.
 
+### Certificate result and client verification state machine
+
+The protected Session ID authenticates the ClientHello to the REALITY server,
+but the client also has to authenticate the server-side REALITY result. Current
+Xray does that through the certificate flight rather than by expecting an
+ordinary CA-issued certificate for the REALITY endpoint.
+
+The client can conceptually reach three certificate outcomes:
+
+```text
+receive certificate flight
+        |
+        +-- REALITY temporary certificate
+        |      |
+        |      +-- HMAC/auth-key check succeeds
+        |      +-- optional ML-DSA-65 verification succeeds
+        |      `--> Verified=true -> continue proxy transport
+        |
+        +-- genuine target certificate
+        |      |
+        |      +-- normal X.509 verification for serverName succeeds
+        |      `--> not REALITY-authenticated -> crawler/spider path
+        |
+        `-- neither verification path succeeds
+               `--> TLS verification error / alert / disconnect
+```
+
+In the current Xray client implementation, a REALITY temporary certificate is
+recognized through an Ed25519 public key and an HMAC-SHA512 value derived from
+the connection's REALITY `AuthKey`. When configured, `mldsa65Verify` adds an
+ML-DSA-65 verification step tied to the handshake transcript before the client
+sets its internal `Verified` flag. This certificate is therefore bound to the
+same handshake-derived authentication material as the protected ClientHello; it
+is not a reusable conventional server certificate.
+
+If the certificate instead validates as the genuine target site's normal X.509
+certificate, the TLS certificate itself can be valid while REALITY
+`Verified=false`. That state means the client reached the target/fallback path
+(or was redirected there) rather than the authenticated proxy path. Current
+REALITY documentation describes this as entering the crawler/spider behavior.
+An invalid certificate that satisfies neither path terminates the handshake.
+
+This three-way distinction is useful during packet-level debugging: "valid TLS
+certificate" and "valid REALITY connection" are not equivalent states.
+
 ## Packet-Capture View
 
 Without TLS key material, a normal capture should look approximately like:
@@ -225,27 +276,60 @@ REALITY as if it encoded the destination address. It does neither.
 - Treat ClientHello as a length-delimited TLS handshake carried over a TCP byte
   stream; never assume TCP packet boundaries are message boundaries.
 - Validate timestamp freshness with the implementation's accepted clock window.
-  Large client/server clock skew can make otherwise correct key material fail.
-- Short IDs are logically up to the implementation-defined accepted length and
-  are encoded into an 8-byte slot in the current authentication metadata; do
-  not silently reinterpret arbitrary text as bytes.
+  `maxTimeDiff` is expressed in milliseconds; large client/server clock skew can
+  make otherwise correct key material fail when a non-zero limit is enforced.
+- The 8-byte short-ID slot is configured as hexadecimal text. Current Xray
+  accepts at most 16 hex characters, requires an even number of characters, and
+  pads shorter values with trailing zero bytes. An empty client short ID is only
+  valid when the server explicitly accepts an empty entry.
+- `minClientVer` and `maxClientVer`, when configured, add version checks to the
+  REALITY authentication decision. They are separate from the inner VLESS
+  protocol version byte.
 - A fingerprint must provide a TLS 1.3-capable key share. Current Xray-core
   rejects fingerprints that cannot supply the required ephemeral ECDH material.
 - Authentication failure and target fallback are not equivalent to successful
   proxy authentication. Seeing the target site's genuine certificate is a
   strong clue that the connection did not enter the authenticated REALITY path.
-- The TLS/uTLS implementation, REALITY implementation, and peer version form one
-  interoperability surface. Changes to ClientHello construction can affect
-  REALITY even when VLESS configuration is unchanged.
+- A server can accept a no-SNI ClientHello by including an empty string in
+  `serverNames`. Current Xray's client-side configuration uses a valid IP string
+  as the `serverName` placeholder to request this mode; packet analysis should
+  therefore not assume an SNI extension is always present.
+- The TLS/uTLS implementation, REALITY implementation, target behavior, and peer
+  version form one interoperability surface. Changes to ClientHello construction
+  or the target site's TLS behavior can affect REALITY even when VLESS
+  configuration is unchanged.
+
+### Post-quantum additions in current Xray
+
+Current Xray can use the hybrid `X25519MLKEM768` TLS key-exchange group when the
+selected target supports it. This belongs to the TLS key-exchange portion of the
+REALITY handshake and is negotiated based on current client/target capability;
+it does not add a SOCKS-like command or a new proxy destination field.
+
+Separately, `mldsa65Seed` on the server and `mldsa65Verify` on the client add an
+ML-DSA-65 signature check to the temporary REALITY certificate. Because the
+post-quantum signature enlarges that certificate, the official configuration
+guidance warns that the selected target should itself return a sufficiently
+large certificate so the REALITY certificate flight does not become an obvious
+size fingerprint.
+
+These are optional hardening/interoperability features. A parser or diagnostic
+tool should report whether hybrid key exchange and ML-DSA verification were
+actually negotiated rather than assuming their presence from the word
+"REALITY" alone.
 
 ## Key Material
 
-REALITY commonly uses X25519-style key material in existing deployments. The
-server stores the private key while clients receive the corresponding public
-key.
+REALITY uses an X25519 server private key and the corresponding public value on
+the client. Current Xray names that client field `password`; `publicKey` is the
+older alias. The rename is operationally important: although the value is an
+X25519 public key mathematically, REALITY treats it as client-held connection
+credential material rather than as something to publish indiscriminately.
 
 Do not place a server private key in client profiles, screenshots, issue
-reports, or public documentation examples.
+reports, or public documentation examples. Treat the client `password` value as
+sensitive deployment material as well, even though it is derived from the
+server's public key.
 
 For Chimera_Server, the current Wiki documents an `x25519` helper in
 `chimera_cli` for generating compatible key material.
@@ -254,6 +338,12 @@ For Chimera_Server, the current Wiki documents an `x25519` helper in
 
 Short IDs add another server-validated value to REALITY sessions. A server can
 accept one or more values, while a client selects a matching value.
+
+At the current Xray configuration boundary a short ID is 0 to 8 bytes, encoded
+as 0 to 16 hexadecimal characters. Its textual length must be even; shorter
+values are padded with zero bytes to fill the 8-byte Session-ID metadata slot.
+This is why a value such as `aa1234` is valid while an odd-length hexadecimal
+string is rejected.
 
 Treat short IDs as configuration/security material rather than decorative
 labels. Client and server must use compatible values and formatting.
@@ -275,7 +365,11 @@ A practical target should:
 
 Current Xray documentation explicitly warns that a poorly chosen target can
 turn the REALITY server into an unintended forwarder for traffic that fails
-authentication.
+authentication. Current releases provide optional `limitFallbackUpload` and
+`limitFallbackDownload` token-bucket controls for unauthenticated fallback
+traffic, but the official guidance also notes that deterministic fallback rate
+limits can themselves become a fingerprint. They are an abuse-control tradeoff,
+not part of REALITY authentication.
 
 ## Minimal Xray-Style Server Example
 
@@ -430,5 +524,9 @@ proxy user identity, and transport method.
 
 - Xray REALITY configuration:
   <https://xtls.github.io/en/config/transports/reality.html>
+- Xray-core REALITY client implementation:
+  <https://github.com/XTLS/Xray-core/blob/main/transport/internet/reality/reality.go>
+- XTLS/REALITY server implementation and protocol notes:
+  <https://github.com/XTLS/REALITY>
 - Xray transport compatibility:
   <https://xtls.github.io/en/config/transport.html>

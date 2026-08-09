@@ -13127,3 +13127,222 @@ msgstr "RFC 9114，HTTP/3：<https://www.rfc-editor.org/rfc/rfc9114>"
 
 msgid "RFC 8441, Bootstrapping WebSockets with HTTP/2: <https://www.rfc-editor.org/rfc/rfc8441>"
 msgstr "RFC 8441，通过 HTTP/2 引导 WebSocket：<https://www.rfc-editor.org/rfc/rfc8441>"
+
+msgid "SOCKS `REP`"
+msgstr "SOCKS `REP`"
+
+msgid "a server-side X25519 private key,"
+msgstr "服务端 X25519 私钥；"
+
+msgid "the corresponding client-side X25519 public value, called `password` in current Xray configuration (`publicKey` is the older field name),"
+msgstr "对应的客户端 X25519 公共值；当前 Xray 配置中称为 `password`（旧字段名为 `publicKey`）；"
+
+msgid "Current Xray can additionally configure an ML-DSA-65 signing key on the server and verification key on the client. This is an optional extra certificate verification layer; it does not replace the base REALITY X25519 key relation or the ClientHello authentication described below."
+msgstr "当前 Xray 还可以在服务端配置 ML-DSA-65 签名密钥、在客户端配置验证密钥。这属于可选的额外证书验证层，并不会替代基础 REALITY X25519 密钥关系，也不会替代下文所述的 ClientHello 认证。"
+
+msgid "Handshake Internals and On-Wire Authentication"
+msgstr "握手内部机制与线级认证"
+
+msgid "REALITY deliberately keeps its authentication inside a TLS-looking ClientHello instead of adding a SOCKS-like method negotiation or a VLESS-like plaintext identity header before TLS. This means the first bytes visible to a passive observer are ordinary TLS record/handshake bytes; the REALITY-specific credentials are embedded into fields of the generated ClientHello and protected with keys derived for that handshake."
+msgstr "REALITY 有意把认证放在看起来像 TLS 的 ClientHello 内部，而不是在 TLS 之前加入 SOCKS 风格的方法协商或 VLESS 风格的明文身份头。因此，被动观察者首先看到的是普通 TLS record/handshake 字节；REALITY 专用凭据被嵌入生成的 ClientHello 字段，并由该次握手派生出的密钥保护。"
+
+msgid "The current Xray-core client constructs a 32-byte ClientHello legacy Session ID. Before protection, the first 16 bytes carry REALITY metadata with this logical layout:"
+msgstr "当前 Xray-core 客户端会构造一个 32 字节的 ClientHello legacy Session ID。在保护之前，前 16 字节按以下逻辑布局承载 REALITY 元数据："
+
+msgid "The remaining 16 bytes of the 32-byte Session ID are used by the AEAD result. This is an implementation-level wire detail, not a new TLS extension: REALITY reuses the TLS ClientHello Session ID field so that the outer message still has the shape of a normal TLS handshake."
+msgstr "32 字节 Session ID 的后 16 字节由 AEAD 结果占用。这是实现层面的线格式细节，而不是新的 TLS 扩展：REALITY 复用 TLS ClientHello 的 Session ID 字段，使外层消息仍保持普通 TLS 握手的形态。"
+
+msgid "Key derivation"
+msgstr "密钥派生"
+
+msgid "The client already has the server REALITY public key. During construction of the TLS 1.3 ClientHello it also owns the private side of its ephemeral key share. Current Xray-core computes an X25519 ECDH result between that ephemeral key and the configured REALITY public key, then expands it with HKDF-SHA256 using:"
+msgstr "客户端已经持有服务端 REALITY 公共值。在构造 TLS 1.3 ClientHello 时，它同时持有本次临时 key share 的私有部分。当前 Xray-core 会用该临时密钥与配置的 REALITY 公共值执行 X25519 ECDH，然后按下列参数使用 HKDF-SHA256 扩展："
+
+msgid "```text\nIKM  = ECDH(client ephemeral private key, REALITY server public key)\nsalt = ClientHello.random[0..20]\ninfo = \"REALITY\"\n```"
+msgstr "```text\nIKM  = ECDH(客户端临时私钥, REALITY 服务端公共值)\nsalt = ClientHello.random[0..20]\ninfo = \"REALITY\"\n```"
+
+msgid "The resulting authentication key is used with an AEAD cipher. Current code uses the last 12 bytes of the ClientHello random (`random[20..32]`) as the nonce and the serialized ClientHello as associated data while sealing the first 16 bytes of REALITY Session-ID metadata. The protected 32-byte value is then written back into the fixed Session ID location of the ClientHello."
+msgstr "得到的认证密钥会交给 AEAD 密码使用。当前代码以 ClientHello random 的后 12 字节（`random[20..32]`）作为 nonce，并把序列化后的 ClientHello 作为 associated data，对 REALITY Session-ID 元数据前 16 字节进行封装。最终得到的受保护 32 字节值会写回 ClientHello 中固定的 Session ID 位置。"
+
+msgid "This explains why REALITY authentication is bound to the concrete TLS handshake: a copied Session ID is not an independently reusable password token. The ClientHello random, ephemeral key share, serialized hello, server key, timestamp, and short ID all participate directly or indirectly in validation."
+msgstr "这解释了为什么 REALITY 认证绑定到具体 TLS 握手：复制得到的 Session ID 并不是可独立复用的密码 token。ClientHello random、临时 key share、序列化 hello、服务端密钥、时间戳和 short ID 都直接或间接参与验证。"
+
+msgid "Server-side decision path"
+msgstr "服务端判定路径"
+
+msgid "Conceptually the REALITY listener has to make a decision before handing the connection to the proxy protocol:"
+msgstr "从概念上看，REALITY listener 必须先完成判定，之后才能把连接交给代理协议："
+
+msgid "`serverNames` and short IDs are therefore authentication/selection inputs at the REALITY layer. A VLESS UUID is checked later, by VLESS, after REALITY has successfully produced the protected transport. Keeping these checks separate is important when diagnosing failures."
+msgstr "因此，`serverNames` 与 short ID 是 REALITY 层的认证/选择输入。VLESS UUID 会在 REALITY 成功建立受保护传输之后，再由 VLESS 层检查。诊断故障时必须把这些检查分开看待。"
+
+msgid "Certificate result and client verification state machine"
+msgstr "证书结果与客户端验证状态机"
+
+msgid "The protected Session ID authenticates the ClientHello to the REALITY server, but the client also has to authenticate the server-side REALITY result. Current Xray does that through the certificate flight rather than by expecting an ordinary CA-issued certificate for the REALITY endpoint."
+msgstr "受保护 Session ID 用于向 REALITY 服务端认证 ClientHello，但客户端也必须验证服务端侧的 REALITY 结果。当前 Xray 通过证书握手阶段完成这一点，而不是要求 REALITY 端点提供普通 CA 签发证书。"
+
+msgid "The client can conceptually reach three certificate outcomes:"
+msgstr "客户端在概念上可能得到三种证书结果："
+
+msgid "In the current Xray client implementation, a REALITY temporary certificate is recognized through an Ed25519 public key and an HMAC-SHA512 value derived from the connection's REALITY `AuthKey`. When configured, `mldsa65Verify` adds an ML-DSA-65 verification step tied to the handshake transcript before the client sets its internal `Verified` flag. This certificate is therefore bound to the same handshake-derived authentication material as the protected ClientHello; it is not a reusable conventional server certificate."
+msgstr "在当前 Xray 客户端实现中，REALITY 临时证书通过其中的 Ed25519 公钥以及由该连接 REALITY `AuthKey` 派生的 HMAC-SHA512 值来识别。配置 `mldsa65Verify` 后，客户端还会在设置内部 `Verified` 标志之前执行与握手 transcript 绑定的 ML-DSA-65 验证。因此，该证书与受保护 ClientHello 使用同一套握手派生认证材料绑定，并不是可重复使用的传统服务端证书。"
+
+msgid "If the certificate instead validates as the genuine target site's normal X.509 certificate, the TLS certificate itself can be valid while REALITY `Verified=false`. That state means the client reached the target/fallback path (or was redirected there) rather than the authenticated proxy path. Current REALITY documentation describes this as entering the crawler/spider behavior. An invalid certificate that satisfies neither path terminates the handshake."
+msgstr "如果证书验证结果反而是目标站点真实的普通 X.509 证书，那么 TLS 证书本身可能有效，但 REALITY 仍然是 `Verified=false`。这表示客户端到达了 target/fallback 路径（或被重定向到那里），而不是进入已认证代理路径。当前 REALITY 文档把该状态描述为进入 crawler/spider 行为。若证书两条验证路径都无法通过，则终止握手。"
+
+msgid "This three-way distinction is useful during packet-level debugging: \"valid TLS certificate\" and \"valid REALITY connection\" are not equivalent states."
+msgstr "这种三分状态对抓包级调试很重要：“TLS 证书有效”和“REALITY 连接有效”不是同一个状态。"
+
+msgid "Without TLS key material, a normal capture should look approximately like:"
+msgstr "没有 TLS 密钥材料时，普通抓包大致会呈现为："
+
+msgid "A packet capture cannot identify the VLESS UUID or VLESS destination merely by seeing the REALITY ClientHello. Those values are inside the protected transport and belong to the next protocol layer."
+msgstr "仅仅看到 REALITY ClientHello，抓包无法识别 VLESS UUID 或 VLESS 目标地址。这些值位于受保护传输内部，属于下一层协议。"
+
+msgid "Do not assume one TCP segment contains one ClientHello. TLS handshake bytes may span TCP segments, and newer fingerprints can produce larger ClientHello messages. A server implementation must parse a byte stream and TLS lengths, not depend on packet boundaries or a single `read()` call."
+msgstr "不要假设一个 TCP segment 就包含一个完整 ClientHello。TLS 握手字节可能跨越多个 TCP segment，更新的 fingerprint 也可能生成更大的 ClientHello。服务端实现必须依据字节流与 TLS 长度解析，不能依赖数据包边界或单次 `read()`。"
+
+msgid "REALITY vs SOCKS5: Layer-by-Layer Comparison"
+msgstr "REALITY 与 SOCKS5：逐层对比"
+
+msgid "SOCKS5 and REALITY are intentionally different layers. The comparison is useful mainly to show which SOCKS5 responsibilities REALITY does **not** replace:"
+msgstr "SOCKS5 与 REALITY 本来就处于不同层。这个对比主要用于说明 REALITY **没有**替代 SOCKS5 的哪些职责："
+
+msgid "Stage / responsibility"
+msgstr "阶段 / 职责"
+
+msgid "Usually TCP to Xray/REALITY listener"
+msgstr "通常是到 Xray/REALITY listener 的 TCP"
+
+msgid "First protocol message"
+msgstr "首个协议消息"
+
+msgid "SOCKS method list"
+msgstr "SOCKS 方法列表"
+
+msgid "TLS/uTLS ClientHello"
+msgstr "TLS/uTLS ClientHello"
+
+msgid "Authentication placement"
+msgstr "认证位置"
+
+msgid "Separate METHOD/auth sub-protocol"
+msgstr "独立 METHOD/认证子协议"
+
+msgid "Protected metadata inside TLS-looking ClientHello"
+msgstr "TLS 外观 ClientHello 内部的受保护元数据"
+
+msgid "Credential form"
+msgstr "凭据形式"
+
+msgid "Method-specific; e.g. username/password"
+msgstr "由方法定义，例如用户名/密码"
+
+msgid "Server public/private key relation + short ID + handshake-derived authentication"
+msgstr "服务端公私钥关系 + short ID + 握手派生认证"
+
+msgid "Target proxy address"
+msgstr "代理目标地址"
+
+msgid "`CMD + ATYP + DST.ADDR + DST.PORT`"
+msgstr "`CMD + ATYP + DST.ADDR + DST.PORT`"
+
+msgid "**Not carried by REALITY**; supplied later by VLESS/Trojan/etc."
+msgstr "**不由 REALITY 承载**；稍后由 VLESS/Trojan 等协议提供"
+
+msgid "Proxy success reply"
+msgstr "代理成功回复"
+
+msgid "No SOCKS-equivalent proxy reply; REALITY establishes/rejects the security layer"
+msgstr "没有 SOCKS 等价代理回复；REALITY 只负责建立或拒绝安全层"
+
+msgid "TCP relay framing"
+msgstr "TCP 转发分帧"
+
+msgid "Raw stream after `REP=0x00`"
+msgstr "`REP=0x00` 后的原始字节流"
+
+msgid "Defined by the underlying proxy/transport after REALITY succeeds"
+msgstr "REALITY 成功后由底层代理协议/传输定义"
+
+msgid "RFC 1928 `UDP ASSOCIATE`"
+msgstr "RFC 1928 `UDP ASSOCIATE`"
+
+msgid "Not defined by REALITY"
+msgstr "REALITY 不定义"
+
+msgid "None in base SOCKS5"
+msgstr "基础 SOCKS5 中没有"
+
+msgid "TLS-shaped encrypted transport/security layer"
+msgstr "具有 TLS 外形的加密传输/安全层"
+
+msgid "Camouflage/fallback"
+msgstr "伪装/fallback"
+
+msgid "Invalid/non-REALITY traffic can be directed toward the configured target"
+msgstr "无效/非 REALITY 流量可以被导向已配置 target"
+
+msgid "For `VLESS + REALITY + RAW`, the closest functional mapping is therefore:"
+msgstr "因此，对 `VLESS + REALITY + RAW` 而言，最接近的功能映射是："
+
+msgid "This layered mapping prevents a common documentation error: describing the REALITY short ID as if it were a replacement for a VLESS UUID, or describing REALITY as if it encoded the destination address. It does neither."
+msgstr "这种分层映射可以避免一个常见文档错误：把 REALITY short ID 描述成 VLESS UUID 的替代品，或者把 REALITY 描述成会编码目标地址。实际上两者都不是。"
+
+msgid "Parser, Timing, and Boundary Conditions"
+msgstr "解析、时序与边界条件"
+
+msgid "Treat ClientHello as a length-delimited TLS handshake carried over a TCP byte stream; never assume TCP packet boundaries are message boundaries."
+msgstr "应把 ClientHello 视为承载在 TCP 字节流上的长度限定 TLS 握手；绝不能把 TCP 数据包边界当作消息边界。"
+
+msgid "Validate timestamp freshness with the implementation's accepted clock window. `maxTimeDiff` is expressed in milliseconds; large client/server clock skew can make otherwise correct key material fail when a non-zero limit is enforced."
+msgstr "应按照实现接受的时钟窗口验证时间戳新鲜度。`maxTimeDiff` 单位为毫秒；启用非零限制时，较大的客户端/服务端时钟偏差可能让本来正确的密钥材料验证失败。"
+
+msgid "The 8-byte short-ID slot is configured as hexadecimal text. Current Xray accepts at most 16 hex characters, requires an even number of characters, and pads shorter values with trailing zero bytes. An empty client short ID is only valid when the server explicitly accepts an empty entry."
+msgstr "8 字节 short-ID 槽位以十六进制文本配置。当前 Xray 最多接受 16 个十六进制字符，字符数必须为偶数，较短值会在末尾补零字节。只有服务端显式接受空条目时，客户端 short ID 才可以为空。"
+
+msgid "`minClientVer` and `maxClientVer`, when configured, add version checks to the REALITY authentication decision. They are separate from the inner VLESS protocol version byte."
+msgstr "配置 `minClientVer` 和 `maxClientVer` 后，REALITY 认证判定会额外检查客户端版本。它们与内层 VLESS 协议版本字节是彼此独立的概念。"
+
+msgid "A fingerprint must provide a TLS 1.3-capable key share. Current Xray-core rejects fingerprints that cannot supply the required ephemeral ECDH material."
+msgstr "fingerprint 必须能提供支持 TLS 1.3 的 key share。当前 Xray-core 会拒绝无法提供所需临时 ECDH 材料的 fingerprint。"
+
+msgid "Authentication failure and target fallback are not equivalent to successful proxy authentication. Seeing the target site's genuine certificate is a strong clue that the connection did not enter the authenticated REALITY path."
+msgstr "认证失败并进入 target fallback 与代理认证成功不是同一件事。看到目标站点真实证书，是连接没有进入已认证 REALITY 路径的重要线索。"
+
+msgid "A server can accept a no-SNI ClientHello by including an empty string in `serverNames`. Current Xray's client-side configuration uses a valid IP string as the `serverName` placeholder to request this mode; packet analysis should therefore not assume an SNI extension is always present."
+msgstr "服务端可在 `serverNames` 中加入空字符串，从而接受无 SNI 的 ClientHello。当前 Xray 客户端配置使用一个有效 IP 字符串作为 `serverName` 占位值来请求这种模式，因此抓包分析不能假设 SNI 扩展一定存在。"
+
+msgid "The TLS/uTLS implementation, REALITY implementation, target behavior, and peer version form one interoperability surface. Changes to ClientHello construction or the target site's TLS behavior can affect REALITY even when VLESS configuration is unchanged."
+msgstr "TLS/uTLS 实现、REALITY 实现、target 行为以及对端版本共同构成一个互操作面。即使 VLESS 配置没有变化，ClientHello 构造方式或目标站 TLS 行为的变化也可能影响 REALITY。"
+
+msgid "Post-quantum additions in current Xray"
+msgstr "当前 Xray 的后量子扩展"
+
+msgid "Current Xray can use the hybrid `X25519MLKEM768` TLS key-exchange group when the selected target supports it. This belongs to the TLS key-exchange portion of the REALITY handshake and is negotiated based on current client/target capability; it does not add a SOCKS-like command or a new proxy destination field."
+msgstr "当所选 target 支持时，当前 Xray 可以使用混合 `X25519MLKEM768` TLS 密钥交换组。这属于 REALITY 握手中的 TLS 密钥交换部分，会根据客户端/target 当前能力协商；它不会增加 SOCKS 风格命令，也不会增加新的代理目标字段。"
+
+msgid "Separately, `mldsa65Seed` on the server and `mldsa65Verify` on the client add an ML-DSA-65 signature check to the temporary REALITY certificate. Because the post-quantum signature enlarges that certificate, the official configuration guidance warns that the selected target should itself return a sufficiently large certificate so the REALITY certificate flight does not become an obvious size fingerprint."
+msgstr "另外，服务端 `mldsa65Seed` 与客户端 `mldsa65Verify` 会为 REALITY 临时证书增加 ML-DSA-65 签名检查。由于后量子签名会增大该证书，官方配置说明特别提醒：所选 target 自身也应返回足够大的证书，避免 REALITY 证书握手因为尺寸差异形成明显指纹。"
+
+msgid "These are optional hardening/interoperability features. A parser or diagnostic tool should report whether hybrid key exchange and ML-DSA verification were actually negotiated rather than assuming their presence from the word \"REALITY\" alone."
+msgstr "这些都是可选的加固/互操作功能。解析器或诊断工具应报告混合密钥交换与 ML-DSA 验证是否实际启用或协商，而不能仅凭“REALITY”这个名称就假定它们一定存在。"
+
+msgid "REALITY uses an X25519 server private key and the corresponding public value on the client. Current Xray names that client field `password`; `publicKey` is the older alias. The rename is operationally important: although the value is an X25519 public key mathematically, REALITY treats it as client-held connection credential material rather than as something to publish indiscriminately."
+msgstr "REALITY 使用服务端 X25519 私钥以及客户端对应的公共值。当前 Xray 把客户端字段命名为 `password`，`publicKey` 是旧别名。这个改名在运维上很重要：虽然该值在数学上确实是 X25519 公钥，但 REALITY 把它视为客户端持有的连接凭据材料，而不是应当随意公开的信息。"
+
+msgid "Do not place a server private key in client profiles, screenshots, issue reports, or public documentation examples. Treat the client `password` value as sensitive deployment material as well, even though it is derived from the server's public key."
+msgstr "不要把服务端私钥放进客户端配置、截图、Issue 报告或公开文档示例。客户端 `password` 值即使源自服务端公钥，也应作为敏感部署材料处理。"
+
+msgid "At the current Xray configuration boundary a short ID is 0 to 8 bytes, encoded as 0 to 16 hexadecimal characters. Its textual length must be even; shorter values are padded with zero bytes to fill the 8-byte Session-ID metadata slot. This is why a value such as `aa1234` is valid while an odd-length hexadecimal string is rejected."
+msgstr "在当前 Xray 配置边界上，short ID 为 0 到 8 字节，以 0 到 16 个十六进制字符编码。文本长度必须为偶数；较短值会用零字节补足 8 字节 Session-ID 元数据槽位。因此 `aa1234` 这类值有效，而奇数长度的十六进制字符串会被拒绝。"
+
+msgid "Current Xray documentation explicitly warns that a poorly chosen target can turn the REALITY server into an unintended forwarder for traffic that fails authentication. Current releases provide optional `limitFallbackUpload` and `limitFallbackDownload` token-bucket controls for unauthenticated fallback traffic, but the official guidance also notes that deterministic fallback rate limits can themselves become a fingerprint. They are an abuse-control tradeoff, not part of REALITY authentication."
+msgstr "当前 Xray 文档明确警告：选择不当的 target 可能让 REALITY 服务端变成未预期的认证失败流量转发器。当前版本提供可选的 `limitFallbackUpload` 和 `limitFallbackDownload` 令牌桶控制来限制未认证 fallback 流量，但官方说明也指出，确定性的 fallback 限速本身可能形成指纹。这属于滥用控制上的权衡，而不是 REALITY 认证的一部分。"
+
+msgid "Xray-core REALITY client implementation: <https://github.com/XTLS/Xray-core/blob/main/transport/internet/reality/reality.go>"
+msgstr "Xray-core REALITY 客户端实现：<https://github.com/XTLS/Xray-core/blob/main/transport/internet/reality/reality.go>"
+
+msgid "XTLS/REALITY server implementation and protocol notes: <https://github.com/XTLS/REALITY>"
+msgstr "XTLS/REALITY 服务端实现与协议说明：<https://github.com/XTLS/REALITY>"
