@@ -14987,3 +14987,1818 @@ msgstr "[VMess](./protocols/vmess.md) — 当前 VMess AEAD 认证、加密记�
 
 msgid "[VLESS](./protocols/vless.md) — lightweight Xray proxy protocol, identity layer, and optional VLESS Encryption."
 msgstr "[VLESS](./protocols/vless.md) — 轻量 Xray 代理协议、身份层以及可选 VLESS Encryption。"
+
+msgid "Implementation Status and Source Evidence"
+msgstr "实现状态与源码证据"
+
+msgid "AChimera Android Client"
+msgstr "AChimera Android 客户端"
+
+msgid "This documentation set covers the Chimera proxy ecosystem as implemented across the local source repositories:"
+msgstr "本文档集覆盖本地源码仓库中实际实现的 Chimera 代理生态："
+
+msgid "`Chimera_Client`: the Rust Clash-family client core."
+msgstr "`Chimera_Client`：Rust 实现的 Clash 系客户端核心。"
+
+msgid "`Chimera`: the Tauri + React desktop control application."
+msgstr "`Chimera`：基于 Tauri + React 的桌面控制应用。"
+
+msgid "`Chimera_Service`: the privileged local service used for service-mode core lifecycle and selected privileged operations."
+msgstr "`Chimera_Service`：用于服务模式核心生命周期管理及部分特权操作的本地特权服务。"
+
+msgid "`AChimera`: the Android application that owns the Android VPN/TUN lifecycle and embeds the Chimera client core through UniFFI."
+msgstr "`AChimera`：负责 Android VPN/TUN 生命周期，并通过 UniFFI 嵌入 Chimera 客户端核心的 Android 应用。"
+
+msgid "`Chimera_Server`: the Rust server core focused on Xray-style inbound configuration, transports, security wrappers, and protocol handlers."
+msgstr "`Chimera_Server`：聚焦 Xray 风格入站配置、传输层、安全封装与协议处理器的 Rust 服务端核心。"
+
+msgid "These projects target different layers of the system. A configuration or protocol feature should therefore be attributed to the component that actually parses and executes it rather than to the GUI that exposes the setting."
+msgstr "这些项目分别负责系统中的不同层。因此，配置项或协议能力应归属于真正解析并执行它的组件，而不是仅仅展示该设置的 GUI。"
+
+msgid "There are three complementary reading paths:"
+msgstr "本文档提供三条互补的阅读路径："
+
+msgid "**Architecture and operators**: start with [System Topology](./system-topology.md), then read the component pages for desktop, Android, service mode, client, and server behavior."
+msgstr "**架构与运维**：先阅读 [System Topology](./system-topology.md)，再查看桌面端、Android、服务模式、客户端和服务端的组件页面。"
+
+msgid "**Implementation and compatibility**: use [Implementation Status and Source Evidence](./implementation-status.md) to see which capabilities are parsed, implemented, feature-gated, tested, or explicitly rejected in the current source."
+msgstr "**实现与兼容性**：通过 [Implementation Status and Source Evidence](./implementation-status.md) 查看当前源码中哪些能力仅被解析、已经实现、受 feature 控制、已有测试，或被明确拒绝。"
+
+msgid "**Wire protocols**: use [Protocol Reference](./protocol.md) for low-level wire formats, state machines, security properties, packet-capture views, and comparisons with SOCKS5."
+msgstr "**线协议**：通过 [Protocol Reference](./protocol.md) 查看底层线格式、状态机、安全属性、抓包视角以及与 SOCKS5 的对比。"
+
+msgid "Protocol specification and implementation status are deliberately separate. An upstream protocol can define a field that Chimera does not yet implement, while Chimera can also parse compatibility fields that are not applied by its runtime."
+msgstr "协议规范与实现状态在本文档中刻意分开。上游协议可能定义了 Chimera 尚未实现的字段；反过来，Chimera 也可能为了兼容而接受某些字段，但运行时并不会应用它们。"
+
+msgid "Documentation Source Policy"
+msgstr "文档来源策略"
+
+msgid "For current implementation claims, this Wiki uses the following evidence order:"
+msgstr "对于当前实现能力的判断，本 Wiki 按以下证据优先级进行维护："
+
+msgid "executable/runtime path,"
+msgstr "实际可执行的运行时路径，"
+
+msgid "integration or interoperability tests,"
+msgstr "集成测试或互操作测试，"
+
+msgid "typed configuration and validation,"
+msgstr "类型化配置与校验逻辑，"
+
+msgid "repository README or planning text."
+msgstr "仓库 README 或规划说明。"
+
+msgid "This prevents a broad README statement such as “Xray compatible” or “Clash compatible” from hiding an explicit runtime rejection or a parsed-only field."
+msgstr "这样可以避免 README 中“兼容 Xray”或“兼容 Clash”之类的宽泛表述掩盖运行时明确拒绝的配置，或仅解析但不生效的字段。"
+
+msgid "For public protocol wire behavior, protocol specifications, RFCs, and current upstream implementations remain the preferred sources."
+msgstr "对于公开协议的线级行为，协议规范、RFC 与当前上游实现仍是优先来源。"
+
+msgid "The low-level protocol reference is mature for the currently documented core protocols, but the wider project documentation is maintained continuously against source changes. The implementation-status page records the audited source snapshot so readers can tell when a capability table may need to be rechecked."
+msgstr "当前已记录的核心协议，其底层协议参考已经较为成熟；但更广泛的项目文档仍会持续跟随源码变化维护。实现状态页面记录了审计时的源码快照，便于读者判断能力表何时需要重新核验。"
+
+msgid "Remaining source-verified documentation and implementation gaps are tracked in [Open Questions](./open-questions.md). That page should contain real unresolved work, not items that have already been answered by the source tree."
+msgstr "其余经源码确认仍存在的文档或实现缺口记录在 [Open Questions](./open-questions.md) 中。该页面只应保留真正尚未解决的问题，而不是源码已经给出答案的历史待办。"
+
+msgid "The Chimera ecosystem is split across multiple repositories with different runtime responsibilities. The desktop application, Android application, client core, privileged service, and server core are related, but they are not one shared process."
+msgstr "Chimera 生态由多个承担不同运行时职责的仓库组成。桌面应用、Android 应用、客户端核心、特权服务和服务端核心彼此相关，但并不运行在同一个共享进程中。"
+
+msgid "Ecosystem Overview"
+msgstr "生态总览"
+
+msgid "```mermaid\nflowchart LR\n    Apps[\"Desktop applications\"] --> Local[\"HTTP / SOCKS / mixed / TUN entry\"]\n    GUI[\"Chimera desktop\"] --> Core[\"Chimera_Client or another selected Clash-family core\"]\n    GUI --> Service[\"Chimera_Service\"]\n    Service --> Core\n    Local --> Core\n\n    AndroidApps[\"Android applications\"] --> ATun[\"Android VpnService / TUN\"]\n    AUI[\"AChimera\"] --> ATun\n    ATun --> UniFFI[\"UniFFI bridge\"]\n    UniFFI --> Embedded[\"embedded Chimera client core\"]\n\n    Core --> Remote[\"Remote proxy endpoint\"]\n    Embedded --> Remote\n    Remote --> Server[\"Chimera_Server or compatible server\"]\n    Server --> Internet[\"Target services / internet\"]\n```"
+msgstr "```mermaid\nflowchart LR\n    Apps[\"桌面应用\"] --> Local[\"HTTP / SOCKS / mixed / TUN 入口\"]\n    GUI[\"Chimera 桌面端\"] --> Core[\"Chimera_Client 或其他选定的 Clash 系核心\"]\n    GUI --> Service[\"Chimera_Service\"]\n    Service --> Core\n    Local --> Core\n\n    AndroidApps[\"Android 应用\"] --> ATun[\"Android VpnService / TUN\"]\n    AUI[\"AChimera\"] --> ATun\n    ATun --> UniFFI[\"UniFFI 桥接\"]\n    UniFFI --> Embedded[\"嵌入式 Chimera 客户端核心\"]\n\n    Core --> Remote[\"远程代理端点\"]\n    Embedded --> Remote\n    Remote --> Server[\"Chimera_Server 或兼容服务端\"]\n    Server --> Internet[\"目标服务 / Internet\"]\n```"
+
+msgid "The desktop and Android paths are sibling client applications. They normally do not sit in series."
+msgstr "桌面端与 Android 端是并列的客户端应用路径，正常情况下不会串联在同一条转发链路上。"
+
+msgid "Component Responsibilities"
+msgstr "组件职责"
+
+msgid "Primary source anchors"
+msgstr "主要源码锚点"
+
+msgid "Desktop control plane: profile/runtime generation, core selection and update, foreground process management, service-mode IPC, system integration."
+msgstr "桌面控制面：负责配置档案/运行时生成、核心选择与更新、前台进程管理、服务模式 IPC 以及系统集成。"
+
+msgid "`backend/tauri/src/config`, `backend/tauri/src/core/clash`, `backend/tauri/src/core/service`"
+msgstr "`backend/tauri/src/config`、`backend/tauri/src/core/clash`、`backend/tauri/src/core/service`"
+
+msgid "Clash-family client core: local listeners, DNS, rules, TUN/transparent paths, outbound proxy handlers, controller APIs."
+msgstr "Clash 系客户端核心：本地监听器、DNS、规则、TUN/透明代理路径、出站代理处理器以及控制器 API。"
+
+msgid "`clash-lib/src/config`, `clash-lib/src/app`, `clash-lib/src/proxy`"
+msgstr "`clash-lib/src/config`、`clash-lib/src/app`、`clash-lib/src/proxy`"
+
+msgid "`Chimera_Service`"
+msgstr "`Chimera_Service`"
+
+msgid "Privileged local service: install/start/stop/status, local IPC, selected core lifecycle, selected privileged network operations."
+msgstr "本地特权服务：负责安装/启动/停止/状态查询、本地 IPC、所选核心生命周期以及部分特权网络操作。"
+
+msgid "`chimera_ipc/src/api`, `chimera_service/src/server`, `chimera_service/src/cmds`"
+msgstr "`chimera_ipc/src/api`、`chimera_service/src/server`、`chimera_service/src/cmds`"
+
+msgid "`AChimera`"
+msgstr "`AChimera`"
+
+msgid "Android control/platform layer: `VpnService`, TUN ownership, profile lifecycle, UniFFI bridge, controller-backed traffic/memory/connection UI."
+msgstr "Android 控制/平台层：`VpnService`、TUN 所有权、配置档案生命周期、UniFFI 桥接，以及由控制器数据驱动的流量/内存/连接界面。"
+
+msgid "`app/src/main/java/rs/chimera/android/backend`, `service/TunService.kt`, `ffi`"
+msgstr "`app/src/main/java/rs/chimera/android/backend`、`service/TunService.kt`、`ffi`"
+
+msgid "Server/inbound core: Xray-oriented config validation, listeners/transports/security wrappers, inbound protocol handlers, forwarding/runtime/traffic state."
+msgstr "服务端/入站核心：面向 Xray 的配置校验、监听器/传输/安全封装、入站协议处理器以及转发/运行时/流量状态。"
+
+msgid "`chimera_server_lib/src/config`, `beginning`, `handler`, `reality`"
+msgstr "`chimera_server_lib/src/config`、`beginning`、`handler`、`reality`"
+
+msgid "For a source-audited feature matrix, see [Implementation Status and Source Evidence](./implementation-status.md)."
+msgstr "经源码审计的功能矩阵请参阅 [Implementation Status and Source Evidence](./implementation-status.md)。"
+
+msgid "Desktop Data Flow"
+msgstr "桌面端数据流"
+
+msgid "A typical desktop forwarding path is:"
+msgstr "典型的桌面端转发路径如下："
+
+msgid "`Chimera` does not terminate the remote proxy protocol itself. It prepares and controls the selected core."
+msgstr "`Chimera` 本身并不终止远程代理协议；它负责准备并控制所选核心。"
+
+msgid "Desktop Control Flow"
+msgstr "桌面端控制流"
+
+msgid "The control path is separate from packet forwarding:"
+msgstr "控制路径与数据包转发路径彼此独立："
+
+msgid "The desktop source currently supports multiple Clash-family core types, including Chimera Client. The generated configuration and selected core type are therefore separate compatibility dimensions: a field can exist in the generated YAML even when a selected core handles it differently."
+msgstr "当前桌面端源码支持多种 Clash 系核心类型，其中包括 Chimera Client。因此，生成的配置与所选核心类型是两个独立的兼容性维度：某个字段即使出现在生成的 YAML 中，不同核心也可能以不同方式处理它。"
+
+msgid "Android Data and Control Flow"
+msgstr "Android 数据流与控制流"
+
+msgid "Android has an additional OS VPN boundary:"
+msgstr "Android 还多了一层操作系统 VPN 边界："
+
+msgid "The `protect(fd)` callback is essential because the proxy core's own remote sockets must bypass the VPN capture path rather than re-entering the TUN."
+msgstr "`protect(fd)` 回调至关重要，因为代理核心自身创建的远程套接字必须绕过 VPN 捕获路径，而不能再次进入 TUN。"
+
+msgid "See [AChimera Android Client](./achimera.md) for the lifecycle details."
+msgstr "生命周期细节请参阅 [AChimera Android Client](./achimera.md)。"
+
+msgid "Server Inbound Flow"
+msgstr "服务端入站流"
+
+msgid "A useful Server mental model is:"
+msgstr "理解服务端时可以采用以下分层模型："
+
+msgid "Transport success and inner-protocol success are separate states. For example, a REALITY handshake can succeed while VLESS authentication or request parsing still fails afterward."
+msgstr "传输层成功与内层协议成功是两个独立状态。例如 REALITY 握手可能已经成功，但随后 VLESS 认证或请求解析仍然可能失败。"
+
+msgid "Configuration Ownership"
+msgstr "配置职责归属"
+
+msgid "Keep these ownership boundaries explicit in documentation:"
+msgstr "文档中应明确保留以下职责边界："
+
+msgid "`Chimera` owns desktop application settings, profile orchestration, generated runtime config, and core lifecycle decisions."
+msgstr "`Chimera` 负责桌面应用设置、配置档案编排、生成运行时配置以及核心生命周期决策。"
+
+msgid "`Chimera_Service` owns privileged service/process management, not proxy-rule semantics."
+msgstr "`Chimera_Service` 负责特权服务/进程管理，而不负责代理规则语义。"
+
+msgid "`AChimera` owns Android VPN/profile/UI concerns; the embedded core owns proxy forwarding semantics."
+msgstr "`AChimera` 负责 Android VPN、配置档案和 UI；嵌入式核心负责代理转发语义。"
+
+msgid "`Chimera_Client` owns Clash-style client runtime behavior."
+msgstr "`Chimera_Client` 负责 Clash 风格的客户端运行时行为。"
+
+msgid "`Chimera_Server` owns server inbound/runtime behavior."
+msgstr "`Chimera_Server` 负责服务端入站与运行时行为。"
+
+msgid "A bug should be assigned to the layer that actually owns the failing state, rather than to the repository whose UI happens to expose it."
+msgstr "故障应归因到真正拥有该失败状态的层，而不是仅仅因为某个仓库的 UI 恰好展示了它就把问题归给该仓库。"
+
+msgid "This page is the implementation-facing index for the Chimera ecosystem. It is intentionally different from the protocol reference: protocol pages describe what a protocol means on the wire, while this page records what the local Chimera source trees actually parse, construct, execute, and test."
+msgstr "本页是面向实现的 Chimera 生态索引，刻意与协议参考分开：协议页面说明协议在线路上如何工作，而本页记录本地 Chimera 源码实际能够解析、构造、执行和测试哪些能力。"
+
+msgid "Evidence Levels"
+msgstr "证据等级"
+
+msgid "Use the following terms consistently across this Wiki:"
+msgstr "本 Wiki 统一使用以下术语："
+
+msgid "Level"
+msgstr "等级"
+
+msgid "**Parsed**"
+msgstr "**已解析（Parsed）**"
+
+msgid "A typed configuration path accepts the option or protocol. This alone does not prove runtime support."
+msgstr "类型化配置路径能够接受该选项或协议。仅凭这一点不能证明运行时支持。"
+
+msgid "**Constructed**"
+msgstr "**可构造（Constructed）**"
+
+msgid "Runtime code can build/register the relevant handler, listener, transport, or outbound."
+msgstr "运行时代码能够构造或注册相应的处理器、监听器、传输层或出站。"
+
+msgid "**Implemented**"
+msgstr "**已实现（Implemented）**"
+
+msgid "A real forwarding/data path exists for the advertised direction."
+msgstr "所声明方向存在真实的数据转发路径。"
+
+msgid "**Integration-tested**"
+msgstr "**已集成测试（Integration-tested）**"
+
+msgid "The repository contains a network/integration test exercising the implementation."
+msgstr "仓库中存在真实执行该实现的网络/集成测试。"
+
+msgid "**Interop-tested**"
+msgstr "**已互操作测试（Interop-tested）**"
+
+msgid "A test exercises Chimera against another implementation, or exercises two Chimera components together."
+msgstr "测试实际让 Chimera 与另一实现互通，或让两个 Chimera 组件彼此互通。"
+
+msgid "**Parsed-only**"
+msgstr "**仅解析（Parsed-only）**"
+
+msgid "Configuration is accepted for compatibility, but the runtime explicitly does not apply the option."
+msgstr "为了兼容而接受该配置，但运行时明确不会应用该选项。"
+
+msgid "**Rejected**"
+msgstr "**已拒绝（Rejected）**"
+
+msgid "The parser/builder deliberately rejects the option because the runtime does not support it yet."
+msgstr "由于运行时尚不支持，解析器或构建器会主动拒绝该选项。"
+
+msgid "A protocol must not be described simply as “supported” when the available evidence only reaches **Parsed** or **Constructed**."
+msgstr "如果现有证据只达到 **Parsed** 或 **Constructed**，就不能简单把某协议描述为“已支持”。"
+
+msgid "Audited Source Snapshot"
+msgstr "已审计源码快照"
+
+msgid "The table below records the repository heads inspected while maintaining this page. A dirty working tree means local, uncommitted changes can exist beyond the listed commit."
+msgstr "下表记录维护本页时检查过的各仓库 HEAD。工作区为 Dirty 表示除所列提交之外还可能存在本地未提交改动。"
+
+msgid "Repository"
+msgstr "仓库"
+
+msgid "Audited HEAD"
+msgstr "审计时 HEAD"
+
+msgid "Working tree at audit"
+msgstr "审计时工作区"
+
+msgid "`e25ace1`"
+msgstr "`e25ace1`"
+
+msgid "Dirty"
+msgstr "有未提交改动"
+
+msgid "Clash-family client core and local proxy runtime"
+msgstr "Clash 系客户端核心与本地代理运行时"
+
+msgid "`0e2d3c1`"
+msgstr "`0e2d3c1`"
+
+msgid "Clean"
+msgstr "干净"
+
+msgid "Xray-oriented inbound/server core"
+msgstr "面向 Xray 的入站/服务端核心"
+
+msgid "`5119241`"
+msgstr "`5119241`"
+
+msgid "Desktop control plane and core lifecycle manager"
+msgstr "桌面控制面与核心生命周期管理器"
+
+msgid "`1b7d3ec`"
+msgstr "`1b7d3ec`"
+
+msgid "Privileged local service and core process manager"
+msgstr "本地特权服务与核心进程管理器"
+
+msgid "`3cd85e8`"
+msgstr "`3cd85e8`"
+
+msgid "Android application embedding the Chimera client core through UniFFI"
+msgstr "通过 UniFFI 嵌入 Chimera 客户端核心的 Android 应用"
+
+msgid "This is a documentation audit marker, not a release compatibility promise. Re-check the source before relying on this table after protocol or runtime changes."
+msgstr "这里记录的是文档审计标记，并非发布兼容性承诺。协议或运行时发生变化后，在依赖本表之前应重新检查源码。"
+
+msgid "Client and Server Protocol Matrix"
+msgstr "客户端与服务端协议矩阵"
+
+msgid "The matrix is deliberately directional. `Chimera_Client` is primarily a client core, while `Chimera_Server` is primarily an inbound/server core."
+msgstr "该矩阵刻意区分方向：`Chimera_Client` 主要是客户端核心，而 `Chimera_Server` 主要是入站/服务端核心。"
+
+msgid "Protocol / layer"
+msgstr "协议 / 层"
+
+msgid "`Chimera_Client` evidence"
+msgstr "`Chimera_Client` 证据"
+
+msgid "`Chimera_Server` evidence"
+msgstr "`Chimera_Server` 证据"
+
+msgid "Important boundary"
+msgstr "重要边界"
+
+msgid "Local inbound and outbound code exist"
+msgstr "存在本地入站与出站代码"
+
+msgid "Inbound code exists"
+msgstr "存在入站代码"
+
+msgid "Client SOCKS inbound UDP currently returns unsupported; do not infer complete UDP ASSOCIATE parity from outbound support."
+msgstr "客户端 SOCKS 入站当前会对 UDP 返回不支持；不要因为 SOCKS 出站支持 UDP 就推断入站已完整兼容 UDP ASSOCIATE。"
+
+msgid "Local HTTP inbound exists"
+msgstr "存在本地 HTTP 入站"
+
+msgid "HTTP inbound exists"
+msgstr "存在 HTTP 入站"
+
+msgid "Treat HTTP proxying separately from HTTP-based transports such as XHTTP."
+msgstr "应把 HTTP 代理与 XHTTP 等基于 HTTP 的传输层分开理解。"
+
+msgid "Mixed HTTP/SOCKS"
+msgstr "Mixed HTTP/SOCKS"
+
+msgid "Local mixed listener exists"
+msgstr "存在本地 mixed 监听器"
+
+msgid "Mixed inbound exists"
+msgstr "存在 Mixed 入站"
+
+msgid "Client mixed UDP is explicitly unsupported."
+msgstr "客户端 mixed UDP 当前明确不支持。"
+
+msgid "Shadowsocks"
+msgstr "Shadowsocks"
+
+msgid "Inbound/outbound modules; TCP and UDP integration work exists behind `shadowsocks` feature"
+msgstr "存在入站/出站模块；在 `shadowsocks` feature 后已有 TCP 与 UDP 集成实现。"
+
+msgid "Inbound TCP/UDP implementation behind `shadowsocks` feature"
+msgstr "在 `shadowsocks` feature 后存在 TCP/UDP 入站实现"
+
+msgid "Server currently rejects/does not implement some cipher/config variants, including `xchacha20-poly1305`."
+msgstr "服务端当前会拒绝或尚未实现部分密码套件/配置变体，其中包括 `xchacha20-poly1305`。"
+
+msgid "AnyTLS"
+msgstr "AnyTLS"
+
+msgid "Inbound/outbound implementation behind `anytls`; integration tests exist"
+msgstr "在 `anytls` feature 后存在入站/出站实现，并已有集成测试"
+
+msgid "No AnyTLS server protocol in the current server protocol enum"
+msgstr "当前服务端协议枚举中没有 AnyTLS 协议"
+
+msgid "Several Client options are parsed for compatibility but explicitly not applied by the runtime."
+msgstr "客户端有若干选项仅为兼容而解析，运行时明确不会应用。"
+
+msgid "Outbound implementation with stream, datagram, Vision, REALITY and XHTTP paths"
+msgstr "存在出站实现，并包含 stream、datagram、Vision、REALITY 与 XHTTP 路径"
+
+msgid "Inbound implementation behind `vless`"
+msgstr "在 `vless` feature 后存在入站实现"
+
+msgid "Server Vision direct mode is explicitly not implemented yet."
+msgstr "服务端 Vision direct mode 当前明确尚未实现。"
+
+msgid "Outbound implementation behind `trojan`"
+msgstr "在 `trojan` feature 后存在出站实现"
+
+msgid "Inbound and UDP handling behind `trojan`"
+msgstr "在 `trojan` feature 后存在入站与 UDP 处理"
+
+msgid "Server fallback support has explicit restrictions; unsupported fallback types are rejected."
+msgstr "服务端 fallback 支持存在明确限制；不支持的 fallback 类型会被拒绝。"
+
+msgid "Outbound implementation behind `hysteria`"
+msgstr "在 `hysteria` feature 后存在出站实现"
+
+msgid "QUIC inbound implementation behind `hysteria`"
+msgstr "在 `hysteria` feature 后存在 QUIC 入站实现"
+
+msgid "Server behavior has dedicated recent compatibility work; verify exact transport/version assumptions in tests."
+msgstr "服务端近期有专门的兼容性修正；具体传输和版本假设应以测试为准。"
+
+msgid "No VMess outbound variant in the current Client outbound enum"
+msgstr "当前客户端出站枚举中没有 VMess 变体"
+
+msgid "AEAD VMess inbound implementation behind `vmess`"
+msgstr "在 `vmess` feature 后存在 AEAD VMess 入站实现"
+
+msgid "Server outbound routing does not imply a VMess outbound client implementation."
+msgstr "服务端存在出站路由能力，并不意味着实现了 VMess 客户端出站。"
+
+msgid "No TUIC outbound variant in the current Client outbound enum"
+msgstr "当前客户端出站枚举中没有 TUIC 变体"
+
+msgid "QUIC inbound implementation behind `tuic` with E2E tests"
+msgstr "在 `tuic` feature 后存在 QUIC 入站实现，并有 E2E 测试"
+
+msgid "Keep TUIC version-specific behavior tied to the current server implementation."
+msgstr "TUIC 的版本特定行为应始终与当前服务端实现绑定描述。"
+
+msgid "Client transport implementation used by VLESS"
+msgstr "VLESS 使用的客户端传输实现"
+
+msgid "Server XHTTP transport with protocol/security matrix tests"
+msgstr "服务端 XHTTP 传输，并有协议/安全矩阵测试"
+
+msgid "Server deliberately rejects several Xray XHTTP fields that are not implemented yet, including `downloadSettings`."
+msgstr "服务端会主动拒绝若干尚未实现的 Xray XHTTP 字段，其中包括 `downloadSettings`。"
+
+msgid "WebSocket"
+msgstr "WebSocket"
+
+msgid "Transport module behind `ws`"
+msgstr "在 `ws` feature 后存在传输模块"
+
+msgid "A transport is not a proxy protocol by itself."
+msgstr "传输层本身不是代理协议。"
+
+msgid "gRPC transport"
+msgstr "gRPC 传输"
+
+msgid "Not present as a current Client outbound transport module"
+msgstr "当前客户端中没有对应的出站传输模块"
+
+msgid "Server transport behind `grpc_transport`; Xray compatibility E2E exists"
+msgstr "服务端在 `grpc_transport` feature 后存在该传输，并有 Xray 兼容 E2E 测试"
+
+msgid "Server `multiMode` is explicitly rejected at configuration time."
+msgstr "服务端会在配置阶段明确拒绝 `multiMode`。"
+
+msgid "HTTPUpgrade"
+msgstr "HTTPUpgrade"
+
+msgid "No current Client outbound transport module"
+msgstr "当前客户端没有对应的出站传输模块"
+
+msgid "Server transport behind `httpupgrade`"
+msgstr "服务端在 `httpupgrade` feature 后存在该传输"
+
+msgid "`acceptProxyProtocol` and `ed` are explicitly rejected by the current Server builder."
+msgstr "当前服务端构建器会明确拒绝 `acceptProxyProtocol` 与 `ed`。"
+
+msgid "Shared client transport/security support"
+msgstr "客户端共享传输/安全支持"
+
+msgid "Server security wrapper behind `tls`"
+msgstr "服务端在 `tls` feature 后存在安全封装"
+
+msgid "TLS is a security/transport layer, not an identity-bearing proxy protocol."
+msgstr "TLS 是安全/传输层，而不是携带代理身份的代理协议。"
+
+msgid "Client implementation under `proxy/transport/reality`"
+msgstr "客户端实现在 `proxy/transport/reality` 下"
+
+msgid "Server implementation under `reality` plus inbound wrappers"
+msgstr "服务端实现在 `reality` 目录以及相应入站封装中"
+
+msgid "Cross-project REALITY/Vision E2E and negative tests exist in the Server repository."
+msgstr "服务端仓库中存在跨项目 REALITY/Vision E2E 与负向测试。"
+
+msgid "Source Anchors"
+msgstr "源码锚点"
+
+msgid "The most important capability anchors are:"
+msgstr "最重要的能力源码锚点包括："
+
+msgid "`clash-lib/src/config/internal/proxy.rs`: outbound protocol enum and protocol configuration structures."
+msgstr "`clash-lib/src/config/internal/proxy.rs`：出站协议枚举与协议配置结构。"
+
+msgid "`clash-lib/src/app/outbound/manager.rs`: runtime outbound registration."
+msgstr "`clash-lib/src/app/outbound/manager.rs`：运行时出站注册。"
+
+msgid "`clash-lib/src/proxy/`: concrete inbound, outbound, and transport modules."
+msgstr "`clash-lib/src/proxy/`：具体入站、出站与传输模块。"
+
+msgid "`clash-lib/Cargo.toml`: build-feature gates."
+msgstr "`clash-lib/Cargo.toml`：构建 feature 开关。"
+
+msgid "`clash-lib/tests/anytls_integration_tests.rs` and `clash-lib/tests/shadowsocks_integration_tests.rs`: integration evidence."
+msgstr "`clash-lib/tests/anytls_integration_tests.rs` 与 `clash-lib/tests/shadowsocks_integration_tests.rs`：集成测试证据。"
+
+msgid "The current default build enables core/TLS/TUN/port/REALITY functionality, while `anytls`, `shadowsocks`, `trojan`, `hysteria`, and `ws` are separate Cargo features. Documentation must distinguish “implemented in source” from “present in this binary build”."
+msgstr "当前默认构建启用 core/TLS/TUN/port/REALITY 功能，而 `anytls`、`shadowsocks`、`trojan`、`hysteria` 和 `ws` 是独立 Cargo feature。文档必须区分“源码中已实现”和“当前二进制实际包含”。"
+
+msgid "`chimera_server_lib/src/config/mod.rs`: protocol and stream-setting schema."
+msgstr "`chimera_server_lib/src/config/mod.rs`：协议与 stream setting 配置结构。"
+
+msgid "`chimera_server_lib/src/config/server_config/`: validation and conversion into runtime configuration."
+msgstr "`chimera_server_lib/src/config/server_config/`：配置校验以及向运行时配置的转换。"
+
+msgid "`chimera_server_lib/src/beginning/`: socket/QUIC/XHTTP/gRPC transport entry points."
+msgstr "`chimera_server_lib/src/beginning/`：socket/QUIC/XHTTP/gRPC 传输入口。"
+
+msgid "`chimera_server_lib/src/handler/`: protocol handlers."
+msgstr "`chimera_server_lib/src/handler/`：协议处理器。"
+
+msgid "`chimera_server_lib/Cargo.toml`: feature matrix; the current default is `full`."
+msgstr "`chimera_server_lib/Cargo.toml`：feature 矩阵；当前默认是 `full`。"
+
+msgid "`chimera_server_app/tests/`: cross-implementation and matrix E2E coverage."
+msgstr "`chimera_server_app/tests/`：跨实现与矩阵 E2E 覆盖。"
+
+msgid "Important explicit rejection points currently include unsupported SOCKS fields, parts of Trojan/VLESS fallback behavior, XHTTP fields, gRPC `multiMode`, HTTPUpgrade compatibility options, non-zero REALITY `xver`, and selected Shadowsocks/Vision modes. These should remain visible in user-facing docs rather than being hidden behind a blanket “Xray compatible” statement."
+msgstr "当前重要的明确拒绝项包括：不支持的 SOCKS 字段、部分 Trojan/VLESS fallback 行为、XHTTP 字段、gRPC `multiMode`、HTTPUpgrade 兼容选项、非零 REALITY `xver`，以及部分 Shadowsocks/Vision 模式。用户文档应明确展示这些边界，而不是用一句笼统的“兼容 Xray”掩盖。"
+
+msgid "Application and Control-Plane Matrix"
+msgstr "应用与控制面矩阵"
+
+msgid "Source-backed responsibility"
+msgstr "源码确认的职责"
+
+msgid "What it does not own"
+msgstr "不负责的内容"
+
+msgid "Profile/runtime generation, core selection/update, foreground core lifecycle, service-mode IPC, desktop system integration"
+msgstr "配置档案/运行时生成、核心选择/更新、前台核心生命周期、服务模式 IPC、桌面系统集成"
+
+msgid "Remote proxy wire protocols themselves"
+msgstr "远程代理线协议本身"
+
+msgid "Privileged service lifecycle, local IPC, start/stop/restart/status of the selected core, selected privileged network operations"
+msgstr "特权服务生命周期、本地 IPC、所选核心的启动/停止/重启/状态，以及部分特权网络操作"
+
+msgid "Proxy protocol parsing/forwarding"
+msgstr "代理协议解析/转发"
+
+msgid "Android `VpnService`, profile lifecycle, config verification/download, TUN ownership, UniFFI bridge, controller-backed traffic/memory/connection views"
+msgstr "Android `VpnService`、配置档案生命周期、配置校验/下载、TUN 所有权、UniFFI 桥接以及控制器驱动的流量/内存/连接视图"
+
+msgid "A separate proxy protocol engine; forwarding is delegated to the embedded Rust core"
+msgstr "独立的代理协议引擎；转发由嵌入式 Rust 核心负责"
+
+msgid "Maintenance Rule"
+msgstr "维护规则"
+
+msgid "When implementation and documentation disagree, update the Wiki from this order of evidence:"
+msgstr "当实现与文档不一致时，应按以下证据顺序更新 Wiki："
+
+msgid "A README claim must not override code that explicitly rejects a field or leaves it parsed-only."
+msgstr "README 中的能力声明不能覆盖源码中明确拒绝字段或仅解析字段的事实。"
+
+msgid "Role and Source of Truth"
+msgstr "角色与事实来源"
+
+msgid "`Chimera_Client` is the Clash-compatible client runtime in the Chimera ecosystem. It parses Clash-style configuration, exposes local proxy listeners, performs DNS/rule dispatch, and creates remote outbound connections."
+msgstr "`Chimera_Client` 是 Chimera 生态中的 Clash 兼容客户端运行时。它解析 Clash 风格配置、提供本地代理监听器、执行 DNS/规则分发，并建立远程出站连接。"
+
+msgid "For implementation status, the source tree is authoritative. In particular:"
+msgstr "实现状态以源码树为准，尤其应检查："
+
+msgid "`clash-lib/src/config/internal/proxy.rs` defines the current outbound protocol configuration enum."
+msgstr "`clash-lib/src/config/internal/proxy.rs` 定义当前出站协议配置枚举。"
+
+msgid "`clash-lib/src/app/outbound/manager.rs` registers concrete outbound handlers."
+msgstr "`clash-lib/src/app/outbound/manager.rs` 注册具体出站处理器。"
+
+msgid "`clash-lib/src/proxy/` contains protocol, inbound, outbound, and transport implementations."
+msgstr "`clash-lib/src/proxy/` 包含协议、入站、出站与传输实现。"
+
+msgid "`clash-lib/Cargo.toml` determines which optional implementations are present in a given binary."
+msgstr "`clash-lib/Cargo.toml` 决定某个二进制中包含哪些可选实现。"
+
+msgid "See [Implementation Status and Source Evidence](./implementation-status.md) for the evidence terminology used by this Wiki."
+msgstr "本 Wiki 使用的证据术语见 [Implementation Status and Source Evidence](./implementation-status.md)。"
+
+msgid "Current Outbound Protocols"
+msgstr "当前出站协议"
+
+msgid "The current outbound configuration/runtime path contains:"
+msgstr "当前出站配置/运行时路径包含："
+
+msgid "Outbound"
+msgstr "出站"
+
+msgid "Build condition"
+msgstr "构建条件"
+
+msgid "`direct`"
+msgstr "`direct`"
+
+msgid "Always"
+msgstr "始终存在"
+
+msgid "Direct routing action, not a remote proxy protocol."
+msgstr "直连路由动作，不是远程代理协议。"
+
+msgid "`reject`"
+msgstr "`reject`"
+
+msgid "Reject routing action, not a remote proxy protocol."
+msgstr "拒绝路由动作，不是远程代理协议。"
+
+msgid "`socks5`"
+msgstr "`socks5`"
+
+msgid "SOCKS5 client/outbound implementation."
+msgstr "SOCKS5 客户端/出站实现。"
+
+msgid "`vless`"
+msgstr "`vless`"
+
+msgid "Includes stream/datagram paths and transport/security integration such as XHTTP, Vision, and REALITY where configured."
+msgstr "包含 stream/datagram 路径，并在配置时集成 XHTTP、Vision、REALITY 等传输/安全层。"
+
+msgid "`ss` / Shadowsocks"
+msgstr "`ss` / Shadowsocks"
+
+msgid "`shadowsocks` feature"
+msgstr "`shadowsocks` feature"
+
+msgid "TCP and UDP implementation exists; integration tests are present."
+msgstr "已有 TCP 与 UDP 实现，并存在集成测试。"
+
+msgid "`anytls`"
+msgstr "`anytls`"
+
+msgid "`anytls` feature"
+msgstr "`anytls` feature"
+
+msgid "AnyTLS outbound implementation; the same feature also exposes AnyTLS inbound code."
+msgstr "AnyTLS 出站实现；同一 feature 也启用 AnyTLS 入站代码。"
+
+msgid "`trojan`"
+msgstr "`trojan`"
+
+msgid "`trojan` feature"
+msgstr "`trojan` feature"
+
+msgid "Trojan outbound implementation. WebSocket wrapping additionally depends on `ws`."
+msgstr "Trojan 出站实现。WebSocket 封装还额外依赖 `ws`。"
+
+msgid "`hysteria` feature"
+msgstr "`hysteria` feature"
+
+msgid "QUIC/Hysteria 2 outbound implementation."
+msgstr "QUIC/Hysteria 2 出站实现。"
+
+msgid "VMess, TUIC, WireGuard, and SSH are not variants of the current outbound enum. They must not be documented as current `Chimera_Client` outbound capabilities until a runtime path actually exists."
+msgstr "VMess、TUIC、WireGuard 与 SSH 当前都不是出站枚举的变体。在真实运行时路径出现之前，不应把它们写成 `Chimera_Client` 当前出站能力。"
+
+msgid "Current Local Inbound Surface"
+msgstr "当前本地入站能力"
+
+msgid "The client also contains local inbound implementations, which are a different capability from remote outbounds:"
+msgstr "客户端还包含本地入站实现；这与远程出站是不同的能力维度："
+
+msgid "HTTP proxy inbound,"
+msgstr "HTTP 代理入站，"
+
+msgid "SOCKS inbound,"
+msgstr "SOCKS 入站，"
+
+msgid "mixed HTTP/SOCKS listener,"
+msgstr "mixed HTTP/SOCKS 监听器，"
+
+msgid "Shadowsocks inbound behind `shadowsocks`,"
+msgstr "由 `shadowsocks` feature 控制的 Shadowsocks 入站，"
+
+msgid "AnyTLS inbound behind `anytls`,"
+msgstr "由 `anytls` feature 控制的 AnyTLS 入站，"
+
+msgid "TUN, redir, and TProxy paths according to Cargo features and platform support."
+msgstr "依据 Cargo feature 与平台支持提供 TUN、redir 和 TProxy 路径。"
+
+msgid "Known boundaries should be stated explicitly:"
+msgstr "已知边界应明确写出："
+
+msgid "the current SOCKS inbound path reports UDP as unsupported,"
+msgstr "当前 SOCKS 入站路径会报告 UDP 不支持，"
+
+msgid "the mixed inbound path reports UDP as unsupported,"
+msgstr "mixed 入站路径会报告 UDP 不支持，"
+
+msgid "a protocol being implemented behind a Cargo feature does not mean it is present in the default binary."
+msgstr "某协议存在于 Cargo feature 后并不意味着默认二进制一定包含它。"
+
+msgid "Default Build vs Optional Features"
+msgstr "默认构建与可选 Feature"
+
+msgid "The current default feature set enables:"
+msgstr "当前默认 feature 集启用："
+
+msgid "`zero_copy`,"
+msgstr "`zero_copy`，"
+
+msgid "`tls`,"
+msgstr "`tls`，"
+
+msgid "`aws-lc-rs`,"
+msgstr "`aws-lc-rs`，"
+
+msgid "`tun`,"
+msgstr "`tun`，"
+
+msgid "`port`,"
+msgstr "`port`，"
+
+msgid "`reality`,"
+msgstr "`reality`，"
+
+msgid "`extended-health-check`."
+msgstr "`extended-health-check`。"
+
+msgid "The following protocol/transport implementations are separate features:"
+msgstr "以下协议/传输实现是独立 feature："
+
+msgid "`ws`,"
+msgstr "`ws`，"
+
+msgid "`anytls`,"
+msgstr "`anytls`，"
+
+msgid "`shadowsocks`,"
+msgstr "`shadowsocks`，"
+
+msgid "`trojan`,"
+msgstr "`trojan`，"
+
+msgid "`hysteria`."
+msgstr "`hysteria`。"
+
+msgid "This distinction matters operationally. A profile can be syntactically valid for the project while a particular binary was built without the feature needed to instantiate its handler."
+msgstr "这一差异在实际运行中很重要。某份配置可能在语法上对项目有效，但具体二进制可能没有编译构造对应处理器所需的 feature。"
+
+msgid "Parsed Compatibility Is Not Runtime Support"
+msgstr "可解析兼容性不等于运行时支持"
+
+msgid "Some configuration fields intentionally exist only to accept ecosystem configuration shapes. The AnyTLS configuration is a concrete example: several fields are annotated in source as parsed for compatibility but currently not applied by the runtime."
+msgstr "部分配置字段刻意只用于接受生态中的配置格式。AnyTLS 是一个明确例子：源码中若干字段被标注为仅为兼容而解析，当前运行时并不会应用。"
+
+msgid "Documentation should therefore distinguish:"
+msgstr "因此文档应区分："
+
+msgid "**Parsed** — serde accepts the field,"
+msgstr "**Parsed** — serde 接受该字段，"
+
+msgid "**Constructed** — a handler can be built,"
+msgstr "**Constructed** — 能够构造处理器，"
+
+msgid "**Implemented** — a forwarding path uses it,"
+msgstr "**Implemented** — 转发路径真正使用它，"
+
+msgid "**Tested** — integration or interoperability tests exercise it."
+msgstr "**Tested** — 集成或互操作测试实际覆盖它。"
+
+msgid "Do not infer level 3 or 4 from level 1."
+msgstr "不要从第 1 级直接推断第 3 或第 4 级。"
+
+msgid "Internally, the client is organized into four broad layers:"
+msgstr "客户端内部大体分为四层："
+
+msgid "Applies defaults and validation."
+msgstr "应用默认值并执行校验。"
+
+msgid "Converts external configuration into runtime-specific forms."
+msgstr "把外部配置转换为运行时内部形式。"
+
+msgid "Owns local proxy listeners and TUN/transparent-entry paths."
+msgstr "负责本地代理监听器以及 TUN/透明入口路径。"
+
+msgid "Exposes management APIs for status, switching, traffic, and diagnostics."
+msgstr "提供状态、切换、流量与诊断管理 API。"
+
+msgid "Evaluates rules with first-match semantics."
+msgstr "按首个匹配规则语义进行规则判定。"
+
+msgid "Provides system/enhanced DNS paths, Fake-IP behavior, resolver policy, and DNS-rule dispatch hooks."
+msgstr "提供系统/增强 DNS 路径、Fake-IP 行为、解析器策略以及 DNS 规则分发钩子。"
+
+msgid "**Outbound/transport layer**"
+msgstr "**出站/传输层**"
+
+msgid "Selects the outbound handler."
+msgstr "选择出站处理器。"
+
+msgid "Applies transport/security wrappers such as WebSocket, XHTTP, TLS, and REALITY where the selected protocol supports them."
+msgstr "在所选协议支持时应用 WebSocket、XHTTP、TLS、REALITY 等传输/安全封装。"
+
+msgid "Executes protocol handshakes and forwarding."
+msgstr "执行协议握手与转发。"
+
+msgid "VLESS as a Current Client Capability"
+msgstr "VLESS 作为当前客户端能力"
+
+msgid "VLESS is a current outbound, not merely a planned target. The source contains configuration fields for `network`, XHTTP options, REALITY options, `flow`, client fingerprint, TLS settings, and UDP behavior, together with concrete VLESS stream/datagram and Vision modules."
+msgstr "VLESS 是当前已经存在的出站，而不只是规划目标。源码包含 `network`、XHTTP 选项、REALITY 选项、`flow`、客户端指纹、TLS 设置和 UDP 行为等配置字段，并有具体的 VLESS stream/datagram 与 Vision 模块。"
+
+msgid "When documenting a VLESS combination, keep the layers separate. For example:"
+msgstr "记录 VLESS 组合时，应把各层分开。例如："
+
+msgid "The presence of one layer does not automatically prove every combination of the others is tested."
+msgstr "某一层存在，并不能自动证明它与其他层的所有组合都经过测试。"
+
+msgid "Integration Evidence"
+msgstr "集成测试证据"
+
+msgid "The repository currently contains dedicated integration coverage including:"
+msgstr "当前仓库包含专门的集成测试覆盖，例如："
+
+msgid "`clash-lib/tests/anytls_integration_tests.rs`,"
+msgstr "`clash-lib/tests/anytls_integration_tests.rs`，"
+
+msgid "`clash-lib/tests/shadowsocks_integration_tests.rs`,"
+msgstr "`clash-lib/tests/shadowsocks_integration_tests.rs`，"
+
+msgid "direct UDP, DNS, TUN/Fake-IP, controller/API, connection-chain, and socket protection tests."
+msgstr "以及 direct UDP、DNS、TUN/Fake-IP、controller/API、连接链和 socket protection 测试。"
+
+msgid "Use these tests as stronger evidence than README capability lists when updating this Wiki."
+msgstr "维护本 Wiki 时，应把这些测试作为比 README 能力列表更强的证据。"
+
+msgid "**Ports and listeners**: key mapping and local inbound support. See [Ports and Listeners](./chimera_client/ports.md)."
+msgstr "**端口与监听器**：键映射和本地入站支持。参阅 [Ports and Listeners](./chimera_client/ports.md)。"
+
+msgid "**DNS module**: Fake-IP vs real-IP models, resolver policy, and implementation status. See [DNS Module](./chimera_client/dns.md)."
+msgstr "**DNS 模块**：Fake-IP 与 real-IP 模型、解析器策略和实现状态。参阅 [DNS Module](./chimera_client/dns.md)。"
+
+msgid "**TUN module**: route-all/split-route semantics and platform considerations. See [Tun Module](./chimera_client/tun.md)."
+msgstr "**TUN 模块**：全路由/分流语义及平台注意事项。参阅 [Tun Module](./chimera_client/tun.md)。"
+
+msgid "**Rules module**: rule taxonomy, ordering, and provider-based policy. See [Rule Types and Their Effects](./chimera_client/rules.md)."
+msgstr "**规则模块**：规则分类、顺序以及基于 provider 的策略。参阅 [Rule Types and Their Effects](./chimera_client/rules.md)。"
+
+msgid "`clash-rs` and Mihomo remain important compatibility references, but they are not proof that an option is implemented in `Chimera_Client`."
+msgstr "`clash-rs` 和 Mihomo 仍是重要兼容性参考，但不能证明某个选项已经在 `Chimera_Client` 中实现。"
+
+msgid "**clash-rs** is a useful Rust architectural/configuration reference."
+msgstr "**clash-rs** 是有价值的 Rust 架构/配置参考。"
+
+msgid "**Mihomo** is a broad ecosystem compatibility reference."
+msgstr "**Mihomo** 是覆盖较广的生态兼容性参考。"
+
+msgid "**Chimera_Client source and tests** determine what the current Chimera binary can actually do."
+msgstr "**Chimera_Client 的源码与测试** 才决定当前 Chimera 二进制实际能做什么。"
+
+msgid "Migration documentation should explicitly call out fields that are parsed-only, feature-gated, rejected, or behaviorally different."
+msgstr "迁移文档应明确标出仅解析字段、受 feature 控制的字段、被拒绝的字段以及行为存在差异的字段。"
+
+msgid "Deployment Guidance"
+msgstr "部署建议"
+
+msgid "For a new deployment:"
+msgstr "对于新部署："
+
+msgid "confirm the binary was built with the required Cargo features,"
+msgstr "确认二进制启用了所需 Cargo feature，"
+
+msgid "validate the profile,"
+msgstr "校验配置档案，"
+
+msgid "start with a local HTTP/SOCKS listener before adding TUN,"
+msgstr "先从本地 HTTP/SOCKS 监听器开始，再加入 TUN，"
+
+msgid "verify DNS/rule behavior,"
+msgstr "验证 DNS/规则行为，"
+
+msgid "add the remote protocol and transport/security layers one at a time,"
+msgstr "逐层加入远程协议与传输/安全层，"
+
+msgid "use integration/interop-tested combinations where possible."
+msgstr "尽量使用已有集成/互操作测试覆盖的组合。"
+
+msgid "For CI, keep both a minimal profile and profiles that exercise the optional features enabled by the produced artifact."
+msgstr "对于 CI，应同时保留最小配置，以及覆盖产物中已启用可选 feature 的配置。"
+
+msgid "`Chimera_Client`: <https://github.com/MFSGA/Chimera_Client>"
+msgstr "`Chimera_Client`：<https://github.com/MFSGA/Chimera_Client>"
+
+msgid "Service mode changes **who owns the client core process**. It does not add proxy protocol features and it does not change rule, DNS, or outbound semantics."
+msgstr "服务模式改变的是**谁拥有客户端核心进程**。它不会增加代理协议能力，也不会改变规则、DNS 或出站语义。"
+
+msgid "In foreground mode the desktop application starts and owns the selected core process directly. In service mode the desktop application delegates core lifecycle to `Chimera_Service` over local IPC."
+msgstr "前台模式下，桌面应用直接启动并拥有所选核心进程；服务模式下，桌面应用通过本地 IPC 把核心生命周期委托给 `Chimera_Service`。"
+
+msgid "Source Boundaries"
+msgstr "源码边界"
+
+msgid "The desktop-side integration lives primarily under:"
+msgstr "桌面端集成主要位于："
+
+msgid "`Chimera/backend/tauri/src/core/clash/core.rs`,"
+msgstr "`Chimera/backend/tauri/src/core/clash/core.rs`，"
+
+msgid "`Chimera/backend/tauri/src/core/service/`,"
+msgstr "`Chimera/backend/tauri/src/core/service/`，"
+
+msgid "`Chimera/backend/tauri/src/config/chimera/mod.rs`."
+msgstr "`Chimera/backend/tauri/src/config/chimera/mod.rs`。"
+
+msgid "The privileged service implementation lives in the `Chimera_Service` repository. Its IPC definitions and server routes are split between `chimera_ipc` and `chimera_service`."
+msgstr "特权服务实现在 `Chimera_Service` 仓库中。其 IPC 定义与服务端路由分别位于 `chimera_ipc` 和 `chimera_service`。"
+
+msgid "Current IPC Surface"
+msgstr "当前 IPC 接口"
+
+msgid "The inspected service source exposes these core operations:"
+msgstr "已检查的服务源码暴露以下核心操作："
+
+msgid "Endpoint"
+msgstr "端点"
+
+msgid "`GET /status`"
+msgstr "`GET /status`"
+
+msgid "Read service/runtime/core status."
+msgstr "读取服务/运行时/核心状态。"
+
+msgid "`POST /core/start`"
+msgstr "`POST /core/start`"
+
+msgid "Start a selected core using a supplied config path."
+msgstr "使用提供的配置路径启动所选核心。"
+
+msgid "`POST /core/stop`"
+msgstr "`POST /core/stop`"
+
+msgid "Stop the running core."
+msgstr "停止正在运行的核心。"
+
+msgid "`POST /core/restart`"
+msgstr "`POST /core/restart`"
+
+msgid "Restart the managed core."
+msgstr "重启受管理的核心。"
+
+msgid "`POST /network/set_dns`"
+msgstr "`POST /network/set_dns`"
+
+msgid "Perform the supported privileged DNS operation on platforms where that path is implemented."
+msgstr "在已实现该路径的平台上执行受支持的特权 DNS 操作。"
+
+msgid "The IPC crate also contains WebSocket event definitions and log-related API surfaces. Treat these as local control-plane interfaces, not as remote proxy protocols."
+msgstr "IPC crate 还包含 WebSocket 事件定义和日志相关 API。应把它们视为本地控制面接口，而不是远程代理协议。"
+
+msgid "Foreground vs Service Mode"
+msgstr "前台模式与服务模式"
+
+msgid "Foreground"
+msgstr "前台模式"
+
+msgid "Core owner"
+msgstr "核心所有者"
+
+msgid "Desktop process"
+msgstr "桌面进程"
+
+msgid "`chimera-service`"
+msgstr "`chimera-service`"
+
+msgid "Lifecycle calls"
+msgstr "生命周期调用"
+
+msgid "Direct child-process management"
+msgstr "直接管理子进程"
+
+msgid "IPC requests to the service"
+msgstr "通过 IPC 请求服务"
+
+msgid "Privilege boundary"
+msgstr "权限边界"
+
+msgid "Desktop/user process"
+msgstr "桌面/用户进程"
+
+msgid "Privileged service boundary"
+msgstr "特权服务边界"
+
+msgid "Config generation"
+msgstr "配置生成"
+
+msgid "Desktop"
+msgstr "桌面端"
+
+msgid "Proxy protocol implementation"
+msgstr "代理协议实现"
+
+msgid "Selected core"
+msgstr "所选核心"
+
+msgid "GUI/controller role"
+msgstr "GUI/控制器角色"
+
+msgid "Directly manages core"
+msgstr "直接管理核心"
+
+msgid "Sends requests and observes service/core state"
+msgstr "发送请求并观察服务/核心状态"
+
+msgid "The desktop still generates the runtime configuration in service mode. The service receives the core type and config path; it does not independently merge profiles or reinterpret proxy rules."
+msgstr "服务模式下运行时配置仍由桌面端生成。服务接收核心类型与配置路径，并不会自行合并配置档案或重新解释代理规则。"
+
+msgid "Start Flow"
+msgstr "启动流程"
+
+msgid "At a high level, service-mode startup is:"
+msgstr "从高层看，服务模式启动流程为："
+
+msgid "Chimera selects the configured core type."
+msgstr "Chimera 选择已配置的核心类型。"
+
+msgid "Chimera builds or refreshes the generated runtime configuration."
+msgstr "Chimera 构建或刷新生成的运行时配置。"
+
+msgid "The desktop converts its core selection into `chimera_utils::core::CoreType`."
+msgstr "桌面端把核心选择转换为 `chimera_utils::core::CoreType`。"
+
+msgid "Chimera checks/uses the service IPC client."
+msgstr "Chimera 检查并使用服务 IPC 客户端。"
+
+msgid "A `/core/start` request is sent with the core type and generated config path."
+msgstr "携带核心类型与生成配置路径发送 `/core/start` 请求。"
+
+msgid "`chimera-service` creates and supervises the child core process."
+msgstr "`chimera-service` 创建并监管核心子进程。"
+
+msgid "Status/events are used to reflect the resulting runtime state back to the desktop application."
+msgstr "通过状态/事件把最终运行状态反馈给桌面应用。"
+
+msgid "The source also handles races where service/core status can change between a status check and a start request. Documentation should therefore avoid presenting service start as a single infallible toggle."
+msgstr "源码还处理了状态查询与启动请求之间服务/核心状态可能发生变化的竞态。因此文档不应把服务启动描述成一次绝不会失败的简单开关。"
+
+msgid "Restart and Configuration Changes"
+msgstr "重启与配置变更"
+
+msgid "A runtime setting can fall into one of three categories:"
+msgstr "运行时设置可分为三类："
+
+msgid "handled through the selected core's own controller/hot-reload path,"
+msgstr "通过所选核心自身的 controller/热重载路径处理，"
+
+msgid "written into generated configuration and requiring core restart,"
+msgstr "写入生成配置并需要重启核心，"
+
+msgid "owned by Chimera or the OS and not part of core config at all."
+msgstr "由 Chimera 或操作系统负责，根本不属于核心配置。"
+
+msgid "Service mode does not change this classification. It changes the restart path from direct process management to `/core/restart` or a stop/start sequence through the service."
+msgstr "服务模式不会改变这种分类；它只是把重启路径从直接进程管理改为通过服务执行 `/core/restart` 或 stop/start 流程。"
+
+msgid "When documenting an individual setting, verify its actual update path before claiming that it is hot-reloadable."
+msgstr "记录具体设置时，应先核实真实更新路径，再声称它支持热重载。"
+
+msgid "Service Installation and Platform Managers"
+msgstr "服务安装与平台服务管理器"
+
+msgid "`Chimera_Service` uses platform service-manager integration to install, start, stop, query, and uninstall the privileged service. Windows also has dedicated Windows-service control code."
+msgstr "`Chimera_Service` 通过平台 service-manager 集成安装、启动、停止、查询和卸载特权服务；Windows 另外还有专门的 Windows Service 控制代码。"
+
+msgid "The exact operating-system registration details are an implementation concern of `Chimera_Service`; the desktop application should treat the service as a managed local control endpoint."
+msgstr "具体的操作系统服务注册细节属于 `Chimera_Service` 的实现职责；桌面应用应把它视为受管理的本地控制端点。"
+
+msgid "Do not assume GUI settings such as “start at boot”, “auto recover”, or “keep running after GUI exit” exist merely because they are common in other proxy applications. They should be documented only when the corresponding Chimera setting and service behavior are present in source."
+msgstr "不要因为“开机启动”“自动恢复”“GUI 退出后继续运行”等选项在其他代理应用中常见，就假定 Chimera 也存在这些设置。只有当源码中确实存在对应设置与服务行为时才应写入文档。"
+
+msgid "Failure Model"
+msgstr "故障模型"
+
+msgid "Troubleshoot service mode by separating desktop, IPC, service, and core failures:"
+msgstr "排查服务模式时，应把桌面端、IPC、服务和核心故障分开："
+
+msgid "First boundary to inspect"
+msgstr "优先检查的边界"
+
+msgid "Service is not installed or cannot start"
+msgstr "服务未安装或无法启动"
+
+msgid "OS service manager / installation privileges"
+msgstr "操作系统服务管理器 / 安装权限"
+
+msgid "GUI cannot query status"
+msgstr "GUI 无法查询状态"
+
+msgid "local IPC endpoint, ACL/permissions, service process"
+msgstr "本地 IPC 端点、ACL/权限、服务进程"
+
+msgid "`/core/start` fails"
+msgstr "`/core/start` 失败"
+
+msgid "core type, config path, executable availability, service-side process spawn"
+msgstr "核心类型、配置路径、可执行文件是否存在、服务端进程创建"
+
+msgid "Service is healthy but proxy traffic fails"
+msgstr "服务正常但代理流量失败"
+
+msgid "selected core logs/config/protocol path"
+msgstr "所选核心的日志/配置/协议路径"
+
+msgid "Config change appears ignored"
+msgstr "配置变更看起来未生效"
+
+msgid "determine whether the setting needs hot reload or core restart"
+msgstr "确认该设置需要热重载还是核心重启"
+
+msgid "Core exits unexpectedly"
+msgstr "核心意外退出"
+
+msgid "service core-manager status and captured core output/logs"
+msgstr "服务 core-manager 状态以及捕获的核心输出/日志"
+
+msgid "A healthy `chimera-service` process does not imply a healthy proxy core, and a healthy proxy core does not imply successful remote protocol negotiation."
+msgstr "`chimera-service` 进程正常并不意味着代理核心正常；代理核心正常也不意味着远程协议协商一定成功。"
+
+msgid "Security Boundary"
+msgstr "安全边界"
+
+msgid "Service mode introduces a privileged local control plane. Operational guidance should therefore emphasize:"
+msgstr "服务模式引入了本地特权控制面，因此运维文档应强调："
+
+msgid "restrict local IPC access with the repository's ACL/security mechanisms,"
+msgstr "使用仓库提供的 ACL/安全机制限制本地 IPC 访问，"
+
+msgid "do not treat a user-supplied config path as harmless input,"
+msgstr "不要把用户提供的配置路径当作无害输入，"
+
+msgid "keep the desktop, service, and shared IPC/types compatible,"
+msgstr "保持桌面端、服务以及共享 IPC/types 的兼容性，"
+
+msgid "inspect both service logs and core logs when diagnosing privilege-related networking failures."
+msgstr "排查权限相关网络故障时同时检查服务日志和核心日志。"
+
+msgid "Verification"
+msgstr "验证"
+
+msgid "Useful source-level checks are:"
+msgstr "有用的源码级检查包括："
+
+msgid "confirm `/status` reports the expected core state,"
+msgstr "确认 `/status` 返回预期核心状态，"
+
+msgid "exercise start/stop/restart through the same IPC client used by Chimera,"
+msgstr "通过 Chimera 实际使用的同一 IPC 客户端测试启动/停止/重启，"
+
+msgid "verify the generated config path exists and is readable by the service,"
+msgstr "确认生成的配置路径存在且服务可读取，"
+
+msgid "verify the selected core executable matches the requested `CoreType`,"
+msgstr "确认所选核心可执行文件与请求的 `CoreType` 匹配，"
+
+msgid "test privileged networking operations separately from proxy connectivity."
+msgstr "把特权网络操作与代理连通性分开测试。"
+
+msgid "Role in the Ecosystem"
+msgstr "在生态中的角色"
+
+msgid "`AChimera` is the Android application layer for the Chimera client ecosystem. It is not a separate proxy protocol implementation. The Android app owns the platform-specific VPN lifecycle, profile storage, user interface, and telemetry presentation, while packet forwarding is delegated to the embedded Rust core through UniFFI."
+msgstr "`AChimera` 是 Chimera 客户端生态的 Android 应用层，并不是独立的代理协议实现。Android 应用负责平台特定的 VPN 生命周期、配置档案存储、用户界面和遥测展示，而数据包转发通过 UniFFI 委托给嵌入式 Rust 核心。"
+
+msgid "The core runtime shape is:"
+msgstr "核心运行结构如下："
+
+msgid "The Android repository is easiest to understand through these files:"
+msgstr "理解 Android 仓库时，以下文件最关键："
+
+msgid "`app/src/main/java/rs/chimera/android/backend/ChimeraBackend.kt`: application backend contract."
+msgstr "`app/src/main/java/rs/chimera/android/backend/ChimeraBackend.kt`：应用后端接口约定。"
+
+msgid "`app/src/main/java/rs/chimera/android/backend/ChimeraBackendImpl.kt`: profile, runtime, controller, traffic, memory, and connection orchestration."
+msgstr "`app/src/main/java/rs/chimera/android/backend/ChimeraBackendImpl.kt`：配置档案、运行时、控制器、流量、内存与连接编排。"
+
+msgid "`app/src/main/java/rs/chimera/android/service/TunService.kt`: Android `VpnService` lifecycle and TUN ownership."
+msgstr "`app/src/main/java/rs/chimera/android/service/TunService.kt`：Android `VpnService` 生命周期与 TUN 所有权。"
+
+msgid "`app/src/main/java/rs/chimera/android/ffi/ChimeraFfi.kt`: UniFFI initialization and socket-protection bridge."
+msgstr "`app/src/main/java/rs/chimera/android/ffi/ChimeraFfi.kt`：UniFFI 初始化与 socket protection 桥接。"
+
+msgid "`app/src/main/java/rs/chimera/android/ffi/Clash.kt`: Rust core startup bridge."
+msgstr "`app/src/main/java/rs/chimera/android/ffi/Clash.kt`：Rust 核心启动桥接。"
+
+msgid "VPN Startup Flow"
+msgstr "VPN 启动流程"
+
+msgid "A normal Android VPN start follows this sequence:"
+msgstr "正常的 Android VPN 启动顺序如下："
+
+msgid "The backend verifies that an active profile exists."
+msgstr "后端确认存在活动配置档案。"
+
+msgid "Android `VpnService.prepare(...)` is used to request VPN permission when the user has not granted it yet."
+msgstr "如果用户尚未授权 VPN，则通过 Android `VpnService.prepare(...)` 请求权限。"
+
+msgid "`TunService` is started as the Android VPN service."
+msgstr "以 Android VPN 服务的形式启动 `TunService`。"
+
+msgid "The service resolves and validates the active profile path."
+msgstr "服务解析并校验活动配置档案路径。"
+
+msgid "Android creates the TUN interface and detaches the file descriptor used by the Rust runtime."
+msgstr "Android 创建 TUN 接口，并分离出供 Rust 运行时使用的文件描述符。"
+
+msgid "The profile and runtime overrides are passed through the UniFFI bridge to the Chimera client core."
+msgstr "配置档案与运行时覆盖项通过 UniFFI 桥接传给 Chimera 客户端核心。"
+
+msgid "The core starts its local listeners and networking runtime."
+msgstr "核心启动本地监听器与网络运行时。"
+
+msgid "The service publishes runtime state and keeps ownership of the VPN/TUN lifecycle until shutdown."
+msgstr "服务发布运行时状态，并在关闭前持续持有 VPN/TUN 生命周期。"
+
+msgid "A failure before the Rust core starts should be treated differently from a failure after the core starts: the former is normally an Android permission, profile, or TUN setup problem, while the latter belongs to runtime config, listener, DNS, rule, or outbound initialization."
+msgstr "Rust 核心启动前的失败应与启动后的失败分开处理：前者通常属于 Android 权限、配置档案或 TUN 初始化问题；后者则通常属于运行时配置、监听器、DNS、规则或出站初始化。"
+
+msgid "Socket Protection"
+msgstr "套接字保护"
+
+msgid "Android VPN applications must prevent their own outbound sockets from being captured by the VPN again. `AChimera` exposes a bridge from Rust back to `VpnService.protect(fd)`."
+msgstr "Android VPN 应用必须避免自身的出站套接字再次被 VPN 捕获。`AChimera` 提供了从 Rust 回调到 `VpnService.protect(fd)` 的桥接。"
+
+msgid "Without this protection, a remote proxy connection can recursively enter the same TUN path and fail or loop."
+msgstr "缺少这种保护时，远程代理连接可能递归进入同一 TUN 路径，从而失败或形成循环。"
+
+msgid "Profile Lifecycle"
+msgstr "配置档案生命周期"
+
+msgid "The current backend supports both local and remote profiles."
+msgstr "当前后端同时支持本地与远程配置档案。"
+
+msgid "For local profiles it tracks metadata such as profile ID, display name, file path, active state, creation time, and size."
+msgstr "对于本地配置档案，会记录 ID、显示名称、文件路径、活动状态、创建时间和大小等元数据。"
+
+msgid "For remote profiles it additionally stores source URL and update metadata, and uses the Rust-side download helper for retrieval. A downloaded profile is not assumed valid merely because the HTTP request succeeded: configuration verification is exposed separately through the UniFFI layer."
+msgstr "对于远程配置档案，还会保存来源 URL 与更新元数据，并使用 Rust 侧下载助手进行获取。HTTP 请求成功并不意味着下载的配置一定有效；配置校验通过 UniFFI 层单独提供。"
+
+msgid "Profile deletion is deliberately defensive. The repository contains policy objects for staging, persistence, deletion, and recovery so that an interrupted or failed delete operation does not silently corrupt the profile catalog."
+msgstr "配置档案删除采用防御式设计。仓库中包含暂存、持久化、删除与恢复策略对象，避免删除被中断或失败时静默破坏配置目录。"
+
+msgid "Relevant tests include:"
+msgstr "相关测试包括："
+
+msgid "`ProfileCatalogPolicyTest`"
+msgstr "`ProfileCatalogPolicyTest`"
+
+msgid "`ProfileDeletionPolicyTest`"
+msgstr "`ProfileDeletionPolicyTest`"
+
+msgid "`ProfileDeletionRecoveryPolicyTest`"
+msgstr "`ProfileDeletionRecoveryPolicyTest`"
+
+msgid "`ProfileFilePolicyTest`"
+msgstr "`ProfileFilePolicyTest`"
+
+msgid "`ProfilePersistencePolicyTest`"
+msgstr "`ProfilePersistencePolicyTest`"
+
+msgid "`ProfileRemotePolicyTest`"
+msgstr "`ProfileRemotePolicyTest`"
+
+msgid "Runtime Settings"
+msgstr "运行时设置"
+
+msgid "The Android app currently exposes runtime listener overrides for:"
+msgstr "Android 应用当前提供以下运行时监听端口覆盖："
+
+msgid "mixed port,"
+msgstr "mixed 端口，"
+
+msgid "HTTP port,"
+msgstr "HTTP 端口，"
+
+msgid "SOCKS port."
+msgstr "SOCKS 端口。"
+
+msgid "These settings are application/runtime overrides. They do not define which remote proxy protocols are compiled into the embedded core. Protocol availability still follows the `Chimera_Client` build and configuration."
+msgstr "这些设置属于应用/运行时覆盖项，并不决定嵌入式核心编译了哪些远程代理协议。协议可用性仍取决于 `Chimera_Client` 的构建与配置。"
+
+msgid "Observability"
+msgstr "可观测性"
+
+msgid "`ChimeraBackendImpl` polls the embedded controller and exposes application state for:"
+msgstr "`ChimeraBackendImpl` 轮询嵌入式控制器，并向应用暴露以下状态："
+
+msgid "total traffic,"
+msgstr "总流量，"
+
+msgid "memory usage,"
+msgstr "内存使用量，"
+
+msgid "active connections,"
+msgstr "活动连接，"
+
+msgid "service/runtime state,"
+msgstr "服务/运行时状态，"
+
+msgid "runtime errors."
+msgstr "运行时错误。"
+
+msgid "The Android UI therefore consumes controller state from the Rust core rather than maintaining a second independent accounting model."
+msgstr "因此 Android UI 使用 Rust 核心控制器提供的状态，而不是维护第二套独立的统计模型。"
+
+msgid "Failure Boundaries"
+msgstr "故障边界"
+
+msgid "When troubleshooting Android, identify the failing layer before changing proxy protocol settings:"
+msgstr "排查 Android 问题时，应先确定失败层，再修改代理协议设置："
+
+msgid "First layer to inspect"
+msgstr "优先检查的层"
+
+msgid "Android never asks for or receives VPN permission"
+msgstr "Android 从未请求或获得 VPN 权限"
+
+msgid "`VpnService.prepare` / platform permission flow"
+msgstr "`VpnService.prepare` / 平台权限流程"
+
+msgid "Service starts but no TUN FD is available"
+msgstr "服务已启动但没有可用的 TUN FD"
+
+msgid "`TunService` interface creation and detach path"
+msgstr "`TunService` 接口创建与 FD detach 路径"
+
+msgid "Core startup fails immediately"
+msgstr "核心启动后立即失败"
+
+msgid "profile verification, runtime overrides, Rust initialization"
+msgstr "配置档案校验、运行时覆盖、Rust 初始化"
+
+msgid "Proxy connects recursively or never leaves the device"
+msgstr "代理连接递归回流或始终无法离开设备"
+
+msgid "socket `protect(fd)` bridge"
+msgstr "socket `protect(fd)` 桥接"
+
+msgid "UI shows stale traffic or connections"
+msgstr "UI 显示过期的流量或连接信息"
+
+msgid "controller polling/backend state collection"
+msgstr "控制器轮询 / 后端状态收集"
+
+msgid "Remote profile update fails"
+msgstr "远程配置档案更新失败"
+
+msgid "download helper, URL policy, temporary-file/persistence path"
+msgstr "下载助手、URL 策略、临时文件/持久化路径"
+
+msgid "Relationship to Chimera Desktop"
+msgstr "与 Chimera 桌面端的关系"
+
+msgid "`AChimera` and the desktop `Chimera` application are sibling control surfaces, not two layers that normally run in one forwarding path."
+msgstr "`AChimera` 与桌面端 `Chimera` 是并列的控制界面，而不是通常会串联在一条转发路径上的两层。"
+
+msgid "The desktop application can choose and manage external core processes or `Chimera_Service`; Android embeds the client core in the application and passes its TUN file descriptor through UniFFI. Both ultimately depend on `Chimera_Client` behavior for Clash-style configuration and proxy forwarding."
+msgstr "桌面应用可以选择并管理外部核心进程或 `Chimera_Service`；Android 则把客户端核心嵌入应用，并通过 UniFFI 传递 TUN 文件描述符。两者最终都依赖 `Chimera_Client` 来实现 Clash 风格配置与代理转发。"
+
+msgid "Core-Dependent Protocol Surface"
+msgstr "由核心决定的协议能力"
+
+msgid "Chimera does not have one fixed protocol matrix of its own. The selected core is an explicit runtime choice, and the desktop source maps several Clash-family core types into the shared core-management layer, including Mihomo, clash-rs, and Chimera Client variants."
+msgstr "Chimera 本身并没有一张固定的协议矩阵。所选核心是明确的运行时选择，桌面端源码会把多种 Clash 系核心类型映射到共享核心管理层，其中包括 Mihomo、clash-rs 和 Chimera Client 变体。"
+
+msgid "A generated profile can therefore contain a field that one selected core supports and another rejects or interprets differently. Protocol claims in this Wiki should be attached to the core implementation rather than to the desktop GUI."
+msgstr "因此，生成的配置档案中可能包含某个核心支持、而另一个核心拒绝或以不同方式解释的字段。本 Wiki 中的协议能力声明应归属于核心实现，而不是桌面 GUI。"
+
+msgid "For the current Chimera Client matrix, see [Chimera_Client](./chimera_client.md). For a source-audited cross-project view, see [Implementation Status and Source Evidence](./implementation-status.md)."
+msgstr "当前 Chimera Client 矩阵见 [Chimera_Client](./chimera_client.md)。经源码审计的跨项目视图见 [Implementation Status and Source Evidence](./implementation-status.md)。"
+
+msgid "Foreground and Service Runtime Paths"
+msgstr "前台与服务模式运行路径"
+
+msgid "The desktop currently has two distinct core ownership paths:"
+msgstr "桌面端当前有两种不同的核心所有权路径："
+
+msgid "Both paths use the desktop-generated runtime configuration. Service mode moves process ownership and privileged control into `Chimera_Service`; it does not move profile merge/rule semantics into the service."
+msgstr "两条路径都使用桌面端生成的运行时配置。服务模式把进程所有权和特权控制移交给 `Chimera_Service`，但不会把配置档案合并或规则语义移入服务。"
+
+msgid "See [Service Mode Configuration](./chimera/service-mode.md) for the actual IPC boundary and lifecycle."
+msgstr "实际 IPC 边界与生命周期见 [Service Mode Configuration](./chimera/service-mode.md)。"
+
+msgid "`Chimera_Server` is the inbound/server core of the Chimera ecosystem. Its configuration model intentionally follows Xray-style `inbounds`, `streamSettings`, transport wrappers, and security settings, but compatibility must be evaluated field by field and path by path rather than assumed from configuration shape alone."
+msgstr "`Chimera_Server` 是 Chimera 生态中的入站/服务端核心。其配置模型刻意遵循 Xray 风格的 `inbounds`、`streamSettings`、传输封装和安全设置，但兼容性必须逐字段、逐路径判断，不能仅凭配置形状推断。"
+
+msgid "The server source is organized around this data path:"
+msgstr "服务端源码围绕以下数据路径组织："
+
+msgid "For the evidence terminology used below, see [Implementation Status and Source Evidence](./implementation-status.md)."
+msgstr "下文使用的证据术语见 [Implementation Status and Source Evidence](./implementation-status.md)。"
+
+msgid "Workspace Layout"
+msgstr "工作区结构"
+
+msgid "Application entry point and integration-test surface."
+msgstr "应用入口与集成测试入口。"
+
+msgid "Config parsing, runtime construction, listener/transport entry points, protocol handlers, routing/outbound state, traffic and control-plane services."
+msgstr "负责配置解析、运行时构建、监听器/传输入口、协议处理器、路由/出站状态、流量与控制面服务。"
+
+msgid "Administrative helper CLI, including X25519 key utilities."
+msgstr "管理辅助 CLI，包括 X25519 密钥工具。"
+
+msgid "`chimera_tcp_reality_server`"
+msgstr "`chimera_tcp_reality_server`"
+
+msgid "Focused TCP/REALITY server crate used for a narrower runtime path."
+msgstr "面向更窄运行路径的专用 TCP/REALITY 服务端 crate。"
+
+msgid "Important source anchors are:"
+msgstr "重要源码锚点包括："
+
+msgid "`chimera_server_lib/src/config/mod.rs`,"
+msgstr "`chimera_server_lib/src/config/mod.rs`，"
+
+msgid "`chimera_server_lib/src/config/server_config/`,"
+msgstr "`chimera_server_lib/src/config/server_config/`，"
+
+msgid "`chimera_server_lib/src/beginning/`,"
+msgstr "`chimera_server_lib/src/beginning/`，"
+
+msgid "`chimera_server_lib/src/handler/`,"
+msgstr "`chimera_server_lib/src/handler/`，"
+
+msgid "`chimera_server_lib/src/reality/`,"
+msgstr "`chimera_server_lib/src/reality/`，"
+
+msgid "`chimera_server_app/tests/`."
+msgstr "`chimera_server_app/tests/`。"
+
+msgid "Build Features"
+msgstr "构建 Feature"
+
+msgid "The current server library exposes protocol/transport features including:"
+msgstr "当前服务端库暴露的协议/传输 feature 包括："
+
+msgid "`hysteria`,"
+msgstr "`hysteria`，"
+
+msgid "`http`,"
+msgstr "`http`，"
+
+msgid "`mixed`,"
+msgstr "`mixed`，"
+
+msgid "`httpupgrade`,"
+msgstr "`httpupgrade`，"
+
+msgid "`grpc_transport`,"
+msgstr "`grpc_transport`，"
+
+msgid "`vless`,"
+msgstr "`vless`，"
+
+msgid "`vmess`,"
+msgstr "`vmess`，"
+
+msgid "`tuic`,"
+msgstr "`tuic`，"
+
+msgid "`traffic`,"
+msgstr "`traffic`，"
+
+msgid "`api`."
+msgstr "`api`。"
+
+msgid "The current default is `full`, so the normal server build includes this feature set. Smaller application feature sets such as `minimal-vless` and `minimal-vless-tls` also exist and should be treated as different capability artifacts."
+msgstr "当前默认 feature 为 `full`，因此正常服务端构建会包含这组功能。应用层还提供 `minimal-vless`、`minimal-vless-tls` 等更小 feature 集，应把它们视为能力不同的构建产物。"
+
+msgid "Current Protocol and Transport Surface"
+msgstr "当前协议与传输能力"
+
+msgid "The typed protocol configuration currently includes:"
+msgstr "当前类型化协议配置包括："
+
+msgid "VLESS,"
+msgstr "VLESS，"
+
+msgid "VMess,"
+msgstr "VMess，"
+
+msgid "Hysteria 2,"
+msgstr "Hysteria 2，"
+
+msgid "Dokodemo-door,"
+msgstr "Dokodemo-door，"
+
+msgid "Trojan,"
+msgstr "Trojan，"
+
+msgid "TUIC v5,"
+msgstr "TUIC v5，"
+
+msgid "XHTTP,"
+msgstr "XHTTP，"
+
+msgid "SOCKS,"
+msgstr "SOCKS，"
+
+msgid "HTTP,"
+msgstr "HTTP，"
+
+msgid "Mixed,"
+msgstr "Mixed，"
+
+msgid "Shadowsocks."
+msgstr "Shadowsocks。"
+
+msgid "Transport/security code also includes WebSocket, HTTPUpgrade, gRPC transport, XHTTP, TLS, REALITY, TCP/UDP and QUIC entry paths."
+msgstr "传输/安全代码还包含 WebSocket、HTTPUpgrade、gRPC 传输、XHTTP、TLS、REALITY，以及 TCP/UDP 与 QUIC 入口路径。"
+
+msgid "This list means source/runtime paths exist. It is **not** a claim that every Xray field or every transport/protocol combination has parity."
+msgstr "该列表表示源码/运行时路径确实存在；它**不代表**每个 Xray 字段或每种传输/协议组合都已完全兼容。"
+
+msgid "Explicit Compatibility Boundaries"
+msgstr "明确的兼容性边界"
+
+msgid "One of the most useful properties of the current server is that unsupported compatibility fields are often rejected deliberately instead of silently ignored. The Wiki should preserve these boundaries."
+msgstr "当前服务端一个很有价值的特性是：对不支持的兼容字段通常会主动拒绝，而不是静默忽略。Wiki 应保留并明确这些边界。"
+
+msgid "Current source includes explicit rejections or unimplemented paths such as:"
+msgstr "当前源码包含以下明确拒绝或未实现路径："
+
+msgid "Current boundary"
+msgstr "当前边界"
+
+msgid "SOCKS"
+msgstr "SOCKS"
+
+msgid "`settings.ip` is not supported yet."
+msgstr "尚不支持 `settings.ip`。"
+
+msgid "`settings.userLevel` is not supported yet."
+msgstr "尚不支持 `settings.userLevel`。"
+
+msgid "Trojan fallback"
+msgstr "Trojan fallback"
+
+msgid "Unsupported fallback types and Unix-socket destinations are rejected."
+msgstr "不支持的 fallback 类型以及 Unix socket 目标会被拒绝。"
+
+msgid "VLESS fallback"
+msgstr "VLESS fallback"
+
+msgid "`headers` and several additional Xray fields are rejected when unsupported."
+msgstr "`headers` 及若干额外 Xray 字段在未实现时会被拒绝。"
+
+msgid "`downloadSettings` is not supported yet."
+msgstr "尚不支持 `downloadSettings`。"
+
+msgid "`grpcSettings.multiMode` is not supported yet."
+msgstr "尚不支持 `grpcSettings.multiMode`。"
+
+msgid "`acceptProxyProtocol` and `ed` are not supported yet."
+msgstr "尚不支持 `acceptProxyProtocol` 与 `ed`。"
+
+msgid "`xver` values other than `0` are not supported yet."
+msgstr "尚不支持除 `0` 之外的 `xver` 值。"
+
+msgid "`xchacha20-poly1305` is not supported yet."
+msgstr "尚不支持 `xchacha20-poly1305`。"
+
+msgid "VLESS Vision"
+msgstr "VLESS Vision"
+
+msgid "Vision direct mode is not implemented yet."
+msgstr "Vision direct mode 尚未实现。"
+
+msgid "UDP outbound proxying"
+msgstr "UDP 出站代理"
+
+msgid "Some outbound protocol selections, including VMess in the inspected path, are rejected as unsupported."
+msgstr "部分出站协议选择会因为不支持而被拒绝；已检查路径中的 VMess 就属于这种情况。"
+
+msgid "These restrictions are more precise than saying “Xray compatible”. When a field is added upstream, the Server builder and runtime must both be checked before the Wiki marks it supported."
+msgstr "这些限制比一句“兼容 Xray”更精确。上游新增字段后，必须同时检查 Server builder 与运行时路径，Wiki 才能把它标记为支持。"
+
+msgid "A typical VLESS + REALITY inbound retains the familiar Xray-style shape:"
+msgstr "典型 VLESS + REALITY 入站仍保持熟悉的 Xray 风格配置结构："
+
+msgid "Configuration compatibility has three distinct outcomes:"
+msgstr "配置兼容性有三种不同结果："
+
+msgid "accepted and applied,"
+msgstr "接受并实际应用，"
+
+msgid "accepted only where explicitly documented as compatibility parsing,"
+msgstr "仅在明确注明为兼容解析时接受但不一定应用，"
+
+msgid "rejected early because the runtime path does not support the field."
+msgstr "由于运行时路径不支持该字段而提前拒绝。"
+
+msgid "Prefer early rejection over implying behavior that does not exist."
+msgstr "宁可尽早拒绝，也不要暗示不存在的行为已经生效。"
+
+msgid "Listener and Handler Separation"
+msgstr "监听器与处理器分离"
+
+msgid "The server architecture keeps transport acceptance separate from proxy semantics. For example:"
+msgstr "服务端架构把传输接入与代理协议语义分开。例如："
+
+msgid "QUIC entry paths similarly dispatch Hysteria 2 or TUIC to protocol-specific handlers."
+msgstr "QUIC 入口同样会把 Hysteria 2 或 TUIC 分发给各自的协议处理器。"
+
+msgid "This separation is important when debugging: a successful TLS/REALITY or HTTP transport handshake does not prove that the inner protocol authentication or request header succeeded."
+msgstr "这种分层对排障很重要：TLS/REALITY 或 HTTP 传输握手成功，并不能证明内层协议认证或请求头已经成功。"
+
+msgid "Interoperability and E2E Evidence"
+msgstr "互操作与 E2E 证据"
+
+msgid "The server repository contains dedicated tests that are stronger evidence than a capability list. Current examples include:"
+msgstr "服务端仓库包含专门测试，它们比单纯的能力列表更有证明力。当前示例包括："
+
+msgid "`chimera_client_reality_vision_e2e.rs`,"
+msgstr "`chimera_client_reality_vision_e2e.rs`，"
+
+msgid "`chimera_client_reality_vision_negative_e2e.rs`,"
+msgstr "`chimera_client_reality_vision_negative_e2e.rs`，"
+
+msgid "`reality_vision_matrix_e2e.rs`,"
+msgstr "`reality_vision_matrix_e2e.rs`，"
+
+msgid "`reality_vision_negative_e2e.rs`,"
+msgstr "`reality_vision_negative_e2e.rs`，"
+
+msgid "`xhttp_matrix_e2e.rs`,"
+msgstr "`xhttp_matrix_e2e.rs`，"
+
+msgid "`xhttp_protocol_matrix_e2e.rs`,"
+msgstr "`xhttp_protocol_matrix_e2e.rs`，"
+
+msgid "`xhttp_security_matrix_e2e.rs`,"
+msgstr "`xhttp_security_matrix_e2e.rs`，"
+
+msgid "`grpc_xray_compat_e2e.rs`,"
+msgstr "`grpc_xray_compat_e2e.rs`，"
+
+msgid "`grpc_external_integration.rs`,"
+msgstr "`grpc_external_integration.rs`，"
+
+msgid "`socks_external_integration.rs`,"
+msgstr "`socks_external_integration.rs`，"
+
+msgid "`xray_client_proxy_e2e.rs`,"
+msgstr "`xray_client_proxy_e2e.rs`，"
+
+msgid "TUIC E2E tests inside the handler module."
+msgstr "以及 handler 模块内部的 TUIC E2E 测试。"
+
+msgid "When describing a combination as interoperable, link the claim to one of these concrete tests or add a new test first."
+msgstr "把某个组合描述为可互操作时，应把该结论关联到这些具体测试之一；如果没有对应测试，应先补测试。"
+
+msgid "Control Plane and Observability"
+msgstr "控制面与可观测性"
+
+msgid "The server data plane is intentionally separate from control-plane surfaces. The codebase includes:"
+msgstr "服务端数据面刻意与控制面接口分离。代码库包含："
+
+msgid "runtime/service registry state,"
+msgstr "运行时/服务注册状态，"
+
+msgid "traffic accounting,"
+msgstr "流量统计，"
+
+msgid "gRPC API services when `api` is enabled,"
+msgstr "启用 `api` 时的 gRPC API 服务，"
+
+msgid "MCP-related control/data push code,"
+msgstr "MCP 相关控制/数据推送代码，"
+
+msgid "tracing-based logs."
+msgstr "基于 tracing 的日志。"
+
+msgid "These should not be confused with the proxy gRPC **transport**. The API gRPC service is a management plane; `grpc_transport` is a forwarding transport for an inbound proxy protocol."
+msgstr "这些内容不能与代理 gRPC **传输层**混淆。API gRPC 服务属于管理面；`grpc_transport` 则是入站代理协议使用的转发传输。"
+
+msgid "To generate X25519 key material:"
+msgstr "生成 X25519 密钥材料："
+
+msgid "The repository guidance uses:"
+msgstr "仓库指导使用以下检查："
+
+msgid "For documentation maintenance, protocol capability claims should be updated only after the relevant configuration/runtime path and its tests have been inspected."
+msgstr "维护文档时，只有在检查过相关配置/运行时路径及其测试之后，才应更新协议能力声明。"
+
+msgid "This page tracks unresolved, source-verified documentation or implementation gaps. Remove an item when the source or tests answer it; do not keep historical TODOs merely because they once appeared in an older Wiki revision."
+msgstr "本页跟踪经源码确认仍未解决的文档或实现缺口。当源码或测试已经给出答案时，应删除对应条目；不要仅因为某个 TODO 曾出现在旧版 Wiki 中就继续保留。"
+
+msgid "Cross-Project Compatibility"
+msgstr "跨项目兼容性"
+
+msgid "Add and maintain a generated or semi-generated compatibility matrix that can be checked against `Chimera_Client` and `Chimera_Server` source changes."
+msgstr "增加并维护可生成或半生成的兼容性矩阵，使其能够随 `Chimera_Client` 与 `Chimera_Server` 源码变化进行核验。"
+
+msgid "Record the exact build artifact/features used for interoperability tests, not only the repository commit."
+msgstr "互操作测试不仅要记录仓库提交，还应记录实际使用的构建产物与 feature。"
+
+msgid "Expand interoperability evidence beyond the current REALITY/Vision, XHTTP, gRPC, SOCKS, and selected Xray/client test paths."
+msgstr "把互操作证据扩展到当前 REALITY/Vision、XHTTP、gRPC、SOCKS 以及部分 Xray/客户端测试路径之外。"
+
+msgid "Define a stable policy for how long an audited source snapshot remains “current” before the Wiki requires a re-audit."
+msgstr "定义稳定策略，明确已审计源码快照在多长时间内仍可视为“当前”，以及何时必须重新审计。"
+
+msgid "Chimera Desktop"
+msgstr "Chimera 桌面端"
+
+msgid "Classify each runtime setting as hot-reloadable, restart-required, or application/OS-owned by following its actual update path."
+msgstr "沿真实更新路径，把每个运行时设置分类为可热重载、需要重启，或由应用/操作系统负责。"
+
+msgid "Document the profile/enhance pipeline in enough detail to show where generated runtime YAML can differ between Mihomo, clash-rs, and Chimera Client."
+msgstr "详细记录配置档案/enhance 流程，明确生成运行时 YAML 在 Mihomo、clash-rs 与 Chimera Client 之间可能出现差异的位置。"
+
+msgid "Document failure handling for core download/update, generated-config validation, foreground process startup, and service-mode startup."
+msgstr "记录核心下载/更新、生成配置校验、前台进程启动和服务模式启动的失败处理。"
+
+msgid "Review `patch_clash_config` and adjacent IPC paths and document the concrete controller/restart behavior they use today."
+msgstr "审查 `patch_clash_config` 及其相邻 IPC 路径，并记录当前实际使用的 controller/重启行为。"
+
+msgid "Chimera_Service"
+msgstr "Chimera_Service"
+
+msgid "Document the local IPC transport/ACL model per operating system with exact source-backed permission behavior."
+msgstr "按操作系统记录本地 IPC 传输/ACL 模型，并给出源码可验证的精确权限行为。"
+
+msgid "Document which privileged network operations are implemented on each platform; `/network/set_dns` must not be assumed portable merely because it exists in the shared IPC API."
+msgstr "记录各平台实际实现了哪些特权网络操作；不能仅因为共享 IPC API 中存在 `/network/set_dns` 就假定它跨平台可用。"
+
+msgid "Add a compatibility note for desktop/service/shared-type version skew and the expected failure behavior."
+msgstr "补充桌面端/服务/共享类型版本不一致时的兼容性说明和预期失败行为。"
+
+msgid "AChimera"
+msgstr "AChimera"
+
+msgid "Document the exact Android route, DNS-server, MTU, IPv4/IPv6, and application include/exclude behavior configured by `TunService`."
+msgstr "记录 `TunService` 配置的精确 Android 路由、DNS 服务器、MTU、IPv4/IPv6 以及应用包含/排除行为。"
+
+msgid "Record which `Chimera_Client` Cargo features are built into the Android native artifact so Android protocol availability can be stated precisely."
+msgstr "记录 Android 原生产物实际编译了哪些 `Chimera_Client` Cargo feature，从而精确描述 Android 上的协议可用性。"
+
+msgid "Add an end-to-end Android test plan covering VPN permission, TUN setup, `protect(fd)`, DNS, profile validation, and one remote proxy path."
+msgstr "增加 Android 端到端测试计划，覆盖 VPN 权限、TUN 初始化、`protect(fd)`、DNS、配置档案校验以及至少一条远程代理路径。"
+
+msgid "Document controller polling intervals/backoff and behavior when the embedded core exits while the Android service remains alive."
+msgstr "记录 controller 轮询间隔/退避策略，以及嵌入式核心退出但 Android 服务仍存活时的行为。"
+
+msgid "Document all `Parsed-only` fields, beginning with the AnyTLS compatibility fields that are accepted but not applied by the runtime."
+msgstr "记录所有 `Parsed-only` 字段，首先从 AnyTLS 中那些被接受但运行时不应用的兼容字段开始。"
+
+msgid "Document the current SOCKS inbound and mixed-listener UDP limitations next to their configuration examples."
+msgstr "在对应配置示例旁明确记录当前 SOCKS 入站和 mixed 监听器的 UDP 限制。"
+
+msgid "Add a feature/build matrix to release documentation so users can determine whether `anytls`, `shadowsocks`, `trojan`, `hysteria`, and `ws` are compiled into a distributed binary."
+msgstr "在发布文档中增加 feature/构建矩阵，让用户能够判断分发二进制是否编译了 `anytls`、`shadowsocks`、`trojan`、`hysteria` 和 `ws`。"
+
+msgid "Clarify the intended future status of VMess, TUIC, WireGuard, SSH, and gRPC outbound support; these are not current variants of the inspected outbound enum."
+msgstr "明确 VMess、TUIC、WireGuard、SSH 与 gRPC 出站支持的未来定位；它们当前并不是已检查出站枚举的变体。"
+
+msgid "Document the unimplemented HTTP proxy-provider path if it remains exposed in configuration or migration guidance."
+msgstr "如果未实现的 HTTP proxy-provider 路径仍暴露在配置或迁移说明中，应明确记录。"
+
+msgid "Add per-protocol implementation pages that map configuration fields to `ServerConfig` validation, listener/transport selection, and handler code."
+msgstr "为各协议增加实现页面，把配置字段映射到 `ServerConfig` 校验、监听器/传输选择以及 handler 代码。"
+
+msgid "Convert explicit `not supported yet` builder/runtime errors into a maintained compatibility table and tests so documentation cannot silently drift."
+msgstr "把明确的 `not supported yet` builder/运行时错误整理成持续维护的兼容性表与测试，防止文档静默漂移。"
+
+msgid "Document current outbound/routing limitations separately from inbound protocol support; for example, an inbound VMess implementation does not imply a VMess outbound proxy path."
+msgstr "把当前出站/路由限制与入站协议支持分开记录；例如存在 VMess 入站实现并不意味着存在 VMess 出站代理路径。"
+
+msgid "Expand XHTTP documentation with the exact list of accepted and rejected Xray fields, including the current `downloadSettings` limitation."
+msgstr "扩展 XHTTP 文档，列出精确的已接受与已拒绝 Xray 字段，包括当前 `downloadSettings` 限制。"
+
+msgid "Document the current gRPC transport subset, especially the rejected `multiMode` configuration."
+msgstr "记录当前 gRPC 传输支持的子集，尤其是被拒绝的 `multiMode` 配置。"
+
+msgid "Document VLESS Vision direct-mode limitations and the conditions exercised by the existing REALITY/Vision E2E matrix."
+msgstr "记录 VLESS Vision direct mode 的限制，以及现有 REALITY/Vision E2E 矩阵实际覆盖的条件。"
+
+msgid "Document Shadowsocks cipher coverage and the current rejection of `xchacha20-poly1305`."
+msgstr "记录 Shadowsocks 密码套件覆盖情况以及当前对 `xchacha20-poly1305` 的拒绝。"
+
+msgid "Protocol and Transport Reference"
+msgstr "协议与传输参考"
+
+msgid "Add a complete Shadowsocks protocol chapter and keep it aligned with the cipher/mode subset implemented by Client and Server."
+msgstr "增加完整 Shadowsocks 协议章节，并与 Client/Server 实际实现的 cipher/mode 子集保持一致。"
+
+msgid "Add a complete AnyTLS protocol chapter and explicitly separate upstream wire behavior from `Chimera_Client` parsed-only configuration fields."
+msgstr "增加完整 AnyTLS 协议章节，并明确区分上游线级行为与 `Chimera_Client` 中仅解析的兼容配置字段。"
+
+msgid "Add dedicated transport pages for gRPC and HTTPUpgrade rather than describing them only as incidental VLESS/Xray transport names."
+msgstr "为 gRPC 与 HTTPUpgrade 增加独立传输页面，而不是只把它们作为 VLESS/Xray 的附带传输名称提及。"
+
+msgid "Add a concise Dokodemo-door implementation reference focused on server forwarding semantics rather than forcing it into the same wire-protocol template as authenticated proxies."
+msgstr "增加简洁的 Dokodemo-door 实现参考，重点描述服务端转发语义，而不是强行套用认证代理的线协议模板。"
+
+msgid "Add cross-links from each protocol page to its Client/Server implementation status and interoperability tests."
+msgstr "从每个协议页面链接到对应 Client/Server 实现状态与互操作测试。"
+
+msgid "Test Evidence and Operations"
+msgstr "测试证据与运维"
+
+msgid "Create a single test-evidence table mapping each advertised combination to its integration/E2E test name, direction, peer implementation, and expected negative cases."
+msgstr "建立统一测试证据表，把每个声明支持的组合映射到集成/E2E 测试名称、方向、对端实现以及预期负向用例。"
+
+msgid "Add an end-to-end troubleshooting guide that follows the actual layered topology: local listener/TUN → DNS/rules → outbound → transport/security → server inbound → target."
+msgstr "增加端到端排障指南，严格沿真实分层拓扑排查：本地监听器/TUN → DNS/规则 → 出站 → 传输/安全 → 服务端入站 → 目标。"
+
+msgid "Add a deployment threat-model chapter covering local listener exposure, credentials/keys, DNS leaks, TUN routing, fallback behavior, metadata logging, UDP/QUIC resource limits, and privileged service IPC."
+msgstr "增加部署威胁模型章节，覆盖本地监听器暴露、凭据/密钥、DNS 泄漏、TUN 路由、fallback 行为、元数据日志、UDP/QUIC 资源限制以及特权服务 IPC。"

@@ -1,52 +1,107 @@
 # Open Questions
 
-This page tracks documentation and implementation gaps that need explicit
-follow-up before the wiki can be treated as a complete project reference.
+This page tracks unresolved, source-verified documentation or implementation
+gaps. Remove an item when the source or tests answer it; do not keep historical
+TODOs merely because they once appeared in an older Wiki revision.
 
-## Project Scope
+## Cross-Project Compatibility
 
-- Add a dedicated `AChimera` page or remove it from the introduction until its
-  role is defined.
-- Clarify which repository is the source of truth for each component:
-  `Chimera_Client`, `Chimera`, `Chimera_Server`, and Android-related work.
-- Add a compatibility matrix for supported operating systems, core binaries, and
-  protocol combinations.
+- Add and maintain a generated or semi-generated compatibility matrix that can
+  be checked against `Chimera_Client` and `Chimera_Server` source changes.
+- Record the exact build artifact/features used for interoperability tests, not
+  only the repository commit.
+- Expand interoperability evidence beyond the current REALITY/Vision, XHTTP,
+  gRPC, SOCKS, and selected Xray/client test paths.
+- Define a stable policy for how long an audited source snapshot remains
+  “current” before the Wiki requires a re-audit.
 
-## Chimera GUI
+## Chimera Desktop
 
-- Document the exact differences between child-process mode and service mode.
-- Record which runtime settings require a core restart and which can be
-  hot-reloaded.
-- Document failure handling for core download, core startup, profile update, and
-  runtime configuration validation.
-- Confirm whether `patch_clash_config` is still unused or should be implemented.
+- Classify each runtime setting as hot-reloadable, restart-required, or
+  application/OS-owned by following its actual update path.
+- Document the profile/enhance pipeline in enough detail to show where generated
+  runtime YAML can differ between Mihomo, clash-rs, and Chimera Client.
+- Document failure handling for core download/update, generated-config
+  validation, foreground process startup, and service-mode startup.
+- Review `patch_clash_config` and adjacent IPC paths and document the concrete
+  controller/restart behavior they use today.
 
-## Runtime Configuration
+## Chimera_Service
 
-- Define the intended behavior of profile chain scripts. The current notes show
-  the chain-processing hook as a placeholder.
-- Decide how multiple profiles should be merged beyond appending `proxies`.
-- Document how generated Clash-compatible YAML differs across `mihomo`,
-  `clash-rs`, and `chimera-client`.
+- Document the local IPC transport/ACL model per operating system with exact
+  source-backed permission behavior.
+- Document which privileged network operations are implemented on each platform;
+  `/network/set_dns` must not be assumed portable merely because it exists in
+  the shared IPC API.
+- Add a compatibility note for desktop/service/shared-type version skew and the
+  expected failure behavior.
+
+## AChimera
+
+- Document the exact Android route, DNS-server, MTU, IPv4/IPv6, and application
+  include/exclude behavior configured by `TunService`.
+- Record which `Chimera_Client` Cargo features are built into the Android native
+  artifact so Android protocol availability can be stated precisely.
+- Add an end-to-end Android test plan covering VPN permission, TUN setup,
+  `protect(fd)`, DNS, profile validation, and one remote proxy path.
+- Document controller polling intervals/backoff and behavior when the embedded
+  core exits while the Android service remains alive.
 
 ## Chimera_Client
 
-- Add a feature matrix for inbound listeners, DNS modes, TUN behavior, rule
-  types, and platform-specific limitations.
-- Document migration differences from Clash/Mihomo behavior where compatibility
-  is intentionally incomplete.
+- Document all `Parsed-only` fields, beginning with the AnyTLS compatibility
+  fields that are accepted but not applied by the runtime.
+- Document the current SOCKS inbound and mixed-listener UDP limitations next to
+  their configuration examples.
+- Add a feature/build matrix to release documentation so users can determine
+  whether `anytls`, `shadowsocks`, `trojan`, `hysteria`, and `ws` are compiled
+  into a distributed binary.
+- Clarify the intended future status of VMess, TUIC, WireGuard, SSH, and gRPC
+  outbound support; these are not current variants of the inspected outbound
+  enum.
+- Document the unimplemented HTTP proxy-provider path if it remains exposed in
+  configuration or migration guidance.
 
 ## Chimera_Server
 
-- Split the current capability map into implemented, partial, and planned
-  sections.
-- Add tested configuration examples for each advertised inbound protocol.
-- Document how closely each inbound follows xray-core behavior, including known
-  deviations.
+- Add per-protocol implementation pages that map configuration fields to
+  `ServerConfig` validation, listener/transport selection, and handler code.
+- Convert explicit `not supported yet` builder/runtime errors into a maintained
+  compatibility table and tests so documentation cannot silently drift.
+- Document current outbound/routing limitations separately from inbound
+  protocol support; for example, an inbound VMess implementation does not imply
+  a VMess outbound proxy path.
+- Expand XHTTP documentation with the exact list of accepted and rejected Xray
+  fields, including the current `downloadSettings` limitation.
+- Document the current gRPC transport subset, especially the rejected
+  `multiMode` configuration.
+- Document VLESS Vision direct-mode limitations and the conditions exercised by
+  the existing REALITY/Vision E2E matrix.
+- Document Shadowsocks cipher coverage and the current rejection of
+  `xchacha20-poly1305`.
 
-## Protocol Reference
+## Protocol and Transport Reference
 
-- Add source references for protocol wire-format claims.
-- Add interoperability notes for common client/server combinations.
-- Add security notes for deployment-sensitive protocols such as Reality,
-  Hysteria 2, TUIC, and XHTTP.
+- Add a complete Shadowsocks protocol chapter and keep it aligned with the
+  cipher/mode subset implemented by Client and Server.
+- Add a complete AnyTLS protocol chapter and explicitly separate upstream wire
+  behavior from `Chimera_Client` parsed-only configuration fields.
+- Add dedicated transport pages for gRPC and HTTPUpgrade rather than describing
+  them only as incidental VLESS/Xray transport names.
+- Add a concise Dokodemo-door implementation reference focused on server
+  forwarding semantics rather than forcing it into the same wire-protocol
+  template as authenticated proxies.
+- Add cross-links from each protocol page to its Client/Server implementation
+  status and interoperability tests.
+
+## Test Evidence and Operations
+
+- Create a single test-evidence table mapping each advertised combination to its
+  integration/E2E test name, direction, peer implementation, and expected
+  negative cases.
+- Add an end-to-end troubleshooting guide that follows the actual layered
+  topology: local listener/TUN → DNS/rules → outbound → transport/security →
+  server inbound → target.
+- Add a deployment threat-model chapter covering local listener exposure,
+  credentials/keys, DNS leaks, TUN routing, fallback behavior, metadata logging,
+  UDP/QUIC resource limits, and privileged service IPC.

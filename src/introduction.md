@@ -1,42 +1,63 @@
 # Introduction
 
-This documentation set introduces the Chimera proxy ecosystem, focusing on the
-projects that are visible in the local workspace:
+This documentation set covers the Chimera proxy ecosystem as implemented across
+the local source repositories:
 
-- `Chimera_Client`: a Rust client core based on the `clash-rs` architecture and
-  aimed at Clash/Mihomo-compatible configuration behavior.
-- `Chimera`: a Tauri + React desktop application that manages profiles, core
-  binaries, runtime configuration, system proxy integration, service mode, and
-  updates.
-- `Chimera_Server`: a Rust server core that tracks `xray-core`-style inbound
-  configuration and protocol behavior.
-- `AChimera`: an adjacent Android-oriented project whose relationship to this
-  documentation set still needs a dedicated page.
+- `Chimera_Client`: the Rust Clash-family client core.
+- `Chimera`: the Tauri + React desktop control application.
+- `Chimera_Service`: the privileged local service used for service-mode core
+  lifecycle and selected privileged operations.
+- `AChimera`: the Android application that owns the Android VPN/TUN lifecycle and
+  embeds the Chimera client core through UniFFI.
+- `Chimera_Server`: the Rust server core focused on Xray-style inbound
+  configuration, transports, security wrappers, and protocol handlers.
 
-Each module targets a different layer of the overall stack, but they share a
-common goal: making proxy configuration, operation, and development easier to
-reason about under diverse network conditions.
+These projects target different layers of the system. A configuration or
+protocol feature should therefore be attributed to the component that actually
+parses and executes it rather than to the GUI that exposes the setting.
 
 ## How to Use This Wiki
 
-The documentation is organized around two reading paths:
+There are three complementary reading paths:
 
-- **Users and operators** should start with the component overview, then move to
-  configuration-oriented pages such as ports, DNS, TUN, rules, runtime
-  configuration, and service mode.
-- **Developers and maintainers** should use the topology and protocol sections
-  together with component-specific implementation notes to understand runtime
-  boundaries, configuration flow, compatibility goals, and extension points.
+- **Architecture and operators**: start with [System Topology](./system-topology.md),
+  then read the component pages for desktop, Android, service mode, client, and
+  server behavior.
+- **Implementation and compatibility**: use
+  [Implementation Status and Source Evidence](./implementation-status.md) to see
+  which capabilities are parsed, implemented, feature-gated, tested, or
+  explicitly rejected in the current source.
+- **Wire protocols**: use [Protocol Reference](./protocol.md) for low-level wire
+  formats, state machines, security properties, packet-capture views, and
+  comparisons with SOCKS5.
 
-The [System Topology](./system-topology.md) page is the best starting point when
-trying to understand how the desktop application, client core, and server core
-fit together. The [Protocol Reference](./protocol.md) collects protocol-specific
-notes and comparisons.
+Protocol specification and implementation status are deliberately separate. An
+upstream protocol can define a field that Chimera does not yet implement, while
+Chimera can also parse compatibility fields that are not applied by its runtime.
+
+## Documentation Source Policy
+
+For current implementation claims, this Wiki uses the following evidence order:
+
+1. executable/runtime path,
+2. integration or interoperability tests,
+3. typed configuration and validation,
+4. repository README or planning text.
+
+This prevents a broad README statement such as “Xray compatible” or “Clash
+compatible” from hiding an explicit runtime rejection or a parsed-only field.
+
+For public protocol wire behavior, protocol specifications, RFCs, and current
+upstream implementations remain the preferred sources.
 
 ## Documentation Status
 
-This Wiki documents both current behavior and longer-term project direction.
-Where the implementation boundary is not yet clear, the text should be treated
-as a working reference rather than a compatibility guarantee. Known gaps,
-missing matrices, and questions that still require verification are tracked in
-[Open Questions](./open-questions.md).
+The low-level protocol reference is mature for the currently documented core
+protocols, but the wider project documentation is maintained continuously
+against source changes. The implementation-status page records the audited
+source snapshot so readers can tell when a capability table may need to be
+rechecked.
+
+Remaining source-verified documentation and implementation gaps are tracked in
+[Open Questions](./open-questions.md). That page should contain real unresolved
+work, not items that have already been answered by the source tree.

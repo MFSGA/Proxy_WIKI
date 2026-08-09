@@ -53,17 +53,36 @@ core. The main responsibilities visible in the companion codebase are:
 
 - NixOS
 
-## Currently Supported Protocols
+## Core-Dependent Protocol Surface
 
-Chimera's protocol support is determined by the selected core. The README and
-sidecar manifest scripts currently focus on these common combinations:
+Chimera does not have one fixed protocol matrix of its own. The selected core is
+an explicit runtime choice, and the desktop source maps several Clash-family
+core types into the shared core-management layer, including Mihomo, clash-rs,
+and Chimera Client variants.
 
-- `trojan + ws + tls`
-- `reality + tcp`
-- `hysteria2`
-- `xhttp`
+A generated profile can therefore contain a field that one selected core
+supports and another rejects or interprets differently. Protocol claims in this
+Wiki should be attached to the core implementation rather than to the desktop
+GUI.
 
-For the runtime behavior of `chimera-client` itself, see
-[`Chimera_Client`](./chimera_client.md).
+For the current Chimera Client matrix, see
+[Chimera_Client](./chimera_client.md). For a source-audited cross-project view,
+see [Implementation Status and Source Evidence](./implementation-status.md).
+
+## Foreground and Service Runtime Paths
+
+The desktop currently has two distinct core ownership paths:
+
+```text
+foreground: Chimera -> child core
+service:    Chimera -> local IPC -> Chimera_Service -> child core
+```
+
+Both paths use the desktop-generated runtime configuration. Service mode moves
+process ownership and privileged control into `Chimera_Service`; it does not
+move profile merge/rule semantics into the service.
+
+See [Service Mode Configuration](./chimera/service-mode.md) for the actual IPC
+boundary and lifecycle.
 
 ---
