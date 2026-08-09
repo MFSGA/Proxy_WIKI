@@ -18,10 +18,19 @@ The core design priorities of Chimera are:
 - practical diagnostics through logs, connection views, core status, and
   configuration-directory access.
 
+## Runtime Boundary
+
+`Chimera` is a control application, not a proxy protocol engine. Protocol
+availability, transport behavior, and packet forwarding are provided by the
+selected core. This distinction is important when comparing features: a feature
+visible in the GUI is not necessarily implemented by every supported core, and
+a core capability may require additional UI integration before it is exposed in
+Chimera.
+
 ## Runtime Responsibilities
 
 Chimera manages local state and delegates packet/protocol handling to a selected
-core. The main responsibilities visible in the local codebase are:
+core. The main responsibilities visible in the companion codebase are:
 
 - profile import, update, deletion, viewing, editing, and runtime patching,
 - Clash-style runtime YAML generation from app settings plus active profile,

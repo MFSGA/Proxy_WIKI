@@ -17,8 +17,26 @@ Each module targets a different layer of the overall stack, but they share a
 common goal: making proxy configuration, operation, and development easier to
 reason about under diverse network conditions.
 
-In addition, the documentation for each project is generally divided into two
-major parts: one is a configuration guide for general users, intended for quick
-onboarding and day-to-day usage; the other is an advanced reference for
-developers, intended to help them understand implementation details, extension
-capabilities, and support further development.
+## How to Use This Wiki
+
+The documentation is organized around two reading paths:
+
+- **Users and operators** should start with the component overview, then move to
+  configuration-oriented pages such as ports, DNS, TUN, rules, runtime
+  configuration, and service mode.
+- **Developers and maintainers** should use the topology and protocol sections
+  together with component-specific implementation notes to understand runtime
+  boundaries, configuration flow, compatibility goals, and extension points.
+
+The [System Topology](./system-topology.md) page is the best starting point when
+trying to understand how the desktop application, client core, and server core
+fit together. The [Protocol Reference](./protocol.md) collects protocol-specific
+notes and comparisons.
+
+## Documentation Status
+
+This Wiki documents both current behavior and longer-term project direction.
+Where the implementation boundary is not yet clear, the text should be treated
+as a working reference rather than a compatibility guarantee. Known gaps,
+missing matrices, and questions that still require verification are tracked in
+[Open Questions](./open-questions.md).

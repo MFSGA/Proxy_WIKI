@@ -45,13 +45,6 @@ enum Task {
         #[arg(long)]
         binstall: bool,
     },
-    /// Runs the web driver tests in the tests directory.
-    WebTests {
-        /// Optional 'book html' directory - if set, will also refresh the list
-        /// of slides used by slide size test.
-        #[arg(short, long)]
-        dir: Option<PathBuf>,
-    },
     /// Tests all included Rust snippets.
     RustTests,
     /// Starts a web server with the book.
@@ -86,7 +79,6 @@ fn execute_task() -> Result<()> {
     let cli = Cli::parse();
     match cli.task {
         Task::InstallTools { binstall } => install_tools(binstall),
-        Task::WebTests { dir } => run_web_tests(dir),
         Task::RustTests => run_rust_tests(),
         Task::Serve { language, output, port } => {
             start_web_server(language, output, port)
@@ -186,33 +178,6 @@ fn uninstall_mdbook_linkcheck() -> Result<()> {
         println!("mdbook-linkcheck not installed. Continuing...");
     }
     Ok(())
-}
-
-fn run_web_tests(dir: Option<PathBuf>) -> Result<()> {
-    println!("Running web tests...");
-    let workspace_dir = Path::new(env!("CARGO_WORKSPACE_DIR"));
-
-    let absolute_dir = dir.map(|d| d.canonicalize()).transpose()?;
-
-    if let Some(d) = &absolute_dir {
-        println!("Refreshing slide lists...");
-        let refresh_slides_script = Path::new("tests")
-            .join("src")
-            .join("slides")
-            .join("create-slide.list.sh");
-        let mut cmd = Command::new(&refresh_slides_script);
-        cmd.current_dir(workspace_dir).arg(d);
-        run_command(&mut cmd)?;
-    }
-
-    let tests_dir = workspace_dir.join("tests");
-    let mut cmd = Command::new("npm");
-    cmd.current_dir(tests_dir).arg("test");
-
-    if let Some(d) = absolute_dir {
-        cmd.env("TEST_BOOK_DIR", d);
-    }
-    run_command(&mut cmd)
 }
 
 fn run_rust_tests() -> Result<()> {

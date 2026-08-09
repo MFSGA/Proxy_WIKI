@@ -1,27 +1,146 @@
-# Protocol
+# Protocol Reference
 
-## Overview
+This section compares the proxy protocols, transport methods, and transport
+security mechanisms used around the Chimera ecosystem.
 
-| Protocol | Default Transport | Authentication | Strengths | Typical Constraints |
+It is implementation-oriented documentation, not a replacement for upstream
+specifications. When a wire-format or compatibility detail matters, follow the
+primary references linked from each protocol page.
+
+## Read the Stack in Layers
+
+Not every item in this chapter belongs to the same network layer.
+
+A useful model is:
+
+```text
+Application
+    │
+    ▼
+Local inbound
+SOCKS5 / HTTP
+    │
+    ▼
+Remote proxy protocol
+Trojan / Hysteria 2 / TUIC / VLESS
+    │
+    ▼
+Transport method
+RAW / WebSocket / XHTTP / QUIC-based protocol transport
+    │
+    ▼
+Transport security
+TLS / REALITY / QUIC TLS
+    │
+    ▼
+Internet
+```
+
+Some protocols bundle several of these responsibilities together. Hysteria 2
+and TUIC, for example, are designed around QUIC and its TLS security. VLESS is a
+lighter proxy-protocol layer and is commonly paired with a separate transport
+and security mechanism.
+
+## Layer Comparison
+
+| Item | Primary role | Typical underlying transport | Security model | Main use |
 | --- | --- | --- | --- | --- |
-| SOCKS5 | TCP control + optional UDP | Optional username/password | Works with almost any TCP app, UDP associate mode | Clear-text by default, needs TLS/obfs elsewhere |
-| HTTP(S) CONNECT | TCP over HTTP/1.1 or HTTP/2 | Basic auth, bearer token, mutual TLS | Blends with web traffic, easy to deploy on gateways | Only proxies TCP, relies on intermediary keeping long-lived tunnels |
-| Trojan | TLS over TCP | Pre-shared password validated inside TLS | Hard to fingerprint, benefits from CDN/SNI | Each password maps to a port/user, needs valid TLS certificate |
-| Hysteria 2 | QUIC (UDP) with TLS 1.3 | Password or OIDC-like token | High throughput, UDP native, congestion tuning | Requires open UDP ports, MTU tuning important |
-| TUIC | QUIC (UDP) with TLS 1.3 | UUID or token-based auth | 0-RTT friendly, multiplexed streams, low handshake overhead | Needs UDP reachability, QUIC fingerprinting varies by implementation |
-| VLESS | TLS/XTLS over TCP or MKCP | UUID-based identity | Flexible multiplexing, optional XTLS auto-split | No encryption without TLS/XTLS layer, ecosystem-specific tooling |
-| xHTTP Transport | HTTP-style stream over TLS/Reality | Usually UUID/token from upper protocol (e.g., VLESS) | Better web-traffic camouflage, friendly to reverse proxies/CDNs | Header/path mismatch breaks handshake; extra overhead versus raw TCP |
-| Reality (TLS camouflage) | TLS 1.3-like handshake | Public key + short ID (plus upstream auth) | Certificate-less TLS mimicry, resistant to passive probing | Depends on client fingerprint matching, tied to Xray tooling |
+| SOCKS5 | Local/application proxy | TCP control + optional UDP relay | None by default | General local application ingress |
+| HTTP Proxy / CONNECT | Local/application proxy | TCP | None by default; HTTPS remains end-to-end inside CONNECT | Browser/system HTTP proxy ingress |
+| Trojan | Remote proxy protocol | TLS over TCP in the baseline design | TLS + shared-secret authentication | TLS-oriented remote proxying |
+| Hysteria 2 | Remote proxy protocol + transport design | QUIC over UDP | QUIC TLS + Hysteria authentication | TCP/UDP proxying on lossy/high-latency paths |
+| TUIC | Remote proxy protocol | Multiplexed secure transport, commonly QUIC | TLS session + connection-bound auth | Low-latency TCP/UDP relay |
+| VLESS | Remote proxy protocol | RAW, XHTTP, gRPC, and other supported transports | Usually separate TLS/REALITY layer | Xray-compatible identity and proxy dispatch |
+| XHTTP | Transport method | HTTP-oriented request/response flows | Usually TLS or REALITY | Xray transport through HTTP-aware infrastructure |
+| REALITY | Transport-security mechanism | Supported Xray transports such as RAW/XHTTP/gRPC | REALITY key/short-ID + TLS-like handshake behavior | Xray transport security and camouflage |
 
-Detailed breakdowns now live in dedicated files; each follows the same structure (highlights, flow, configuration snippet, strengths, and limitations) to make comparisons straightforward.
+## Current Chimera Reading Guide
+
+The table below describes how these topics currently appear in this Wiki. It is
+not a substitute for checking the implementation repository before deployment.
+
+| Item | Chimera_Client documentation | Chimera_Server documentation |
+| --- | --- | --- |
+| SOCKS5 | Current local inbound | SOCKS-related inbound work listed |
+| HTTP proxy | Current local inbound | Not the main remote-server protocol focus |
+| Trojan | Current capability, currently documented with WebSocket | Trojan inbound work listed |
+| Hysteria 2 | Current capability | Hysteria 2 inbound/example listed |
+| TUIC | Planned client capability | TUIC inbound work listed |
+| VLESS | Not yet listed as a standalone current client capability | VLESS inbound and examples listed |
+| XHTTP | Current capability | XHTTP-related transport work listed |
+| REALITY | Current `Reality + TCP` capability | REALITY transport and VLESS + REALITY example listed |
+
+The important distinction is **capability presence versus compatibility
+parity**. A parser or transport implementation existing in the codebase does
+not automatically mean every upstream option, version, flow mode, or client is
+supported.
+
+## Choosing a Starting Point
+
+### Local application proxying
+
+Start with [SOCKS5](./protocols/socks5.md) or
+[HTTP Proxy](./protocols/http.md). These are the easiest ways to validate the
+client core before adding TUN, transparent routing, or DNS interception.
+
+### Simple TLS-based remote proxy
+
+Use [Trojan](./protocols/trojan.md) as the reference for the baseline
+TLS + password protocol model. If an implementation adds WebSocket or another
+transport, treat that as an additional layer.
+
+### UDP/QUIC-oriented remote proxying
+
+Compare [Hysteria 2](./protocols/hysteria2.md) and
+[TUIC](./protocols/tuic.md). Both rely heavily on a healthy UDP path, but their
+authentication, task model, and UDP-relay framing differ.
+
+### Xray-style layered deployments
+
+Read these together:
+
+1. [VLESS](./protocols/vless.md) — proxy protocol and user identity.
+2. [XHTTP](./protocols/xhttp.md) — optional HTTP-oriented transport.
+3. [REALITY](./protocols/reality.md) — optional transport-security layer.
+
+Keeping the three layers separate makes configuration and troubleshooting much
+easier.
+
+## Security Rules of Thumb
+
+- SOCKS5 and a local HTTP proxy do not provide encryption by themselves.
+- Do not expose unauthenticated local proxy listeners to the public internet.
+- Keep certificate verification enabled for TLS-based remote protocols.
+- Treat REALITY private keys, Trojan passwords, Hysteria credentials, and TUIC
+  passwords as secrets.
+- For QUIC-based protocols, verify UDP reachability before changing protocol
+  tuning.
+- Validate the exact proxy + transport + security combination supported by the
+  selected core rather than assuming configuration portability.
+
+## Troubleshooting by Layer
+
+When a remote profile fails, debug from the bottom upward:
+
+1. **Network reachability** — DNS, IP route, TCP/UDP port, firewall.
+2. **Transport security** — TLS certificate/SNI or REALITY key/short ID.
+3. **Transport method** — RAW/WebSocket/XHTTP/QUIC settings.
+4. **Proxy authentication** — password, UUID/user ID, Hysteria/TUIC auth.
+5. **Destination routing** — rules, DNS mode, outbound group.
+6. **Advanced tuning** — multiplexing, congestion control, padding, custom
+   headers, flow modes.
+
+Do not start by changing all six layers at once.
 
 ## Deep Dives
 
-- [SOCKS5](./protocols/socks5.md) – General-purpose TCP/UDP proxy with flexible method negotiation.
-- [HTTP CONNECT Proxy](./protocols/http.md) – HTTPS-friendly tunnels that ride over standard web ports.
-- [Trojan](./protocols/trojan.md) – TLS-camouflaged password proxy ideal for CDN fronting.
-- [Hysteria 2](./protocols/hysteria2.md) – QUIC-based transport tuned for high-loss or high-latency links.
-- [TUIC](./protocols/tuic.md) – QUIC-based proxy with multiplexing and aggressive latency tuning.
-- [VLESS](./protocols/vless.md) – UUID-auth protocol with configurable transports such as TLS, XTLS, or Reality.
-- [xHTTP Transport](./protocols/xhttp.md) – HTTP-like transport profile for Xray ecosystems, often paired with VLESS.
-- [Reality](./protocols/reality.md) – TLS camouflage layer used by Xray transports without certificates.
+- [SOCKS5](./protocols/socks5.md) — standardized general-purpose TCP/UDP local proxy.
+- [HTTP Proxy](./protocols/http.md) — application HTTP proxy and `CONNECT` tunneling.
+- [Trojan](./protocols/trojan.md) — TLS-based password proxy with fallback behavior.
+  - [Wire Format](./protocols/trojan/wire-format.md)
+  - [Traffic Handling](./protocols/trojan/traffic-handling.md)
+- [Hysteria 2](./protocols/hysteria2.md) — QUIC-based TCP/UDP proxy with HTTP/3 authentication behavior.
+- [TUIC](./protocols/tuic.md) — multiplexed low-latency TCP/UDP proxy protocol, commonly over QUIC.
+- [VLESS](./protocols/vless.md) — lightweight Xray proxy protocol and identity layer.
+- [XHTTP Transport](./protocols/xhttp.md) — HTTP-oriented Xray transport method.
+- [REALITY](./protocols/reality.md) — Xray transport-security mechanism.

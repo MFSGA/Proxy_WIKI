@@ -17,7 +17,10 @@ flowchart LR
 
 ## Component Roles
 
-| Component        | Runtime role                                                                                                                                                                                                   | Local evidence                                                                          |
+The implementation references below point to companion project repositories in
+the broader Chimera workspace; they are not paths inside this Wiki repository.
+
+| Component        | Runtime role                                                                                                                                                                                                   | Implementation references                                                               |
 | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | `Chimera`        | Desktop control surface. It imports profiles, selects and updates proxy cores, generates runtime config, manages system proxy state, and can start the core either as a child process or through service mode. | `Chimera/README.md`, `backend/tauri/src/lib.rs`, `backend/tauri/src/core/clash/core.rs` |
 | `Chimera_Client` | Clash-family client core. It parses Clash-style YAML, starts inbound listeners, resolves DNS, applies rules, dials outbound proxies, exposes REST APIs, and supports hot reload.                               | `Chimera_Client/README.md`, `clash-lib/src/config/def.rs`, `clash-lib/src/app/*`        |

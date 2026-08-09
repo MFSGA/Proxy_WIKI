@@ -54,7 +54,12 @@ line instructions use it.
 
 ## Current Capability Map
 
-Local code and README evidence show active work around:
+This section is a map of implementation areas, not a protocol conformance
+matrix. A protocol or transport appearing here means related parsing or runtime
+code exists; it does not imply full interoperability with every xray-core client
+or configuration variant.
+
+Companion code and README evidence show active work around:
 
 - VMess, VLESS, Trojan, SOCKS, Hysteria2, TUIC, and XHTTP-related inbound
   parsing/handling, gated by Cargo features where appropriate.

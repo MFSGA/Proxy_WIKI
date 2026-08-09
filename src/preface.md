@@ -1,9 +1,21 @@
 # Preface
 
-The landscape of proxy applications has become crowded and fragmented, so—out of personal interest—I decided to consolidate the ones I use into a single stack.
-- `Chimera_Client` takes inspiration from the open-source [clash-rs] project, with the long-term goal of matching [Mihomo]'s feature set. 
-- `Chimera` follows the [clash-nyanpasu] project, but the key difference is that my top priority is first-class support for the `chimera_client` engine itself, which can largely be considered the `clash-rs` core.
-- `Chimera_Server` project can be viewed as a Rust implementation of [xray-core], with compatibility with the original `xray-core` remaining the end goal.Additionally, its implementation is based on the open-source project [shoes].
+The proxy ecosystem is broad and fragmented. Proxy Wiki exists to document the
+Chimera projects as one coherent stack and to make their relationships easier to
+understand.
+
+The projects draw inspiration from several established open-source projects:
+
+- `Chimera_Client` builds on ideas from [clash-rs], with broader
+  Clash/Mihomo-style compatibility as a long-term direction.
+- `Chimera` is inspired by [clash-nyanpasu], while prioritizing first-class
+  support for the `Chimera_Client` engine and related cores.
+- `Chimera_Server` explores a Rust server stack influenced by [xray-core] and
+  [shoes], with xray-core compatibility as a long-term goal.
+
+These statements describe project direction, not a guarantee that every upstream
+feature is already implemented. Current gaps and unresolved compatibility
+questions are tracked in [Open Questions](./open-questions.md).
 
 ## Project Links
 

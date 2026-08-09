@@ -13,7 +13,7 @@
   - [Service Mode Configuration](./chimera/service-mode.md)
 - [Chimera Server](./chimera_server.md)
 - [Open Questions](./open-questions.md)
-- [Protocol](./protocol.md)
+- [Protocol Reference](./protocol.md)
   - [SOCKS5](./protocols/socks5.md)
   - [HTTP](./protocols/http.md)
   - [Trojan](./protocols/trojan.md)

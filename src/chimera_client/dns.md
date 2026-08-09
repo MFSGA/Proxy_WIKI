@@ -1,58 +1,62 @@
 # DNS Module
 
-## Scope and Goals
+## Purpose
 
-The DNS module decides how domains are resolved before policy routing. In
-Clash-family clients, DNS behavior strongly affects rule hit accuracy, latency,
-and anti-pollution resilience.
+DNS is part of the routing pipeline, not just a name-to-address lookup service.
+The resolver strategy affects whether domain rules remain usable, whether TUN
+traffic can be classified correctly, and whether DNS requests bypass the proxy
+unexpectedly.
 
-This page uses local `Chimera_Client` code as the primary source, with
-clash-rs/Mihomo as compatibility references.
+A stable DNS setup should answer three questions clearly:
 
-## Why DNS Design Matters
+1. Which resolver handles a query?
+2. Does the client keep the original domain identity for later rule matching?
+3. Does DNS traffic itself follow the intended proxy or direct path?
 
-- Domain rules require stable mapping between query results and connection flow.
-- Fake-IP mode can preserve domain intent even when apps later connect by IP.
-- Resolver choice impacts censorship resistance, startup reliability, and
-  privacy leakage.
+## Operating Modes
 
-## Configuration Areas
+| Mode | Best fit | Advantages | Trade-offs |
+| --- | --- | --- | --- |
+| System / DNS disabled | Simple app-level proxying | Least invasive, easiest to debug | Depends on OS resolver behavior |
+| Real-IP / `redir-host` style | Conservative enhanced DNS | Applications receive real addresses | Domain identity can be harder to retain in transparent flows |
+| Fake-IP | TUN and domain-heavy routing | Preserves domain intent for later connection matching | Requires exclusions and careful DNS integration |
 
-- **Upstreams**: UDP / DoH / DoT endpoints and ordering.
-- **Mode**: fake-IP vs real-IP.
-- **Policy routing for DNS**: nameserver-policy and fallback strategy.
-- **Cache strategy**: capacity, TTL bounds, prefetch behavior.
-- **Safety controls**: fake-IP filters, hosts overrides, ECS handling.
-- **Bootstrap**: plain DNS for resolving encrypted DNS endpoints.
+Start with the system resolver or real-IP behavior when validating a new setup.
+Introduce Fake-IP only when the routing model benefits from it.
 
-## Mode Comparison
+## Resolver Pipeline
 
-| Mode                         | Advantages                                 | Trade-offs                                 | Typical use                                 |
-| ---------------------------- | ------------------------------------------ | ------------------------------------------ | ------------------------------------------- |
-| `fake-ip`                    | Better domain-rule retention after connect | Needs careful filter list                  | TUN / transparent proxy deployments         |
-| `redir-host` / real-IP style | Simpler app compatibility                  | Domain intent can be lost after IP connect | App-level proxy with conservative DNS goals |
+A Clash-style enhanced resolver generally follows this conceptual sequence:
 
-## Resolver Selection Flow (Reference)
+```text
+application query
+      |
+      v
+hosts/cache lookup
+      |
+      v
+policy/default resolver selection
+      |
+      v
+upstream DNS query
+      |
+      +----> fallback / validation path when configured
+      |
+      v
+cache + answer
+      |
+      v
+rule engine / connection flow
+```
 
-1. Check hosts override and cache.
-2. Choose resolver by policy (domain/set-based) or default list.
-3. Query primary resolver(s).
-4. Run fallback path when validation/latency criteria fail.
-5. Cache and return answer.
+The exact fallback and policy behavior depends on the current
+`chimera_client` implementation and should not be assumed to match every Mihomo
+edge case.
 
-## Compatibility Status
+## Conservative Configuration
 
-| Capability                          | chimera_client now                                                                      | clash-rs / Mihomo reference |
-| ----------------------------------- | --------------------------------------------------------------------------------------- | --------------------------- |
-| System resolver passthrough         | Supported when DNS is disabled or when using the system resolver path                   | Also supported              |
-| Clash-style local DNS server        | Implemented through DNS listener modules; `listen` controls binding                     | Mature                      |
-| Fake-IP workflow                    | Implemented in enhanced resolver path with fake-IP store/filter behavior                | Mature                      |
-| Nameserver policy / fallback filter | Schema and resolver paths exist; verify edge cases before relying on full Mihomo parity | Mature                      |
-| `respect-rules` DNS dialing         | Present in config/runtime hooks                                                         | Mature                      |
-
-## Configuration References
-
-### Conservative profile
+For application-level SOCKS5 or HTTP proxying, keeping enhanced DNS disabled is
+a useful baseline:
 
 ```yaml
 dns:
@@ -60,7 +64,25 @@ dns:
   ipv6: false
 ```
 
-### Clash/Mihomo-aligned schema
+If this works but an enhanced-DNS profile does not, the failure is probably in
+the DNS interception/resolver path rather than the outbound proxy itself.
+
+## Local DNS Listener
+
+A local listener lets the operating system, TUN path, or other applications send
+queries directly to `chimera_client`:
+
+```yaml
+dns:
+  enable: true
+  listen: 127.0.0.1:1053
+  ipv6: false
+```
+
+During development, keep the listener on loopback. Binding DNS to a LAN or public
+interface can expose an unintended resolver service.
+
+## Fake-IP Example
 
 ```yaml
 dns:
@@ -72,37 +94,114 @@ dns:
   fake-ip-filter:
     - "*.lan"
     - "*.local"
+
   default-nameserver:
     - 1.1.1.1
     - 8.8.8.8
+
   nameserver:
     - https://dns.alidns.com/dns-query
     - tls://1.1.1.1:853
+```
+
+Fake-IP exclusions should be kept small and understandable. Large copied filter
+lists can hide routing mistakes and make failures difficult to reproduce.
+
+## Policy and Fallback Example
+
+```yaml
+dns:
+  enable: true
+  listen: 127.0.0.1:1053
+  ipv6: false
+
+  nameserver:
+    - https://dns.alidns.com/dns-query
+
   fallback:
     - 9.9.9.9
+
   fallback-filter:
     geoip: true
     geoip-code: CN
 ```
 
-## Practical Guidance
+The schema and resolver hooks for policy/fallback behavior exist in the current
+client documentation, but full behavioral parity with Mihomo should be verified
+before relying on unusual edge cases.
 
-- Start from real-IP/system resolver behavior for stability.
-- Enable Fake-IP only after validating domain-rule workflows end-to-end.
-- Keep fake-IP exclusions narrow and auditable.
-- Track fallback hit ratio; sudden growth often means upstream degradation or
-  blocking.
+## DNS and Rules
 
-## Troubleshooting Checklist
+DNS mode directly affects the rule engine:
 
-- Verify listener reachability: `dig @127.0.0.1 -p 1053 example.com`.
-- Ensure OS/TUN resolver path really points to the client listener.
-- Inspect logs for timeout, TLS, or response-validation failures.
-- Test with one plain UDP resolver to isolate encrypted-DNS transport issues.
+- Domain-based rules need access to the original hostname or equivalent metadata.
+- IP rules depend on the resolved destination address.
+- Fake-IP is most useful when an application resolves first and connects later,
+  because the client can map the synthetic address back to the original domain.
+- A DNS request that bypasses the intended resolver path can cause apparently
+  random rule mismatches.
 
-## Alignment References
+When debugging rules, inspect DNS before changing rule order blindly.
 
-- Chimera_Client: DNS schema in `clash-lib/src/config/def.rs`; runtime modules
-  under `clash-lib/src/app/dns`.
-- Mihomo: production reference for enhanced-mode, nameserver-policy, and
-  fallback-filter semantics.
+## DNS and TUN
+
+TUN deployments often combine three separate mechanisms:
+
+1. host traffic capture,
+2. DNS interception or resolver redirection,
+3. enhanced DNS such as Fake-IP.
+
+`dns-hijack` in the TUN configuration does not replace a valid DNS configuration.
+It only controls how captured DNS traffic is redirected into the DNS path.
+See [Tun Module](./tun.md) for the routing side.
+
+## Upstream Resolver Guidance
+
+When choosing upstreams:
+
+- keep at least one simple resolver path available while debugging;
+- verify that encrypted DNS endpoint hostnames can be bootstrapped;
+- avoid mixing many upstreams until the basic path is known to work;
+- consider whether DNS itself should be proxied or sent directly;
+- treat resolver latency, failure, and blocking as routing signals, not just DNS
+  errors.
+
+## Compatibility Notes
+
+The current documentation describes support or runtime hooks for:
+
+- the system resolver path,
+- a local DNS listener,
+- enhanced/Fake-IP resolution,
+- nameserver policy and fallback structures,
+- and `respect-rules`-style DNS dialing hooks.
+
+These capabilities are aligned with the Clash family, but this Wiki should not
+claim blanket Mihomo parity. Configuration syntax can also differ between the
+external Clash-style form and the client's normalized internal representation.
+
+## Troubleshooting
+
+Use this order when DNS-related behavior looks wrong:
+
+1. Confirm ordinary network connectivity without enhanced DNS.
+2. Confirm the local DNS listener is actually reachable.
+3. Query the listener directly, for example:
+
+   ```bash
+   dig @127.0.0.1 -p 1053 example.com
+   ```
+
+4. Check whether the OS or TUN path really sends DNS to that listener.
+5. Temporarily use one simple upstream resolver to isolate DoH/DoT problems.
+6. Inspect timeout, TLS, bootstrap, and validation errors in logs.
+7. If Fake-IP is enabled, verify that the affected domain is not unexpectedly
+   included in the filter list.
+8. If rules are wrong, compare the domain seen by the rule engine with the final
+   resolved IP.
+
+## Related Pages
+
+- [Ports and Listeners](./ports.md)
+- [Tun Module](./tun.md)
+- [Rule Types and Their Effects](./rules.md)

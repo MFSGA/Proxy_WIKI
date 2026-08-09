@@ -1,25 +1,27 @@
 # Chimera_Client
 
-## Current Support Protocol and Transport
+## Current Protocol and Transport Coverage
 
-- Trojan + WS
-- Hysteria2
-- Reality + tcp
-- Socks5
-- Http
-- Xhttp
+The following items are documented as currently available in the client codebase.
+Exact runtime availability can still depend on build features, configuration,
+and platform privileges.
+
+- Trojan + WebSocket
+- Hysteria 2
+- Reality + TCP
+- SOCKS5
+- HTTP
+- XHTTP
 - Mixed HTTP/SOCKS listener
 - DNS listener and Fake-IP resolver path
-- TUN mode, gated by build feature and platform privileges
+- TUN mode, gated by build features and platform privileges
 
----
+## Planned or Targeted Support
 
-## Will support
-
-- grpc
-- vmess
-- wireguard
-- ssh
+- gRPC
+- VMess
+- WireGuard
+- SSH
 
 ## Role and Objectives
 
