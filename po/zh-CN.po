@@ -13346,3 +13346,210 @@ msgstr "Xray-core REALITY 客户端实现：<https://github.com/XTLS/Xray-core/b
 
 msgid "XTLS/REALITY server implementation and protocol notes: <https://github.com/XTLS/REALITY>"
 msgstr "XTLS/REALITY 服务端实现与协议说明：<https://github.com/XTLS/REALITY>"
+
+msgid "VLESS is a lightweight, stateless proxy protocol from the Xray ecosystem. Its baseline request carries destination metadata and user identity. Historically VLESS relied almost entirely on a separate TLS or REALITY layer for confidentiality; current Xray also implements optional **VLESS Encryption**, a protocol-layer encrypted wrapper that can protect the VLESS request and body."
+msgstr "VLESS 是 Xray 生态中的轻量、无状态代理协议。它的基础请求承载目标元数据和用户身份。过去 VLESS 的机密性几乎完全依赖独立的 TLS 或 REALITY 层；当前 Xray 还实现了可选的 **VLESS Encryption**，作为协议层加密包装来保护 VLESS 请求与正文。"
+
+msgid "The user identity is not itself encryption. Traditional deployments therefore pair VLESS with TLS or REALITY. Current Xray can instead, or additionally, use VLESS Encryption; that protects the VLESS payload but does not by itself create the ordinary HTTPS appearance supplied by TLS or REALITY."
+msgstr "用户身份本身并不是加密。因此传统部署会把 VLESS 与 TLS 或 REALITY 配合使用。当前 Xray 可以改用或额外叠加 VLESS Encryption；它能保护 VLESS payload，但自身不会产生 TLS 或 REALITY 所提供的普通 HTTPS 外观。"
+
+msgid "The client establishes the configured outer transport and, if configured, TLS/REALITY."
+msgstr "客户端先建立已配置的外层传输，并在启用时完成 TLS/REALITY。"
+
+msgid "If VLESS Encryption is enabled, client and server complete its key-exchange wrapper (or resume an accepted 0-RTT session)."
+msgstr "如果启用了 VLESS Encryption，客户端与服务端随后完成其密钥交换包装（或恢复一个被接受的 0-RTT 会话）。"
+
+msgid "The client sends the VLESS request containing user identity, command, and destination information through the resulting plain or encrypted body path."
+msgstr "客户端通过得到的明文或加密正文路径，发送包含用户身份、命令和目标信息的 VLESS 请求。"
+
+msgid "The server validates the VLESS user and requested mode."
+msgstr "服务端验证 VLESS 用户与所请求的模式。"
+
+msgid "Application traffic is relayed through the same layered path."
+msgstr "应用流量继续通过同一套分层路径转发。"
+
+msgid "VLESS Encryption: Outer Handshake and Record Layer"
+msgstr "VLESS Encryption：外层握手与记录层"
+
+msgid "VLESS Encryption is negotiated by configuration rather than by adding a new method-selection field to the baseline VLESS header. The client `encryption` and server `decryption` strings must describe compatible handshake and traffic-appearance modes. Current official configuration uses `mlkem768x25519plus` as the handshake method and exposes three appearances: `native`, `xorpub`, and `random`."
+msgstr "VLESS Encryption 通过配置预先约定，而不是在基础 VLESS 头中增加新的方法选择字段。客户端 `encryption` 与服务端 `decryption` 字符串必须描述兼容的握手与流量外观模式。当前官方配置使用 `mlkem768x25519plus` 作为握手方式，并提供三种外观：`native`、`xorpub` 和 `random`。"
+
+msgid "A typical generated pair conceptually has this shape:"
+msgstr "一组典型生成配置在概念上具有以下形态："
+
+msgid "The authentication key block can use X25519 material or ML-KEM-768 material. The ephemeral handshake itself combines ML-KEM-768 with X25519, so the configured static authentication choice and the per-connection PFS exchange are different concepts."
+msgstr "认证密钥块可以使用 X25519 材料或 ML-KEM-768 材料。临时握手本身会组合 ML-KEM-768 与 X25519，因此配置中的静态认证选择和每条连接上的 PFS 交换是两个不同概念。"
+
+msgid "1-RTT client-to-server handshake layout"
+msgstr "1-RTT 客户端到服务端握手布局"
+
+msgid "The current `proxy/vless/encryption` implementation starts with a random 16-byte IV followed by one or more **NFS relays** derived from the configured static authentication keys. For a relay using X25519, the public-key contribution is 32 bytes; for ML-KEM-768, the encapsulated ciphertext contribution is 1088 bytes. When more than one configured relay participates, 32-byte BLAKE3-derived linkage values bind the relay chain so an intermediate relay cannot simply be replaced."
+msgstr "当前 `proxy/vless/encryption` 实现以随机 16 字节 IV 开始，随后是由已配置静态认证密钥派生的一个或多个 **NFS relay**。使用 X25519 的 relay 中，公钥贡献为 32 字节；使用 ML-KEM-768 时，封装密文贡献为 1088 字节。当多个已配置 relay 参与时，会使用 32 字节、由 BLAKE3 派生的链接值绑定 relay 链，使中间 relay 不能被简单替换。"
+
+msgid "After the IV and NFS relay area, the normal 1-RTT client handshake sends:"
+msgstr "在 IV 与 NFS relay 区域之后，普通 1-RTT 客户端握手继续发送："
+
+msgid "Why `18` bytes for a two-byte length? The length itself is a big-endian `uint16`, and the AEAD adds a 16-byte authentication tag. Likewise, the 1216-byte hybrid client PFS public material becomes 1232 bytes after the tag. The client can split the configured padding into multiple writes with delays; those write boundaries are camouflage behavior and are not protocol-message boundaries for a parser."
+msgstr "为什么两字节长度字段在线路上占 `18` 字节？长度本身是大端 `uint16`，AEAD 还会增加 16 字节认证 tag。同理，1216 字节的客户端混合 PFS 公共材料加 tag 后变为 1232 字节。客户端可以按配置把 padding 拆成多次写入并插入延迟；这些写入边界属于伪装行为，并不是解析器可以依赖的协议消息边界。"
+
+msgid "The server first derives the NFS key from the relay area and uses it to open the encrypted length. For the 1-RTT path it then decrypts the 1184-byte ML-KEM-768 encapsulation key plus the 32-byte X25519 public key, creates its own ML-KEM and X25519 contributions, and derives a 64-byte PFS secret (`32 ML-KEM + 32 X25519`). That PFS secret is combined with the per-connection NFS key to form the keying material used by the later record layer."
+msgstr "服务端首先从 relay 区域派生 NFS key，并用它解开加密长度。对 1-RTT 路径，随后解密 1184 字节 ML-KEM-768 encapsulation key 与 32 字节 X25519 公钥，生成自身的 ML-KEM 和 X25519 贡献，并派生 64 字节 PFS secret（`32 ML-KEM + 32 X25519`）。该 PFS secret 再与本连接 NFS key 组合，形成后续记录层使用的密钥材料。"
+
+msgid "The 1-RTT server response begins with:"
+msgstr "1-RTT 服务端响应以以下内容开始："
+
+msgid "The first field is 1120 bytes of server PFS public/ciphertext material plus a 16-byte tag. The ticket plaintext is 16 bytes and becomes 32 bytes with its tag. The first two ticket bytes encode the accepted ticket lifetime. A zero lifetime means there is no resumable 0-RTT session."
+msgstr "第一个字段由 1120 字节服务端 PFS 公共/密文材料加 16 字节 tag 构成。ticket 明文为 16 字节，加 tag 后变为 32 字节。ticket 的前两字节编码服务端接受的有效期；有效期为 0 表示不存在可恢复的 0-RTT 会话。"
+
+msgid "0-RTT resumption and replay boundary"
+msgstr "0-RTT 恢复与重放边界"
+
+msgid "When the client is configured for `0rtt`, has an unexpired cached ticket, and the server allows resumption, it can avoid the full PFS exchange. It still creates a fresh IV and NFS key, then sends:"
+msgstr "当客户端配置为 `0rtt`、持有尚未过期的缓存 ticket，且服务端允许恢复时，可以跳过完整 PFS 交换。客户端仍会生成新的 IV 与 NFS key，然后发送："
+
+msgid "The resumed traffic key combines the cached PFS secret with the **new** NFS key, so each resumed connection still has fresh connection-specific material. The server stores NFS-key use per ticket and rejects a repeated key as a replay. If the ticket has expired, current server code sends random-looking bytes so the client abandons the cached session and retries with a new handshake rather than silently accepting old 0-RTT state."
+msgstr "恢复后的流量密钥由缓存 PFS secret 与**新的** NFS key 组合，因此每条恢复连接仍拥有新的连接专用材料。服务端会按 ticket 记录 NFS key 的使用情况，并把重复 key 视为重放而拒绝。如果 ticket 已过期，当前服务端代码会发送随机外观字节，让客户端放弃缓存会话并重新进行握手，而不是静默接受旧 0-RTT 状态。"
+
+msgid "0-RTT therefore reduces startup latency; it is not a promise that arbitrary application actions become replay-safe. A caller should keep the same security caution it would apply to any early-data mechanism."
+msgstr "因此 0-RTT 只是在降低启动延迟，并不保证任意应用操作都具备重放安全性。调用方应像对待其他 early-data 机制一样保留相同的安全谨慎。"
+
+msgid "Encrypted application-record layout"
+msgstr "加密应用记录布局"
+
+msgid "After either handshake path, the VLESS header and subsequent body are carried through `CommonConn`. Current Xray splits writes into plaintext chunks of at most 8192 bytes and wraps each chunk as:"
+msgstr "无论采用哪种握手路径，VLESS 头和后续正文都会通过 `CommonConn` 承载。当前 Xray 会把写入拆成最多 8192 字节的明文块，并按以下格式包装每块："
+
+msgid "The five-byte prefix intentionally has the shape of a TLS 1.3 application-data record (`17 03 03`), but **VLESS Encryption is not TLS**. The header is used as AEAD associated data. Receivers require a ciphertext length from 17 through 16640 bytes; malformed headers, truncated records, or failed AEAD tags terminate that encrypted stream."
+msgstr "五字节前缀有意采用 TLS 1.3 application-data record（`17 03 03`）的外形，但 **VLESS Encryption 并不是 TLS**。该头部会作为 AEAD associated data。接收方要求密文长度位于 17 到 16640 字节之间；头部异常、记录截断或 AEAD tag 校验失败都会终止这条加密流。"
+
+msgid "Record keys are derived with BLAKE3 from the handshake key material and a connection-specific context. Current code chooses AES-GCM when the endpoint has appropriate AES-GCM hardware support and otherwise uses ChaCha20-Poly1305; the server can detect the peer choice while opening the first encrypted handshake length. Nonces increment independently by direction. The implementation also has a rekey path if the 96-bit nonce counter reaches its maximum rather than allowing nonce reuse."
+msgstr "记录密钥由握手密钥材料与连接专用上下文通过 BLAKE3 派生。当前代码在端点具备合适 AES-GCM 硬件支持时选择 AES-GCM，否则使用 ChaCha20-Poly1305；服务端可以在解开首个加密握手长度时识别对端选择。两个方向的 nonce 独立递增。若 96 位 nonce 计数器达到最大值，实现还会执行 rekey，而不是允许 nonce 复用。"
+
+msgid "`native`, `xorpub`, and `random` capture appearance"
+msgstr "`native`、`xorpub` 与 `random` 的抓包外观"
+
+msgid "These options change observable encoding, not the inner VLESS command format:"
+msgstr "这些选项改变的是可观察编码，而不是内层 VLESS 命令格式："
+
+msgid "`native` leaves the key-exchange public/ciphertext material in its native representation and retains the TLS-record-like five-byte data headers;"
+msgstr "`native` 保留密钥交换公共/密文材料的原生表示，并保留类似 TLS record 的五字节数据头；"
+
+msgid "`xorpub` masks the public/ciphertext portions of the NFS relay using a BLAKE3-derived AES-CTR stream, reducing their native public-key appearance;"
+msgstr "`xorpub` 使用 BLAKE3 派生的 AES-CTR 流掩码 NFS relay 中的公共/密文部分，从而降低其原生公钥外观；"
+
+msgid "`random` additionally masks the five-byte record headers in each direction, so the post-handshake stream no longer exposes the repeated `17 03 03` record-header pattern."
+msgstr "`random` 还会额外掩码两个方向的五字节记录头，因此握手后的数据流不再暴露重复的 `17 03 03` 记录头模式。"
+
+msgid "If VLESS Encryption itself is carried inside real TLS or REALITY, an ordinary on-path capture sees the outer TLS/REALITY layer first. The inner appearance mode only becomes directly observable after removing that outer layer."
+msgstr "如果 VLESS Encryption 本身承载在真实 TLS 或 REALITY 内部，普通链路抓包首先看到的是外层 TLS/REALITY。只有移除该外层之后，内层 appearance 模式才会直接可见。"
+
+msgid "Encryption state machine and failure scope"
+msgstr "加密状态机与错误作用域"
+
+msgid "This introduces an error layer that baseline SOCKS5 does not have. A failed ML-KEM/X25519 exchange or AEAD tag means the server has not yet reached the VLESS UUID/command parser; changing a destination address or SOCKS-style command cannot repair such a failure."
+msgstr "这引入了基础 SOCKS5 不具备的一层错误。ML-KEM/X25519 交换失败或 AEAD tag 失败意味着服务端甚至尚未到达 VLESS UUID/命令解析器；修改目标地址或类似 SOCKS 的命令无法修复这种故障。"
+
+msgid "For baseline TCP relay, end-of-stream propagates through the selected outer transport. With VLESS Encryption enabled, EOF/reset first crosses the encrypted record wrapper and only then the baseline VLESS body. Implementations need to distinguish:"
+msgstr "对基础 TCP 转发，流结束会沿所选外层传输传播。启用 VLESS Encryption 后，EOF/reset 会先穿过加密记录包装，再到基础 VLESS 正文。实现需要区分："
+
+msgid "VLESS Encryption handshake failure,"
+msgstr "VLESS Encryption 握手失败；"
+
+msgid "expired or replayed 0-RTT ticket,"
+msgstr "过期或被重放的 0-RTT ticket；"
+
+msgid "malformed encrypted record header or failed AEAD tag,"
+msgstr "畸形加密记录头或 AEAD tag 校验失败；"
+
+msgid "With TLS keys or instrumentation below TLS, the next layer is either the baseline VLESS request header or, when enabled, the VLESS Encryption handshake. After a VLESS Encryption 1-RTT handshake, `native`/`xorpub` mode commonly exposes five-byte inner record headers shaped as `17 03 03 <BE16 length>`; `random` masks those headers as well. These are inner VLESS Encryption records, not a second real TLS session."
+msgstr "拥有 TLS 密钥或能在 TLS 之下进行插桩时，下一层要么是基础 VLESS 请求头，要么在启用时是 VLESS Encryption 握手。完成 VLESS Encryption 1-RTT 握手后，`native`/`xorpub` 模式通常会显露形如 `17 03 03 <BE16 length>` 的五字节内层记录头；`random` 还会掩码这些头部。这些是内层 VLESS Encryption 记录，而不是第二层真实 TLS 会话。"
+
+msgid "VLESS / current Xray"
+msgstr "VLESS / 当前 Xray"
+
+msgid "Baseline none; optional VLESS Encryption; TLS/REALITY can be an additional outer layer"
+msgstr "基础模式无；可选 VLESS Encryption；TLS/REALITY 还可作为额外外层"
+
+msgid "Encryption negotiation"
+msgstr "加密协商"
+
+msgid "none in RFC 1928/1929"
+msgstr "RFC 1928/1929 中没有"
+
+msgid "preconfigured `encryption` / `decryption`; no on-wire method list"
+msgstr "预配置 `encryption` / `decryption`；线路上没有方法列表"
+
+msgid "Encryption handshake"
+msgstr "加密握手"
+
+msgid "none"
+msgstr "无"
+
+msgid "optional NFS authentication + ML-KEM-768/X25519 hybrid PFS, or ticket resumption"
+msgstr "可选 NFS 认证 + ML-KEM-768/X25519 混合 PFS，或 ticket 恢复"
+
+msgid "Early data"
+msgstr "Early data"
+
+msgid "SOCKS request follows method/auth completion"
+msgstr "SOCKS 请求在方法/认证完成后发送"
+
+msgid "VLESS Encryption can resume with ticket-backed 0-RTT"
+msgstr "VLESS Encryption 可以使用 ticket 支持的 0-RTT 恢复"
+
+msgid "Encrypted record framing"
+msgstr "加密记录分帧"
+
+msgid "none beyond TCP"
+msgstr "除 TCP 外没有额外记录层"
+
+msgid "optional `17 03 03 + uint16 length + AEAD(ciphertext)` style records; `random` masks header appearance"
+msgstr "可选的 `17 03 03 + uint16 length + AEAD(ciphertext)` 风格记录；`random` 会掩码头部外观"
+
+msgid "Failure before proxy command"
+msgstr "代理命令之前的失败"
+
+msgid "method/auth failure"
+msgstr "方法/认证失败"
+
+msgid "outer transport or VLESS Encryption handshake/AEAD failure can happen before UUID/command parsing"
+msgstr "外层传输或 VLESS Encryption 握手/AEAD 失败可能发生在 UUID/命令解析之前"
+
+msgid "The conceptual inheritance is still recognizable: authenticate/identify the client, express a command, encode a destination, then relay traffic. Baseline VLESS compresses those control phases into one request header. Current VLESS Encryption adds a separate configured cryptographic wrapper **before** that header, while TLS/REALITY, XHTTP, and multiplexing can still add further outer layers. None of those encryption stages replaces the VLESS destination command."
+msgstr "概念上的继承关系仍然清晰：认证/识别客户端、表达命令、编码目标，然后转发流量。基础 VLESS 把这些控制阶段压缩进一个请求头。当前 VLESS Encryption 又在该头**之前**增加一个独立、由配置确定的密码学包装；TLS/REALITY、XHTTP 和多路复用还可以继续增加外层。任何加密阶段都不会替代 VLESS 目标命令。"
+
+msgid "If VLESS Encryption is enabled, bound/read the IV, relay area, encrypted lengths, PFS material, ticket, and padding exactly; reject failed AEAD tags."
+msgstr "如果启用 VLESS Encryption，应对 IV、relay 区域、加密长度、PFS 材料、ticket 与 padding 设置边界并精确读取；AEAD tag 校验失败必须拒绝。"
+
+msgid "Keep 0-RTT ticket expiry and replay rejection distinct from UUID or destination rejection."
+msgstr "应把 0-RTT ticket 过期/重放拒绝与 UUID 或目标拒绝明确区分。"
+
+msgid "Parse encrypted application records incrementally: exactly 5 header bytes, then exactly the declared ciphertext length; never use transport read boundaries as record boundaries."
+msgstr "应增量解析加密应用记录：先精确读取 5 字节头，再精确读取声明的密文长度；绝不能把传输层读取边界当作记录边界。"
+
+msgid "Test `native`, `xorpub`, and `random` independently if the selected core exposes them; they change outer encoding, not the baseline VLESS header."
+msgstr "如果所选核心提供 `native`、`xorpub` 和 `random`，应分别测试；它们改变的是外层编码，而不是基础 VLESS 头。"
+
+msgid "VLESS Encryption"
+msgstr "VLESS Encryption"
+
+msgid "Current Xray treats VLESS Encryption as optional **protocol-layer security**. It can make `streamSettings.security: \"none\"` acceptable on a public-address connection from the confidentiality/integrity perspective, but the official transport guidance explicitly distinguishes that from censorship camouflage: VLESS Encryption does not make the connection look like ordinary HTTPS in the way TLS or REALITY can."
+msgstr "当前 Xray 把 VLESS Encryption 视为可选的**协议层安全机制**。从机密性/完整性角度，它可以让公网地址连接使用 `streamSettings.security: \"none\"`；但官方传输说明明确把这与抗审查伪装区分开：VLESS Encryption 不会像 TLS 或 REALITY 那样让连接具有普通 HTTPS 外观。"
+
+msgid "Use `xray vlessenc` to generate matching client `encryption` and server `decryption` values unless there is a specific reason to construct the detailed blocks manually. A mismatch in handshake method, appearance, or authentication material fails before the baseline VLESS request can be decoded."
+msgstr "除非有明确理由手工构造详细配置块，否则应使用 `xray vlessenc` 生成匹配的客户端 `encryption` 与服务端 `decryption` 值。握手方式、appearance 或认证材料不匹配会在基础 VLESS 请求被解码之前就失败。"
+
+msgid "Current Xray also allows Vision with VLESS Encryption without the older transport restrictions. If the underlying path cannot use direct raw copying, Vision can still penetrate the VLESS Encryption layer to avoid redundant crypto-copy overhead; on compatible raw TCP paths it can additionally attempt the normal direct/splice optimization. This is an optimization layer above the wire-format correctness described earlier, not a new VLESS command."
+msgstr "当前 Xray 还允许 Vision 与 VLESS Encryption 配合使用，而不受旧有传输限制。如果底层路径无法使用直接 raw copy，Vision 仍可穿透 VLESS Encryption 层以避免重复的加密复制开销；在兼容的原始 TCP 路径上，还可以进一步尝试常规 direct/splice 优化。这是建立在线格式正确性之上的优化层，并不是新的 VLESS 命令。"
+
+msgid "When documenting Chimera compatibility, treat Vision and VLESS Encryption support separately from basic VLESS request parsing."
+msgstr "记录 Chimera 兼容性时，应把 Vision 与 VLESS Encryption 支持和基础 VLESS 请求解析能力分开说明。"
+
+msgid "Xray-core VLESS Encryption client implementation: <https://github.com/XTLS/Xray-core/blob/main/proxy/vless/encryption/client.go>"
+msgstr "Xray-core VLESS Encryption 客户端实现：<https://github.com/XTLS/Xray-core/blob/main/proxy/vless/encryption/client.go>"
+
+msgid "Xray-core VLESS Encryption server implementation: <https://github.com/XTLS/Xray-core/blob/main/proxy/vless/encryption/server.go>"
+msgstr "Xray-core VLESS Encryption 服务端实现：<https://github.com/XTLS/Xray-core/blob/main/proxy/vless/encryption/server.go>"
+
+msgid "Xray-core VLESS Encryption record implementation: <https://github.com/XTLS/Xray-core/blob/main/proxy/vless/encryption/common.go>"
+msgstr "Xray-core VLESS Encryption 记录层实现：<https://github.com/XTLS/Xray-core/blob/main/proxy/vless/encryption/common.go>"

@@ -2,16 +2,19 @@
 
 ## Positioning
 
-VLESS is a lightweight, stateless proxy protocol from the Xray ecosystem. It is
-designed to carry destination metadata and user identity while leaving most
-transport security to a separate layer such as TLS or REALITY.
+VLESS is a lightweight, stateless proxy protocol from the Xray ecosystem. Its
+baseline request carries destination metadata and user identity. Historically
+VLESS relied almost entirely on a separate TLS or REALITY layer for
+confidentiality; current Xray also implements optional **VLESS Encryption**, a
+protocol-layer encrypted wrapper that can protect the VLESS request and body.
 
 A useful way to read an Xray-style configuration is to separate three layers:
 
 ```text
-VLESS                 -> proxy protocol / user identity / destination
-XHTTP, RAW, gRPC ...  -> transport method
-TLS or REALITY        -> transport security
+VLESS request/body           -> proxy protocol / user identity / destination
+optional VLESS Encryption    -> protocol-layer encryption + key exchange
+XHTTP, RAW, gRPC ...         -> transport method
+optional TLS or REALITY      -> outer transport security / HTTPS appearance
 ```
 
 Those layers can be combined only when the selected core supports the
@@ -26,25 +29,212 @@ identity.
 Unlike VMess, VLESS does not rely on synchronized system time for its basic user
 identity model.
 
-The user identity is not a substitute for transport encryption. Traditional
-VLESS deployments therefore pair the protocol with TLS or REALITY.
+The user identity is not itself encryption. Traditional deployments therefore
+pair VLESS with TLS or REALITY. Current Xray can instead, or additionally, use
+VLESS Encryption; that protects the VLESS payload but does not by itself create
+the ordinary HTTPS appearance supplied by TLS or REALITY.
 
 ## Connection Flow
 
 At a high level:
 
-1. The client establishes the configured transport and transport-security
-   layer.
-2. The client sends the VLESS request containing user identity, command, and
-   destination information.
-3. The server validates the user and requested mode.
-4. The server opens or dispatches the destination connection.
-5. Application traffic is relayed through the established transport.
+1. The client establishes the configured outer transport and, if configured,
+   TLS/REALITY.
+2. If VLESS Encryption is enabled, client and server complete its key-exchange
+   wrapper (or resume an accepted 0-RTT session).
+3. The client sends the VLESS request containing user identity, command, and
+   destination information through the resulting plain or encrypted body path.
+4. The server validates the VLESS user and requested mode.
+5. The server opens or dispatches the destination connection.
+6. Application traffic is relayed through the same layered path.
 
 The byte-level framing below follows the current Xray-core `main` VLESS
 encoder/decoder. Because VLESS is an implementation-defined Xray protocol rather
 than an IETF standard, verify these details again when targeting a materially
 different core version.
+
+## VLESS Encryption: Outer Handshake and Record Layer
+
+VLESS Encryption is negotiated by configuration rather than by adding a new
+method-selection field to the baseline VLESS header. The client `encryption`
+and server `decryption` strings must describe compatible handshake and
+traffic-appearance modes. Current official configuration uses
+`mlkem768x25519plus` as the handshake method and exposes three appearances:
+`native`, `xorpub`, and `random`.
+
+A typical generated pair conceptually has this shape:
+
+```text
+server decryption:
+  mlkem768x25519plus.<appearance>.<ticket-lifetime>.<padding>.<client-auth-key>
+
+client encryption:
+  mlkem768x25519plus.<appearance>.0rtt|1rtt.<padding>.<server-auth-key>
+```
+
+The authentication key block can use X25519 material or ML-KEM-768 material.
+The ephemeral handshake itself combines ML-KEM-768 with X25519, so the
+configured static authentication choice and the per-connection PFS exchange are
+different concepts.
+
+### 1-RTT client-to-server handshake layout
+
+The current `proxy/vless/encryption` implementation starts with a random 16-byte
+IV followed by one or more **NFS relays** derived from the configured static
+authentication keys. For a relay using X25519, the public-key contribution is 32
+bytes; for ML-KEM-768, the encapsulated ciphertext contribution is 1088 bytes.
+When more than one configured relay participates, 32-byte BLAKE3-derived linkage
+values bind the relay chain so an intermediate relay cannot simply be replaced.
+
+After the IV and NFS relay area, the normal 1-RTT client handshake sends:
+
+```text
++----------------------+--------------------------------------------+
+| 16 bytes             | random IV                                  |
+| variable             | NFS relay/authentication material          |
+| 18 bytes             | AEAD( uint16 length = 1232 )               |
+| 1232 bytes           | AEAD( ML-KEM-768 pub 1184                  |
+|                      |       + X25519 pub 32 )                     |
+| 18 bytes             | AEAD( uint16 encrypted-padding length )    |
+| variable             | AEAD( client padding )                     |
++----------------------+--------------------------------------------+
+```
+
+Why `18` bytes for a two-byte length? The length itself is a big-endian
+`uint16`, and the AEAD adds a 16-byte authentication tag. Likewise, the
+1216-byte hybrid client PFS public material becomes 1232 bytes after the tag.
+The client can split the configured padding into multiple writes with delays;
+those write boundaries are camouflage behavior and are not protocol-message
+boundaries for a parser.
+
+The server first derives the NFS key from the relay area and uses it to open the
+encrypted length. For the 1-RTT path it then decrypts the 1184-byte ML-KEM-768
+encapsulation key plus the 32-byte X25519 public key, creates its own ML-KEM and
+X25519 contributions, and derives a 64-byte PFS secret (`32 ML-KEM + 32 X25519`).
+That PFS secret is combined with the per-connection NFS key to form the keying
+material used by the later record layer.
+
+The 1-RTT server response begins with:
+
+```text
++----------------------+--------------------------------------------+
+| 1136 bytes           | AEAD( ML-KEM-768 ciphertext 1088           |
+|                      |       + X25519 pub 32 )                     |
+| 32 bytes             | AEAD( 16-byte session ticket )             |
+| 18 bytes             | AEAD( uint16 server-padding length )       |
+| variable             | AEAD( server padding )                     |
++----------------------+--------------------------------------------+
+```
+
+The first field is 1120 bytes of server PFS public/ciphertext material plus a
+16-byte tag. The ticket plaintext is 16 bytes and becomes 32 bytes with its tag.
+The first two ticket bytes encode the accepted ticket lifetime. A zero lifetime
+means there is no resumable 0-RTT session.
+
+### 0-RTT resumption and replay boundary
+
+When the client is configured for `0rtt`, has an unexpired cached ticket, and the
+server allows resumption, it can avoid the full PFS exchange. It still creates a
+fresh IV and NFS key, then sends:
+
+```text
+IV + NFS relays
+AEAD(uint16 32)          # says the next item is a ticket
+AEAD(16-byte ticket)     # 32 bytes on wire including tag
+first encrypted VLESS record(s) immediately
+```
+
+The resumed traffic key combines the cached PFS secret with the **new** NFS key,
+so each resumed connection still has fresh connection-specific material. The
+server stores NFS-key use per ticket and rejects a repeated key as a replay. If
+the ticket has expired, current server code sends random-looking bytes so the
+client abandons the cached session and retries with a new handshake rather than
+silently accepting old 0-RTT state.
+
+0-RTT therefore reduces startup latency; it is not a promise that arbitrary
+application actions become replay-safe. A caller should keep the same security
+caution it would apply to any early-data mechanism.
+
+### Encrypted application-record layout
+
+After either handshake path, the VLESS header and subsequent body are carried
+through `CommonConn`. Current Xray splits writes into plaintext chunks of at
+most 8192 bytes and wraps each chunk as:
+
+```text
++--------+--------+--------+----------------+---------------------------+
+| 0x17   | 0x03   | 0x03   | Length (BE16)  | AEAD ciphertext           |
++--------+--------+--------+----------------+---------------------------+
+| 1 byte | 1 byte | 1 byte | 2 bytes        | plaintext + 16-byte tag   |
++--------+--------+--------+----------------+---------------------------+
+```
+
+The five-byte prefix intentionally has the shape of a TLS 1.3 application-data
+record (`17 03 03`), but **VLESS Encryption is not TLS**. The header is used as
+AEAD associated data. Receivers require a ciphertext length from 17 through
+16640 bytes; malformed headers, truncated records, or failed AEAD tags terminate
+that encrypted stream.
+
+Record keys are derived with BLAKE3 from the handshake key material and a
+connection-specific context. Current code chooses AES-GCM when the endpoint has
+appropriate AES-GCM hardware support and otherwise uses ChaCha20-Poly1305; the
+server can detect the peer choice while opening the first encrypted handshake
+length. Nonces increment independently by direction. The implementation also
+has a rekey path if the 96-bit nonce counter reaches its maximum rather than
+allowing nonce reuse.
+
+### `native`, `xorpub`, and `random` capture appearance
+
+These options change observable encoding, not the inner VLESS command format:
+
+- `native` leaves the key-exchange public/ciphertext material in its native
+  representation and retains the TLS-record-like five-byte data headers;
+- `xorpub` masks the public/ciphertext portions of the NFS relay using a
+  BLAKE3-derived AES-CTR stream, reducing their native public-key appearance;
+- `random` additionally masks the five-byte record headers in each direction,
+  so the post-handshake stream no longer exposes the repeated `17 03 03`
+  record-header pattern.
+
+If VLESS Encryption itself is carried inside real TLS or REALITY, an ordinary
+on-path capture sees the outer TLS/REALITY layer first. The inner appearance
+mode only becomes directly observable after removing that outer layer.
+
+### Encryption state machine and failure scope
+
+```text
+OUTER_TRANSPORT_READY
+        |
+        v
+READ IV + NFS RELAYS
+        |
+        +-- static auth / relay failure --------> abort/fallback policy
+        |
+        v
+OPEN ENCRYPTED LENGTH
+        |
+        +-- length == 32 ------------------------> 0-RTT ticket path
+        |       | expired / replay / disabled --> reject; client re-handshakes
+        |       ` accepted ---------------------> ENCRYPTED_RECORDS
+        |
+        `-- 1-RTT PFS length
+                |
+                v
+           ML-KEM-768 + X25519 exchange
+                |
+                v
+           TICKET + BIDIRECTIONAL PADDING
+                |
+                v
+           ENCRYPTED_RECORDS
+                |
+                v
+           BASELINE VLESS HEADER -> BODY
+```
+
+This introduces an error layer that baseline SOCKS5 does not have. A failed
+ML-KEM/X25519 exchange or AEAD tag means the server has not yet reached the
+VLESS UUID/command parser; changing a destination address or SOCKS-style command
+cannot repair such a failure.
 
 ## Baseline Wire Format
 
@@ -349,9 +539,14 @@ one CONNECT relay stream.
 ## Connection Close and Error Semantics
 
 For baseline TCP relay, end-of-stream propagates through the selected outer
-transport. Implementations need to distinguish:
+transport. With VLESS Encryption enabled, EOF/reset first crosses the encrypted
+record wrapper and only then the baseline VLESS body. Implementations need to
+distinguish:
 
 - clean EOF after valid response/data,
+- VLESS Encryption handshake failure,
+- expired or replayed 0-RTT ticket,
+- malformed encrypted record header or failed AEAD tag,
 - transport reset,
 - invalid VLESS request before dispatch,
 - destination connection failure,
@@ -376,12 +571,16 @@ Without decryption, a capture typically exposes only the outer layers:
 TCP
   -> TLS handshake
   -> TLS application data
-       -> encrypted VLESS header
-       -> encrypted target payload
+       -> [optional VLESS Encryption handshake + records]
+       -> VLESS request/body
 ```
 
-With TLS keys or instrumentation below TLS, the first decrypted application
-bytes can be interpreted as the VLESS request header described above.
+With TLS keys or instrumentation below TLS, the next layer is either the
+baseline VLESS request header or, when enabled, the VLESS Encryption handshake.
+After a VLESS Encryption 1-RTT handshake, `native`/`xorpub` mode commonly exposes
+five-byte inner record headers shaped as `17 03 03 <BE16 length>`; `random` masks
+those headers as well. These are inner VLESS Encryption records, not a second
+real TLS session.
 
 ### VLESS over REALITY
 
@@ -406,10 +605,14 @@ This layer ordering is essential when deciding where a failure occurred.
 
 ## VLESS Compared with SOCKS5
 
-| Stage / concept | SOCKS5 | VLESS baseline |
+| Stage / concept | SOCKS5 | VLESS / current Xray |
 | --- | --- | --- |
 | Initial transport | TCP to SOCKS server | Selected Xray transport |
-| Built-in confidentiality | None | Usually supplied by TLS/REALITY/other layer |
+| Built-in confidentiality | None | Baseline none; optional VLESS Encryption; TLS/REALITY can be an additional outer layer |
+| Encryption negotiation | none in RFC 1928/1929 | preconfigured `encryption` / `decryption`; no on-wire method list |
+| Encryption handshake | none | optional NFS authentication + ML-KEM-768/X25519 hybrid PFS, or ticket resumption |
+| Early data | SOCKS request follows method/auth completion | VLESS Encryption can resume with ticket-backed 0-RTT |
+| Encrypted record framing | none beyond TCP | optional `17 03 03 + uint16 length + AEAD(ciphertext)` style records; `random` masks header appearance |
 | Protocol version | `VER=0x05` | request `Version=0x00` |
 | Identity negotiation | METHOD list + selected METHOD | no method negotiation |
 | User identity | RFC 1929 username/password or other method | fixed 16-byte user ID in request header |
@@ -430,11 +633,14 @@ This layer ordering is essential when deciding where a failure occurred.
 | Destination repeated per UDP packet | yes | no, destination is in request header |
 | SOCKS UDP `FRAG` equivalent | `FRAG` byte | no baseline equivalent in VLESS body framing |
 | Multiplexing | not part of SOCKS5 | optional Xray/VLESS and/or transport layers |
+| Failure before proxy command | method/auth failure | outer transport or VLESS Encryption handshake/AEAD failure can happen before UUID/command parsing |
 
 The conceptual inheritance is still recognizable: authenticate/identify the
-client, express a command, encode a destination, then relay traffic. VLESS
-compresses those control phases into one request header and delegates security,
-multiplexing, and camouflage to surrounding Xray layers.
+client, express a command, encode a destination, then relay traffic. Baseline
+VLESS compresses those control phases into one request header. Current VLESS
+Encryption adds a separate configured cryptographic wrapper **before** that
+header, while TLS/REALITY, XHTTP, and multiplexing can still add further outer
+layers. None of those encryption stages replaces the VLESS destination command.
 
 ## Implementation Checklist
 
@@ -453,10 +659,33 @@ A low-level VLESS implementation should verify at least these points:
 10. Apply strict limits/timeouts so partial headers and declared UDP lengths
     cannot retain resources indefinitely.
 11. Keep outer transport errors distinct from VLESS request-validation errors.
-12. Test each transport/security combination independently; a correct VLESS
+12. If VLESS Encryption is enabled, bound/read the IV, relay area, encrypted
+    lengths, PFS material, ticket, and padding exactly; reject failed AEAD tags.
+13. Keep 0-RTT ticket expiry and replay rejection distinct from UUID or
+    destination rejection.
+14. Parse encrypted application records incrementally: exactly 5 header bytes,
+    then exactly the declared ciphertext length; never use transport read
+    boundaries as record boundaries.
+15. Test `native`, `xorpub`, and `random` independently if the selected core
+    exposes them; they change outer encoding, not the baseline VLESS header.
+16. Test each transport/security combination independently; a correct VLESS
     parser does not imply XHTTP or REALITY interoperability.
 
 ## Transport Security
+
+### VLESS Encryption
+
+Current Xray treats VLESS Encryption as optional **protocol-layer security**.
+It can make `streamSettings.security: "none"` acceptable on a public-address
+connection from the confidentiality/integrity perspective, but the official
+transport guidance explicitly distinguishes that from censorship camouflage:
+VLESS Encryption does not make the connection look like ordinary HTTPS in the
+way TLS or REALITY can.
+
+Use `xray vlessenc` to generate matching client `encryption` and server
+`decryption` values unless there is a specific reason to construct the detailed
+blocks manually. A mismatch in handshake method, appearance, or authentication
+material fails before the baseline VLESS request can be decoded.
 
 ### TLS
 
@@ -488,8 +717,15 @@ combinations. Flow control is not merely a cosmetic config flag: client,
 server, transport security, and underlying transport need to agree on the
 supported combination.
 
-When documenting Chimera compatibility, treat Vision support separately from
-basic VLESS request parsing.
+Current Xray also allows Vision with VLESS Encryption without the older
+transport restrictions. If the underlying path cannot use direct raw copying,
+Vision can still penetrate the VLESS Encryption layer to avoid redundant
+crypto-copy overhead; on compatible raw TCP paths it can additionally attempt
+the normal direct/splice optimization. This is an optimization layer above the
+wire-format correctness described earlier, not a new VLESS command.
+
+When documenting Chimera compatibility, treat Vision and VLESS Encryption
+support separately from basic VLESS request parsing.
 
 ## Minimal Xray-Style Server Example
 
@@ -632,3 +868,9 @@ fully compatible.
   <https://xtls.github.io/en/config/outbounds/vless.html>
 - Xray transport compatibility:
   <https://xtls.github.io/en/config/transport.html>
+- Xray-core VLESS Encryption client implementation:
+  <https://github.com/XTLS/Xray-core/blob/main/proxy/vless/encryption/client.go>
+- Xray-core VLESS Encryption server implementation:
+  <https://github.com/XTLS/Xray-core/blob/main/proxy/vless/encryption/server.go>
+- Xray-core VLESS Encryption record implementation:
+  <https://github.com/XTLS/Xray-core/blob/main/proxy/vless/encryption/common.go>
