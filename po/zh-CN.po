@@ -14186,3 +14186,804 @@ msgstr "QUIC"
 
 msgid "`Dissociate`,"
 msgstr "`Dissociate`；"
+
+msgid "VMess is an encrypted proxy protocol from the V2Ray/Xray ecosystem. It carries client identity, a proxy command, a destination, and encrypted TCP- or UDP-style payloads. In current Xray-core, new VMess sessions use the **VMess AEAD** request header design; older pre-AEAD authentication formats should be treated as legacy protocol history rather than the wire format to implement for a current Xray-compatible peer."
+msgstr "VMess 是 V2Ray/Xray 生态中的加密代理协议。它承载客户端身份、代理命令、目标地址以及加密的 TCP/UDP 风格 payload。当前 Xray-core 的新 VMess 会话使用 **VMess AEAD** 请求头设计；更早的 pre-AEAD 认证格式应视为历史兼容协议，而不是当前 Xray 兼容端应实现的线格式。"
+
+msgid "VMess is a proxy-protocol layer. Xray can place its ordered byte stream inside other transport methods such as RAW/TCP, WebSocket, or HTTP-oriented transports, and can additionally wrap those transports in TLS where supported. Those outer layers do not replace the VMess authentication, command, destination, or body record format described here."
+msgstr "VMess 位于代理协议层。Xray 可以把它的有序字节流放入 RAW/TCP、WebSocket 或 HTTP 导向的其他传输方式中，并可在支持时继续用 TLS 包装这些传输。那些外层并不会替代本文所述的 VMess 认证、命令、目标地址或正文记录格式。"
+
+msgid "A useful layer model is:"
+msgstr "可以用下面的分层模型理解："
+
+msgid "Current Versus Legacy VMess"
+msgstr "当前 VMess 与旧版 VMess"
+
+msgid "The official Project X protocol page still documents historical VMess fields, including the original timestamp-derived authentication hash and older body security choices. Current Xray-core has moved further:"
+msgstr "Project X 官方协议页仍记录了一些历史 VMess 字段，包括最初基于时间戳派生的认证哈希与旧正文安全选项。当前 Xray-core 已进一步演进："
+
+msgid "the inbound decoder first tries the 16-byte **AEAD AuthID** path;"
+msgstr "入站解码器首先尝试 16 字节的 **AEAD AuthID** 路径；"
+
+msgid "current VMess account security types are AES-128-GCM and ChaCha20-Poly1305, with `auto` resolving to one of those on the client;"
+msgstr "当前 VMess 账户正文安全类型为 AES-128-GCM 与 ChaCha20-Poly1305，客户端的 `auto` 会解析为其中一种；"
+
+msgid "the old `alterId` model is not part of current VMess AEAD sharing;"
+msgstr "旧 `alterId` 模型不属于当前 VMess AEAD 分享格式；"
+
+msgid "current Xray configuration no longer offers VMess `none/zero/plain` body security."
+msgstr "当前 Xray 配置已不再提供 VMess `none/zero/plain` 正文安全模式。"
+
+msgid "The logical command header remains recognizably derived from VMess version 1, so the legacy specification is still useful for field meanings. The important implementation rule is to distinguish that **logical plaintext command layout** from the current **AEAD envelope** that protects it on the wire."
+msgstr "逻辑命令头仍明显继承自 VMess version 1，因此旧规范对于理解字段含义仍有价值。实现时最重要的是把这个**逻辑明文命令布局**与当前在线路上保护它的 **AEAD 外层封装**区分开。"
+
+msgid "End-to-End Connection Flow"
+msgstr "端到端连接流程"
+
+msgid "A current VMess connection can be read as this state sequence:"
+msgstr "当前 VMess 连接可以按以下状态顺序理解："
+
+msgid "There is no SOCKS5-style method-selection round trip. The first VMess protocol bytes already contain an authenticated user/time token and the encrypted proxy request. There is also no SOCKS5-style `REP` byte: destination or dispatch failure is normally observed as a failed/closed VMess exchange rather than a portable numeric VMess result code."
+msgstr "VMess 没有 SOCKS5 风格的方法选择往返。首批 VMess 协议字节已经包含经过认证的用户/时间 token 与加密代理请求。它也没有 SOCKS5 风格的 `REP` 字节：目标或 dispatch 失败通常表现为 VMess 交换失败/关闭，而不是一个可移植的数字结果码。"
+
+msgid "User Identity and Command Key"
+msgstr "用户身份与命令密钥"
+
+msgid "The configured VMess user ID resolves to a 16-byte UUID value. Current Xray also allows short custom strings in configuration by deterministically mapping them to UUID form; the wire authentication still operates on the resulting account identity and its derived command key."
+msgstr "配置的 VMess 用户 ID 最终解析为 16 字节 UUID。当前 Xray 也允许在配置中使用较短的自定义字符串，并确定性地映射到 UUID 形式；线级认证仍基于最终得到的账户身份及其派生 command key。"
+
+msgid "The UUID itself is **not sent as 16 plaintext bytes at the front of a current VMess AEAD request**. Xray derives a 16-byte command key from the account ID. That key is used to construct and validate the AEAD AuthID and to derive the request-header AEAD keys."
+msgstr "UUID 本身**不会以 16 字节明文放在当前 VMess AEAD 请求最前面发送**。Xray 会从账户 ID 派生 16 字节 command key，用于构造/校验 AEAD AuthID，并派生请求头 AEAD 密钥。"
+
+msgid "This differs from VLESS, whose baseline header places its 16-byte user identity inside the VLESS request. It also differs from SOCKS5 RFC 1929, where username and password are sent in an explicit authentication sub-negotiation."
+msgstr "这与 VLESS 不同：VLESS 基础头会把 16 字节用户身份直接置于请求中；也与 SOCKS5 RFC 1929 不同，后者会在显式认证子协商中发送用户名和密码。"
+
+msgid "AEAD AuthID: Exact 16-Byte Plaintext Before Encryption"
+msgstr "AEAD AuthID：加密前精确的 16 字节明文"
+
+msgid "Current Xray creates a 16-byte AuthID plaintext:"
+msgstr "当前 Xray 会构造如下 16 字节 AuthID 明文："
+
+msgid "Those 16 bytes are encrypted as one AES block using a key derived from the user's command key. The resulting 16-byte ciphertext is the first VMess AEAD field visible on the protocol stream."
+msgstr "这 16 字节会使用由用户 command key 派生的密钥，作为一个 AES block 整体加密。得到的 16 字节密文就是协议字节流上可见的第一个 VMess AEAD 字段。"
+
+msgid "Server validation performs several distinct checks:"
+msgstr "服务端验证包含多个彼此独立的检查："
+
+msgid "try the configured users' AuthID decoders;"
+msgstr "尝试已配置用户的 AuthID decoder；"
+
+msgid "decrypt the candidate AuthID;"
+msgstr "解密候选 AuthID；"
+
+msgid "verify the CRC32 over the first 12 plaintext bytes;"
+msgstr "校验前 12 字节明文的 CRC32；"
+
+msgid "reject negative/invalid timestamps;"
+msgstr "拒绝负数或无效时间戳；"
+
+msgid "require the timestamp to be within 120 seconds of the server's current Unix time;"
+msgstr "要求时间戳与服务端当前 Unix 时间相差不超过 120 秒；"
+
+msgid "reject an AuthID already present in the anti-replay filter."
+msgstr "拒绝已经存在于 anti-replay filter 中的 AuthID。"
+
+msgid "This is why VMess documentation warns that client and server UTC clocks must be synchronized. Time zone is irrelevant; Unix time freshness is what matters."
+msgstr "这就是 VMess 文档强调客户端与服务端 UTC 时钟必须同步的原因。时区本身无关紧要，真正重要的是 Unix 时间的新鲜度。"
+
+msgid "The AuthID anti-replay filter and the later request-body session-history check protect different values. Passing AuthID validation is necessary but is not the last replay-related check performed by the current server."
+msgstr "AuthID anti-replay filter 与后续 request-body session-history 检查保护的是不同值。通过 AuthID 验证只是必要条件，并不是当前服务端最后一次重放相关检查。"
+
+msgid "VMess AEAD Request Header Envelope"
+msgstr "VMess AEAD 请求头封装"
+
+msgid "After creating AuthID, current Xray generates an independent random 8-byte `connectionNonce` and AEAD-protects both the logical request-header length and the logical request header."
+msgstr "创建 AuthID 后，当前 Xray 会独立生成随机 8 字节 `connectionNonce`，并分别用 AEAD 保护逻辑请求头长度和逻辑请求头本身。"
+
+msgid "On the wire:"
+msgstr "在线路上："
+
+msgid "The length plaintext is a big-endian `uint16`; AES-GCM adds its 16-byte tag, so that field occupies 18 bytes. The request-header ciphertext similarly adds 16 bytes to the logical header length."
+msgstr "长度明文是大端 `uint16`；AES-GCM 增加 16 字节 tag，因此该字段在线路上占 18 字节。请求头密文同样比逻辑头长度多 16 字节。"
+
+msgid "Both AEAD operations use keys/nonces derived from:"
+msgstr "两个 AEAD 操作都使用由以下材料派生的密钥/nonce："
+
+msgid "the VMess user's command key,"
+msgstr "VMess 用户的 command key；"
+
+msgid "the 16-byte AuthID,"
+msgstr "16 字节 AuthID；"
+
+msgid "the 8-byte connection nonce,"
+msgstr "8 字节 connection nonce；"
+
+msgid "and fixed VMess KDF labels."
+msgstr "以及固定 VMess KDF label。"
+
+msgid "The AuthID is also supplied as AEAD associated data. Consequently, changing the AuthID, encrypted length, connection nonce, or protected header without the correct user key causes authentication failure before the destination is parsed."
+msgstr "AuthID 还会作为 AEAD associated data。因而在没有正确用户密钥的情况下篡改 AuthID、加密长度、connection nonce 或受保护请求头，都会在目标地址被解析之前导致认证失败。"
+
+msgid "Incremental parsing boundary"
+msgstr "增量解析边界"
+
+msgid "The request is carried over an ordered stream. A parser must therefore read:"
+msgstr "请求承载在有序字节流上，因此解析器必须依次读取："
+
+msgid "exactly 16 bytes of AuthID;"
+msgstr "精确 16 字节 AuthID；"
+
+msgid "exactly 18 bytes of encrypted length;"
+msgstr "精确 18 字节加密长度；"
+
+msgid "exactly 8 bytes of connection nonce;"
+msgstr "精确 8 字节 connection nonce；"
+
+msgid "decrypt the length;"
+msgstr "解密长度；"
+
+msgid "then read exactly `L + 16` bytes of encrypted request header."
+msgstr "再精确读取 `L + 16` 字节加密请求头。"
+
+msgid "A single TCP/QUIC/WebSocket read is not a VMess message boundary. Conversely, one transport read can contain the whole header plus the start of the encrypted body; read-ahead bytes must be preserved for the body decoder."
+msgstr "一次 TCP/QUIC/WebSocket read 并不等于一个 VMess 消息边界。反过来，一次传输层读取也可能同时包含完整请求头以及加密正文开头；超前读取的字节必须保留给正文解码器。"
+
+msgid "Logical Request Header Layout"
+msgstr "逻辑请求头布局"
+
+msgid "After the AEAD envelope is opened, the current Xray logical header begins:"
+msgstr "打开 AEAD 外层后，当前 Xray 的逻辑请求头按如下字段开始："
+
+msgid "The first 38 bytes end with the command byte. Destination length is variable, then `P` can add 0--15 random bytes, followed by the four-byte FNV-1a checksum. The server validates that checksum **after** successfully opening the outer AEAD header. AEAD integrity and the inner FNV checksum are therefore separate validation layers."
+msgstr "前 38 字节以 command 字节结束。之后目标地址长度可变，`P` 可再加入 0--15 个随机字节，最后是 4 字节 FNV-1a checksum。服务端会在成功打开外层 AEAD 请求头**之后**再验证该 checksum。因此 AEAD 完整性与内层 FNV checksum 是两层独立校验。"
+
+msgid "Current Xray rejects an unresolved/unknown body security value after parsing the logical header. `auto` is a client configuration choice; the client resolves it to an actual on-wire security type before sending the request."
+msgstr "解析逻辑请求头后，当前 Xray 会拒绝无法解析或未知的正文安全值。`auto` 是客户端配置选项；发送请求前客户端会把它解析为实际线级 security type。"
+
+msgid "Option bits"
+msgstr "Option 位"
+
+msgid "The current common protocol definitions use these relevant bits:"
+msgstr "当前公共协议定义使用以下相关 bit："
+
+msgid "Bit"
+msgstr "Bit"
+
+msgid "Name"
+msgstr "名称"
+
+msgid "chunk stream"
+msgstr "chunk stream"
+
+msgid "payload uses VMess chunk records; historical name is now marked deprecated in code, but current VMess outbound still sets the bit"
+msgstr "payload 使用 VMess chunk record；这个历史名称目前在代码中已标记 deprecated，但当前 VMess outbound 仍会设置该 bit"
+
+msgid "chunk masking"
+msgstr "chunk masking"
+
+msgid "two-byte chunk lengths are XOR-masked with a SHAKE128-derived stream"
+msgstr "两字节 chunk 长度使用 SHAKE128 派生流做 XOR masking"
+
+msgid "global padding"
+msgstr "global padding"
+
+msgid "each chunk may have pseudo-random padding in addition to encrypted payload"
+msgstr "每个 chunk 除加密 payload 外还可以带伪随机 padding"
+
+msgid "`0x10`"
+msgstr "`0x10`"
+
+msgid "authenticated length"
+msgstr "authenticated length"
+
+msgid "experimental AEAD protection for chunk-length fields"
+msgstr "对 chunk 长度字段进行 AEAD 保护的实验机制"
+
+msgid "For current AES-GCM/ChaCha20-Poly1305 VMess, Xray enables chunk masking and global padding by default. `AuthenticatedLength` remains an experiment that must be compatible on both peers."
+msgstr "对当前 AES-GCM/ChaCha20-Poly1305 VMess，Xray 默认启用 chunk masking 与 global padding。`AuthenticatedLength` 仍属于实验特性，通信双方必须具备兼容实现。"
+
+msgid "Destination Encoding"
+msgstr "目标地址编码"
+
+msgid "VMess encodes the destination in a different order from SOCKS5. Current Xray's VMess address parser is configured with **port first**:"
+msgstr "VMess 编码目标地址的字段顺序与 SOCKS5 不同。当前 Xray 的 VMess 地址解析器配置为**端口在前**："
+
+msgid "Address payloads are:"
+msgstr "各地址类型的 payload 为："
+
+msgid "ATYP"
+msgstr "ATYP"
+
+msgid "Address layout"
+msgstr "地址布局"
+
+msgid "4 IPv4 bytes"
+msgstr "4 字节 IPv4 地址"
+
+msgid "`uint8 length` + that many domain bytes"
+msgstr "`uint8 length` + 对应数量的域名字节"
+
+msgid "16 IPv6 bytes"
+msgstr "16 字节 IPv6 地址"
+
+msgid "For comparison, SOCKS5 uses `ATYP | DST.ADDR | DST.PORT`; VMess uses `DST.PORT | ATYP | DST.ADDR`. A parser shared between the protocols must not reuse the SOCKS5 field order accidentally."
+msgstr "作为对比，SOCKS5 使用 `ATYP | DST.ADDR | DST.PORT`，VMess 则使用 `DST.PORT | ATYP | DST.ADDR`。若多个协议共用解析器，绝不能误用 SOCKS5 的字段顺序来解析 VMess。"
+
+msgid "The base VMess TCP/UDP commands are:"
+msgstr "基础 VMess TCP/UDP 命令如下："
+
+msgid "Current common Xray definitions also have other internal request-command values, but VMess interoperability documentation should not invent wire semantics for a command unless both peers implement it."
+msgstr "当前 Xray 公共定义中还有其他内部 request-command 值，但 VMess 互操作文档不应在双方都没有实现某命令时自行虚构其线级语义。"
+
+msgid "Request Body Record Format"
+msgstr "请求正文记录格式"
+
+msgid "After the protected command header, VMess switches to independently authenticated body chunks. In the ordinary current AEAD body modes the logical record is:"
+msgstr "受保护命令头结束后，VMess 会切换到独立认证的正文 chunk。当前普通 AEAD 正文模式中的逻辑记录如下："
+
+msgid "The size value describes the encrypted payload plus any global padding. With normal chunk masking, the two-byte big-endian value is XORed with successive 16-bit values from SHAKE128 seeded by the request-body IV. The same SHAKE stream also produces the global-padding length modulo 64."
+msgstr "size 值描述加密 payload 加上 global padding 的总大小。普通 chunk masking 模式下，两字节大端长度会与由 request-body IV 初始化的 SHAKE128 流连续产生的 16 位值做 XOR。同一个 SHAKE 流还会通过模 64 产生 global-padding 长度。"
+
+msgid "Global padding is outside the AEAD ciphertext. It changes chunk size/shape but does not become application bytes after decoding."
+msgstr "Global padding 位于 AEAD 密文之外。它会改变 chunk 的大小和形态，但解码后不会成为应用数据。"
+
+msgid "With the `AuthenticatedLength` experiment, the logical two-byte size is itself AEAD-protected and therefore occupies 18 bytes. This adds integrity to the record length rather than relying only on masking."
+msgstr "启用 `AuthenticatedLength` 实验后，逻辑上的两字节 size 自身也会受到 AEAD 保护，因此在线路上占 18 字节。这样长度字段具备完整性保护，而不只是依赖 masking。"
+
+msgid "AES-128-GCM body mode"
+msgstr "AES-128-GCM 正文模式"
+
+msgid "The request's random 16-byte body key is used as the AES-128-GCM key. Each record uses a direction-local increasing counter in its nonce construction and adds a 16-byte authentication tag."
+msgstr "请求中的随机 16 字节 body key 直接作为 AES-128-GCM 密钥。每条记录构造 nonce 时使用本方向独立递增的计数器，并增加 16 字节认证 tag。"
+
+msgid "ChaCha20-Poly1305 body mode"
+msgstr "ChaCha20-Poly1305 正文模式"
+
+msgid "Xray expands the 16-byte request body key into the 32-byte ChaCha20-Poly1305 key using the VMess-defined MD5-based expansion. Record nonces follow the same counter-plus-IV model and each record carries a 16-byte Poly1305 tag."
+msgstr "Xray 使用 VMess 定义的基于 MD5 的扩展方式，把 16 字节 request body key 扩展为 32 字节 ChaCha20-Poly1305 密钥。记录 nonce 采用相同的计数器加 IV 模型，每条记录携带 16 字节 Poly1305 tag。"
+
+msgid "Current Xray outbound configuration exposes `aes-128-gcm`, `chacha20-poly1305`, and `auto`. As of the current implementation, `none` is not a valid current VMess body security mode."
+msgstr "当前 Xray outbound 配置提供 `aes-128-gcm`、`chacha20-poly1305` 和 `auto`。在当前实现中，`none` 已不是有效的 VMess 正文安全模式。"
+
+msgid "For `command=0x01`, the destination in the request header is a TCP destination. After user/header validation the server dispatches that target, decodes VMess body records, and writes the recovered bytes to the destination TCP stream. Bytes received from the target take the reverse path through the VMess response header and response-body record encoder."
+msgstr "当 `command=0x01` 时，请求头中的目标是 TCP 目标。完成用户/请求头验证后，服务端 dispatch 该目标，解码 VMess 正文记录，并把恢复出的字节写入目标 TCP 流。从目标收到的字节则通过 VMess 响应头和响应正文记录编码器沿反方向返回。"
+
+msgid "VMess body chunks are framing units, not application message boundaries. A TCP application record can span multiple VMess chunks, and one VMess chunk can contain bytes from multiple application writes. Implementations must preserve byte order, not write-call boundaries."
+msgstr "VMess body chunk 是分帧单元，不是应用消息边界。一个 TCP 应用记录可以跨多个 VMess chunk，一个 VMess chunk 也可以包含多次应用 write 的字节。实现必须保持字节顺序，而不是保持 write 调用边界。"
+
+msgid "Flow control comes primarily from the selected outer reliable transport and the server's destination socket. VMess chunk framing does not define a SOCKS-like window-update command or independent stream credit."
+msgstr "流控主要来自所选外层可靠传输以及服务端目标 socket。VMess chunk framing 本身没有定义类似 SOCKS 的 window-update 命令，也没有独立 Stream credit。"
+
+msgid "UDP Data Path"
+msgstr "UDP 数据路径"
+
+msgid "For base `command=0x02`, the request header names a UDP destination and body handling switches to packet transfer semantics. Current Xray's authentication writer preserves each packet buffer as one authenticated VMess body record rather than concatenating packets into a TCP-style byte stream."
+msgstr "在基础 `command=0x02` 模式下，请求头指定一个 UDP 目标，正文处理切换为 packet 传输语义。当前 Xray 的 authentication writer 会把每个 packet buffer 保持为一条独立认证的 VMess 正文记录，而不是像 TCP 字节流那样把多个数据包拼接起来。"
+
+msgid "Base VMess UDP therefore differs from SOCKS5 UDP in two major ways:"
+msgstr "因此，基础 VMess UDP 与 SOCKS5 UDP 有两个主要区别："
+
+msgid "the destination is established in the encrypted VMess request header rather than repeated in every UDP relay datagram;"
+msgstr "目标地址在加密 VMess 请求头中一次确定，而不是在每个 UDP 中继数据报中重复携带；"
+
+msgid "the VMess client/server transport remains the selected reliable VMess stream, rather than switching to the separate native UDP relay socket defined by SOCKS5 `UDP ASSOCIATE`."
+msgstr "VMess 客户端/服务端之间仍使用所选的可靠 VMess 字节流，而不会切换到 SOCKS5 `UDP ASSOCIATE` 所定义的独立原生 UDP relay socket。"
+
+msgid "Base VMess has no SOCKS5 `FRAG` byte and no Hysteria/TUIC-style packet ID plus fragment count. If a deployment needs broader UDP association semantics, current Xray can add XUDP over its Mux path. That is an extra layer and should not be mistaken for the base `command=0x02` wire format."
+msgstr "基础 VMess 没有 SOCKS5 `FRAG` 字节，也没有 Hysteria/TUIC 风格的 packet ID + fragment count。如果部署需要更广泛的 UDP association 语义，当前 Xray 可以在 Mux 路径上增加 XUDP。这属于额外层，不能与基础 `command=0x02` 线格式混为一谈。"
+
+msgid "Current Xray outbound can, under its cone/XUDP policy, rewrite some UDP flows to `command=0x03` with the Mux destination `v1.mux.cool` and then use an XUDP packet writer. A capture/dissector must therefore determine whether it is seeing base VMess UDP or VMess carrying Mux/XUDP before interpreting packet boundaries."
+msgstr "在 cone/XUDP 策略下，当前 Xray outbound 可以把某些 UDP 流重写为 `command=0x03`，目标设为 Mux 地址 `v1.mux.cool`，再使用 XUDP packet writer。因此抓包/协议解析器在解释数据包边界前，必须先判断看到的是基础 VMess UDP，还是承载 Mux/XUDP 的 VMess。"
+
+msgid "Current Xray derives response body key and IV values by SHA-256 hashing the request body key and IV and taking the first 16 bytes. The response control header is then AEAD-protected separately from the body."
+msgstr "当前 Xray 分别对 request body key 和 IV 做 SHA-256，并取前 16 字节作为 response body key 与 IV。响应控制头随后使用独立于正文的 AEAD 保护。"
+
+msgid "Wire layout:"
+msgstr "线格式布局："
+
+msgid "The decrypted response header is logically:"
+msgstr "解密后的响应头逻辑布局如下："
+
+msgid "The client checks `response_v`; a mismatch means the response is not valid for that VMess session. There is no general success/failure status byte comparable to SOCKS5 `REP`. A valid response header authenticates the responding VMess peer at the protocol level, while target failures are handled by stream/error behavior rather than a portable VMess result-code table."
+msgstr "客户端会检查 `response_v`；不匹配表示该响应不属于有效的当前 VMess 会话。VMess 没有可与 SOCKS5 `REP` 类比的通用成功/失败状态字节。有效响应头在协议层认证响应 VMess 对端，而目标失败通过字节流/错误行为处理，不使用可移植的 VMess 结果码表。"
+
+msgid "After this header, response body chunks use the same selected body-security algorithm, but with response-direction keys, IV, length-mask stream, nonces, and padding state."
+msgstr "该响应头之后，响应正文 chunk 使用同一种已选择的正文安全算法，但改用响应方向自己的密钥、IV、长度 mask 流、nonce 与 padding 状态。"
+
+msgid "Termination, Half-Close, and Error Scope"
+msgstr "终止、半关闭与错误作用域"
+
+msgid "Historically, chunked VMess sends a termination record when a direction has no more payload. With AEAD body security, an empty plaintext packet is represented by a record whose encrypted portion consists only of the AEAD authentication overhead (plus any generated padding). The decoder recognizes that shape as end-of-stream."
+msgstr "历史上，chunked VMess 在某个方向没有更多 payload 时会发送 termination record。使用 AEAD 正文安全后，空明文 packet 会表示为一条加密部分仅包含 AEAD 认证开销（再加上可能生成的 padding）的记录；解码器会把这种形态识别为字节流结束。"
+
+msgid "Current Xray also has a `NoTerminationSignal` experiment/behavior; the outbound checks that setting before emitting the explicit empty body record. Therefore a robust peer must also handle clean outer EOF according to the negotiated/current implementation behavior."
+msgstr "当前 Xray 还存在 `NoTerminationSignal` 实验/行为；outbound 在发送显式空正文记录前会检查该设置。因此健壮的对端还必须根据当前实现/双方行为正确处理干净的外层 EOF。"
+
+msgid "Keep these error scopes separate:"
+msgstr "应把以下错误作用域分开："
+
+msgid "**outer transport error**: TCP/WebSocket/TLS/etc. fails before VMess parsing;"
+msgstr "**外层传输错误**：TCP/WebSocket/TLS 等在 VMess 解析之前失败；"
+
+msgid "**AuthID error**: unknown user, timestamp outside the ±120-second window, CRC mismatch, or AuthID replay;"
+msgstr "**AuthID 错误**：未知用户、时间戳超出 ±120 秒窗口、CRC 不匹配或 AuthID 重放；"
+
+msgid "**request-header AEAD error**: encrypted length or payload tag fails;"
+msgstr "**请求头 AEAD 错误**：加密长度或 payload tag 校验失败；"
+
+msgid "**session replay error**: the tuple of VMess user + request body key + request body IV is reused within the server's session-history window;"
+msgstr "**会话重放错误**：VMess 用户 + request body key + request body IV 这一元组在服务端 session-history 窗口内被重复使用；"
+
+msgid "**logical-header error**: checksum, address, command, or security is invalid;"
+msgstr "**逻辑请求头错误**：checksum、地址、命令或 security 无效；"
+
+msgid "**body-record error**: masked/authenticated size is malformed or an AEAD tag fails;"
+msgstr "**正文记录错误**：masked/authenticated size 畸形或 AEAD tag 校验失败；"
+
+msgid "**destination/dispatch error**: VMess parsed correctly but the requested target cannot be opened or routed;"
+msgstr "**目标/dispatch 错误**：VMess 已正确解析，但请求目标无法建立连接或路由；"
+
+msgid "**response error**: response AEAD or `response_v` validation fails."
+msgstr "**响应错误**：响应 AEAD 或 `response_v` 验证失败。"
+
+msgid "Current Xray keeps body-session replay history for several minutes and separately keeps AuthID anti-replay state around the authentication timestamp window. Do not merge those caches into one conceptual \"VMess replay token\" when implementing diagnostics."
+msgstr "当前 Xray 会保存数分钟的正文会话重放历史，并围绕认证时间戳窗口单独维护 AuthID anti-replay 状态。实现诊断工具时，不要把这两个缓存合并成一个抽象的“VMess replay token”。"
+
+msgid "A VMess protocol error normally terminates the affected outer connection. If Mux.Cool is layered above VMess, inner logical stream failures can have a narrower scope than failure of the parent VMess/transport connection."
+msgstr "VMess 协议错误通常会终止受影响的外层连接。如果 VMess 之上又叠加 Mux.Cool，那么内层逻辑 Stream 的故障作用域可以小于父 VMess/传输连接故障。"
+
+msgid "State Machines"
+msgstr "状态机"
+
+msgid "Client"
+msgstr "客户端"
+
+msgid "The two data directions can run concurrently once the request has been sent. The client does not wait for a SOCKS-style explicit success byte before it can start sending proxied body data."
+msgstr "请求发出后，两个数据方向可以并发运行。客户端不需要等待 SOCKS 风格的显式成功字节，就可以开始发送被代理正文数据。"
+
+msgid "Server"
+msgstr "服务端"
+
+msgid "Current Xray intentionally drains a behavior-derived amount of data on some invalid-request paths before closing. That is an implementation-level traffic analysis defense; clients must not interpret delayed close as protocol success."
+msgstr "当前 Xray 在某些无效请求路径上会有意先 drain 一段由行为参数派生的数据量，再关闭连接。这属于实现层面的流量分析防护；客户端绝不能把延迟关闭理解为协议成功。"
+
+msgid "Multiplexing and Flow Control"
+msgstr "多路复用与流控"
+
+msgid "Base VMess does not multiplex arbitrary independent TCP proxy requests inside one VMess request. Normally each independent VMess TCP command is associated with its own outer proxy stream/connection."
+msgstr "基础 VMess 不会在一个 VMess 请求内部复用任意多个独立 TCP 代理请求。通常每个独立 VMess TCP 命令对应自己的一条外层代理 Stream/连接。"
+
+msgid "Xray's `command=0x03` hands the body to **Mux.Cool**, which is a separate multiplexing protocol. XUDP can also ride that path. When diagnosing a trace, keep the layers distinct:"
+msgstr "Xray 的 `command=0x03` 会把正文交给独立多路复用协议 **Mux.Cool**；XUDP 也可以走这一路径。诊断抓包时必须区分这些层次："
+
+msgid "VMess itself has record sizes, masking, padding, and AEAD counters but no independent per-logical-stream flow-control window. Mux flow control, HTTP/2 or QUIC stream flow control in an outer transport, and TCP congestion control are separate mechanisms."
+msgstr "VMess 自身具有记录大小、masking、padding 与 AEAD 计数器，但没有每逻辑 Stream 独立的 flow-control window。Mux 流控、外层传输中的 HTTP/2/QUIC Stream 流控以及 TCP 拥塞控制都是彼此独立的机制。"
+
+msgid "VMess directly on a clear outer byte stream"
+msgstr "VMess 直接承载在可见外层字节流上"
+
+msgid "A current VMess AEAD request does **not** begin with a plaintext UUID, command, or destination. A dissector sees approximately:"
+msgstr "当前 VMess AEAD 请求**不会**以明文 UUID、命令或目标地址开头。协议 dissector 大致会看到："
+
+msgid "The first 16 bytes are deliberately not a stable user identifier. Because the AuthID contains the current timestamp plus random data before block encryption, two connections from the same user do not begin with the same 16-byte prefix."
+msgstr "最前面的 16 字节有意设计成不是稳定用户标识。AuthID 在 block encryption 前包含当前时间戳和随机数据，因此同一用户的两条连接不会拥有相同的 16 字节前缀。"
+
+msgid "The destination, TCP/UDP command, body IV/key, and selected body cipher are all inside the encrypted request-header payload."
+msgstr "目标地址、TCP/UDP 命令、body IV/key 以及选定正文密码都位于加密 request-header payload 内部。"
+
+msgid "VMess inside TLS/WebSocket/HTTP transports"
+msgstr "TLS/WebSocket/HTTP 传输内部的 VMess"
+
+msgid "With an outer encrypted transport, the passive capture first exposes that layer:"
+msgstr "存在加密外层传输时，被动抓包首先暴露的是该外层："
+
+msgid "Without outer decryption keys or endpoint instrumentation, VMess fields cannot be located simply by packet offsets. With decryption, remember that WebSocket, HTTP, or QUIC frame boundaries still do not define VMess record boundaries."
+msgstr "如果没有外层解密密钥或端点插桩，仅靠 packet offset 无法定位 VMess 字段。即使完成解密，也必须记住 WebSocket、HTTP 或 QUIC frame 边界仍然不等于 VMess record 边界。"
+
+msgid "Useful endpoint-side anchors"
+msgstr "有用的端点侧分析锚点"
+
+msgid "For an instrumented implementation, useful checkpoints are:"
+msgstr "对于可插桩的实现，有价值的检查点包括："
+
+msgid "first 16 bytes accepted as AuthID and mapped to a user;"
+msgstr "最前面 16 字节被接受为 AuthID 并映射到用户；"
+
+msgid "decrypted big-endian logical header length from the next 18 bytes;"
+msgstr "从后续 18 字节解出的逻辑请求头大端长度；"
+
+msgid "logical header version `0x01`;"
+msgstr "逻辑请求头版本 `0x01`；"
+
+msgid "command and `PORT | ATYP | ADDR` after opening the header;"
+msgstr "打开请求头后得到 command 与 `PORT | ATYP | ADDR`；"
+
+msgid "option/security byte and body IV/key;"
+msgstr "option/security 字节与 body IV/key；"
+
+msgid "two-byte masked lengths or 18-byte authenticated lengths in the body;"
+msgstr "正文中的两字节 masked length 或 18 字节 authenticated length；"
+
+msgid "16-byte AEAD tags per encrypted body record;"
+msgstr "每条加密正文记录的 16 字节 AEAD tag；"
+
+msgid "18-byte AEAD response-header length followed by the protected response header."
+msgstr "18 字节 AEAD 响应头长度，随后是受保护的响应头。"
+
+msgid "SOCKS5 RFC 1928/1929"
+msgstr "SOCKS5 RFC 1928/1929"
+
+msgid "Current VMess AEAD"
+msgstr "当前 VMess AEAD"
+
+msgid "Outer connection"
+msgstr "外层连接"
+
+msgid "Selected ordered Xray transport; commonly backed by TCP, possibly with additional framing/security"
+msgstr "所选有序 Xray 传输；通常以 TCP 为底层，也可能叠加额外 framing/security"
+
+msgid "none; client/server configuration already selects VMess and body security"
+msgstr "没有；客户端/服务端配置已经预先选择 VMess 与正文安全模式"
+
+msgid "optional method, e.g. RFC 1929 username/password"
+msgstr "可选认证方法，例如 RFC 1929 用户名/密码"
+
+msgid "16-byte encrypted AuthID derived from user command key, timestamp and randomness"
+msgstr "由用户 command key、时间戳与随机量派生的 16 字节加密 AuthID"
+
+msgid "Replay protection"
+msgstr "重放保护"
+
+msgid "not defined by RFC 1928/1929"
+msgstr "RFC 1928/1929 未定义"
+
+msgid "timestamp window + AuthID replay filter + request body key/IV session history"
+msgstr "时间戳窗口 + AuthID replay filter + request body key/IV session history"
+
+msgid "Authentication round trip"
+msgstr "认证往返"
+
+msgid "explicit method/auth response"
+msgstr "显式 method/auth 响应"
+
+msgid "no separate auth reply; request header follows AuthID immediately"
+msgstr "没有独立认证回复；AuthID 后立即跟随请求头"
+
+msgid "`CMD` after negotiation"
+msgstr "协商完成后的 `CMD`"
+
+msgid "encrypted logical command byte (`0x01` TCP, `0x02` UDP, `0x03` Mux)"
+msgstr "加密的逻辑命令字节（`0x01` TCP、`0x02` UDP、`0x03` Mux）"
+
+msgid "Destination order"
+msgstr "目标地址顺序"
+
+msgid "\\`ATYP"
+msgstr "\\`ATYP"
+
+msgid "ADDR"
+msgstr "ADDR"
+
+msgid "Domain encoding"
+msgstr "域名编码"
+
+msgid "one-byte length + domain"
+msgstr "1 字节长度 + 域名"
+
+msgid "`REP=0x00` plus bound address"
+msgstr "`REP=0x00` 加绑定地址"
+
+msgid "no SOCKS-equivalent status; authenticated response header carries `response_v`, options, optional command"
+msgstr "没有 SOCKS 等价状态码；已认证响应头携带 `response_v`、options 与可选 command"
+
+msgid "Failure reply"
+msgstr "失败回复"
+
+msgid "standardized `REP` values"
+msgstr "标准化 `REP` 值"
+
+msgid "mostly close/error behavior; no portable destination-error code table"
+msgstr "主要表现为关闭/错误行为；没有可移植的目标错误码表"
+
+msgid "raw bytes after successful reply"
+msgstr "成功回复后的原始字节"
+
+msgid "masked/padded AEAD body records"
+msgstr "经过 masking/padding 的 AEAD 正文记录"
+
+msgid "Payload confidentiality"
+msgstr "Payload 机密性"
+
+msgid "none in base SOCKS5"
+msgstr "基础 SOCKS5 中没有"
+
+msgid "AES-128-GCM or ChaCha20-Poly1305 body encryption in current Xray"
+msgstr "当前 Xray 使用 AES-128-GCM 或 ChaCha20-Poly1305 正文加密"
+
+msgid "`UDP ASSOCIATE` on TCP control connection"
+msgstr "TCP 控制连接上的 `UDP ASSOCIATE`"
+
+msgid "VMess `command=0x02` names a fixed UDP destination in the encrypted request"
+msgstr "VMess `command=0x02` 在加密请求中指定一个固定 UDP 目标"
+
+msgid "UDP carrier"
+msgstr "UDP 承载方式"
+
+msgid "separate native UDP relay with SOCKS UDP header"
+msgstr "独立原生 UDP relay，加 SOCKS UDP 头"
+
+msgid "encrypted VMess body records on the selected VMess stream; XUDP/Mux may add another model"
+msgstr "所选 VMess 字节流上的加密 VMess 正文记录；XUDP/Mux 可能再增加另一种模型"
+
+msgid "UDP per-packet destination"
+msgstr "UDP 每包目标地址"
+
+msgid "present in every SOCKS UDP datagram"
+msgstr "每个 SOCKS UDP 数据报都携带"
+
+msgid "not present in base VMess UDP body; destination comes from request header"
+msgstr "基础 VMess UDP 正文中不携带；目标来自请求头"
+
+msgid "UDP fragmentation field"
+msgstr "UDP 分片字段"
+
+msgid "SOCKS `FRAG`"
+msgstr "SOCKS `FRAG`"
+
+msgid "no base VMess fragment ID/count field"
+msgstr "基础 VMess 没有 fragment ID/count 字段"
+
+msgid "not defined in base SOCKS5"
+msgstr "基础 SOCKS5 未定义"
+
+msgid "extra `command=0x03` Mux.Cool layer can multiplex logical streams"
+msgstr "额外的 `command=0x03` Mux.Cool 层可复用逻辑 Stream"
+
+msgid "Flow control"
+msgstr "流控"
+
+msgid "inherited from TCP / UDP behavior"
+msgstr "继承自 TCP / UDP 行为"
+
+msgid "inherited from outer transport plus destination; Mux/HTTP/QUIC layers may add their own flow control"
+msgstr "继承自外层传输与目标连接；Mux/HTTP/QUIC 层还可能加入自身流控"
+
+msgid "End of stream"
+msgstr "字节流结束"
+
+msgid "TCP FIN/close anchors association"
+msgstr "TCP FIN/close 锚定 association 生命周期"
+
+msgid "VMess termination record and/or outer EOF depending on current behavior"
+msgstr "根据当前行为使用 VMess termination record 和/或外层 EOF"
+
+msgid "The most important conceptual difference is that SOCKS5 separates negotiation, authentication, command, reply, and then raw relay into visible phases. VMess compresses user authentication and proxy dispatch into a protected first-flight request and continues with authenticated record framing. Mux.Cool, XUDP, WebSocket, TLS, and other transports are additional layers rather than substitutes for that VMess request."
+msgstr "最重要的概念差异是：SOCKS5 把协商、认证、命令、回复以及后续原始转发拆成可见阶段；VMess 则把用户认证与代理 dispatch 压缩进受保护的首批请求，并继续使用经过认证的记录分帧。Mux.Cool、XUDP、WebSocket、TLS 与其他传输都是额外层，而不是 VMess 请求本身的替代品。"
+
+msgid "Boundary Conditions and Defensive Parsing"
+msgstr "边界条件与防御性解析"
+
+msgid "A compatible implementation should explicitly guard these cases:"
+msgstr "兼容实现应显式防护以下情况："
+
+msgid "partial reads at every fixed or variable-length AEAD field;"
+msgstr "任何固定或可变长度 AEAD 字段的 partial read；"
+
+msgid "request-header length that exceeds a practical implementation bound;"
+msgstr "请求头长度超过实现可接受的实际上限；"
+
+msgid "stale or future AuthID timestamps outside the accepted 120-second window;"
+msgstr "AuthID 时间戳过旧或过于超前，超出接受的 120 秒窗口；"
+
+msgid "repeated AuthIDs;"
+msgstr "重复 AuthID；"
+
+msgid "repeated body key/IV session tuples;"
+msgstr "重复 body key/IV 会话元组；"
+
+msgid "unsupported logical header version;"
+msgstr "不受支持的逻辑请求头版本；"
+
+msgid "invalid security nibble;"
+msgstr "无效 security nibble；"
+
+msgid "truncated IPv4/IPv6/domain addresses;"
+msgstr "被截断的 IPv4/IPv6/域名地址；"
+
+msgid "zero-length or overlong domain fields according to the current address parser;"
+msgstr "按当前地址解析器规则判定的零长度或过长域名字段；"
+
+msgid "odd behavior where a Mux command incorrectly includes ordinary destination bytes;"
+msgstr "Mux 命令错误携带普通目标地址字节等异常行为；"
+
+msgid "padding length larger than remaining logical header bytes;"
+msgstr "padding 长度大于逻辑请求头剩余字节；"
+
+msgid "FNV checksum mismatch;"
+msgstr "FNV checksum 不匹配；"
+
+msgid "chunk-size decode underflow/overflow after masking/padding;"
+msgstr "masking/padding 处理后 chunk-size 解码发生下溢/上溢；"
+
+msgid "failed AEAD tags;"
+msgstr "AEAD tag 校验失败；"
+
+msgid "counter/nonce exhaustion;"
+msgstr "counter/nonce 耗尽；"
+
+msgid "clean termination record versus abrupt outer EOF;"
+msgstr "干净 termination record 与突发外层 EOF 的区分；"
+
+msgid "slow readers that create unbounded buffering in outer transport or Mux layers."
+msgstr "慢速 reader 导致外层传输或 Mux 层出现无界缓冲。"
+
+msgid "Do not allocate directly from an untrusted encrypted-length value until the length AEAD tag has been verified and a local upper bound has been applied. Likewise, do not dispatch the destination until the complete logical header, padding, and checksum have been validated."
+msgstr "在长度 AEAD tag 完成验证并应用本地上限之前，不要直接根据不可信的加密长度值分配内存。同样，在完整逻辑请求头、padding 与 checksum 全部验证通过前，不要 dispatch 目标地址。"
+
+msgid "Synchronize client and server UTC clocks. Current VMess AuthID validation uses a 120-second freshness window."
+msgstr "同步客户端与服务端 UTC 时钟。当前 VMess AuthID 验证使用 120 秒新鲜度窗口。"
+
+msgid "Use high-entropy VMess user IDs and rotate credentials when clients are retired."
+msgstr "使用高熵 VMess 用户 ID，并在客户端停用后轮换凭据。"
+
+msgid "Do not publish UUIDs merely because the on-wire AuthID is encrypted; the UUID is still shared authentication material."
+msgstr "不要因为线路上的 AuthID 已加密就公开 UUID；UUID 仍然属于共享认证材料。"
+
+msgid "Prefer current VMess AEAD. Do not build new deployments around `alterId` or legacy non-AEAD sharing formats."
+msgstr "优先使用当前 VMess AEAD。不要围绕 `alterId` 或旧式非 AEAD 分享格式构建新部署。"
+
+msgid "Current Xray no longer offers VMess `none/zero/plain` body security; do not write compatibility documentation that suggests those are current choices."
+msgstr "当前 Xray 已不再提供 VMess `none/zero/plain` 正文安全模式；兼容性文档不应把这些描述成当前可用选项。"
+
+msgid "VMess protocol encryption does not automatically make traffic look like ordinary HTTPS. If censorship resistance or normal TLS server identity is a deployment requirement, evaluate the appropriate outer transport/security layer separately."
+msgstr "VMess 协议加密不会自动让流量看起来像普通 HTTPS。如果部署需要抗审查外观或正常 TLS 服务端身份验证，应单独评估适当的外层传输/安全机制。"
+
+msgid "Bound invalid-request drain behavior, replay caches, body buffering, and Mux state to avoid turning defensive behavior into a resource-exhaustion surface."
+msgstr "应限制无效请求 drain 行为、重放缓存、正文缓冲与 Mux 状态，避免防御机制本身变成资源耗尽攻击面。"
+
+msgid "Logs may identify whether AuthID, header AEAD, checksum, body AEAD, or dispatch failed, but remote error behavior should not reveal unnecessary user/account information."
+msgstr "日志可以区分 AuthID、请求头 AEAD、checksum、正文 AEAD 或 dispatch 的具体失败位置，但远程错误行为不应泄露不必要的用户/账户信息。"
+
+msgid "Minimal Current Xray-Style Configuration"
+msgstr "最小当前 Xray 风格配置"
+
+msgid "A current outbound conceptually looks like:"
+msgstr "当前 outbound 在概念上类似："
+
+msgid "\"vmess\""
+msgstr "\"vmess\""
+
+msgid "\"address\""
+msgstr "\"address\""
+
+msgid "\"5783a3e7-e373-51cd-8642-c83782b807c5\""
+msgstr "\"5783a3e7-e373-51cd-8642-c83782b807c5\""
+
+msgid "`security: \"auto\"` is a client-side selection convenience. It resolves to an actual supported body cipher; the server learns the selected cipher from the protected logical VMess header. Current Project X documentation lists AES-128-GCM and ChaCha20-Poly1305 as the explicit choices."
+msgstr "`security: \"auto\"` 是客户端侧的选择便利项。它会解析为实际受支持的正文密码；服务端从受保护的 VMess 逻辑请求头得知所选密码。当前 Project X 文档把 AES-128-GCM 与 ChaCha20-Poly1305 列为显式选项。"
+
+msgid "Transport settings belong outside this VMess account object and should be tested independently from VMess AEAD correctness."
+msgstr "传输设置位于这个 VMess account 对象之外，应与 VMess AEAD 正确性分开测试。"
+
+msgid "The current Proxy Wiki capability page lists VMess under **Planned or Targeted Support**, not under the client's currently available protocol set. Treat VMess client configuration as a target capability until the corresponding client implementation is present and verified."
+msgstr "当前 Proxy Wiki 能力页把 VMess 列在 **Planned or Targeted Support**，而不是客户端当前可用协议集合中。在对应客户端实现存在并完成验证之前，应把 VMess 客户端配置视为目标能力。"
+
+msgid "Chimera can eventually expose/store VMess profile fields without implementing the VMess cryptography itself. UI/profile support and runtime protocol support should be tracked independently."
+msgstr "Chimera 最终可以暴露/保存 VMess 配置字段，而不必自身实现 VMess 密码学。UI/profile 支持与运行时协议支持应独立跟踪。"
+
+msgid "The current server capability map explicitly lists VMess inbound work. Validate that implementation against the current AEAD-only Xray behavior described here, including AuthID time/replay checks, current body-security choices, TCP, UDP, and any Mux/XUDP behavior it claims to support."
+msgstr "当前服务端能力图明确列出了 VMess inbound 工作。应按照本文描述的当前 AEAD-only Xray 行为验证该实现，包括 AuthID 时间/重放检查、当前正文安全选项、TCP、UDP，以及其声称支持的任何 Mux/XUDP 行为。"
+
+msgid "Immediate rejection"
+msgstr "立即被拒绝"
+
+msgid "Verify the user ID on both peers."
+msgstr "确认两端用户 ID 一致。"
+
+msgid "Check actual UTC time and keep skew well below 120 seconds."
+msgstr "检查真实 UTC 时间，并把偏差保持在明显低于 120 秒的范围。"
+
+msgid "Confirm both peers implement current VMess AEAD rather than an incompatible legacy/alterId mode."
+msgstr "确认双方实现的是当前 VMess AEAD，而不是不兼容的 legacy/alterId 模式。"
+
+msgid "Check whether the outer transport is delivering a clean ordered byte stream."
+msgstr "检查外层传输是否提供干净、有序的字节流。"
+
+msgid "Distinguish AuthID rejection from request-header AEAD/checksum rejection in endpoint logs."
+msgstr "在端点日志中区分 AuthID 拒绝与请求头 AEAD/checksum 拒绝。"
+
+msgid "Header succeeds but data fails"
+msgstr "请求头成功但数据失败"
+
+msgid "Confirm the body security selected by the client is AES-128-GCM or ChaCha20-Poly1305 and is decoded as that exact security nibble."
+msgstr "确认客户端选择的正文安全模式是 AES-128-GCM 或 ChaCha20-Poly1305，并被服务端按准确的 security nibble 解码。"
+
+msgid "Verify request body key/IV extraction and response key/IV derivation."
+msgstr "验证 request body key/IV 提取与 response key/IV 派生。"
+
+msgid "Check chunk masking and global-padding state in both directions."
+msgstr "检查两个方向的 chunk masking 与 global-padding 状态。"
+
+msgid "If `AuthenticatedLength` is enabled, ensure both peers implement the same experiment behavior."
+msgstr "若启用 `AuthenticatedLength`，确保双方实现相同的实验行为。"
+
+msgid "Check AEAD nonce counters and packet/stream transfer mode."
+msgstr "检查 AEAD nonce counter 以及 packet/stream 传输模式。"
+
+msgid "Determine whether the flow is base VMess UDP or Mux/XUDP."
+msgstr "判断该流量属于基础 VMess UDP 还是 Mux/XUDP。"
+
+msgid "For base VMess UDP, confirm `command=0x02` and the fixed destination in the request header."
+msgstr "对基础 VMess UDP，确认 `command=0x02` 以及请求头中的固定目标地址。"
+
+msgid "Preserve packet boundaries through the VMess body reader/writer."
+msgstr "通过 VMess body reader/writer 保持 packet 边界。"
+
+msgid "Do not expect SOCKS5-style per-datagram destination headers or `FRAG`."
+msgstr "不要期待 SOCKS5 风格的每数据报目标地址头或 `FRAG`。"
+
+msgid "Check outer transport buffering and any MTU/datagram constraints in the layers surrounding VMess."
+msgstr "检查外层传输缓冲，以及 VMess 周围各层的 MTU/datagram 限制。"
+
+msgid "Project X VMess protocol description: <https://xtls.github.io/en/development/protocols/vmess.html>"
+msgstr "Project X VMess 协议说明：<https://xtls.github.io/en/development/protocols/vmess.html>"
+
+msgid "Project X current VMess inbound configuration: <https://xtls.github.io/en/config/inbounds/vmess.html>"
+msgstr "Project X 当前 VMess inbound 配置：<https://xtls.github.io/en/config/inbounds/vmess.html>"
+
+msgid "Project X current VMess outbound configuration: <https://xtls.github.io/en/config/outbounds/vmess.html>"
+msgstr "Project X 当前 VMess outbound 配置：<https://xtls.github.io/en/config/outbounds/vmess.html>"
+
+msgid "Xray-core VMess AEAD header implementation: <https://github.com/XTLS/Xray-core/blob/main/proxy/vmess/aead/encrypt.go>"
+msgstr "Xray-core VMess AEAD 请求头实现：<https://github.com/XTLS/Xray-core/blob/main/proxy/vmess/aead/encrypt.go>"
+
+msgid "Xray-core VMess AuthID implementation: <https://github.com/XTLS/Xray-core/blob/main/proxy/vmess/aead/authid.go>"
+msgstr "Xray-core VMess AuthID 实现：<https://github.com/XTLS/Xray-core/blob/main/proxy/vmess/aead/authid.go>"
+
+msgid "Xray-core VMess client encoding: <https://github.com/XTLS/Xray-core/blob/main/proxy/vmess/encoding/client.go>"
+msgstr "Xray-core VMess 客户端编码实现：<https://github.com/XTLS/Xray-core/blob/main/proxy/vmess/encoding/client.go>"
+
+msgid "Xray-core VMess server encoding: <https://github.com/XTLS/Xray-core/blob/main/proxy/vmess/encoding/server.go>"
+msgstr "Xray-core VMess 服务端编码实现：<https://github.com/XTLS/Xray-core/blob/main/proxy/vmess/encoding/server.go>"
+
+msgid "Xray-core common request/security definitions: <https://github.com/XTLS/Xray-core/blob/main/common/protocol/headers.go>"
+msgstr "Xray-core 公共 request/security 定义：<https://github.com/XTLS/Xray-core/blob/main/common/protocol/headers.go>"
+
+msgid "Some protocols bundle several of these responsibilities together. Hysteria 2 and TUIC, for example, are designed around QUIC and its TLS security. VMess carries its own authenticated/encrypted proxy records, while VLESS is a lighter proxy-protocol layer that can use current VLESS Encryption and/or a separate transport-security mechanism."
+msgstr "有些协议会把这些职责中的多个部分组合在一起。例如 Hysteria 2 与 TUIC 围绕 QUIC 及其 TLS 安全机制设计；VMess 自身承载经过认证/加密的代理记录；VLESS 则是更轻量的代理协议层，可使用当前 VLESS Encryption 和/或独立的传输安全机制。"
+
+msgid "Ordered Xray transport stream"
+msgstr "有序 Xray 传输字节流"
+
+msgid "VMess AEAD user authentication + encrypted body records"
+msgstr "VMess AEAD 用户认证 + 加密正文记录"
+
+msgid "Xray/V2Ray-compatible encrypted TCP/UDP proxying"
+msgstr "兼容 Xray/V2Ray 的加密 TCP/UDP 代理"
+
+msgid "Optional VLESS Encryption and/or separate TLS/REALITY layer"
+msgstr "可选 VLESS Encryption 和/或独立 TLS/REALITY 层"
+
+msgid "Planned/targeted client capability"
+msgstr "计划中/目标客户端能力"
+
+msgid "VMess inbound work listed"
+msgstr "已列出 VMess inbound 工作"
+
+msgid "For the current VMess AEAD model, start with [VMess](./protocols/vmess.md). For VLESS-based stacks, read these together:"
+msgstr "对于当前 VMess AEAD 模型，请先阅读 [VMess](./protocols/vmess.md)。对于基于 VLESS 的协议栈，请结合阅读以下内容："
+
+msgid "[VLESS](./protocols/vless.md) — proxy protocol, user identity, and optional VLESS Encryption."
+msgstr "[VLESS](./protocols/vless.md) — 代理协议、用户身份以及可选 VLESS Encryption。"
+
+msgid "Keeping proxy protocol, protocol-layer encryption, transport, and transport-security responsibilities separate makes configuration and troubleshooting much easier."
+msgstr "把代理协议、协议层加密、传输以及传输安全职责分开理解，会显著简化配置与故障排查。"
+
+msgid "Treat REALITY private keys, VMess IDs, Trojan passwords, Hysteria credentials, and TUIC passwords as secrets."
+msgstr "应把 REALITY 私钥、VMess ID、Trojan 密码、Hysteria 凭据和 TUIC 密码作为秘密材料保护。"
+
+msgid "[VMess](./protocols/vmess.md) — current VMess AEAD authentication, encrypted records, TCP/UDP, and Mux layering."
+msgstr "[VMess](./protocols/vmess.md) — 当前 VMess AEAD 认证、加密记录、TCP/UDP 与 Mux 分层。"
+
+msgid "[VLESS](./protocols/vless.md) — lightweight Xray proxy protocol, identity layer, and optional VLESS Encryption."
+msgstr "[VLESS](./protocols/vless.md) — 轻量 Xray 代理协议、身份层以及可选 VLESS Encryption。"

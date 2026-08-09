@@ -9,7 +9,7 @@ exported as a static site.
 ## At a glance
 - Components: `chimera_client` (Clash-style client), `Chimera` (high-performance ingress), `chimera_server` (shared protocol/crypto/config library).
 - Topology: typical client-to-ingress deployments, routing, and observability approaches.
-- Protocol cheat sheets: handshakes, pros/cons, and fit for SOCKS5, HTTP(S) CONNECT, Trojan, Hysteria 2, and VLESS.
+- Protocol deep dives: wire formats, state machines, packet-capture views, and SOCKS5 comparisons for SOCKS5, HTTP CONNECT, Trojan, Hysteria 2, TUIC, VMess, VLESS, XHTTP, and REALITY.
 - Internationalization: Gettext-based translation workflow; `po/zh-CN.po` is available.
 
 ## Repository layout

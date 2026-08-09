@@ -21,6 +21,7 @@
     - [Traffic Handling](./protocols/trojan/traffic-handling.md)
   - [Hysteria 2](./protocols/hysteria2.md)
   - [TUIC](./protocols/tuic.md)
+  - [VMess](./protocols/vmess.md)
   - [VLESS](./protocols/vless.md)
   - [XHTTP Transport](./protocols/xhttp.md)
   - [Reality](./protocols/reality.md)
