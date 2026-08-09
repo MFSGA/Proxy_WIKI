@@ -23,8 +23,11 @@ jobs:
         with:
           packages: gettext
 
-      - name: Install mdBook toolchain
-        uses: ./.github/workflows/install-mdbook
+      - name: Install cargo-binstall
+        uses: cargo-bins/cargo-binstall@main
+
+      - name: Install mdBook toolchain only
+        run: cargo xtask install-tools --binstall
 
       - name: Install PO helper
         run: python -m pip install --disable-pip-version-check polib
