@@ -12983,3 +12983,147 @@ msgstr "区分外层传输错误与 VLESS 请求校验错误。"
 
 msgid "Test each transport/security combination independently; a correct VLESS parser does not imply XHTTP or REALITY interoperability."
 msgstr "分别测试每一种传输/安全组合；VLESS 解析器正确并不意味着 XHTTP 或 REALITY 一定互通。"
+
+msgid "HTTP/2 CONNECT: one tunnel per HTTP/2 stream"
+msgstr "HTTP/2 CONNECT：每个 HTTP/2 Stream 承载一条隧道"
+
+msgid "CONNECT is an HTTP semantic, not an HTTP/1.1 text-format feature. HTTP/2 keeps the proxy connection as an ordinary multiplexed HTTP/2 connection and converts only the request stream into a tunnel. This is a fundamental difference from HTTP/1.1 CONNECT, where the entire client-to-proxy TCP connection changes into tunnel mode."
+msgstr "CONNECT 是 HTTP 语义，而不是 HTTP/1.1 文本格式独有的特性。HTTP/2 会让代理连接继续保持为普通的多路复用 HTTP/2 连接，只把对应的请求 Stream 转换为隧道。这与 HTTP/1.1 CONNECT 有根本区别：后者会把客户端到代理之间的整条 TCP 连接切换为隧道模式。"
+
+msgid "The request header section has these required pseudo-header semantics:"
+msgstr "请求头部段必须遵循以下伪头字段语义："
+
+msgid "The header block is HPACK-compressed inside a `HEADERS` frame, so those strings are semantic fields rather than a fixed byte prefix. A simplified HTTP/2 frame header is:"
+msgstr "头部块会经过 HPACK 压缩并放入 `HEADERS` 帧，因此这些字符串是语义字段，而不是固定字节前缀。简化后的 HTTP/2 帧头如下："
+
+msgid "For the CONNECT request, `Type=0x01` denotes `HEADERS`. On success, the proxy returns response `HEADERS` carrying a `:status` in the 2xx range. After the initial request and response header sections, tunnel octets are carried in HTTP/2 `DATA` frames (`Type=0x00`) on that same stream:"
+msgstr "对 CONNECT 请求而言，`Type=0x01` 表示 `HEADERS`。成功时，代理返回携带 2xx `:status` 的响应 `HEADERS`。初始请求和响应头部段结束后，隧道字节由同一 Stream 上的 HTTP/2 `DATA` 帧（`Type=0x00`）承载："
+
+msgid "Multiple CONNECT tunnels can therefore coexist on one HTTP/2 connection. Their `DATA` frames can be interleaved, but the Stream Identifier keeps tunnel bytes separate. This multiplexing is an extra transport layer that standard SOCKS5 does not define."
+msgstr "因此，一条 HTTP/2 连接上可以同时存在多条 CONNECT 隧道。不同隧道的 `DATA` 帧可以交错发送，但 Stream Identifier 会保持各隧道字节彼此隔离。这种多路复用属于标准 SOCKS5 未定义的额外传输层能力。"
+
+msgid "HTTP/2 `DATA` is subject to both connection-level and stream-level HTTP/2 flow control. A CONNECT tunnel can therefore stop making progress even when its upstream TCP socket is writable if the peer has not supplied enough `WINDOW_UPDATE` credit. Conversely, one blocked stream does not require the other CONNECT streams to stop, provided connection-level credit remains."
+msgstr "HTTP/2 `DATA` 同时受连接级和 Stream 级 HTTP/2 流控约束。因此，即使上游 TCP socket 仍可写，只要对端没有提供足够的 `WINDOW_UPDATE` 额度，某条 CONNECT 隧道也可能停止推进。反过来，只要连接级额度仍然充足，一条被阻塞的 Stream 并不要求其他 CONNECT Stream 一起停止。"
+
+msgid "After CONNECT succeeds, ordinary tunnel bytes are not additional HTTP messages. RFC 9113 permits `DATA` plus stream-management frames on the connected stream; a protocol implementation must not try to parse a TLS `ClientHello` inside a `DATA` payload as another HTTP request."
+msgstr "CONNECT 成功后，普通隧道字节不再是新的 HTTP 消息。RFC 9113 允许已建立隧道的 Stream 上出现 `DATA` 和 Stream 管理帧；协议实现不能把 `DATA` payload 中的 TLS `ClientHello` 再当成另一个 HTTP 请求解析。"
+
+msgid "HTTP/2 half-close and reset mapping"
+msgstr "HTTP/2 半关闭与 Reset 映射"
+
+msgid "HTTP/2 maps the lifetime of the tunneled TCP connection onto the CONNECT stream:"
+msgstr "HTTP/2 会把被隧道化 TCP 连接的生命周期映射到 CONNECT Stream："
+
+msgid "`END_STREAM` in the client-to-proxy direction corresponds to TCP FIN toward the destination after any accompanying DATA bytes are forwarded;"
+msgstr "客户端到代理方向的 `END_STREAM` 表示：先转发随帧携带的 DATA 字节，再向目标连接发送 TCP FIN；"
+
+msgid "a destination TCP FIN causes the proxy to finish its sending direction with `END_STREAM`;"
+msgstr "目标端发送 TCP FIN 时，代理会以 `END_STREAM` 结束自身向客户端的发送方向；"
+
+msgid "a TCP reset or other TCP connection error is represented as `RST_STREAM` with `CONNECT_ERROR`;"
+msgstr "TCP Reset 或其他 TCP 连接错误会表示为带 `CONNECT_ERROR` 的 `RST_STREAM`；"
+
+msgid "a stream error detected by the proxy requires the corresponding target TCP connection to be aborted rather than silently reused."
+msgstr "代理检测到 Stream 错误时，需要中止对应的目标 TCP 连接，而不能静默复用该连接。"
+
+msgid "This is more precise than saying that a tunnel simply \"closes\" when one side finishes. HTTP/2, like TCP, can represent a half-closed direction, and the other direction can still contain bytes that need to drain."
+msgstr "这比简单地说“一侧结束后隧道就关闭”更准确。HTTP/2 与 TCP 一样可以表示单方向半关闭，而另一个方向仍可能存在需要继续排空的字节。"
+
+msgid "HTTP/3 CONNECT: the same semantics over a QUIC request stream"
+msgstr "HTTP/3 CONNECT：在 QUIC 请求 Stream 上承载相同语义"
+
+msgid "HTTP/3 retains the same CONNECT pseudo-header rules but maps each request onto a client-initiated bidirectional QUIC stream. The request begins with HTTP/3 `HEADERS`, the proxy responds with `HEADERS` containing a 2xx `:status`, and subsequent HTTP/3 `DATA` frames on that request stream carry the TCP tunnel. The request stream deliberately remains open after the request header section."
+msgstr "HTTP/3 保留相同的 CONNECT 伪头字段规则，但会把每个请求映射到客户端发起的双向 QUIC Stream。请求以 HTTP/3 `HEADERS` 开始，代理用包含 2xx `:status` 的 `HEADERS` 响应，随后该请求 Stream 上的 HTTP/3 `DATA` 帧用于承载 TCP 隧道。请求头部段结束后，这条请求 Stream 会有意保持打开。"
+
+msgid "At the HTTP/3 framing layer, both frame type and frame length are QUIC variable-length integers:"
+msgstr "在 HTTP/3 分帧层，帧类型和帧长度都使用 QUIC 可变长度整数："
+
+msgid "The HTTP/3 `HEADERS` payload is QPACK-encoded, so a passive capture cannot treat `:method=CONNECT` or `:authority` as literal wire strings. After the CONNECT exchange completes, ordinary tunnel octets reside in HTTP/3 DATA payloads, and those HTTP/3 frames themselves are carried as QUIC STREAM data. TCP segment boundaries at the target, HTTP/3 DATA frame boundaries, QUIC STREAM frame boundaries, and UDP packet boundaries are all independent."
+msgstr "HTTP/3 `HEADERS` payload 使用 QPACK 编码，因此被动抓包不能把 `:method=CONNECT` 或 `:authority` 当成线路上的明文字面字符串。CONNECT 交换完成后，普通隧道字节位于 HTTP/3 DATA payload 中，而这些 HTTP/3 帧本身又作为 QUIC STREAM 数据承载。目标侧 TCP segment 边界、HTTP/3 DATA 帧边界、QUIC STREAM 帧边界以及 UDP 数据包边界彼此独立。"
+
+msgid "HTTP/3 closes a normal tunnel direction using QUIC stream completion. If the client finishes its sending direction, the proxy maps that completion to a TCP FIN toward the target. A TCP reset or abnormal target close is represented as a stream error with `H3_CONNECT_ERROR (0x010f)`. Resetting or aborting one request stream does not inherently close unrelated CONNECT streams, but a QUIC connection-level failure destroys every tunnel multiplexed on that connection."
+msgstr "HTTP/3 通过 QUIC Stream 的方向完成来关闭普通隧道的一个方向。客户端结束发送方向时，代理会把该完成状态映射为发往目标端的 TCP FIN。TCP Reset 或目标异常关闭会表示为 `H3_CONNECT_ERROR (0x010f)` Stream 错误。Reset 或中止一条请求 Stream 本身不会关闭无关的 CONNECT Stream，但 QUIC 连接级故障会终止复用在该连接上的所有隧道。"
+
+msgid "HTTP/3 flow control is provided by QUIC rather than HTTP/2 `WINDOW_UPDATE` frames. The CONNECT request stream consumes QUIC stream and connection flow-control credit, and all CONNECT streams on the connection also share the QUIC congestion controller and path capacity. Thus \"many tunnels on one connection\" does not mean each tunnel has independent physical bandwidth."
+msgstr "HTTP/3 的流控由 QUIC 提供，而不是使用 HTTP/2 `WINDOW_UPDATE` 帧。CONNECT 请求 Stream 会消耗 QUIC Stream 级与连接级流控额度，并且同一连接上的所有 CONNECT Stream 还共享 QUIC 拥塞控制器和链路容量。因此，“一条连接上有很多隧道”并不意味着每条隧道都有独立的物理带宽。"
+
+msgid "Ordinary CONNECT versus Extended CONNECT"
+msgstr "普通 CONNECT 与 Extended CONNECT"
+
+msgid "Do not confuse basic proxy CONNECT with **Extended CONNECT**. RFC 8441 adds the `:protocol` pseudo-header after explicit capability negotiation for uses such as bootstrapping WebSocket over HTTP/2. Extended CONNECT changes the request shape: it can include `:protocol` and, in that mode, `:scheme` and `:path` are present. A normal forward proxy tunnel to `example.com:443` uses the ordinary CONNECT form described above and does not need `:protocol`."
+msgstr "不要把基础代理 CONNECT 与 **Extended CONNECT** 混淆。RFC 8441 在显式能力协商之后加入 `:protocol` 伪头字段，可用于在 HTTP/2 上引导 WebSocket 等协议。Extended CONNECT 会改变请求形态：它可以包含 `:protocol`，并且在该模式下会同时出现 `:scheme` 和 `:path`。普通正向代理到 `example.com:443` 的隧道使用前述普通 CONNECT 形式，不需要 `:protocol`。"
+
+msgid "This distinction is particularly useful when reading captures or XHTTP-related documentation: seeing CONNECT on an HTTP/2 or HTTP/3 stream does not by itself mean that the stream is a classic forward-proxy TCP tunnel."
+msgstr "在阅读抓包或 XHTTP 相关文档时，这一区分尤其重要：在 HTTP/2 或 HTTP/3 Stream 上看到 CONNECT，并不自动意味着该 Stream 就是经典正向代理 TCP 隧道。"
+
+msgid "Version-specific packet-capture anchors"
+msgstr "各 HTTP 版本的抓包锚点"
+
+msgid "The useful capture anchors differ by HTTP version:"
+msgstr "不同 HTTP 版本可用的抓包锚点并不相同："
+
+msgid "```text\nHTTP/1.1 clear text\n  TCP -> \"CONNECT host:port HTTP/1.1\\r\\n\" -> 2xx -> opaque tunnel bytes\n\nHTTP/2\n  TCP/TLS -> HTTP/2 stream N\n             HEADERS(:method CONNECT, :authority ...)\n             HEADERS(:status 2xx)\n             DATA / DATA / ... / END_STREAM or RST_STREAM\n\nHTTP/3\n  UDP -> QUIC -> request stream N\n                HEADERS(:method CONNECT, :authority ...)\n                HEADERS(:status 2xx)\n                DATA / DATA / ... / QUIC FIN or stream reset\n```"
+msgstr "```text\nHTTP/1.1 明文\n  TCP -> \"CONNECT host:port HTTP/1.1\\r\\n\" -> 2xx -> 不透明隧道字节\n\nHTTP/2\n  TCP/TLS -> HTTP/2 stream N\n             HEADERS(:method CONNECT, :authority ...)\n             HEADERS(:status 2xx)\n             DATA / DATA / ... / END_STREAM 或 RST_STREAM\n\nHTTP/3\n  UDP -> QUIC -> request stream N\n                HEADERS(:method CONNECT, :authority ...)\n                HEADERS(:status 2xx)\n                DATA / DATA / ... / QUIC FIN 或 stream reset\n```"
+
+msgid "Without the TLS/QUIC decryption material, encrypted HTTP/2 and HTTP/3 captures usually expose transport behavior rather than the target authority or tunnel contents. With decryption, a dissector should follow the request stream and its header compression context instead of searching raw packets for the ASCII word `CONNECT`."
+msgstr "如果没有 TLS/QUIC 解密材料，加密 HTTP/2 与 HTTP/3 抓包通常只能暴露传输行为，而看不到目标 authority 或隧道内容。完成解密后，协议分析器应跟踪对应请求 Stream 及其头部压缩上下文，而不是在原始数据包里搜索 ASCII 字符串 `CONNECT`。"
+
+msgid "TCP control connection"
+msgstr "TCP 控制连接"
+
+msgid "HTTP/1.1 over TCP; HTTP/2 commonly over TCP/TLS; HTTP/3 over QUIC/UDP"
+msgstr "HTTP/1.1 基于 TCP；HTTP/2 通常基于 TCP/TLS；HTTP/3 基于 QUIC/UDP"
+
+msgid "No equivalent mandatory proxy-method phase; HTTP version/transport negotiation belongs to the HTTP stack"
+msgstr "没有等价的强制代理方法协商阶段；HTTP 版本/传输协商属于 HTTP 协议栈"
+
+msgid "Textual authority `host:port` at the HTTP semantic layer"
+msgstr "HTTP 语义层的文本 authority `host:port`"
+
+msgid "Decimal port inside authority text; explicit port required for CONNECT"
+msgstr "authority 文本中的十进制端口；CONNECT 要求显式端口"
+
+msgid "HTTP non-2xx before tunnel creation; H2/H3 can additionally signal stream-level CONNECT errors after creation"
+msgstr "建立隧道前以 HTTP 非 2xx 表示失败；H2/H3 建立后还可以发送 Stream 级 CONNECT 错误"
+
+msgid "Raw TCP byte stream on the SOCKS connection"
+msgstr "SOCKS 连接上的原始 TCP 字节流"
+
+msgid "HTTP/1.1: raw bytes; H2/H3: tunnel octets inside DATA frames on one request stream"
+msgstr "HTTP/1.1：原始字节；H2/H3：单条请求 Stream 的 DATA 帧内承载隧道字节"
+
+msgid "Not defined by RFC 1928; normally one CONNECT per TCP control connection"
+msgstr "RFC 1928 未定义多路复用；通常每条 TCP 控制连接对应一个 CONNECT"
+
+msgid "H2/H3 can carry many independent CONNECT streams on one HTTP connection"
+msgstr "H2/H3 可以在一条 HTTP 连接上承载多条独立 CONNECT Stream"
+
+msgid "TCP receive window of that SOCKS connection"
+msgstr "该 SOCKS 连接的 TCP 接收窗口"
+
+msgid "H1 inherits TCP; H2 adds connection/stream HTTP flow control; H3 uses QUIC connection/stream flow control"
+msgstr "H1 继承 TCP 流控；H2 增加 HTTP 连接/Stream 流控；H3 使用 QUIC 连接/Stream 流控"
+
+msgid "Half-close"
+msgstr "半关闭"
+
+msgid "Inherited from the SOCKS TCP connection after reply"
+msgstr "成功回复后继承 SOCKS TCP 连接的半关闭语义"
+
+msgid "H1 inherits TCP; H2 maps FIN to `END_STREAM`; H3 maps direction completion to QUIC stream FIN"
+msgstr "H1 继承 TCP；H2 将 FIN 映射为 `END_STREAM`；H3 将方向完成映射为 QUIC Stream FIN"
+
+msgid "HTTP semantics; HTTP/1.1 text, H2 HPACK/framing, H3 QPACK/framing over QUIC"
+msgstr "HTTP 语义；HTTP/1.1 使用文本，H2 使用 HPACK/分帧，H3 在 QUIC 上使用 QPACK/分帧"
+
+msgid "RFC 9112, HTTP/1.1: <https://www.rfc-editor.org/rfc/rfc9112>"
+msgstr "RFC 9112，HTTP/1.1：<https://www.rfc-editor.org/rfc/rfc9112>"
+
+msgid "RFC 9113, HTTP/2: <https://www.rfc-editor.org/rfc/rfc9113>"
+msgstr "RFC 9113，HTTP/2：<https://www.rfc-editor.org/rfc/rfc9113>"
+
+msgid "RFC 9114, HTTP/3: <https://www.rfc-editor.org/rfc/rfc9114>"
+msgstr "RFC 9114，HTTP/3：<https://www.rfc-editor.org/rfc/rfc9114>"
+
+msgid "RFC 8441, Bootstrapping WebSockets with HTTP/2: <https://www.rfc-editor.org/rfc/rfc8441>"
+msgstr "RFC 8441，通过 HTTP/2 引导 WebSocket：<https://www.rfc-editor.org/rfc/rfc8441>"
