@@ -16802,3 +16802,1302 @@ msgstr "增加端到端排障指南，严格沿真实分层拓扑排查：本地
 
 msgid "Add a deployment threat-model chapter covering local listener exposure, credentials/keys, DNS leaks, TUN routing, fallback behavior, metadata logging, UDP/QUIC resource limits, and privileged service IPC."
 msgstr "增加部署威胁模型章节，覆盖本地监听器暴露、凭据/密钥、DNS 泄漏、TUN 路由、fallback 行为、元数据日志、UDP/QUIC 资源限制以及特权服务 IPC。"
+
+msgid "[Shadowsocks](./protocols/shadowsocks.md)"
+msgstr "[Shadowsocks](./protocols/shadowsocks.md)"
+
+msgid "Server currently rejects/does not implement some cipher/config variants, including `xchacha20-poly1305`; the protocol page separates classic AEAD and AEAD-2022."
+msgstr "服务端当前会拒绝或尚未实现部分密码算法/配置变体，包括 `xchacha20-poly1305`；协议页面会把经典 AEAD 与 AEAD-2022 分开说明。"
+
+msgid "[AnyTLS](./protocols/anytls.md)"
+msgstr "[AnyTLS](./protocols/anytls.md)"
+
+msgid "Inbound/outbound implementation behind `anytls`; TCP/UDP integration tests exist"
+msgstr "`anytls` feature 下存在入站/出站实现，并已有 TCP/UDP 集成测试"
+
+msgid "Several Client options are Parsed-only; current Chimera uses one logical stream ID per underlying connection and UoT v2 for UDP."
+msgstr "Client 有若干选项仅属于 Parsed-only；当前 Chimera 每条底层连接只使用一个逻辑 stream ID，UDP 使用 UoT v2。"
+
+msgid "Keep the AnyTLS `Parsed-only` field list synchronized with the Client config struct when compatibility fields are added or become active runtime behavior."
+msgstr "当新增兼容字段或字段开始真正影响运行时行为时，保持 AnyTLS `Parsed-only` 字段列表与 Client 配置结构同步。"
+
+msgid "Pin the upstream AnyTLS and Shadowsocks specification/version references used for interoperability claims when the corresponding upstream protocols change."
+msgstr "当上游协议发生变化时，固定互操作声明所依据的 AnyTLS 与 Shadowsocks 上游规范/版本引用。"
+
+msgid "TCP or UDP"
+msgstr "TCP 或 UDP"
+
+msgid "Built-in AEAD/AEAD-2022 encryption and authentication"
+msgstr "内置 AEAD/AEAD-2022 加密与认证"
+
+msgid "Encrypted TCP/UDP proxying"
+msgstr "加密的 TCP/UDP 代理"
+
+msgid "TLS + SHA-256 password token + framed logical stream"
+msgstr "TLS + SHA-256 密码令牌 + 分帧逻辑流"
+
+msgid "TLS-carried TCP/UDP-over-TCP proxying"
+msgstr "承载于 TLS 中的 TCP/UDP-over-TCP 代理"
+
+msgid "Current inbound/outbound behind `shadowsocks`; TCP/UDP integration tests exist"
+msgstr "当前 `shadowsocks` feature 下有入站/出站实现，并已有 TCP/UDP 集成测试"
+
+msgid "Current inbound TCP/UDP behind `shadowsocks`, with explicit cipher/mode limits"
+msgstr "当前 `shadowsocks` feature 下有 TCP/UDP 入站，并明确限制部分密码算法/模式"
+
+msgid "Current inbound/outbound behind `anytls`; TCP/UDP integration tests exist"
+msgstr "当前 `anytls` feature 下有入站/出站实现，并已有 TCP/UDP 集成测试"
+
+msgid "No current AnyTLS inbound protocol"
+msgstr "当前没有 AnyTLS 入站协议"
+
+msgid "Current outbound behind `trojan`"
+msgstr "当前 `trojan` feature 下有出站实现"
+
+msgid "No current outbound enum variant"
+msgstr "当前出站枚举中没有对应变体"
+
+msgid "TUIC v5 inbound implementation listed"
+msgstr "已列出 TUIC v5 入站实现"
+
+msgid "VMess AEAD inbound implementation listed"
+msgstr "已列出 VMess AEAD 入站实现"
+
+msgid "Current outbound capability"
+msgstr "当前出站能力"
+
+msgid "Encrypted remote proxying"
+msgstr "加密远程代理"
+
+msgid "Use [Shadowsocks](./protocols/shadowsocks.md) when you need the classic AEAD / AEAD-2022 encrypted record model. Use [AnyTLS](./protocols/anytls.md) for the TLS-carried framed model implemented by Chimera Client. Use [Trojan](./protocols/trojan.md) as the reference for the baseline TLS + password protocol model. If an implementation adds WebSocket, SIP003 plugins, or another transport, treat that as an additional layer."
+msgstr "需要经典 AEAD / AEAD-2022 加密记录模型时，请阅读 [Shadowsocks](./protocols/shadowsocks.md)。需要 Chimera Client 已实现的 TLS 承载分帧模型时，请阅读 [AnyTLS](./protocols/anytls.md)。[Trojan](./protocols/trojan.md) 可作为基础 TLS + 密码协议模型的参考。如果实现又增加 WebSocket、SIP003 插件或其他传输，应把它们视为额外分层。"
+
+msgid "Treat Shadowsocks keys/passwords, AnyTLS passwords, REALITY private keys, VMess IDs, Trojan passwords, Hysteria credentials, and TUIC passwords as secrets."
+msgstr "应把 Shadowsocks 密钥/密码、AnyTLS 密码、REALITY 私钥、VMess ID、Trojan 密码、Hysteria 凭据和 TUIC 密码作为敏感秘密保护。"
+
+msgid "[Shadowsocks](./protocols/shadowsocks.md) — classic AEAD and AEAD-2022 TCP/UDP encrypted proxying."
+msgstr "[Shadowsocks](./protocols/shadowsocks.md) — 经典 AEAD 与 AEAD-2022 TCP/UDP 加密代理。"
+
+msgid "[AnyTLS](./protocols/anytls.md) — TLS-carried password authentication, framed streams, and UDP-over-TCP v2."
+msgstr "[AnyTLS](./protocols/anytls.md) — TLS 承载的密码认证、分帧流与 UDP-over-TCP v2。"
+
+msgid "Position in the Stack"
+msgstr "在协议栈中的位置"
+
+msgid "Domain"
+msgstr "域名"
+
+msgid "SOCKS5 Phase-by-phase Comparison"
+msgstr "与 SOCKS5 的逐阶段对比"
+
+msgid "Phase"
+msgstr "阶段"
+
+msgid "Replaced"
+msgstr "已替代"
+
+msgid "Removed"
+msgstr "已移除"
+
+msgid "Current Chimera implementation details in this chapter are grounded in:"
+msgstr "本章中的当前 Chimera 实现细节依据以下源码："
+
+msgid "`Chimera_Client/clash-lib/src/config/internal/proxy.rs`;"
+msgstr "`Chimera_Client/clash-lib/src/config/internal/proxy.rs`；"
+
+msgid "AnyTLS is a TLS-carried proxy protocol with its own authentication prefix and framed stream commands. It is not “arbitrary traffic inside TLS”: after the TLS handshake, the peer still has to authenticate, negotiate protocol metadata, open a logical stream, provide a destination, and exchange framed payloads."
+msgstr "AnyTLS 是承载在 TLS 上、拥有独立认证前缀与流分帧命令的代理协议。它并不是“把任意流量塞进 TLS”：TLS 握手完成后，对端仍需完成认证、协商协议元数据、打开逻辑流、提供目标地址并交换分帧负载。"
+
+msgid "This chapter documents the current AnyTLS wire behavior implemented by `Chimera_Client`. The current `Chimera_Server` protocol enum does not contain an AnyTLS inbound, so Client-side AnyTLS interoperability should be evaluated against a compatible AnyTLS server implementation rather than inferred from Chimera Server support."
+msgstr "本章记录 `Chimera_Client` 当前实现的 AnyTLS 线协议行为。当前 `Chimera_Server` 协议枚举中没有 AnyTLS 入站，因此 Client 侧 AnyTLS 的互操作性应针对兼容的 AnyTLS 服务端实现验证，不能从 Chimera Server 的能力中推断。"
+
+msgid "The TLS layer provides transport confidentiality and server authentication when certificate verification is enabled. The AnyTLS password hash is a separate protocol authentication layer inside the established TLS application-data stream."
+msgstr "启用证书验证时，TLS 层提供传输机密性和服务端身份验证；AnyTLS 密码哈希则是已建立 TLS Application Data 流内部的独立协议认证层。"
+
+msgid "Current Chimera Connection Sequence"
+msgstr "当前 Chimera 连接序列"
+
+msgid "The current outbound path performs these stages:"
+msgstr "当前出站路径依次执行以下阶段："
+
+msgid "The implementation deliberately builds the initial AnyTLS authentication bytes and first frames into one write so compatible servers that expect the first TLS application-data record as one authentication packet do not observe an incomplete password/padding structure."
+msgstr "当前实现会刻意把初始 AnyTLS 认证字节和首批帧合并为一次写入，避免那些把首个 TLS Application Data record 作为完整认证包读取的兼容服务端看到不完整的密码/填充结构。"
+
+msgid "Authentication Prefix"
+msgstr "认证前缀"
+
+msgid "Immediately after TLS, the current Chimera client writes:"
+msgstr "TLS 建立后，当前 Chimera 客户端立即写入："
+
+msgid "The current outbound advertises no initial padding, so `padding_len = 0`."
+msgstr "当前出站不发送初始填充，因此 `padding_len = 0`。"
+
+msgid "The inbound implementation builds an O(1) lookup map from `SHA256(password)` to the configured user identity. In multi-user mode the hash selects the user; in single-password fallback mode the user identity is empty."
+msgstr "入站实现会建立从 `SHA256(password)` 到配置用户身份的 O(1) 查找表。多用户模式下由哈希选择用户；单密码 fallback 模式下用户身份为空。"
+
+msgid "This is not RFC 1929 username/password authentication. The password itself is not sent directly; the fixed 32-byte SHA-256 digest is the lookup/authentication token inside TLS."
+msgstr "这不是 RFC 1929 的用户名/密码认证。密码本身不会直接发送；固定 32 字节的 SHA-256 摘要才是 TLS 内部用于查找和认证的令牌。"
+
+msgid "Authentication Failure and Fallback"
+msgstr "认证失败与 Fallback"
+
+msgid "The current Client inbound can be configured with a fallback backend. If the 32-byte password hash is unknown:"
+msgstr "当前 Client 入站可配置 fallback 后端。如果 32 字节密码哈希未知："
+
+msgid "the AnyTLS parser stops;"
+msgstr "AnyTLS 解析器停止；"
+
+msgid "the already consumed 32 bytes are prepended back into the decrypted TLS application stream;"
+msgstr "已经消耗的 32 字节会重新前置到解密后的 TLS 应用数据流；"
+
+msgid "the remaining decrypted stream is bidirectionally proxied to the fallback backend;"
+msgstr "剩余解密流会双向代理到 fallback 后端；"
+
+msgid "the inbound sends a TLS `close_notify` on clean shutdown where possible."
+msgstr "在条件允许时，入站会在正常关闭时发送 TLS `close_notify`。"
+
+msgid "Without a fallback, the connection is rejected."
+msgstr "未配置 fallback 时，连接会被拒绝。"
+
+msgid "This fallback occurs **after TLS termination** in the current implementation. It is therefore different from a raw TCP fallback that forwards the original encrypted ClientHello/application records untouched."
+msgstr "当前实现中的 fallback 发生在 **TLS 终止之后**。因此它不同于原样转发加密 ClientHello/应用记录的原始 TCP fallback。"
+
+msgid "Initial Padding Field"
+msgstr "初始填充字段"
+
+msgid "After the 32-byte hash, the server reads a 2-byte big-endian padding length and skips exactly that many bytes."
+msgstr "32 字节哈希之后，服务端读取 2 字节大端序填充长度，并精确跳过对应字节数。"
+
+msgid "Malformed/truncated padding terminates the handshake. The current outbound sends zero bytes here even though later protocol metadata can advertise a padding scheme."
+msgstr "格式错误或截断的填充会终止握手。当前出站在这里发送零长度填充，即便后续协议元数据可以声明 padding scheme。"
+
+msgid "Frame Format"
+msgstr "帧格式"
+
+msgid "Every AnyTLS frame in the current implementation uses this header:"
+msgstr "当前实现中的每个 AnyTLS 帧都使用以下帧头："
+
+msgid "The fixed frame header is therefore 7 bytes. A single frame payload cannot exceed 65535 bytes."
+msgstr "因此固定帧头长度为 7 字节，单个帧负载不能超过 65535 字节。"
+
+msgid "Command Values"
+msgstr "命令值"
+
+msgid "The current implementation recognizes these command numbers:"
+msgstr "当前实现识别以下命令编号："
+
+msgid "Current meaning"
+msgstr "当前含义"
+
+msgid "`WASTE`"
+msgstr "`WASTE`"
+
+msgid "`0`"
+msgstr "`0`"
+
+msgid "Padding/noise frame; ignored by the current inbound handshake parser."
+msgstr "填充/噪声帧；当前入站握手解析器会忽略它。"
+
+msgid "`SYN`"
+msgstr "`SYN`"
+
+msgid "`1`"
+msgstr "`1`"
+
+msgid "Opens/selects a logical stream ID."
+msgstr "打开/选择一个逻辑 stream ID。"
+
+msgid "`PSH`"
+msgstr "`PSH`"
+
+msgid "`2`"
+msgstr "`2`"
+
+msgid "Carries destination bytes during setup and application bytes during relay."
+msgstr "建立阶段承载目标地址字节，转发阶段承载应用数据。"
+
+msgid "`FIN`"
+msgstr "`FIN`"
+
+msgid "`3`"
+msgstr "`3`"
+
+msgid "Ends the logical stream."
+msgstr "结束逻辑流。"
+
+msgid "`SETTINGS`"
+msgstr "`SETTINGS`"
+
+msgid "`4`"
+msgstr "`4`"
+
+msgid "Client metadata/settings."
+msgstr "客户端元数据/设置。"
+
+msgid "`ALERT`"
+msgstr "`ALERT`"
+
+msgid "`5`"
+msgstr "`5`"
+
+msgid "Error/alert text from peer."
+msgstr "来自对端的错误/告警文本。"
+
+msgid "`UPDATE_PADDING_SCHEME`"
+msgstr "`UPDATE_PADDING_SCHEME`"
+
+msgid "`6`"
+msgstr "`6`"
+
+msgid "Padding-scheme update; current outbound reads and discards it."
+msgstr "padding scheme 更新；当前出站读取后直接丢弃。"
+
+msgid "`SERVER_SETTINGS`"
+msgstr "`SERVER_SETTINGS`"
+
+msgid "`10`"
+msgstr "`10`"
+
+msgid "Server settings; current outbound reads and discards it."
+msgstr "服务端设置；当前出站读取后直接丢弃。"
+
+msgid "Unknown commands are ignored by the current outbound receive loop after a valid stream is established."
+msgstr "有效流建立后，当前出站接收循环会忽略未知命令。"
+
+msgid "SETTINGS Frame"
+msgstr "SETTINGS 帧"
+
+msgid "The current Chimera client sends a `SETTINGS` frame on stream ID `0`. Its payload is UTF-8 metadata with the current shape:"
+msgstr "当前 Chimera 客户端在 stream ID `0` 上发送 `SETTINGS` 帧，其负载是 UTF-8 元数据，当前格式如下："
+
+msgid "The advertised MD5 corresponds to the current fixed client padding scheme `stop=0`, meaning Chimera does not actively add AnyTLS protocol padding to data packets in this implementation."
+msgstr "声明的 MD5 对应当前固定客户端 padding scheme `stop=0`，意味着此实现不会主动向数据包添加 AnyTLS 协议填充。"
+
+msgid "The current inbound accepts `SETTINGS` during the handshake but does not use its metadata for routing/authentication."
+msgstr "当前入站会在握手期间接受 `SETTINGS`，但不会用其中元数据进行路由或认证。"
+
+msgid "Opening the Logical Stream"
+msgstr "打开逻辑流"
+
+msgid "The current outbound uses one fixed logical stream ID:"
+msgstr "当前出站使用固定的逻辑 stream ID："
+
+msgid "It sends:"
+msgstr "它会发送："
+
+msgid "```text\nSYN(stream=1, data=\"\")\nPSH(stream=1, data=SocksAddr(destination))\n```"
+msgstr "```text\nSYN(stream=1, data=\"\")\nPSH(stream=1, data=SocksAddr(destination))\n```"
+
+msgid "The inbound enforces ordering and identity:"
+msgstr "入站会强制检查顺序和 stream ID 一致性："
+
+msgid "a `SYN` must arrive before the destination `PSH`;"
+msgstr "必须先收到 `SYN`，才能收到携带目标地址的 `PSH`；"
+
+msgid "repeated `SYN` is tolerated only for the same stream ID;"
+msgstr "只有 stream ID 相同时才允许重复 `SYN`；"
+
+msgid "the destination `PSH` must use the selected stream ID;"
+msgstr "目标地址 `PSH` 必须使用已选定的 stream ID；"
+
+msgid "early `FIN` or `ALERT` aborts the handshake;"
+msgstr "过早出现 `FIN` 或 `ALERT` 会中止握手；"
+
+msgid "malformed destination bytes abort the handshake."
+msgstr "目标地址字节格式错误会中止握手。"
+
+msgid "Although the wire header contains a 32-bit stream ID and the protocol is structurally multiplexable, **the current Chimera outbound creates one logical AnyTLS stream with ID 1 per underlying connection**. Do not document current Chimera as performing multi-stream multiplexing merely because the field exists."
+msgstr "虽然线协议帧头包含 32 位 stream ID，协议结构上具备多路复用能力，但 **当前 Chimera 出站每条底层连接只创建一个 ID 为 1 的 AnyTLS 逻辑流**。不能仅因为存在该字段就把当前 Chimera 描述为进行了多流复用。"
+
+msgid "The destination carried in the first `PSH` uses `SocksAddr`, the same address tuple used by other Clash-family protocol implementations."
+msgstr "首个 `PSH` 携带的目标地址使用 `SocksAddr`，与其他 Clash 系协议实现使用的地址元组一致。"
+
+msgid "IPv4 bytes + port"
+msgstr "IPv4 字节 + 端口"
+
+msgid "length + domain bytes + port"
+msgstr "长度 + 域名字节 + 端口"
+
+msgid "IPv6 bytes + port"
+msgstr "IPv6 字节 + 端口"
+
+msgid "The address bytes are payload of an AnyTLS `PSH`; there is no SOCKS5 `VER/CMD/RSV` envelope around them."
+msgstr "地址字节是 AnyTLS `PSH` 的负载，外层不存在 SOCKS5 的 `VER/CMD/RSV` 封装。"
+
+msgid "TCP Data Relay"
+msgstr "TCP 数据转发"
+
+msgid "After the initial destination has been accepted, application bytes are transformed into `PSH` frames:"
+msgstr "初始目标地址被接受后，应用数据会被转换为 `PSH` 帧："
+
+msgid "The current relay reads up to 16 KiB from its local in-process pipe for each generated `PSH`. This is an implementation buffering choice, not a protocol maximum; the frame format itself permits up to 65535 bytes."
+msgstr "当前转发器每次生成 `PSH` 时最多从本地进程内管道读取 16 KiB。这是实现层缓冲选择，不是协议上限；帧格式本身允许最多 65535 字节。"
+
+msgid "Inbound response `PSH` data for the selected stream is written back to the application-facing stream."
+msgstr "所选逻辑流收到的入站响应 `PSH` 数据会写回面向应用的流。"
+
+msgid "FIN and Half-close Behavior"
+msgstr "FIN 与半关闭行为"
+
+msgid "When the application-facing write side reaches EOF, the outbound sends:"
+msgstr "当面向应用的写方向到达 EOF 时，出站会发送："
+
+msgid "and flushes the TLS stream."
+msgstr "随后刷新 TLS 流。"
+
+msgid "When a matching inbound `FIN` is received, the current outbound shuts down the application-facing read side and cancels the relay tasks."
+msgstr "收到匹配的入站 `FIN` 后，当前出站会关闭面向应用的读方向并取消转发任务。"
+
+msgid "The current implementation therefore treats `FIN` as logical-stream termination rather than supporting a long independent multiplexed connection containing other active stream IDs."
+msgstr "因此当前实现把 `FIN` 视为逻辑流终止，而不是在同一长期独立多路复用连接中继续保留其他活跃 stream ID。"
+
+msgid "ALERT Handling"
+msgstr "ALERT 处理"
+
+msgid "A peer `ALERT` frame is interpreted as UTF-8/lossy text for logging. The current outbound then shuts down the relay and cancels the connection tasks."
+msgstr "对端 `ALERT` 帧会按 UTF-8/有损文本解释并记录日志，随后当前出站关闭转发并取消连接任务。"
+
+msgid "There is no SOCKS-style numeric result mapping. An AnyTLS alert is an AnyTLS-layer failure; a local SOCKS inbound may translate the resulting connection failure into its own SOCKS response for the local application."
+msgstr "这里没有 SOCKS 风格的数字结果映射。AnyTLS alert 属于 AnyTLS 层错误；本地 SOCKS 入站可能会把由此产生的连接失败转换为自己的 SOCKS 响应返回给本地应用。"
+
+msgid "Handshake Timeout"
+msgstr "握手超时"
+
+msgid "The current AnyTLS inbound allows 10 seconds for the TLS + password + padding + `SYN/PSH(destination)` handshake sequence."
+msgstr "当前 AnyTLS 入站给 TLS + 密码 + 填充 + `SYN/PSH(destination)` 整个握手序列 10 秒时间。"
+
+msgid "A timeout closes the connection without dispatching a target session."
+msgstr "超时会直接关闭连接，不会分发目标会话。"
+
+msgid "This timeout is a current Chimera implementation policy, not a field encoded into the AnyTLS wire format."
+msgstr "该超时是当前 Chimera 的实现策略，不是编码在 AnyTLS 线协议中的字段。"
+
+msgid "UDP over TCP v2"
+msgstr "UDP over TCP v2"
+
+msgid "The current AnyTLS UDP implementation does not send native UDP packets to the AnyTLS server. It creates a normal AnyTLS stream whose apparent destination is a reserved magic hostname:"
+msgstr "当前 AnyTLS UDP 实现不会向 AnyTLS 服务端发送原生 UDP 包，而是建立一个普通 AnyTLS 流，其表面目标地址是保留的 magic hostname："
+
+msgid "After that AnyTLS stream is established, it sends the UoT v2 connect header:"
+msgstr "该 AnyTLS 流建立后，会发送 UoT v2 connect header："
+
+msgid "All of those bytes are still carried inside AnyTLS `PSH` frames."
+msgstr "这些字节仍然全部承载在 AnyTLS `PSH` 帧内部。"
+
+msgid "UoT Datagram Framing"
+msgstr "UoT 数据报分帧"
+
+msgid "After the UoT connect header, each UDP payload is framed as:"
+msgstr "UoT connect header 之后，每个 UDP 负载按以下格式分帧："
+
+msgid "The selected destination is established once by the UoT connect header. Individual datagrams therefore do not repeat a SOCKS address header in the current connect-mode session."
+msgstr "目标地址由 UoT connect header 一次性建立，因此当前 connect-mode 会话中的单个数据报不会重复携带 SOCKS 地址头。"
+
+msgid "The same 2-byte length-prefix form is used for responses delivered back through the stream."
+msgstr "通过该流返回的响应也使用相同的 2 字节长度前缀。"
+
+msgid "UDP Session State"
+msgstr "UDP 会话状态"
+
+msgid "The current outbound creates one stream-backed datagram object tied to the requested UDP destination. The inbound recognizes the magic hostname, unwraps AnyTLS `PSH` frames into a byte stream, parses `isConnect=1` and the real destination, and dispatches that stream as a UDP session."
+msgstr "当前出站会创建一个由流承载、绑定到所请求 UDP 目标的数据报对象。入站识别 magic hostname 后，把 AnyTLS `PSH` 解包成字节流，解析 `isConnect=1` 与真实目标地址，再把该流作为 UDP 会话分发。"
+
+msgid "This is UDP tunneling over an ordered TCP/TLS stream. Consequences include:"
+msgstr "这是通过有序 TCP/TLS 流隧道化 UDP，因此会带来："
+
+msgid "UDP datagrams inherit TCP ordering;"
+msgstr "UDP 数据报继承 TCP 顺序；"
+
+msgid "loss of one underlying TCP segment can delay later datagrams (head-of-line blocking);"
+msgstr "一个底层 TCP segment 的丢失可能延迟后续数据报（队头阻塞）；"
+
+msgid "there is no native QUIC-style independent datagram delivery;"
+msgstr "不存在 QUIC 风格的原生独立数据报投递；"
+
+msgid "MTU behavior is transformed into stream framing rather than preserved as original IP/UDP packet boundaries."
+msgstr "MTU 行为会被转换成流分帧，而不是保留原始 IP/UDP 报文边界。"
+
+msgid "Current Inbound State Machine"
+msgstr "当前入站状态机"
+
+msgid "The transport can therefore fail at several distinct layers: TCP reachability, TLS authentication, AnyTLS password authentication, frame ordering, destination parsing, or target connection."
+msgstr "因此传输可能在多个独立层次失败：TCP 可达性、TLS 认证、AnyTLS 密码认证、帧顺序、目标地址解析或目标连接。"
+
+msgid "Packet-capture View"
+msgstr "抓包视图"
+
+msgid "Without TLS session keys, a normal capture exposes:"
+msgstr "没有 TLS session key 时，常规抓包只能看到："
+
+msgid "The SHA-256 password token, stream IDs, destination, UoT magic host, and frame boundaries are inside TLS application data and are not visible to a passive observer under a correctly functioning TLS session."
+msgstr "SHA-256 密码令牌、stream ID、目标地址、UoT magic host 与帧边界都位于 TLS Application Data 内部；在正常工作的 TLS 会话中，被动观察者看不到这些内容。"
+
+msgid "With TLS keys or an in-process trace, the first application bytes can be decoded as:"
+msgstr "如果有 TLS 密钥或进程内 trace，首批应用数据字节可解码为："
+
+msgid "This is a useful parser sanity check when interoperability fails immediately after a successful TLS handshake."
+msgstr "当 TLS 握手成功后立即发生互操作失败时，这是一项很有用的解析器 sanity check。"
+
+msgid "Current TLS Configuration Surface"
+msgstr "当前 TLS 配置范围"
+
+msgid "The current AnyTLS outbound configuration includes:"
+msgstr "当前 AnyTLS 出站配置包括："
+
+msgid "`password`;"
+msgstr "`password`；"
+
+msgid "`alpn`;"
+msgstr "`alpn`；"
+
+msgid "`sni`;"
+msgstr "`sni`；"
+
+msgid "`skip-cert-verify`;"
+msgstr "`skip-cert-verify`；"
+
+msgid "`udp`;"
+msgstr "`udp`；"
+
+msgid "optional client certificate/key for mTLS."
+msgstr "可选的 mTLS 客户端证书/私钥。"
+
+msgid "The client certificate and key must be provided together."
+msgstr "客户端证书和私钥必须同时提供。"
+
+msgid "Certificate verification should remain enabled in normal deployments. Disabling it removes the normal TLS server-identity check and leaves the AnyTLS password as the main remote authentication secret."
+msgstr "正常部署中应保持证书验证开启。关闭它会移除常规 TLS 服务端身份校验，使 AnyTLS 密码成为主要的远端认证秘密。"
+
+msgid "Parsed-only Configuration Fields"
+msgstr "仅 Parsed 的配置字段"
+
+msgid "Several current `Chimera_Client` AnyTLS fields are explicitly annotated as parsed for configuration compatibility but not applied by the runtime:"
+msgstr "当前 `Chimera_Client` 中若干 AnyTLS 字段已明确标注为仅为配置兼容而解析、运行时不会应用："
+
+msgid "`fingerprint`;"
+msgstr "`fingerprint`；"
+
+msgid "`client-fingerprint`;"
+msgstr "`client-fingerprint`；"
+
+msgid "`idle-session-check-interval`;"
+msgstr "`idle-session-check-interval`；"
+
+msgid "`idle-session-timeout`;"
+msgstr "`idle-session-timeout`；"
+
+msgid "`min-idle-session`."
+msgstr "`min-idle-session`。"
+
+msgid "These fields must be labeled **Parsed-only** in the Wiki. Their presence in YAML does not prove a behavior change in the current runtime."
+msgstr "这些字段在 Wiki 中必须标记为 **Parsed-only**。它们出现在 YAML 中并不能证明当前运行时行为发生变化。"
+
+msgid "Current Chimera_Client Evidence"
+msgstr "当前 Chimera_Client 证据"
+
+msgid "AnyTLS is behind the `anytls` Cargo feature. The current source contains:"
+msgstr "AnyTLS 位于 `anytls` Cargo feature 后。当前源码包含："
+
+msgid "outbound TLS + AnyTLS handshake and framing;"
+msgstr "出站 TLS + AnyTLS 握手与分帧；"
+
+msgid "outbound TCP relay;"
+msgstr "出站 TCP 转发；"
+
+msgid "outbound UDP-over-TCP v2;"
+msgstr "出站 UDP-over-TCP v2；"
+
+msgid "AnyTLS inbound TLS listener;"
+msgstr "AnyTLS 入站 TLS 监听器；"
+
+msgid "multi-user SHA-256 password lookup;"
+msgstr "多用户 SHA-256 密码查找；"
+
+msgid "fallback handling;"
+msgstr "fallback 处理；"
+
+msgid "TCP and UDP inbound dispatch;"
+msgstr "TCP 与 UDP 入站分发；"
+
+msgid "integration tests for TCP and UDP."
+msgstr "TCP 与 UDP 集成测试。"
+
+msgid "Recent implementation work also retains UDP sessions until cancellation rather than allowing the stream-backed datagram session to disappear prematurely."
+msgstr "近期实现还会一直保留 UDP 会话直到取消，而不是让由流承载的数据报会话过早消失。"
+
+msgid "See [Implementation Status and Source Evidence](../implementation-status.md) for the cross-project evidence level."
+msgstr "跨项目证据等级见 [实现状态与源码证据](../implementation-status.md)。"
+
+msgid "Chimera_Server Status"
+msgstr "Chimera_Server 状态"
+
+msgid "The current `Chimera_Server` protocol enum and handler tree do not contain an AnyTLS inbound implementation."
+msgstr "当前 `Chimera_Server` 协议枚举和 handler 树中都没有 AnyTLS 入站实现。"
+
+msgid "Therefore:"
+msgstr "因此："
+
+msgid "`Chimera_Client → third-party AnyTLS server` can be a valid supported deployment;"
+msgstr "`Chimera_Client → 第三方 AnyTLS 服务端` 可以是有效的受支持部署；"
+
+msgid "`Chimera_Client AnyTLS → Chimera_Server` is **not** a currently documented compatible pair;"
+msgstr "`Chimera_Client AnyTLS → Chimera_Server` **不是** 当前已记录的兼容组合；"
+
+msgid "an AnyTLS page in this Wiki describes the Client implementation and protocol behavior, not an implicit Server capability."
+msgstr "本 Wiki 的 AnyTLS 页面描述的是 Client 实现与协议行为，不代表 Server 隐式具备该能力。"
+
+msgid "TCP then TLS to AnyTLS server"
+msgstr "先 TCP，再 TLS 连接 AnyTLS 服务端"
+
+msgid "Extra TLS layer"
+msgstr "额外 TLS 层"
+
+msgid "Server authentication"
+msgstr "服务端认证"
+
+msgid "Usually none at transport level"
+msgstr "传输层通常没有"
+
+msgid "TLS certificate verification"
+msgstr "TLS 证书验证"
+
+msgid "Extra layer"
+msgstr "额外层"
+
+msgid "Client sends supported methods"
+msgstr "客户端发送支持的方法"
+
+msgid "Removed/replaced by configuration"
+msgstr "已移除/由配置替代"
+
+msgid "User authentication"
+msgstr "用户认证"
+
+msgid "Optional RFC 1929 username/password"
+msgstr "可选 RFC 1929 用户名/密码"
+
+msgid "`SHA256(password)` token inside TLS"
+msgstr "TLS 内的 `SHA256(password)` 令牌"
+
+msgid "Request command"
+msgstr "请求命令"
+
+msgid "`CONNECT/BIND/UDP ASSOCIATE`"
+msgstr "`CONNECT/BIND/UDP ASSOCIATE`"
+
+msgid "`SYN` + `PSH(destination)`; UoT magic destination for UDP"
+msgstr "`SYN` + `PSH(destination)`；UDP 使用 UoT magic destination"
+
+msgid "SOCKS request fields"
+msgstr "SOCKS 请求字段"
+
+msgid "SocksAddr inside first `PSH`"
+msgstr "首个 `PSH` 内的 SocksAddr"
+
+msgid "Same concept, different framing"
+msgstr "概念相同，分帧不同"
+
+msgid "SOCKS `REP` reply"
+msgstr "SOCKS `REP` 响应"
+
+msgid "No equivalent fixed result structure in current path"
+msgstr "当前路径没有等价的固定结果结构"
+
+msgid "Raw bytes after request"
+msgstr "请求后直接传输原始字节"
+
+msgid "`PSH` frames inside TLS"
+msgstr "TLS 内的 `PSH` 帧"
+
+msgid "Extra framing + TLS"
+msgstr "额外分帧 + TLS"
+
+msgid "TCP close"
+msgstr "TCP 关闭"
+
+msgid "TCP half-close/close"
+msgstr "TCP 半关闭/关闭"
+
+msgid "`FIN` logical command plus TLS/TCP close"
+msgstr "`FIN` 逻辑命令 + TLS/TCP 关闭"
+
+msgid "Extra logical close layer"
+msgstr "额外逻辑关闭层"
+
+msgid "Native UDP relay with SOCKS UDP header"
+msgstr "带 SOCKS UDP 头的原生 UDP relay"
+
+msgid "UDP-over-TCP v2 stream"
+msgstr "UDP-over-TCP v2 流"
+
+msgid "Replaced transport model"
+msgstr "传输模型已替代"
+
+msgid "UDP destination"
+msgstr "UDP 目标地址"
+
+msgid "Repeated per SOCKS UDP datagram"
+msgstr "每个 SOCKS UDP 数据报都重复携带"
+
+msgid "Established once in UoT connect mode"
+msgstr "在 UoT connect mode 中一次性建立"
+
+msgid "Different session semantics"
+msgstr "会话语义不同"
+
+msgid "SOCKS `FRAG` field"
+msgstr "SOCKS `FRAG` 字段"
+
+msgid "No SOCKS5-style `FRAG`"
+msgstr "没有 SOCKS5 风格 `FRAG`"
+
+msgid "One SOCKS TCP control connection per request in common use"
+msgstr "常见用法中每个请求一条 SOCKS TCP 控制连接"
+
+msgid "Frame has stream ID, but current Chimera uses one stream ID per connection"
+msgstr "帧中有 stream ID，但当前 Chimera 每条连接只使用一个 stream ID"
+
+msgid "Protocol has extra field; current implementation does not exploit full mux"
+msgstr "协议多了该字段，但当前实现没有利用完整多路复用"
+
+msgid "Error reporting"
+msgstr "错误报告"
+
+msgid "Numeric SOCKS `REP`"
+msgstr "数字 SOCKS `REP`"
+
+msgid "TLS errors, auth rejection, `ALERT`, close/logging"
+msgstr "TLS 错误、认证拒绝、`ALERT`、关闭/日志"
+
+msgid "TLS verification and AnyTLS password authentication protect different layers; do not treat one as a substitute for the other."
+msgstr "TLS 验证与 AnyTLS 密码认证保护不同层次，不能把其中一个当作另一个的替代。"
+
+msgid "The on-wire token is `SHA256(password)`. Choose a high-entropy password because a captured decrypted authentication token is deterministic for a given password."
+msgstr "线上令牌是 `SHA256(password)`。应使用高熵密码，因为一旦得到解密后的认证令牌，同一密码对应的令牌是确定不变的。"
+
+msgid "Keep `skip-cert-verify` disabled unless the trust consequences are understood."
+msgstr "除非明确理解信任后果，否则保持 `skip-cert-verify` 关闭。"
+
+msgid "Fallback targets receive decrypted TLS application bytes after an unknown password; configure them intentionally and avoid exposing sensitive internal services."
+msgstr "出现未知密码时，fallback 目标会收到解密后的 TLS 应用数据字节；应有意识地配置该目标，避免暴露敏感内部服务。"
+
+msgid "UDP-over-TCP can suffer head-of-line blocking and should not be described as equivalent to native UDP or QUIC datagrams."
+msgstr "UDP-over-TCP 会遭受队头阻塞，不能描述成与原生 UDP 或 QUIC datagram 等价。"
+
+msgid "Parsed-only idle/fingerprint options should not be relied upon for timeout, fingerprinting, or resource-control guarantees."
+msgstr "不能依赖 Parsed-only 的 idle/fingerprint 选项来保证超时、指纹或资源控制行为。"
+
+msgid "Debug AnyTLS from the outside inward:"
+msgstr "排查 AnyTLS 时从外到内进行："
+
+msgid "verify TCP reachability to the server;"
+msgstr "确认服务端 TCP 可达；"
+
+msgid "verify TLS SNI, certificate trust, ALPN, and optional mTLS material;"
+msgstr "确认 TLS SNI、证书信任、ALPN 以及可选 mTLS 材料；"
+
+msgid "verify both sides use the same password and that the server expects the SHA-256 token form;"
+msgstr "确认两端使用相同密码，并确认服务端期望 SHA-256 令牌形式；"
+
+msgid "verify the first application packet contains the padding length and v2 `SETTINGS`/`SYN`/`PSH` sequence expected by the peer;"
+msgstr "确认首个应用数据包包含对端期望的填充长度以及 v2 `SETTINGS`/`SYN`/`PSH` 序列；"
+
+msgid "for TCP, verify the destination `SocksAddr` is accepted;"
+msgstr "对于 TCP，确认目标 `SocksAddr` 被接受；"
+
+msgid "for UDP, verify `sp.v2.udp-over-tcp.arpa`, `isConnect=1`, the real destination, and 2-byte datagram lengths;"
+msgstr "对于 UDP，确认 `sp.v2.udp-over-tcp.arpa`、`isConnect=1`、真实目标地址和 2 字节数据报长度；"
+
+msgid "inspect `ALERT`, timeout, fallback, or target-connect logs before changing unrelated DNS/rule settings."
+msgstr "在修改无关 DNS/规则设置前，先检查 `ALERT`、超时、fallback 或目标连接日志。"
+
+msgid "A successful TLS handshake only proves the TLS layer. It does not prove AnyTLS password authentication or frame compatibility."
+msgstr "TLS 握手成功只证明 TLS 层正常，并不能证明 AnyTLS 密码认证或帧兼容性。"
+
+msgid "`Chimera_Client/clash-lib/src/proxy/anytls/mod.rs`;"
+msgstr "`Chimera_Client/clash-lib/src/proxy/anytls/mod.rs`；"
+
+msgid "`Chimera_Client/clash-lib/src/proxy/anytls/datagram.rs`;"
+msgstr "`Chimera_Client/clash-lib/src/proxy/anytls/datagram.rs`；"
+
+msgid "`Chimera_Client/clash-lib/src/proxy/anytls/inbound/framing.rs`;"
+msgstr "`Chimera_Client/clash-lib/src/proxy/anytls/inbound/framing.rs`；"
+
+msgid "`Chimera_Client/clash-lib/src/proxy/anytls/inbound/handler.rs`;"
+msgstr "`Chimera_Client/clash-lib/src/proxy/anytls/inbound/handler.rs`；"
+
+msgid "`Chimera_Client/clash-lib/src/proxy/anytls/inbound/user.rs`;"
+msgstr "`Chimera_Client/clash-lib/src/proxy/anytls/inbound/user.rs`；"
+
+msgid "`Chimera_Client/clash-lib/src/proxy/anytls/inbound/tls.rs`;"
+msgstr "`Chimera_Client/clash-lib/src/proxy/anytls/inbound/tls.rs`；"
+
+msgid "`Chimera_Client/clash-lib/tests/anytls_integration_tests.rs`."
+msgstr "`Chimera_Client/clash-lib/tests/anytls_integration_tests.rs`。"
+
+msgid "For portable interoperability, verify the selected peer against the current AnyTLS protocol specification and implementation rather than assuming every AnyTLS implementation uses the same optional settings or multiplexing policy."
+msgstr "为了获得可移植的互操作性，应针对当前 AnyTLS 协议规范和所选对端实现进行验证，而不是假设所有 AnyTLS 实现都采用相同的可选设置或多路复用策略。"
+
+msgid "Shadowsocks is an encrypted proxy protocol rather than a SOCKS5 session carried over an encrypted channel. Applications may enter `Chimera_Client` through SOCKS/HTTP/TUN, but the remote Shadowsocks connection has its own address header, key derivation, record framing, authentication tags, and UDP packet format."
+msgstr "Shadowsocks 是一种加密代理协议，而不是“把 SOCKS5 会话放进加密通道”。应用可以通过 SOCKS/HTTP/TUN 进入 `Chimera_Client`，但远端 Shadowsocks 连接拥有自己的地址头、密钥派生、记录分帧、认证标签和 UDP 报文格式。"
+
+msgid "This chapter separates two protocol families that must not be conflated:"
+msgstr "本章将两个不能混为一谈的协议家族分开说明："
+
+msgid "classic Shadowsocks AEAD, commonly using AES-GCM or ChaCha20-Poly1305;"
+msgstr "经典 Shadowsocks AEAD，常用 AES-GCM 或 ChaCha20-Poly1305；"
+
+msgid "Shadowsocks 2022 AEAD, which changes key material, replay protection, TCP headers, UDP session identifiers, and multi-user identity handling."
+msgstr "Shadowsocks 2022 AEAD，它改变了密钥材料、重放保护、TCP 头、UDP 会话标识以及多用户身份处理方式。"
+
+msgid "The implementation notes below were checked against the current `Chimera_Client` and `Chimera_Server` source trees. Upstream Shadowsocks specifications remain the authority for portable wire behavior; Chimera-specific limitations are called out explicitly."
+msgstr "下文实现说明已对照当前 `Chimera_Client` 与 `Chimera_Server` 源码检查。可移植的线协议行为仍以上游 Shadowsocks 规范为准；Chimera 特有的限制会明确标出。"
+
+msgid "Unlike Trojan or VLESS + TLS, classic Shadowsocks AEAD does not first establish a TLS session. Encryption and integrity are part of the Shadowsocks record format itself. SIP003 plugins can add an outer transport/camouflage layer, but that layer is separate from the Shadowsocks cryptographic stream."
+msgstr "与 Trojan 或 VLESS + TLS 不同，经典 Shadowsocks AEAD 不会先建立 TLS 会话。加密和完整性保护本身就是 Shadowsocks 记录格式的一部分。SIP003 插件可以再添加外层传输/伪装，但该层与 Shadowsocks 密码流是分离的。"
+
+msgid "The destination encoding uses the familiar SOCKS-style address tuple but without SOCKS5's `VER`, `CMD`, `RSV`, or reply fields."
+msgstr "目标地址编码使用熟悉的 SOCKS 风格地址元组，但没有 SOCKS5 的 `VER`、`CMD`、`RSV` 或响应字段。"
+
+msgid "Wire value"
+msgstr "线值"
+
+msgid "Remaining fields"
+msgstr "后续字段"
+
+msgid "4-byte IPv4 + 2-byte big-endian port"
+msgstr "4 字节 IPv4 + 2 字节大端序端口"
+
+msgid "1-byte domain length + domain bytes + 2-byte big-endian port"
+msgstr "1 字节域名长度 + 域名字节 + 2 字节大端序端口"
+
+msgid "16-byte IPv6 + 2-byte big-endian port"
+msgstr "16 字节 IPv6 + 2 字节大端序端口"
+
+msgid "So a domain destination such as `example.com:443` begins conceptually as:"
+msgstr "因此 `example.com:443` 这类域名目标在概念上会以如下字节开始："
+
+msgid "```text\n03 0b 65 78 61 6d 70 6c 65 2e 63 6f 6d 01 bb\n│  │  └──────────── \"example.com\" ───────────┘ │\n│  domain length = 11                           port 443\n└─ ATYP = domain\n```"
+msgstr "```text\n03 0b 65 78 61 6d 70 6c 65 2e 63 6f 6d 01 bb\n│  │  └──────────── \"example.com\" ───────────┘ │\n│  域名长度 = 11                                  端口 443\n└─ ATYP = 域名\n```"
+
+msgid "This address format is reused inside TCP and UDP plaintext structures before encryption."
+msgstr "该地址格式会在加密前的 TCP 与 UDP 明文结构中复用。"
+
+msgid "Classic AEAD Methods"
+msgstr "经典 AEAD 方法"
+
+msgid "The current `Chimera_Server` classic AEAD path accepts these methods:"
+msgstr "当前 `Chimera_Server` 的经典 AEAD 路径接受以下方法："
+
+msgid "Method"
+msgstr "方法"
+
+msgid "Key length"
+msgstr "密钥长度"
+
+msgid "Salt length"
+msgstr "Salt 长度"
+
+msgid "AEAD tag"
+msgstr "AEAD 标签"
+
+msgid "`aes-128-gcm`"
+msgstr "`aes-128-gcm`"
+
+msgid "`aes-256-gcm`"
+msgstr "`aes-256-gcm`"
+
+msgid "32 bytes"
+msgstr "32 字节"
+
+msgid "`chacha20-ietf-poly1305`"
+msgstr "`chacha20-ietf-poly1305`"
+
+msgid "`Chimera_Client` maps a wider set through the Rust `shadowsocks` crate, including `xchacha20-ietf-poly1305`, AEAD-2022 method names, and `rc4-md5`. Do not infer Server interoperability from the Client parser alone: the current Server explicitly rejects classic `xchacha20-poly1305` and does not expose `rc4-md5` in its inbound cipher parser."
+msgstr "`Chimera_Client` 通过 Rust `shadowsocks` crate 映射了更广泛的方法，包括 `xchacha20-ietf-poly1305`、AEAD-2022 方法名以及 `rc4-md5`。不能只根据 Client 解析器推断 Server 互操作性：当前 Server 明确拒绝经典 `xchacha20-poly1305`，其入站密码算法解析器也没有暴露 `rc4-md5`。"
+
+msgid "Classic AEAD Key Derivation"
+msgstr "经典 AEAD 密钥派生"
+
+msgid "For the current Server legacy/classic path:"
+msgstr "对于当前 Server 的 legacy/classic 路径："
+
+msgid "the textual password is converted into a master key using the traditional iterative MD5-compatible derivation;"
+msgstr "文本密码通过传统迭代 MD5 兼容派生转换为 master key；"
+
+msgid "each TCP direction or UDP packet uses a random salt whose length equals the cipher key length;"
+msgstr "每个 TCP 方向或 UDP 报文使用随机 salt，其长度与密码算法密钥长度相同；"
+
+msgid "HKDF-SHA1 with info string `ss-subkey` derives the per-session subkey from `master_key` and `salt`;"
+msgstr "使用 info 字符串 `ss-subkey` 的 HKDF-SHA1 从 `master_key` 与 `salt` 派生每会话 subkey；"
+
+msgid "the AEAD nonce starts at zero and increments for each protected item in the stream direction."
+msgstr "AEAD nonce 从零开始，并在流的单个方向上每保护一个对象就递增。"
+
+msgid "The salt is therefore not merely decorative randomness: repeating it with the same master key would repeat the derived session key. The Server keeps a timed salt cache and rejects recently replayed salts."
+msgstr "因此 salt 并非无意义的随机填充：同一 master key 下重复 salt 会导致派生出的 session key 重复。Server 维护带时效的 salt 缓存并拒绝近期重放的 salt。"
+
+msgid "Classic AEAD TCP Wire Format"
+msgstr "经典 AEAD TCP 线格式"
+
+msgid "The encrypted TCP direction starts with one salt followed by independently authenticated length and payload records:"
+msgstr "加密 TCP 单方向先发送一个 salt，之后是分别认证的长度和负载记录："
+
+msgid "The current Server caps a classic plaintext record at `0x3fff` bytes. The first decrypted plaintext bytes of a client-to-server stream are the Shadowsocks destination address; application bytes follow immediately after it."
+msgstr "当前 Server 将经典明文记录限制为最多 `0x3fff` 字节。客户端到服务端方向解密出的首批明文字节是 Shadowsocks 目标地址，应用数据紧随其后。"
+
+msgid "This means the target is authenticated by the same AEAD stream as the application data. There is no separate SOCKS-style request/reply exchange."
+msgstr "这意味着目标地址与应用数据由同一个 AEAD 流认证，不存在独立的 SOCKS 风格请求/响应交换。"
+
+msgid "Client-to-server example shape"
+msgstr "客户端到服务端示例形态"
+
+msgid "Server-to-client direction"
+msgstr "服务端到客户端方向"
+
+msgid "The response direction creates its own random salt and its own nonce sequence. It carries only relayed application bytes; there is no success reply containing a bound address."
+msgstr "响应方向会创建自己的随机 salt 与 nonce 序列。它只承载转发的应用数据，不存在包含绑定地址的成功响应。"
+
+msgid "Classic AEAD UDP Wire Format"
+msgstr "经典 AEAD UDP 线格式"
+
+msgid "Each UDP datagram is independently encrypted:"
+msgstr "每个 UDP 数据报都独立加密："
+
+msgid "The server response uses the same structure, but the address identifies the remote source endpoint corresponding to the returned payload."
+msgstr "服务端响应使用相同结构，但其中地址标识返回负载对应的远端源端点。"
+
+msgid "Because each packet contains a fresh salt and complete destination tuple, classic Shadowsocks UDP is packet-oriented. It does not use SOCKS5's UDP `RSV | FRAG | ATYP ...` header and has no SOCKS5 `FRAG` semantics."
+msgstr "由于每个包都包含新的 salt 和完整目标地址元组，经典 Shadowsocks UDP 是面向数据报的。它不使用 SOCKS5 UDP 的 `RSV | FRAG | ATYP ...` 头，也没有 SOCKS5 `FRAG` 语义。"
+
+msgid "The current Server also rejects a recently reused classic UDP salt, providing a bounded replay check."
+msgstr "当前 Server 还会拒绝近期重复使用的经典 UDP salt，从而提供有界的重放检查。"
+
+msgid "Shadowsocks 2022 Key Material"
+msgstr "Shadowsocks 2022 密钥材料"
+
+msgid "A Shadowsocks 2022 method name begins with `2022-blake3-`. In the current Server, the configured password field for such a user is interpreted as a Base64-encoded raw pre-shared key rather than an arbitrary password phrase."
+msgstr "Shadowsocks 2022 方法名以 `2022-blake3-` 开头。在当前 Server 中，此类用户的 password 字段会被解释为 Base64 编码的原始预共享密钥，而不是任意密码短语。"
+
+msgid "The decoded key length must exactly match the selected cipher key size."
+msgstr "解码后的密钥长度必须与所选密码算法的密钥长度完全一致。"
+
+msgid "Current Server method paths include:"
+msgstr "当前 Server 方法路径包括："
+
+msgid "`2022-blake3-aes-128-gcm`;"
+msgstr "`2022-blake3-aes-128-gcm`；"
+
+msgid "`2022-blake3-aes-256-gcm`;"
+msgstr "`2022-blake3-aes-256-gcm`；"
+
+msgid "`2022-blake3-chacha20-ietf-poly1305`."
+msgstr "`2022-blake3-chacha20-ietf-poly1305`。"
+
+msgid "Session subkeys are derived with BLAKE3's derive-key mode using the context string `shadowsocks 2022 session subkey` over `PSK || salt/session-id material`."
+msgstr "Session subkey 使用 BLAKE3 derive-key 模式派生，context string 为 `shadowsocks 2022 session subkey`，输入材料为 `PSK || salt/session-id material`。"
+
+msgid "Shadowsocks 2022 TCP Request"
+msgstr "Shadowsocks 2022 TCP 请求"
+
+msgid "The current Server decodes the client direction in these stages:"
+msgstr "当前 Server 按以下阶段解码客户端方向："
+
+msgid "The variable request header is emitted into the plaintext stream and begins with the destination address. Chimera then reads:"
+msgstr "可变请求头被输出到明文流，其开头是目标地址。随后 Chimera 读取："
+
+msgid "The current Server allows at most 900 bytes of this post-address padding and rejects invalid or truncated values."
+msgstr "当前 Server 允许地址后最多 900 字节 padding，并拒绝无效或截断的值。"
+
+msgid "The variable-header ciphertext length itself is bounded to 18 KiB by the current implementation."
+msgstr "当前实现还把可变头密文长度限制在 18 KiB。"
+
+msgid "Timestamp and replay checks"
+msgstr "时间戳与重放检查"
+
+msgid "The Server validates the 2022 timestamp against its local clock and keeps a timed salt replay cache. A valid AEAD tag is therefore insufficient on its own: stale/future timestamps or recently reused salts can still cause the request to be rejected."
+msgstr "Server 会根据本地时钟验证 2022 时间戳，并维护带时效的 salt 重放缓存。因此仅有有效 AEAD tag 还不够：过旧/未来时间戳或近期复用的 salt 仍会导致请求被拒绝。"
+
+msgid "Clock synchronization matters more for Shadowsocks 2022 than for classic AEAD."
+msgstr "相比经典 AEAD，Shadowsocks 2022 更依赖时钟同步。"
+
+msgid "Shadowsocks 2022 TCP Response"
+msgstr "Shadowsocks 2022 TCP 响应"
+
+msgid "After validating the request salt, the Server creates a distinct response salt. Its first protected response header contains:"
+msgstr "验证请求 salt 后，Server 会创建独立的响应 salt。首个受保护响应头包含："
+
+msgid "That header is AEAD-protected, followed by the separately protected first response payload. Later application bytes use the normal encrypted length + payload record sequence."
+msgstr "该头经过 AEAD 保护，随后是单独受保护的首个响应负载。之后的应用数据使用常规的加密长度 + 负载记录序列。"
+
+msgid "Binding the original request salt into the response header lets the client associate the response with the validated request direction."
+msgstr "把原始请求 salt 绑定进响应头，可以让客户端把响应与已验证的请求方向关联起来。"
+
+msgid "The current 2022 stream path allows payload records up to `0xffff` bytes."
+msgstr "当前 2022 流路径允许最大 `0xffff` 字节的负载记录。"
+
+msgid "AEAD-2022 Multi-user Identity / EIH"
+msgstr "AEAD-2022 多用户身份 / EIH"
+
+msgid "The current Server supports an identity-header path for multi-user Shadowsocks 2022 with AES methods."
+msgstr "当前 Server 支持基于 AES 方法的多用户 Shadowsocks 2022 identity-header 路径。"
+
+msgid "Important constraints in the current implementation are:"
+msgstr "当前实现的重要约束包括："
+
+msgid "the identity method must be `2022-blake3-aes-128-gcm` or `2022-blake3-aes-256-gcm`;"
+msgstr "identity 方法必须是 `2022-blake3-aes-128-gcm` 或 `2022-blake3-aes-256-gcm`；"
+
+msgid "users behind an identity must use the same AES method;"
+msgstr "同一 identity 后的用户必须使用相同 AES 方法；"
+
+msgid "multi-user AEAD-2022 without an identity is rejected;"
+msgstr "没有 identity 的多用户 AEAD-2022 会被拒绝；"
+
+msgid "the identity layer derives a BLAKE3 identity subkey and decrypts a 16-byte user hash to select the actual user PSK."
+msgstr "identity 层会派生 BLAKE3 identity subkey，并解密 16 字节用户哈希来选择实际用户 PSK。"
+
+msgid "Conceptually, EIH adds a user-selection layer before the selected user's normal 2022 session keys are used. It should not be described as a SOCKS username/password negotiation."
+msgstr "从概念上看，EIH 在使用所选用户的普通 2022 session key 之前增加了一层用户选择。它不应被描述为 SOCKS 用户名/密码协商。"
+
+msgid "Shadowsocks 2022 UDP: AES Variant"
+msgstr "Shadowsocks 2022 UDP：AES 变体"
+
+msgid "For the current Server AES-2022 path, the datagram starts with a 16-byte separately encrypted header:"
+msgstr "对于当前 Server 的 AES-2022 路径，数据报以 16 字节独立加密头开始："
+
+msgid "The decrypted values are then used to derive the UDP session key. The remaining AEAD body contains, for a client request:"
+msgstr "解密出的值随后用于派生 UDP session key。对客户端请求而言，剩余 AEAD body 包含："
+
+msgid "A server response uses its own server session ID and packet ID and includes the client session ID in the protected body so the peer can correlate the direction."
+msgstr "服务端响应使用自己的 server session ID 和 packet ID，并在受保护 body 中包含 client session ID，以便对端关联方向。"
+
+msgid "Shadowsocks 2022 UDP: ChaCha Variant"
+msgstr "Shadowsocks 2022 UDP：ChaCha 变体"
+
+msgid "The current Server's 2022 ChaCha UDP path uses a 24-byte XChaCha20-Poly1305 nonce prefix. The protected client body contains:"
+msgstr "当前 Server 的 2022 ChaCha UDP 路径使用 24 字节 XChaCha20-Poly1305 nonce 前缀。受保护的客户端 body 包含："
+
+msgid "The response body carries the server session ID and packet ID, response type, timestamp, client session ID, padding length, source address, and payload."
+msgstr "响应 body 携带 server session ID 与 packet ID、响应类型、时间戳、client session ID、padding 长度、源地址和负载。"
+
+msgid "This is one reason not to document “Shadowsocks UDP” as one universal packet layout: classic AEAD and AEAD-2022, and even the AES/ChaCha 2022 paths, differ materially."
+msgstr "这正是不能把“Shadowsocks UDP”写成一种统一报文布局的原因之一：经典 AEAD 与 AEAD-2022 不同，甚至 2022 的 AES/ChaCha 路径本身也有显著差异。"
+
+msgid "UDP Replay Window in Current Chimera_Server"
+msgstr "当前 Chimera_Server 的 UDP 重放窗口"
+
+msgid "The Server tracks AEAD-2022 UDP packets by session ID and packet ID. The current replay state:"
+msgstr "Server 按 session ID 与 packet ID 跟踪 AEAD-2022 UDP 报文。当前重放状态会："
+
+msgid "rejects an already-seen packet ID;"
+msgstr "拒绝已见过的 packet ID；"
+
+msgid "rejects packet IDs that fall more than 1024 behind the highest accepted ID;"
+msgstr "拒绝比当前最高已接受 ID 落后超过 1024 的 packet ID；"
+
+msgid "expires inactive replay sessions on the same roughly one-minute time scale used by the current salt cache."
+msgstr "按与当前 salt 缓存近似相同的一分钟时间尺度过期不活跃重放会话。"
+
+msgid "This is protocol-level anti-replay state. It is separate from operating-system UDP NAT/session timeouts."
+msgstr "这是协议层防重放状态，与操作系统 UDP NAT/会话超时相互独立。"
+
+msgid "TCP Close and Error Behavior"
+msgstr "TCP 关闭与错误行为"
+
+msgid "Shadowsocks does not define a SOCKS5-style `REP` status byte after the destination request. Errors therefore surface differently:"
+msgstr "Shadowsocks 在目标请求后没有定义 SOCKS5 风格的 `REP` 状态字节，因此错误表现方式不同："
+
+msgid "invalid password/key material usually manifests as AEAD authentication failure;"
+msgstr "无效密码/密钥材料通常表现为 AEAD 认证失败；"
+
+msgid "a replayed salt/session packet is rejected locally;"
+msgstr "重放的 salt/session packet 会被本地拒绝；"
+
+msgid "malformed address or length fields terminate the affected stream/datagram;"
+msgstr "格式错误的地址或长度字段会终止受影响的流/数据报；"
+
+msgid "target connection failure closes the relayed stream rather than returning a SOCKS5 connection-status frame;"
+msgstr "目标连接失败会关闭转发流，而不是返回 SOCKS5 连接状态帧；"
+
+msgid "normal TCP EOF propagates through the encrypted stream shutdown."
+msgstr "正常 TCP EOF 会通过加密流关闭过程传播。"
+
+msgid "Applications using a local SOCKS5 listener may still receive a SOCKS-layer failure from `Chimera_Client`, but that is generated by the local inbound and is not a Shadowsocks wire reply from the remote server."
+msgstr "使用本地 SOCKS5 监听器的应用仍可能收到 `Chimera_Client` 生成的 SOCKS 层失败响应，但那是本地入站生成的，并不是远端服务端发出的 Shadowsocks 线协议响应。"
+
+msgid "State Machine"
+msgstr "状态机"
+
+msgid "A simplified classic TCP state machine is:"
+msgstr "简化的经典 TCP 状态机如下："
+
+msgid "For Shadowsocks 2022, insert `VALIDATE_TIMESTAMP`, `CHECK_REPLAY`, and request-header parsing before destination dispatch."
+msgstr "对于 Shadowsocks 2022，需要在目标分发前插入 `VALIDATE_TIMESTAMP`、`CHECK_REPLAY` 和请求头解析阶段。"
+
+msgid "Packet-capture Anchors"
+msgstr "抓包锚点"
+
+msgid "Without keys, an on-path capture normally exposes only outer transport metadata:"
+msgstr "没有密钥时，链路上的抓包通常只能看到外层传输元数据："
+
+msgid "TCP or UDP server endpoint;"
+msgstr "TCP 或 UDP 服务端端点；"
+
+msgid "direction, timing, and encrypted record/datagram sizes;"
+msgstr "方向、时序以及加密记录/数据报大小；"
+
+msgid "random-looking salt/nonce prefixes;"
+msgstr "看起来随机的 salt/nonce 前缀；"
+
+msgid "plugin/TLS/WebSocket metadata if an optional outer plugin is used."
+msgstr "如果使用可选外层插件，还会看到 plugin/TLS/WebSocket 元数据。"
+
+msgid "With keys and an implementation-aware decoder, useful anchors are:"
+msgstr "拥有密钥和了解实现的解码器时，有用锚点包括："
+
+msgid "classic TCP: `salt | encrypted length+tag | encrypted payload+tag`;"
+msgstr "经典 TCP：`salt | encrypted length+tag | encrypted payload+tag`；"
+
+msgid "classic UDP: `salt | encrypted address+payload+tag`;"
+msgstr "经典 UDP：`salt | encrypted address+payload+tag`；"
+
+msgid "2022 TCP: salt followed by fixed/variable authenticated headers;"
+msgstr "2022 TCP：salt 后跟固定/可变认证头；"
+
+msgid "2022 UDP: session ID / packet ID / timestamp and address fields after successful decryption."
+msgstr "2022 UDP：成功解密后可看到 session ID / packet ID / 时间戳与地址字段。"
+
+msgid "A capture cannot identify the target address from ciphertext alone under a working AEAD cipher."
+msgstr "在 AEAD 正常工作时，仅凭密文抓包无法识别目标地址。"
+
+msgid "SIP003 Plugins"
+msgstr "SIP003 插件"
+
+msgid "`Chimera_Client` supports a plugin hook around the raw stream before the Shadowsocks protocol stream is created. The repository contains paths for plugin-style transports such as simple-obfs and v2ray-plugin/WebSocket when the needed build features are present."
+msgstr "`Chimera_Client` 在创建 Shadowsocks 协议流之前支持对原始流应用 plugin hook。启用所需构建 feature 时，仓库中包含 simple-obfs、v2ray-plugin/WebSocket 等插件式传输路径。"
+
+msgid "Layering is conceptually:"
+msgstr "概念上的分层为："
+
+msgid "The remote side must run the matching plugin layer. Pointing a plugin-wrapped client directly at a plain Shadowsocks server makes the server see plugin bytes where it expects a Shadowsocks salt/record."
+msgstr "远端必须运行匹配的插件层。若把插件封装后的客户端直接指向纯 Shadowsocks 服务端，服务端会在本应看到 Shadowsocks salt/record 的位置看到插件字节。"
+
+msgid "Current Chimera_Client Implementation"
+msgstr "当前 Chimera_Client 实现"
+
+msgid "The Client implementation is behind the `shadowsocks` Cargo feature and currently has:"
+msgstr "Client 实现位于 `shadowsocks` Cargo feature 后，目前包含："
+
+msgid "outbound TCP through `ProxyClientStream`;"
+msgstr "通过 `ProxyClientStream` 的出站 TCP；"
+
+msgid "outbound UDP through `ProxySocket`;"
+msgstr "通过 `ProxySocket` 的出站 UDP；"
+
+msgid "Shadowsocks inbound TCP/UDP modules;"
+msgstr "Shadowsocks 入站 TCP/UDP 模块；"
+
+msgid "configurable `cipher`, `password`, `udp`, `plugin`, and `plugin-opts`;"
+msgstr "可配置的 `cipher`、`password`、`udp`、`plugin` 和 `plugin-opts`；"
+
+msgid "integration tests for TCP, UDP, multi-target UDP, and UDP session isolation."
+msgstr "TCP、UDP、多目标 UDP 与 UDP 会话隔离的集成测试。"
+
+msgid "The current outbound cipher mapper accepts:"
+msgstr "当前出站密码算法映射器接受："
+
+msgid "That list is a Client implementation fact, not a promise that every method is accepted by `Chimera_Server`."
+msgstr "该列表只是 Client 实现事实，并不承诺每种方法都会被 `Chimera_Server` 接受。"
+
+msgid "Current Chimera_Server Implementation"
+msgstr "当前 Chimera_Server 实现"
+
+msgid "The Server has inbound TCP and UDP Shadowsocks paths behind its `shadowsocks` feature, which is included in the current default `full` build."
+msgstr "Server 在 `shadowsocks` feature 后提供 Shadowsocks TCP 与 UDP 入站路径，而该 feature 已包含在当前默认 `full` 构建中。"
+
+msgid "Notable current boundaries include:"
+msgstr "当前值得注意的边界包括："
+
+msgid "at least one user is required for TCP;"
+msgstr "TCP 至少需要一个用户；"
+
+msgid "classic AES-128-GCM, AES-256-GCM, and ChaCha20-Poly1305 are implemented;"
+msgstr "已实现经典 AES-128-GCM、AES-256-GCM 与 ChaCha20-Poly1305；"
+
+msgid "AEAD-2022 AES and ChaCha paths are implemented;"
+msgstr "已实现 AEAD-2022 AES 与 ChaCha 路径；"
+
+msgid "classic `xchacha20-poly1305` is explicitly rejected;"
+msgstr "经典 `xchacha20-poly1305` 会被明确拒绝；"
+
+msgid "AEAD-2022 multi-user requires the AES EIH identity path;"
+msgstr "AEAD-2022 多用户需要 AES EIH identity 路径；"
+
+msgid "user `level` compatibility fields are not treated as implemented runtime policy;"
+msgstr "用户 `level` 兼容字段不被视为已实现的运行时策略；"
+
+msgid "replay caches and timestamp validation are active security behavior, not parser-only fields."
+msgstr "重放缓存和时间戳验证是实际生效的安全行为，不是 parser-only 字段。"
+
+msgid "See [Implementation Status and Source Evidence](../implementation-status.md) for the cross-project matrix."
+msgstr "跨项目矩阵见 [实现状态与源码证据](../implementation-status.md)。"
+
+msgid "Transport connect"
+msgstr "传输连接"
+
+msgid "TCP or UDP to SS server"
+msgstr "TCP 或 UDP 连接 SS 服务端"
+
+msgid "Conceptually same lower-layer reachability step"
+msgstr "概念上属于相同的底层可达性步骤"
+
+msgid "`VER, NMETHODS, METHODS`"
+msgstr "`VER, NMETHODS, METHODS`"
+
+msgid "Replaced by preconfigured cipher/key"
+msgstr "由预配置密码算法/密钥替代"
+
+msgid "Username/password auth"
+msgstr "用户名/密码认证"
+
+msgid "Optional RFC 1929 exchange"
+msgstr "可选 RFC 1929 交换"
+
+msgid "No username/password subnegotiation; key possession authenticates/decrypts"
+msgstr "没有用户名/密码子协商；持有密钥即可完成认证/解密"
+
+msgid "Destination request"
+msgstr "目标请求"
+
+msgid "`VER, CMD, RSV, ATYP, DST`"
+msgstr "`VER, CMD, RSV, ATYP, DST`"
+
+msgid "Address tuple embedded in decrypted plaintext"
+msgstr "地址元组嵌入解密后的明文"
+
+msgid "Same destination concept, different framing"
+msgstr "目标概念相同，分帧不同"
+
+msgid "`VER, REP, RSV, BND`"
+msgstr "`VER, REP, RSV, BND`"
+
+msgid "No equivalent protocol reply"
+msgstr "没有等价协议响应"
+
+msgid "Plain bytes after SOCKS handshake"
+msgstr "SOCKS 握手后传输明文字节"
+
+msgid "AEAD length/payload records"
+msgstr "AEAD 长度/负载记录"
+
+msgid "Extra encryption/record layer"
+msgstr "额外加密/记录层"
+
+msgid "UDP control"
+msgstr "UDP 控制"
+
+msgid "`UDP ASSOCIATE` over TCP"
+msgstr "TCP 上的 `UDP ASSOCIATE`"
+
+msgid "No equivalent control negotiation in classic SS"
+msgstr "经典 SS 没有等价控制协商"
+
+msgid "UDP packet"
+msgstr "UDP 报文"
+
+msgid "`RSV, FRAG, ATYP, DST, DATA`"
+msgstr "`RSV, FRAG, ATYP, DST, DATA`"
+
+msgid "Encrypted address + payload; AEAD-2022 adds session/packet metadata"
+msgstr "加密地址 + 负载；AEAD-2022 还增加会话/报文元数据"
+
+msgid "Same routing purpose, different wire format"
+msgstr "路由目的相同，线格式不同"
+
+msgid "SOCKS5 `FRAG` field exists"
+msgstr "SOCKS5 存在 `FRAG` 字段"
+
+msgid "No SOCKS5-style fragmentation field"
+msgstr "没有 SOCKS5 风格分片字段"
+
+msgid "Replay defense"
+msgstr "重放防护"
+
+msgid "Not provided by SOCKS5"
+msgstr "SOCKS5 不提供"
+
+msgid "Salt/session/timestamp replay checks depending on SS generation"
+msgstr "根据 SS 代际使用 salt/session/时间戳重放检查"
+
+msgid "Extra security layer"
+msgstr "额外安全层"
+
+msgid "Close/error"
+msgstr "关闭/错误"
+
+msgid "SOCKS `REP` during setup, then TCP/UDP semantics"
+msgstr "建立阶段使用 SOCKS `REP`，之后遵循 TCP/UDP 语义"
+
+msgid "AEAD/parser/target failure usually closes or drops affected traffic"
+msgstr "AEAD/解析器/目标失败通常会关闭或丢弃受影响流量"
+
+msgid "Prefer modern AEAD or AEAD-2022 methods; legacy ciphers exist for compatibility and should not be treated as equivalent security choices."
+msgstr "优先使用现代 AEAD 或 AEAD-2022 方法；legacy cipher 仅为兼容而存在，不应视为等价安全选择。"
+
+msgid "Protect Shadowsocks passwords/PSKs as credentials. For AEAD-2022 the Base64 string represents raw key material in the current Server configuration path."
+msgstr "应把 Shadowsocks 密码/PSK 当作凭据保护。对于 AEAD-2022，当前 Server 配置路径中的 Base64 字符串代表原始密钥材料。"
+
+msgid "Reusing salts/nonces or disabling replay checks can destroy the assumptions of the AEAD construction."
+msgstr "重复使用 salt/nonce 或关闭重放检查会破坏 AEAD 构造的安全前提。"
+
+msgid "Keep system clocks reasonably synchronized for AEAD-2022 timestamp validation."
+msgstr "为 AEAD-2022 时间戳验证保持系统时钟合理同步。"
+
+msgid "A plugin can camouflage or reshape transport traffic, but it does not replace correct Shadowsocks authentication and AEAD validation."
+msgstr "插件可以伪装或重塑传输流量，但不能替代正确的 Shadowsocks 认证和 AEAD 验证。"
+
+msgid "Do not expose Client-only cipher support as a Server compatibility claim."
+msgstr "不要把 Client 独有的密码算法支持写成 Server 兼容性声明。"
+
+msgid "When a Shadowsocks connection fails, check in this order:"
+msgstr "Shadowsocks 连接失败时按以下顺序检查："
+
+msgid "confirm the client and server agree on classic AEAD versus `2022-blake3-*`;"
+msgstr "确认客户端与服务端对经典 AEAD 还是 `2022-blake3-*` 达成一致；"
+
+msgid "confirm the exact cipher name and key length;"
+msgstr "确认精确的密码算法名称和密钥长度；"
+
+msgid "for 2022, confirm the configured value is the expected Base64 raw key and clocks are synchronized;"
+msgstr "对于 2022，确认配置值是预期的 Base64 原始密钥，并确认时钟同步；"
+
+msgid "confirm any SIP003 plugin exists on both sides with matching options;"
+msgstr "确认任何 SIP003 插件都在两端存在且选项匹配；"
+
+msgid "verify TCP versus UDP is enabled in the actual Client build/config;"
+msgstr "确认实际 Client 构建/配置中启用了所需 TCP 或 UDP；"
+
+msgid "inspect logs for tag failure, replay rejection, timestamp failure, unknown EIH user, or unsupported cipher;"
+msgstr "检查日志中是否有 tag 失败、重放拒绝、时间戳失败、未知 EIH 用户或不支持的密码算法；"
+
+msgid "only after the cryptographic layer succeeds, debug destination DNS/routing/target reachability."
+msgstr "只有密码层成功后，再排查目标 DNS、路由和目标可达性。"
+
+msgid "`Chimera_Client/clash-lib/src/proxy/shadowsocks/`;"
+msgstr "`Chimera_Client/clash-lib/src/proxy/shadowsocks/`；"
+
+msgid "`Chimera_Client/clash-lib/tests/shadowsocks_integration_tests.rs`;"
+msgstr "`Chimera_Client/clash-lib/tests/shadowsocks_integration_tests.rs`；"
+
+msgid "`Chimera_Server/chimera_server_lib/src/handler/shadowsocks.rs`;"
+msgstr "`Chimera_Server/chimera_server_lib/src/handler/shadowsocks.rs`；"
+
+msgid "`Chimera_Server/chimera_server_lib/src/beginning/udp.rs`;"
+msgstr "`Chimera_Server/chimera_server_lib/src/beginning/udp.rs`；"
+
+msgid "`Chimera_Server/chimera_server_lib/src/config/server_config/`."
+msgstr "`Chimera_Server/chimera_server_lib/src/config/server_config/`。"
+
+msgid "For portable protocol behavior, compare the relevant Shadowsocks specification/SIP with the version implemented by the selected peer rather than assuming all Shadowsocks generations share one wire format."
+msgstr "为了获得可移植的协议行为，应将相关 Shadowsocks 规范/SIP 与所选对端实际实现版本进行对照，而不是假设所有 Shadowsocks 代际共享同一种线格式。"

@@ -22,7 +22,7 @@ SOCKS5 / HTTP
     │
     ▼
 Remote proxy protocol
-Trojan / Hysteria 2 / TUIC / VLESS
+Shadowsocks / AnyTLS / Trojan / Hysteria 2 / TUIC / VMess / VLESS
     │
     ▼
 Transport method
@@ -48,6 +48,8 @@ transport-security mechanism.
 | --- | --- | --- | --- | --- |
 | SOCKS5 | Local/application proxy | TCP control + optional UDP relay | None by default | General local application ingress |
 | HTTP Proxy / CONNECT | Local/application proxy | TCP | None by default; HTTPS remains end-to-end inside CONNECT | Browser/system HTTP proxy ingress |
+| Shadowsocks | Remote proxy protocol | TCP or UDP | Built-in AEAD/AEAD-2022 encryption and authentication | Encrypted TCP/UDP proxying |
+| AnyTLS | Remote proxy protocol | TLS over TCP | TLS + SHA-256 password token + framed logical stream | TLS-carried TCP/UDP-over-TCP proxying |
 | Trojan | Remote proxy protocol | TLS over TCP in the baseline design | TLS + shared-secret authentication | TLS-oriented remote proxying |
 | Hysteria 2 | Remote proxy protocol + transport design | QUIC over UDP | QUIC TLS + Hysteria authentication | TCP/UDP proxying on lossy/high-latency paths |
 | TUIC | Remote proxy protocol | Multiplexed secure transport, commonly QUIC | TLS session + connection-bound auth | Low-latency TCP/UDP relay |
@@ -64,12 +66,14 @@ not a substitute for checking the implementation repository before deployment.
 | Item | Chimera_Client documentation | Chimera_Server documentation |
 | --- | --- | --- |
 | SOCKS5 | Current local inbound | SOCKS-related inbound work listed |
-| HTTP proxy | Current local inbound | Not the main remote-server protocol focus |
-| Trojan | Current capability, currently documented with WebSocket | Trojan inbound work listed |
+| HTTP proxy | Current local inbound | HTTP inbound exists |
+| Shadowsocks | Current inbound/outbound behind `shadowsocks`; TCP/UDP integration tests exist | Current inbound TCP/UDP behind `shadowsocks`, with explicit cipher/mode limits |
+| AnyTLS | Current inbound/outbound behind `anytls`; TCP/UDP integration tests exist | No current AnyTLS inbound protocol |
+| Trojan | Current outbound behind `trojan` | Trojan inbound work listed |
 | Hysteria 2 | Current capability | Hysteria 2 inbound/example listed |
-| TUIC | Planned client capability | TUIC inbound work listed |
-| VMess | Planned/targeted client capability | VMess inbound work listed |
-| VLESS | Not yet listed as a standalone current client capability | VLESS inbound and examples listed |
+| TUIC | No current outbound enum variant | TUIC v5 inbound implementation listed |
+| VMess | No current outbound enum variant | VMess AEAD inbound implementation listed |
+| VLESS | Current outbound capability | VLESS inbound and examples listed |
 | XHTTP | Current capability | XHTTP-related transport work listed |
 | REALITY | Current `Reality + TCP` capability | REALITY transport and VLESS + REALITY example listed |
 
@@ -86,11 +90,9 @@ Start with [SOCKS5](./protocols/socks5.md) or
 [HTTP Proxy](./protocols/http.md). These are the easiest ways to validate the
 client core before adding TUN, transparent routing, or DNS interception.
 
-### Simple TLS-based remote proxy
+### Encrypted remote proxying
 
-Use [Trojan](./protocols/trojan.md) as the reference for the baseline
-TLS + password protocol model. If an implementation adds WebSocket or another
-transport, treat that as an additional layer.
+Use [Shadowsocks](./protocols/shadowsocks.md) when you need the classic AEAD / AEAD-2022 encrypted record model. Use [AnyTLS](./protocols/anytls.md) for the TLS-carried framed model implemented by Chimera Client. Use [Trojan](./protocols/trojan.md) as the reference for the baseline TLS + password protocol model. If an implementation adds WebSocket, SIP003 plugins, or another transport, treat that as an additional layer.
 
 ### UDP/QUIC-oriented remote proxying
 
@@ -117,8 +119,7 @@ troubleshooting much easier.
 - SOCKS5 and a local HTTP proxy do not provide encryption by themselves.
 - Do not expose unauthenticated local proxy listeners to the public internet.
 - Keep certificate verification enabled for TLS-based remote protocols.
-- Treat REALITY private keys, VMess IDs, Trojan passwords, Hysteria credentials,
-  and TUIC passwords as secrets.
+- Treat Shadowsocks keys/passwords, AnyTLS passwords, REALITY private keys, VMess IDs, Trojan passwords, Hysteria credentials, and TUIC passwords as secrets.
 - For QUIC-based protocols, verify UDP reachability before changing protocol
   tuning.
 - Validate the exact proxy + transport + security combination supported by the
@@ -142,6 +143,8 @@ Do not start by changing all six layers at once.
 
 - [SOCKS5](./protocols/socks5.md) — standardized general-purpose TCP/UDP local proxy.
 - [HTTP Proxy](./protocols/http.md) — application HTTP proxy and `CONNECT` tunneling.
+- [Shadowsocks](./protocols/shadowsocks.md) — classic AEAD and AEAD-2022 TCP/UDP encrypted proxying.
+- [AnyTLS](./protocols/anytls.md) — TLS-carried password authentication, framed streams, and UDP-over-TCP v2.
 - [Trojan](./protocols/trojan.md) — TLS-based password proxy with fallback behavior.
   - [Wire Format](./protocols/trojan/wire-format.md)
   - [Traffic Handling](./protocols/trojan/traffic-handling.md)

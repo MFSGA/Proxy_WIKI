@@ -49,8 +49,8 @@ TODOs merely because they once appeared in an older Wiki revision.
 
 ## Chimera_Client
 
-- Document all `Parsed-only` fields, beginning with the AnyTLS compatibility
-  fields that are accepted but not applied by the runtime.
+- Keep the AnyTLS `Parsed-only` field list synchronized with the Client config
+  struct when compatibility fields are added or become active runtime behavior.
 - Document the current SOCKS inbound and mixed-listener UDP limitations next to
   their configuration examples.
 - Add a feature/build matrix to release documentation so users can determine
@@ -77,15 +77,11 @@ TODOs merely because they once appeared in an older Wiki revision.
   `multiMode` configuration.
 - Document VLESS Vision direct-mode limitations and the conditions exercised by
   the existing REALITY/Vision E2E matrix.
-- Document Shadowsocks cipher coverage and the current rejection of
-  `xchacha20-poly1305`.
 
 ## Protocol and Transport Reference
 
-- Add a complete Shadowsocks protocol chapter and keep it aligned with the
-  cipher/mode subset implemented by Client and Server.
-- Add a complete AnyTLS protocol chapter and explicitly separate upstream wire
-  behavior from `Chimera_Client` parsed-only configuration fields.
+- Pin the upstream AnyTLS and Shadowsocks specification/version references used
+  for interoperability claims when the corresponding upstream protocols change.
 - Add dedicated transport pages for gRPC and HTTPUpgrade rather than describing
   them only as incidental VLESS/Xray transport names.
 - Add a concise Dokodemo-door implementation reference focused on server
