@@ -76,9 +76,18 @@ are essential to establish a connection:
 | `xmux` | Connection/request reuse and concurrency tuning |
 | `downloadSettings` | Advanced split upload/download routing in newer Xray versions |
 
-Advanced fields controlling padding, request chunking, session placement, and
-connection reuse exist in current Xray code. Avoid copying large tuning blocks
-from random examples before the minimal path works.
+Current Xray also exposes fields that can materially change the **wire-visible
+HTTP request shape**, including `sessionIDPlacement`, `seqPlacement`,
+`uplinkDataPlacement`, `uplinkHTTPMethod`, `xPaddingObfsMode`,
+`xPaddingPlacement`, `xPaddingMethod`, `sessionIDTable`, `sessionIDLength`,
+`uplinkChunkSize`, and `serverMaxHeaderBytes`. These are not cosmetic knobs: a
+client and server that disagree on where metadata lives will parse different
+sessions or payloads.
+
+Avoid copying large tuning blocks from random examples before the minimal path
+works. The advanced placement controls are especially version-sensitive and
+should be validated against the exact Xray-core/Mihomo/other-core implementation
+in use.
 
 ## Minimal Xray-Style Server Example
 
@@ -175,6 +184,12 @@ Only force a specific mode when:
 
 Mode tuning should come after basic connectivity.
 
+For current Xray-core, `auto` has concrete selection behavior rather than being
+a fourth wire mode. The client starts from `packet-up`; when REALITY is used it
+selects `stream-one`, or `stream-up` when REALITY is combined with
+`downloadSettings`. Treat this as an implementation policy that can evolve, not
+as a protocol constant that every XHTTP implementation must copy.
+
 ## Wire-Level Session Model
 
 XHTTP is unusual compared with SOCKS5 because the transport itself does not
@@ -237,6 +252,50 @@ create upload queue
 
 The Session ID is therefore an XHTTP transport identifier. It is not the VLESS
 UUID, not a SOCKS5 authentication identity, and not the destination address.
+
+### Session ID and sequence placement
+
+Older XHTTP examples make the split-session URL look structurally fixed, for
+example `/path/<session>/<seq>`. Current Xray-core no longer requires that
+layout. `sessionIDPlacement` and `seqPlacement` independently accept:
+
+```text
+path | query | header | cookie
+```
+
+The defaults remain `path`. For non-path placement, the implementation uses
+configurable keys; current defaults are:
+
+```text
+session query/cookie key : x_session
+session header key       : X-Session
+sequence query/cookie key: x_seq
+sequence header key      : X-Seq
+```
+
+The same packet-up logical request can therefore appear in several equivalent
+HTTP shapes:
+
+```text
+path:   POST /api/S/12
+query:  POST /api?x_session=S&x_seq=12
+header: X-Session: S
+        X-Seq: 12
+cookie: Cookie: x_session=S; x_seq=12
+```
+
+The server reverses exactly the configured placement before looking up the
+session and parsing the sequence number. Packet-capture tooling should therefore
+extract **semantics from configuration**, not hard-code a path regular
+expression.
+
+Current Xray can also generate Session IDs from a configurable ASCII character
+table and length range (`sessionIDTable` / `sessionIDLength`). If that mechanism
+is not configured, the implementation falls back to a UUID string. The config
+builder rejects a custom table/length combination whose total identifier space
+is too small, rejects non-ASCII tables, and requires a positive lower length
+bound. This is an anti-collision/resource-isolation property, not proxy-user
+authentication.
 
 ## Current Transport Modes
 
@@ -309,21 +368,78 @@ the ordering authority.
 ## Upload Data Placement
 
 In current Xray-core, packet-style uplink data can be transported in the HTTP
-body, encoded into numbered HTTP headers, encoded into numbered cookies, or
-combined according to the configured automatic placement behavior.
+body, encoded into numbered HTTP headers, or encoded into numbered cookies.
+`uplinkDataPlacement` accepts `auto`, `body`, `header`, and `cookie`; header and
+cookie placement are valid only for `packet-up`. The default normalized data
+path is the request body.
 
-Header and cookie forms use unpadded URL-safe Base64 before the server restores
-the original bytes. Body payload is binary data and does not require that
-Base64 step.
+Header and cookie forms use **unpadded URL-safe Base64** before the server
+restores the original bytes. One logical packet can be split across multiple
+metadata fields. With a configured key such as `X-Data`, headers are numbered:
 
-This means a packet capture may show an apparently empty POST while the actual
-proxy bytes are carried in headers or cookies. Troubleshooting should therefore
-inspect the configured `uplinkDataPlacement` rather than assuming that all
-upstream data is in the HTTP body.
+```text
+X-Data-0: <base64url chunk 0>
+X-Data-1: <base64url chunk 1>
+...
+```
 
-The server also enforces a configured maximum upload size. Oversized request
-bodies are rejected with HTTP `413 Request Entity Too Large`; malformed encoded
-header/cookie data is rejected as a bad request.
+Cookie placement similarly uses names such as:
+
+```text
+x_data_0=<base64url chunk 0>; x_data_1=<base64url chunk 1>; ...
+```
+
+`uplinkChunkSize` controls the encoded chunk sizes. Current defaults are sized
+differently for cookies and headers (roughly 2--3 KiB for cookies and 3--4 KB
+for headers), while body placement follows the normal packet-upload size. The
+server's normalized maximum aggregate HTTP-header budget is 8192 bytes unless
+`serverMaxHeaderBytes` overrides it. These limits are important when a CDN or
+reverse proxy imposes a smaller header/cookie ceiling than Xray itself.
+
+The HTTP method is configurable through `uplinkHTTPMethod` and defaults to
+`POST`. Current Xray permits `GET` only for `packet-up`, because the other modes
+need streaming request-body semantics.
+
+This means a packet capture may show an apparently empty POST or GET while the
+actual proxy bytes are carried in headers or cookies. Troubleshooting should
+inspect `uplinkDataPlacement`, its key, chunk size, and the HTTP method rather
+than assuming that all upstream data is in the HTTP body.
+
+The server also enforces configured upload and metadata limits. Oversized
+request bodies can be rejected with HTTP `413 Request Entity Too Large`;
+malformed encoded header/cookie data is rejected as a bad request.
+
+## XPadding Placement and Obfuscation
+
+XHTTP adds padding to vary request/response shape independently of the inner
+proxy bytes. In current Xray, default normalized `xPaddingBytes` is 100--1000.
+Without obfuscation mode, the implementation uses a predictable compatibility
+form: an `x_padding` query parameter embedded in the `Referer` URL.
+
+With `xPaddingObfsMode` enabled, the placement becomes configurable:
+
+```text
+cookie | header | query | queryInHeader
+```
+
+`queryInHeader` means the padding is a query parameter inside a URL-valued HTTP
+header; `xPaddingHeader` selects that header and `xPaddingKey` selects the query
+key. The implementation can generate padding using:
+
+- `repeat-x`: repeated `X` bytes, or
+- `tokenish`: randomized Base62-looking text whose HPACK/QPACK Huffman-encoded
+  length is adjusted toward the configured target.
+
+This matters at the wire level because HTTP/2 HPACK and HTTP/3 QPACK compress
+header values. Counting source string characters is not necessarily the same as
+counting compressed bytes. Current `tokenish` validation explicitly measures
+HPACK Huffman length (with a small tolerance), while `repeat-x` is chosen so its
+characters have a stable 8-bit Huffman code in the shared HPACK/QPACK table.
+
+Padding is camouflage/traffic-shaping metadata, **not authentication and not
+cryptographic padding for VLESS payload security**. A server that requires the
+configured padding shape validates it before accepting the request. A mismatch
+can therefore fail at XHTTP with HTTP-level errors before VLESS sees a UUID.
 
 ## Server Request State Machine
 
@@ -374,6 +490,36 @@ still break XHTTP if it buffers the response body instead of forwarding chunks
 promptly. In that case authentication and routing may be correct while latency
 or apparent stalls occur at the HTTP transport layer.
 
+### `downloadSettings`: separate physical downlink
+
+Current Xray can construct the downlink side from a second `StreamConfig` via
+`downloadSettings`. The client creates the normal XHTTP logical Session ID, but
+the downlink request can then dial a **different destination, Host, security
+configuration, XHTTP path, HTTP version, and HTTP connection pool** from the
+uplink. The code explicitly logs this as a `stream-down` path and creates a
+second HTTP/XMUX client when necessary.
+
+Conceptually:
+
+```text
+                         logical XHTTP Session S
+                     /-------------------------------\
+client -- uplink --->| origin/CDN A -> XHTTP server  |
+client <-- downlink -| origin/CDN B <- XHTTP server  |
+                     \-------------------------------/
+```
+
+The Session ID is the correlation point at the XHTTP server; it does not imply
+that both directions use the same TCP connection, QUIC connection, IP family,
+CDN edge, TLS/REALITY settings, or even HTTP version. A capture taken on only one
+network path may therefore contain only half of a logically healthy XHTTP
+session.
+
+This is an **extra transport layer** compared with SOCKS5. SOCKS5 `CONNECT`
+turns one established TCP control connection into the relay; it has no standard
+mechanism for routing the two byte-stream directions through independently
+configured HTTP transports.
+
 ## HTTP/1.1, HTTP/2, and HTTP/3 Boundaries
 
 XHTTP's logical session is above the HTTP transport version:
@@ -418,11 +564,15 @@ UDP/IP
 
 After TLS/QUIC decryption, debugging proceeds from the outside inward:
 
-1. identify the HTTP request and path,
-2. identify Session ID and sequence metadata,
-3. determine whether data is in body/header/cookie,
-4. reconstruct XHTTP upload ordering,
-5. only then parse the inner VLESS/Trojan bytes.
+1. identify the HTTP request, method, Host, and base path,
+2. identify where Session ID and sequence metadata are configured to live
+   (`path`, `query`, `header`, or `cookie`),
+3. identify and validate XPadding placement separately from session metadata,
+4. determine whether packet-up data is in body/header/cookie and Base64-decode
+   metadata placement when required,
+5. reconstruct XHTTP upload ordering,
+6. correlate a separately configured `downloadSettings` path if present,
+7. only then parse the inner VLESS/Trojan bytes.
 
 A single HTTP request is not necessarily a single proxy request, and a single
 proxy request is not necessarily contained in one HTTP request.
@@ -438,11 +588,13 @@ replacement SOCKS protocol.
 | Proxy command | SOCKS `CONNECT` / `UDP ASSOCIATE` | VLESS command inside reconstructed stream |
 | Destination | `ATYP + DST.ADDR + DST.PORT` | VLESS `PORT + ATYP + ADDRESS` |
 | Transport request | Same SOCKS TCP control connection | One or more HTTP requests |
-| Transport session ID | None | XHTTP Session ID in split modes |
-| Ordering | TCP byte order | XHTTP sequence metadata + upload queue, then byte order |
+| Transport session ID | None | XHTTP Session ID in split modes; placement can be path/query/header/cookie |
+| Ordering | TCP byte order | XHTTP sequence metadata (also relocatable) + upload queue, then byte order |
+| Uplink data placement | Same TCP stream | body, or Base64url chunks in headers/cookies for packet-up |
+| Padding/camouflage metadata | None | configurable XPadding placement/method; separate from proxy authentication |
 | Success at transport layer | SOCKS `REP` | HTTP status such as `200` |
 | Proxy-protocol success | SOCKS `REP` | VLESS response header / stream behavior |
-| Downlink | Same TCP stream | HTTP response body |
+| Downlink | Same TCP stream | HTTP response body; `downloadSettings` can use a separately configured physical path |
 | Multiplexing | Not in base SOCKS5 | HTTP/2/3 plus optional XMUX/XHTTP reuse |
 | Encryption | Not provided | TLS or REALITY can protect XHTTP |
 
@@ -509,14 +661,19 @@ A robust XHTTP implementation should explicitly test:
 2. split Session ID creation and cleanup,
 3. provisional sessions that never obtain a downlink,
 4. duplicate, missing, delayed, and out-of-order packet sequence values,
-5. body/header/cookie upload placement and Base64 decode failures,
-6. configured maximum upload sizes,
-7. partial inner-protocol headers spanning multiple HTTP uploads,
-8. one upload containing multiple inner-protocol reads worth of data,
-9. downlink flushing through direct and reverse-proxied paths,
-10. HTTP/1.1, HTTP/2, and HTTP/3 connection-loss behavior,
-11. queue/backpressure limits under a slow inner proxy consumer,
-12. TLS and REALITY combinations independently from XHTTP session logic.
+5. every supported Session ID / sequence placement and custom key,
+6. custom Session ID table/length entropy and collision handling,
+7. body/header/cookie upload placement, chunk ordering, and Base64 decode failures,
+8. configured body/header/chunk-size ceilings,
+9. XPadding placement, method, compressed-length validation, and obfuscation mode,
+10. allowed HTTP methods, especially GET restricted to packet-up,
+11. partial inner-protocol headers spanning multiple HTTP uploads,
+12. one upload containing multiple inner-protocol reads worth of data,
+13. downlink flushing through direct and reverse-proxied paths,
+14. `downloadSettings` where uplink and downlink use different physical paths,
+15. HTTP/1.1, HTTP/2, and HTTP/3 connection-loss behavior,
+16. queue/backpressure limits under a slow inner proxy consumer,
+17. TLS and REALITY combinations independently from XHTTP session logic.
 
 ## XMUX and Connection Reuse
 
@@ -648,3 +805,9 @@ XMUX/download settings as separate compatibility dimensions.
   <https://xtls.github.io/en/config/transport.html>
 - Xray current XHTTP configuration implementation:
   <https://github.com/XTLS/Xray-core/blob/main/infra/conf/transport_method.go>
+- Xray-core XHTTP request/session encoding:
+  <https://github.com/XTLS/Xray-core/blob/main/transport/internet/splithttp/config.go>
+- Xray-core XHTTP dialer and split-downlink behavior:
+  <https://github.com/XTLS/Xray-core/blob/main/transport/internet/splithttp/dialer.go>
+- Xray-core XPadding implementation:
+  <https://github.com/XTLS/Xray-core/blob/main/transport/internet/splithttp/xpadding.go>

@@ -13553,3 +13553,636 @@ msgstr "Xray-core VLESS Encryption 服务端实现：<https://github.com/XTLS/Xr
 
 msgid "Xray-core VLESS Encryption record implementation: <https://github.com/XTLS/Xray-core/blob/main/proxy/vless/encryption/common.go>"
 msgstr "Xray-core VLESS Encryption 记录层实现：<https://github.com/XTLS/Xray-core/blob/main/proxy/vless/encryption/common.go>"
+
+msgid "Current Xray also exposes fields that can materially change the **wire-visible HTTP request shape**, including `sessionIDPlacement`, `seqPlacement`, `uplinkDataPlacement`, `uplinkHTTPMethod`, `xPaddingObfsMode`, `xPaddingPlacement`, `xPaddingMethod`, `sessionIDTable`, `sessionIDLength`, `uplinkChunkSize`, and `serverMaxHeaderBytes`. These are not cosmetic knobs: a client and server that disagree on where metadata lives will parse different sessions or payloads."
+msgstr "当前 Xray 还暴露了一组会实质改变**线路上可见 HTTP 请求形态**的字段，包括 `sessionIDPlacement`、`seqPlacement`、`uplinkDataPlacement`、`uplinkHTTPMethod`、`xPaddingObfsMode`、`xPaddingPlacement`、`xPaddingMethod`、`sessionIDTable`、`sessionIDLength`、`uplinkChunkSize` 和 `serverMaxHeaderBytes`。这些并非纯粹的调优旋钮：客户端与服务端若对元数据所在位置理解不一致，就会解析出不同的会话或 payload。"
+
+msgid "Avoid copying large tuning blocks from random examples before the minimal path works. The advanced placement controls are especially version-sensitive and should be validated against the exact Xray-core/Mihomo/other-core implementation in use."
+msgstr "在最小连接路径尚未工作前，不要从随机示例中复制大段调优配置。高级 placement 控制尤其容易受版本影响，应针对实际使用的 Xray-core、Mihomo 或其他核心实现逐项确认。"
+
+msgid "For current Xray-core, `auto` has concrete selection behavior rather than being a fourth wire mode. The client starts from `packet-up`; when REALITY is used it selects `stream-one`, or `stream-up` when REALITY is combined with `downloadSettings`. Treat this as an implementation policy that can evolve, not as a protocol constant that every XHTTP implementation must copy."
+msgstr "在当前 Xray-core 中，`auto` 有明确的选择逻辑，而不是第四种线级模式。客户端从 `packet-up` 起步；使用 REALITY 时会选择 `stream-one`，若 REALITY 同时配置 `downloadSettings` 则选择 `stream-up`。这应被视为可能演进的实现策略，而不是所有 XHTTP 实现都必须照搬的协议常量。"
+
+msgid "Wire-Level Session Model"
+msgstr "线级会话模型"
+
+msgid "XHTTP is unusual compared with SOCKS5 because the transport itself does not carry a single fixed binary `CONNECT` request. The proxy protocol (for example VLESS) produces an ordered byte stream, and XHTTP maps that byte stream onto one or more HTTP requests and responses."
+msgstr "与 SOCKS5 相比，XHTTP 的特殊之处在于传输层本身并不承载一个固定的二进制 `CONNECT` 请求。代理协议（例如 VLESS）产生有序字节流，而 XHTTP 将该字节流映射到一个或多个 HTTP 请求与响应。"
+
+msgid "At the server, current Xray-core reconstructs a connection roughly as follows:"
+msgstr "在服务端，当前 Xray-core 大致按以下方式重建一条连接："
+
+msgid "This distinction is fundamental: a VLESS request header can be split across multiple XHTTP upload requests. Conversely, one HTTP upload request can contain the VLESS header plus application payload. The proxy parser therefore must not use HTTP request boundaries as proxy-message boundaries."
+msgstr "这一区分非常关键：一个 VLESS 请求头可以跨多个 XHTTP 上传请求；反过来，一个 HTTP 上传请求也可以同时包含 VLESS 头与应用 payload。因此代理协议解析器绝不能把 HTTP 请求边界当作代理消息边界。"
+
+msgid "Session creation and lifetime"
+msgstr "会话创建与生命周期"
+
+msgid "For split modes, current Xray-core indexes server-side state by a Session ID. The first request that references an unknown Session ID creates an `httpSession` containing an upload queue. A newly created session has a 30-second provisional lifetime while the downlink side has not connected. Once the downlink GET is established, that provisional reap is cancelled; the session then lives with the downlink request and is deleted when that request finishes."
+msgstr "在 split 模式下，当前 Xray-core 以 Session ID 索引服务端状态。首次引用未知 Session ID 的请求会创建一个包含上传队列的 `httpSession`。在下行尚未接入时，新会话具有 30 秒的临时生命周期；一旦建立下行 GET，这个临时回收计时就会取消，此后会话与下行请求共存，并在该请求结束时删除。"
+
+msgid "The Session ID is therefore an XHTTP transport identifier. It is not the VLESS UUID, not a SOCKS5 authentication identity, and not the destination address."
+msgstr "因此，Session ID 是 XHTTP 传输标识符。它不是 VLESS UUID，不是 SOCKS5 认证身份，也不是目标地址。"
+
+msgid "Session ID and sequence placement"
+msgstr "Session ID 与序号的放置位置"
+
+msgid "Older XHTTP examples make the split-session URL look structurally fixed, for example `/path/<session>/<seq>`. Current Xray-core no longer requires that layout. `sessionIDPlacement` and `seqPlacement` independently accept:"
+msgstr "较旧的 XHTTP 示例会让 split 会话 URL 看起来具有固定结构，例如 `/path/<session>/<seq>`。当前 Xray-core 已不再要求这种布局。`sessionIDPlacement` 与 `seqPlacement` 可分别接受："
+
+msgid "The defaults remain `path`. For non-path placement, the implementation uses configurable keys; current defaults are:"
+msgstr "默认仍为 `path`。对于非 path placement，实现使用可配置 key；当前默认值为："
+
+msgid "The same packet-up logical request can therefore appear in several equivalent HTTP shapes:"
+msgstr "因此，同一个 packet-up 逻辑请求可以表现为多种等价的 HTTP 形态："
+
+msgid "The server reverses exactly the configured placement before looking up the session and parsing the sequence number. Packet-capture tooling should therefore extract **semantics from configuration**, not hard-code a path regular expression."
+msgstr "服务端会严格按照配置的 placement 反向提取元数据，然后查找会话并解析序号。因此抓包工具应从**配置中获取语义**，而不能把某个 path 正则表达式硬编码为协议格式。"
+
+msgid "Current Xray can also generate Session IDs from a configurable ASCII character table and length range (`sessionIDTable` / `sessionIDLength`). If that mechanism is not configured, the implementation falls back to a UUID string. The config builder rejects a custom table/length combination whose total identifier space is too small, rejects non-ASCII tables, and requires a positive lower length bound. This is an anti-collision/resource-isolation property, not proxy-user authentication."
+msgstr "当前 Xray 还可以根据可配置的 ASCII 字符表与长度范围（`sessionIDTable` / `sessionIDLength`）生成 Session ID。若未配置该机制，实现会回退为 UUID 字符串。配置构建器会拒绝总标识空间过小的自定义字符表/长度组合、拒绝非 ASCII 字符表，并要求长度下限为正值。这属于防碰撞与资源隔离属性，而不是代理用户认证。"
+
+msgid "Current Transport Modes"
+msgstr "当前传输模式"
+
+msgid "Current Xray-core distinguishes three important data-shaping models."
+msgstr "当前 Xray-core 区分三种重要的数据整形模型。"
+
+msgid "`stream-one`"
+msgstr "`stream-one`"
+
+msgid "`stream-one` keeps uplink and downlink on one HTTP exchange. There is no split Session ID in the normal path: the request body is the reconstructed upstream reader and the response body is the downstream writer."
+msgstr "`stream-one` 将上行与下行保持在同一次 HTTP 交换中。正常路径没有 split Session ID：请求正文作为重建后的上行 reader，响应正文作为下行 writer。"
+
+msgid "This is the closest XHTTP mode to a conventional full-duplex stream, although actual duplex behavior still depends on the HTTP version and intermediaries."
+msgstr "这是 XHTTP 中最接近传统全双工字节流的模式，但实际双工行为仍取决于 HTTP 版本和中间节点。"
+
+msgid "`stream-up`"
+msgstr "`stream-up`"
+
+msgid "`stream-up` separates a long-lived upload request from the downlink request. The upload request body is pushed into the session's upload queue as a reader, while a GET-like downlink response carries server-to-client bytes."
+msgstr "`stream-up` 将长连接式上传请求与下行请求分离。上传请求正文作为 reader 推入会话上传队列，而类似 GET 的下行响应承载服务端到客户端的字节。"
+
+msgid "The server currently rejects a split streaming upload when an explicitly configured mode does not permit `stream-up`."
+msgstr "当显式配置的模式不允许 `stream-up` 时，当前服务端会拒绝 split streaming upload。"
+
+msgid "`packet-up`"
+msgstr "`packet-up`"
+
+msgid "`packet-up` slices upstream bytes into independently delivered HTTP requests. Each upload carries the Session ID plus a sequence number. The server parses the sequence number as an unsigned integer and inserts the payload into the session's upload queue, which is responsible for restoring byte-stream order."
+msgstr "`packet-up` 将上行字节切分成独立交付的 HTTP 请求。每个上传请求携带 Session ID 和序号。服务端把序号解析为无符号整数，并将 payload 插入会话上传队列，由该队列恢复字节流顺序。"
+
+msgid "The important implementation consequence is that HTTP request completion order need not be the proxy-stream order. Sequence metadata, not arrival order, is the ordering authority."
+msgstr "一个重要的实现结论是：HTTP 请求完成顺序不必等于代理字节流顺序。决定排序的是序号元数据，而不是到达先后。"
+
+msgid "Upload Data Placement"
+msgstr "上行数据放置方式"
+
+msgid "In current Xray-core, packet-style uplink data can be transported in the HTTP body, encoded into numbered HTTP headers, or encoded into numbered cookies. `uplinkDataPlacement` accepts `auto`, `body`, `header`, and `cookie`; header and cookie placement are valid only for `packet-up`. The default normalized data path is the request body."
+msgstr "在当前 Xray-core 中，packet 风格上行数据可以放在 HTTP body 中，也可以编码进带编号的 HTTP header 或 cookie。`uplinkDataPlacement` 接受 `auto`、`body`、`header` 和 `cookie`；header 与 cookie placement 只对 `packet-up` 有效。规范化后的默认数据路径是请求正文。"
+
+msgid "Header and cookie forms use **unpadded URL-safe Base64** before the server restores the original bytes. One logical packet can be split across multiple metadata fields. With a configured key such as `X-Data`, headers are numbered:"
+msgstr "header 与 cookie 形式会先使用**无填充 URL-safe Base64** 编码，再由服务端恢复原始字节。一个逻辑数据包可以拆分到多个元数据字段中。以配置 key `X-Data` 为例，header 会按编号排列："
+
+msgid "Cookie placement similarly uses names such as:"
+msgstr "cookie placement 同样会使用类似下面的名称："
+
+msgid "`uplinkChunkSize` controls the encoded chunk sizes. Current defaults are sized differently for cookies and headers (roughly 2--3 KiB for cookies and 3--4 KB for headers), while body placement follows the normal packet-upload size. The server's normalized maximum aggregate HTTP-header budget is 8192 bytes unless `serverMaxHeaderBytes` overrides it. These limits are important when a CDN or reverse proxy imposes a smaller header/cookie ceiling than Xray itself."
+msgstr "`uplinkChunkSize` 控制编码后的分块大小。当前 cookie 与 header 使用不同默认范围（cookie 约 2--3 KiB，header 约 3--4 KB），而 body placement 遵循普通 packet upload 大小。除非由 `serverMaxHeaderBytes` 覆盖，服务端规范化后的 HTTP header 总预算上限为 8192 字节。当 CDN 或反向代理的 header/cookie 上限比 Xray 更小时，这些限制尤其重要。"
+
+msgid "The HTTP method is configurable through `uplinkHTTPMethod` and defaults to `POST`. Current Xray permits `GET` only for `packet-up`, because the other modes need streaming request-body semantics."
+msgstr "HTTP 方法可通过 `uplinkHTTPMethod` 配置，默认是 `POST`。当前 Xray 只允许 `packet-up` 使用 `GET`，因为其他模式需要流式请求正文语义。"
+
+msgid "This means a packet capture may show an apparently empty POST or GET while the actual proxy bytes are carried in headers or cookies. Troubleshooting should inspect `uplinkDataPlacement`, its key, chunk size, and the HTTP method rather than assuming that all upstream data is in the HTTP body."
+msgstr "这意味着抓包中可能出现看似空的 POST 或 GET，而真实代理字节其实位于 header 或 cookie 中。排障时应检查 `uplinkDataPlacement`、对应 key、分块大小与 HTTP 方法，而不能假设所有上行数据都在 HTTP body。"
+
+msgid "The server also enforces configured upload and metadata limits. Oversized request bodies can be rejected with HTTP `413 Request Entity Too Large`; malformed encoded header/cookie data is rejected as a bad request."
+msgstr "服务端还会执行已配置的上传与元数据限制。过大的请求正文可能以 HTTP `413 Request Entity Too Large` 拒绝；畸形的 header/cookie 编码数据会按 bad request 拒绝。"
+
+msgid "XPadding Placement and Obfuscation"
+msgstr "XPadding 放置与混淆"
+
+msgid "XHTTP adds padding to vary request/response shape independently of the inner proxy bytes. In current Xray, default normalized `xPaddingBytes` is 100--1000. Without obfuscation mode, the implementation uses a predictable compatibility form: an `x_padding` query parameter embedded in the `Referer` URL."
+msgstr "XHTTP 会加入 padding，以独立于内层代理字节改变请求/响应形态。在当前 Xray 中，规范化后的默认 `xPaddingBytes` 为 100--1000。未开启混淆模式时，实现使用可预测的兼容形式：把 `x_padding` 查询参数嵌入 `Referer` URL。"
+
+msgid "With `xPaddingObfsMode` enabled, the placement becomes configurable:"
+msgstr "开启 `xPaddingObfsMode` 后，placement 可以配置为："
+
+msgid "`queryInHeader` means the padding is a query parameter inside a URL-valued HTTP header; `xPaddingHeader` selects that header and `xPaddingKey` selects the query key. The implementation can generate padding using:"
+msgstr "`queryInHeader` 表示 padding 是某个 URL 型 HTTP header 内的查询参数；`xPaddingHeader` 选择该 header，`xPaddingKey` 选择查询 key。实现可以用以下方式生成 padding："
+
+msgid "`repeat-x`: repeated `X` bytes, or"
+msgstr "`repeat-x`：重复的 `X` 字节；或"
+
+msgid "`tokenish`: randomized Base62-looking text whose HPACK/QPACK Huffman-encoded length is adjusted toward the configured target."
+msgstr "`tokenish`：随机生成类似 Base62 的文本，并把其 HPACK/QPACK Huffman 编码长度调整到接近配置目标。"
+
+msgid "This matters at the wire level because HTTP/2 HPACK and HTTP/3 QPACK compress header values. Counting source string characters is not necessarily the same as counting compressed bytes. Current `tokenish` validation explicitly measures HPACK Huffman length (with a small tolerance), while `repeat-x` is chosen so its characters have a stable 8-bit Huffman code in the shared HPACK/QPACK table."
+msgstr "在线级上这很重要，因为 HTTP/2 HPACK 与 HTTP/3 QPACK 会压缩 header value。源字符串字符数并不必然等于压缩后的字节数。当前 `tokenish` 校验会显式测量 HPACK Huffman 长度（允许小范围误差），而 `repeat-x` 选用的字符在 HPACK/QPACK 共享表中具有稳定的 8 位 Huffman 编码。"
+
+msgid "Padding is camouflage/traffic-shaping metadata, **not authentication and not cryptographic padding for VLESS payload security**. A server that requires the configured padding shape validates it before accepting the request. A mismatch can therefore fail at XHTTP with HTTP-level errors before VLESS sees a UUID."
+msgstr "Padding 是伪装/流量整形元数据，**既不是认证，也不是用于保护 VLESS payload 的密码学 padding**。要求特定 padding 形态的服务端会在接受请求前验证它。因此不匹配可能直接在 XHTTP 层以 HTTP 错误失败，甚至早于 VLESS 看到 UUID。"
+
+msgid "Server Request State Machine"
+msgstr "服务端请求状态机"
+
+msgid "A useful implementation-oriented server state machine is:"
+msgstr "一个面向实现的服务端状态机可以表示为："
+
+msgid "A `404`, `400`, `409`, `413`, or `405` seen at this layer is therefore an XHTTP transport/routing failure and should be diagnosed before changing the VLESS UUID or destination command."
+msgstr "因此，在这一层看到 `404`、`400`、`409`、`413` 或 `405` 都意味着 XHTTP 传输/路由故障，应先定位这一层，再去修改 VLESS UUID 或目标命令。"
+
+msgid "Downlink Flow and Buffering"
+msgstr "下行流与缓冲"
+
+msgid "For the downlink response, current Xray-core writes `200 OK`, flushes the response, and then writes proxy bytes to the HTTP response body. It also sets `Cache-Control: no-store` and `X-Accel-Buffering: no`; unless disabled, it uses an SSE-like `Content-Type` to discourage HTTP middleboxes from buffering the stream."
+msgstr "对于下行响应，当前 Xray-core 写入 `200 OK` 后立即 flush，再把代理字节写入 HTTP 响应正文。同时设置 `Cache-Control: no-store` 与 `X-Accel-Buffering: no`；除非显式禁用，还会使用类似 SSE 的 `Content-Type`，以减少 HTTP 中间节点缓冲数据流的可能。"
+
+msgid "This is operationally important. A reverse proxy can accept every request and still break XHTTP if it buffers the response body instead of forwarding chunks promptly. In that case authentication and routing may be correct while latency or apparent stalls occur at the HTTP transport layer."
+msgstr "这一点在实际运行中很重要。反向代理即使接受所有请求，只要缓冲响应正文而不是及时转发分块，仍然可能破坏 XHTTP。此时认证与路由可能完全正确，但延迟或表面卡顿发生在 HTTP 传输层。"
+
+msgid "`downloadSettings`: separate physical downlink"
+msgstr "`downloadSettings`：独立的物理下行路径"
+
+msgid "Current Xray can construct the downlink side from a second `StreamConfig` via `downloadSettings`. The client creates the normal XHTTP logical Session ID, but the downlink request can then dial a **different destination, Host, security configuration, XHTTP path, HTTP version, and HTTP connection pool** from the uplink. The code explicitly logs this as a `stream-down` path and creates a second HTTP/XMUX client when necessary."
+msgstr "当前 Xray 可以通过 `downloadSettings` 使用第二个 `StreamConfig` 构造下行侧。客户端仍会创建普通 XHTTP 逻辑 Session ID，但下行请求随后可以拨号到与上行**不同的目标、Host、安全配置、XHTTP path、HTTP 版本以及 HTTP 连接池**。代码会明确把这一路径记录为 `stream-down`，并在需要时创建第二个 HTTP/XMUX 客户端。"
+
+msgid "The Session ID is the correlation point at the XHTTP server; it does not imply that both directions use the same TCP connection, QUIC connection, IP family, CDN edge, TLS/REALITY settings, or even HTTP version. A capture taken on only one network path may therefore contain only half of a logically healthy XHTTP session."
+msgstr "Session ID 是 XHTTP 服务端进行关联的锚点；它并不意味着两个方向使用同一条 TCP 连接、QUIC 连接、同一 IP 族、CDN edge、TLS/REALITY 设置，甚至不保证使用相同 HTTP 版本。因此，只在一条网络路径上抓包时，完全可能只看到一个逻辑上健康 XHTTP 会话的一半。"
+
+msgid "This is an **extra transport layer** compared with SOCKS5. SOCKS5 `CONNECT` turns one established TCP control connection into the relay; it has no standard mechanism for routing the two byte-stream directions through independently configured HTTP transports."
+msgstr "与 SOCKS5 相比，这是一个**额外的传输层能力**。SOCKS5 `CONNECT` 会把已经建立的 TCP 控制连接转变为中继；它没有标准机制让字节流的两个方向分别通过独立配置的 HTTP 传输路径。"
+
+msgid "HTTP/1.1, HTTP/2, and HTTP/3 Boundaries"
+msgstr "HTTP/1.1、HTTP/2 与 HTTP/3 边界"
+
+msgid "XHTTP's logical session is above the HTTP transport version:"
+msgstr "XHTTP 逻辑会话位于具体 HTTP 传输版本之上："
+
+msgid "The current server supports HTTP/1.1 and unencrypted HTTP/2 on its TCP-side HTTP server; when configured for HTTP/3 it listens on UDP/QUIC and serves HTTP/3. TLS or REALITY can wrap the TCP-side listener according to stream settings."
+msgstr "当前服务端在 TCP 侧 HTTP server 上支持 HTTP/1.1 与未加密 HTTP/2；配置为 HTTP/3 时则在 UDP/QUIC 上监听并提供 HTTP/3。TCP 侧 listener 可以按 stream settings 由 TLS 或 REALITY 包装。"
+
+msgid "Do not confuse HTTP multiplexing with XHTTP/XMUX logical multiplexing. HTTP/2 and HTTP/3 can multiplex HTTP requests on one underlying connection; XHTTP still has to correlate those requests into the correct reconstructed proxy stream."
+msgstr "不要把 HTTP 多路复用与 XHTTP/XMUX 逻辑多路复用混为一谈。HTTP/2 和 HTTP/3 可以在一条底层连接上复用 HTTP 请求；XHTTP 仍必须把这些请求关联到正确的重建代理字节流。"
+
+msgid "With TLS, a normal capture primarily exposes:"
+msgstr "使用 TLS 时，普通抓包主要会暴露："
+
+msgid "For HTTP/3:"
+msgstr "对于 HTTP/3："
+
+msgid "After TLS/QUIC decryption, debugging proceeds from the outside inward:"
+msgstr "完成 TLS/QUIC 解密后，调试应从外向内进行："
+
+msgid "identify the HTTP request, method, Host, and base path,"
+msgstr "识别 HTTP 请求、方法、Host 与基础 path；"
+
+msgid "identify where Session ID and sequence metadata are configured to live (`path`, `query`, `header`, or `cookie`),"
+msgstr "确认 Session ID 与序号元数据配置在何处（`path`、`query`、`header` 或 `cookie`）；"
+
+msgid "identify and validate XPadding placement separately from session metadata,"
+msgstr "把 XPadding placement 与会话元数据分开识别和验证；"
+
+msgid "determine whether packet-up data is in body/header/cookie and Base64-decode metadata placement when required,"
+msgstr "确认 packet-up 数据位于 body/header/cookie 中的哪一处，并在需要时对元数据 placement 做 Base64 解码；"
+
+msgid "reconstruct XHTTP upload ordering,"
+msgstr "重建 XHTTP 上传顺序；"
+
+msgid "correlate a separately configured `downloadSettings` path if present,"
+msgstr "若存在独立配置的 `downloadSettings` 路径，将其关联起来；"
+
+msgid "only then parse the inner VLESS/Trojan bytes."
+msgstr "最后才解析内层 VLESS/Trojan 字节。"
+
+msgid "A single HTTP request is not necessarily a single proxy request, and a single proxy request is not necessarily contained in one HTTP request."
+msgstr "一个 HTTP 请求不一定等于一个代理请求，一个代理请求也不一定完整包含在一个 HTTP 请求中。"
+
+msgid "XHTTP Compared with SOCKS5"
+msgstr "XHTTP 与 SOCKS5 对比"
+
+msgid "The most useful comparison is layer-by-layer rather than treating XHTTP as a replacement SOCKS protocol."
+msgstr "最有价值的比较方式是逐层对照，而不是把 XHTTP 当作 SOCKS 协议的替代品。"
+
+msgid "Client identity"
+msgstr "客户端身份"
+
+msgid "METHOD/RFC 1929 exchange"
+msgstr "METHOD/RFC 1929 交换"
+
+msgid "VLESS UUID inside reconstructed stream"
+msgstr "重建字节流内部的 VLESS UUID"
+
+msgid "SOCKS `CONNECT` / `UDP ASSOCIATE`"
+msgstr "SOCKS `CONNECT` / `UDP ASSOCIATE`"
+
+msgid "VLESS command inside reconstructed stream"
+msgstr "重建字节流内部的 VLESS 命令"
+
+msgid "`ATYP + DST.ADDR + DST.PORT`"
+msgstr "`ATYP + DST.ADDR + DST.PORT`"
+
+msgid "VLESS `PORT + ATYP + ADDRESS`"
+msgstr "VLESS `PORT + ATYP + ADDRESS`"
+
+msgid "Transport request"
+msgstr "传输请求"
+
+msgid "Same SOCKS TCP control connection"
+msgstr "同一条 SOCKS TCP 控制连接"
+
+msgid "One or more HTTP requests"
+msgstr "一个或多个 HTTP 请求"
+
+msgid "Transport session ID"
+msgstr "传输 Session ID"
+
+msgid "XHTTP Session ID in split modes; placement can be path/query/header/cookie"
+msgstr "split 模式中的 XHTTP Session ID；可放在 path/query/header/cookie"
+
+msgid "Ordering"
+msgstr "排序"
+
+msgid "TCP byte order"
+msgstr "TCP 字节顺序"
+
+msgid "XHTTP sequence metadata (also relocatable) + upload queue, then byte order"
+msgstr "XHTTP 序号元数据（同样可改位置）+ 上传队列，然后恢复字节顺序"
+
+msgid "Uplink data placement"
+msgstr "上行数据放置"
+
+msgid "Same TCP stream"
+msgstr "同一 TCP 字节流"
+
+msgid "body, or Base64url chunks in headers/cookies for packet-up"
+msgstr "body；或在 packet-up 中使用 header/cookie 内的 Base64url 分块"
+
+msgid "Padding/camouflage metadata"
+msgstr "Padding/伪装元数据"
+
+msgid "configurable XPadding placement/method; separate from proxy authentication"
+msgstr "可配置 XPadding placement/method；与代理认证彼此独立"
+
+msgid "Success at transport layer"
+msgstr "传输层成功"
+
+msgid "HTTP status such as `200`"
+msgstr "例如 `200` 的 HTTP 状态"
+
+msgid "Proxy-protocol success"
+msgstr "代理协议成功"
+
+msgid "VLESS response header / stream behavior"
+msgstr "VLESS 响应头 / 字节流行为"
+
+msgid "Downlink"
+msgstr "下行"
+
+msgid "HTTP response body; `downloadSettings` can use a separately configured physical path"
+msgstr "HTTP 响应正文；`downloadSettings` 可使用独立配置的物理路径"
+
+msgid "Not in base SOCKS5"
+msgstr "基础 SOCKS5 中没有"
+
+msgid "HTTP/2/3 plus optional XMUX/XHTTP reuse"
+msgstr "HTTP/2/3 加可选 XMUX/XHTTP 复用"
+
+msgid "Not provided"
+msgstr "不提供"
+
+msgid "TLS or REALITY can protect XHTTP"
+msgstr "TLS 或 REALITY 可以保护 XHTTP"
+
+msgid "The two important separations are:"
+msgstr "需要特别区分两组层次："
+
+msgid "Therefore an HTTP `200` from XHTTP does **not** mean the requested destination was accepted in the same sense as SOCKS5 `REP=0x00`. It only means the HTTP transport request was accepted. The inner proxy protocol can still fail later."
+msgstr "因此，XHTTP 返回 HTTP `200` **并不**等价于 SOCKS5 `REP=0x00` 所表示的目标已接受。它只说明 HTTP 传输请求被接受；内层代理协议之后仍然可能失败。"
+
+msgid "Ordering, Flow Control, and Backpressure"
+msgstr "排序、流控与背压"
+
+msgid "There are several independent flow-control domains:"
+msgstr "这里存在多个彼此独立的流控域："
+
+msgid "the application/proxy byte stream,"
+msgstr "应用/代理字节流；"
+
+msgid "the XHTTP per-session upload queue,"
+msgstr "XHTTP 每会话上传队列；"
+
+msgid "HTTP request/stream flow control,"
+msgstr "HTTP 请求/Stream 流控；"
+
+msgid "TCP flow control for HTTP/1.1 or HTTP/2,"
+msgstr "HTTP/1.1 或 HTTP/2 下的 TCP 流控；"
+
+msgid "QUIC stream/connection flow control for HTTP/3,"
+msgstr "HTTP/3 下的 QUIC Stream/连接流控；"
+
+msgid "reverse-proxy/CDN buffering and request limits."
+msgstr "反向代理/CDN 缓冲与请求限制。"
+
+msgid "A stall can occur in any one of these domains. Increasing XMUX concurrency does not fix a full server upload queue, and increasing HTTP/2 stream concurrency does not fix a reverse proxy that buffers the downlink."
+msgstr "任意一个流控域都可能造成停顿。提高 XMUX 并发无法修复已经占满的服务端上传队列，提高 HTTP/2 Stream 并发也无法修复会缓冲下行的反向代理。"
+
+msgid "For packet uploads, bound the number and total size of buffered out-of-order requests. Otherwise a peer that sends high sequence numbers while withholding earlier chunks can consume memory without allowing the reconstructed stream to advance."
+msgstr "对于 packet upload，应限制乱序请求的缓冲数量与总大小。否则，对端可以持续发送较大的序号、同时扣住较早分块，从而消耗内存却不让重建字节流向前推进。"
+
+msgid "Close and Error Semantics"
+msgstr "关闭与错误语义"
+
+msgid "XHTTP does not have one universal binary close command comparable to an imaginary SOCKS `CLOSE` command (base SOCKS5 has none either). Lifetime is expressed through the participating HTTP requests and underlying transport:"
+msgstr "XHTTP 没有统一的二进制关闭命令，也不存在可类比的 SOCKS `CLOSE`（基础 SOCKS5 本身也没有）。生命周期由参与会话的 HTTP 请求与底层传输共同表达："
+
+msgid "ending the downlink request tears down the associated split session,"
+msgstr "下行请求结束会拆除关联的 split 会话；"
+
+msgid "cancelling a streaming upload ends that upload reader,"
+msgstr "取消 streaming upload 会结束对应上传 reader；"
+
+msgid "HTTP error responses reject malformed or incompatible transport requests,"
+msgstr "HTTP 错误响应用于拒绝畸形或不兼容的传输请求；"
+
+msgid "TCP FIN/RST, HTTP/2 stream reset, or QUIC/HTTP/3 stream/connection errors can terminate individual transport paths,"
+msgstr "TCP FIN/RST、HTTP/2 Stream reset，或 QUIC/HTTP/3 Stream/连接错误都可能终止单个传输路径；"
+
+msgid "the inner proxy protocol may independently observe EOF/reset after XHTTP reconstruction."
+msgstr "XHTTP 重建后，内层代理协议还可能独立观察到 EOF/reset。"
+
+msgid "When diagnosing closure, record **which layer closed first**. An HTTP `413` is not a VLESS destination error; a QUIC connection close is not an XHTTP sequence error; and a VLESS parser rejection is not necessarily an HTTP routing error."
+msgstr "诊断关闭问题时，应记录**最先关闭的是哪一层**。HTTP `413` 不是 VLESS 目标错误；QUIC connection close 不是 XHTTP 序号错误；VLESS 解析器拒绝也不一定是 HTTP 路由错误。"
+
+msgid "A robust XHTTP implementation should explicitly test:"
+msgstr "健壮的 XHTTP 实现应显式测试："
+
+msgid "Host and path mismatch handling,"
+msgstr "Host 与 path 不匹配的处理；"
+
+msgid "split Session ID creation and cleanup,"
+msgstr "split Session ID 的创建与清理；"
+
+msgid "provisional sessions that never obtain a downlink,"
+msgstr "始终未获得下行连接的临时会话；"
+
+msgid "duplicate, missing, delayed, and out-of-order packet sequence values,"
+msgstr "重复、缺失、延迟和乱序的数据包序号；"
+
+msgid "every supported Session ID / sequence placement and custom key,"
+msgstr "每一种受支持的 Session ID / 序号 placement 与自定义 key；"
+
+msgid "custom Session ID table/length entropy and collision handling,"
+msgstr "自定义 Session ID 字符表/长度的熵与碰撞处理；"
+
+msgid "body/header/cookie upload placement, chunk ordering, and Base64 decode failures,"
+msgstr "body/header/cookie 上传 placement、分块顺序以及 Base64 解码失败；"
+
+msgid "configured body/header/chunk-size ceilings,"
+msgstr "已配置的 body/header/chunk-size 上限；"
+
+msgid "XPadding placement, method, compressed-length validation, and obfuscation mode,"
+msgstr "XPadding placement、method、压缩长度校验与混淆模式；"
+
+msgid "allowed HTTP methods, especially GET restricted to packet-up,"
+msgstr "允许的 HTTP 方法，尤其是仅限 packet-up 的 GET；"
+
+msgid "partial inner-protocol headers spanning multiple HTTP uploads,"
+msgstr "跨多个 HTTP upload 的不完整内层协议头；"
+
+msgid "one upload containing multiple inner-protocol reads worth of data,"
+msgstr "单个 upload 同时包含足够多、可供内层协议多次读取的数据；"
+
+msgid "downlink flushing through direct and reverse-proxied paths,"
+msgstr "直连与反向代理路径中的下行 flush 行为；"
+
+msgid "`downloadSettings` where uplink and downlink use different physical paths,"
+msgstr "上行与下行使用不同物理路径的 `downloadSettings`；"
+
+msgid "HTTP/1.1, HTTP/2, and HTTP/3 connection-loss behavior,"
+msgstr "HTTP/1.1、HTTP/2 与 HTTP/3 的连接丢失行为；"
+
+msgid "queue/backpressure limits under a slow inner proxy consumer,"
+msgstr "内层代理消费者较慢时的队列/背压上限；"
+
+msgid "TLS and REALITY combinations independently from XHTTP session logic."
+msgstr "将 TLS 与 REALITY 组合和 XHTTP 会话逻辑分开测试。"
+
+msgid "Xray-core XHTTP request/session encoding: <https://github.com/XTLS/Xray-core/blob/main/transport/internet/splithttp/config.go>"
+msgstr "Xray-core XHTTP 请求/会话编码：<https://github.com/XTLS/Xray-core/blob/main/transport/internet/splithttp/config.go>"
+
+msgid "Xray-core XHTTP dialer and split-downlink behavior: <https://github.com/XTLS/Xray-core/blob/main/transport/internet/splithttp/dialer.go>"
+msgstr "Xray-core XHTTP 拨号器与 split-downlink 行为：<https://github.com/XTLS/Xray-core/blob/main/transport/internet/splithttp/dialer.go>"
+
+msgid "Xray-core XPadding implementation: <https://github.com/XTLS/Xray-core/blob/main/transport/internet/splithttp/xpadding.go>"
+msgstr "Xray-core XPadding 实现：<https://github.com/XTLS/Xray-core/blob/main/transport/internet/splithttp/xpadding.go>"
+
+msgid "TYPE"
+msgstr "TYPE"
+
+msgid "`Authenticate`"
+msgstr "`Authenticate`"
+
+msgid "`Connect`"
+msgstr "`Connect`"
+
+msgid "`Packet`"
+msgstr "`Packet`"
+
+msgid "`Dissociate`"
+msgstr "`Dissociate`"
+
+msgid "`Heartbeat`"
+msgstr "`Heartbeat`"
+
+msgid "The address types are:"
+msgstr "地址类型如下："
+
+msgid "TUIC TYPE"
+msgstr "TUIC TYPE"
+
+msgid "Address bytes"
+msgstr "地址字节"
+
+msgid "`0xff`"
+msgstr "`0xff`"
+
+msgid "4 bytes"
+msgstr "4 字节"
+
+msgid "16 bytes"
+msgstr "16 字节"
+
+msgid "```text\nUDP relay mode \"quic\"\n  Packet command -> QUIC unidirectional stream\n  reliable delivery semantics\n\nUDP relay mode \"native\"\n  Packet command -> QUIC DATAGRAM\n  unreliable delivery semantics\n```"
+msgstr "```text\nUDP 转发模式 \"quic\"\n  Packet 命令 -> QUIC 单向 Stream\n  可靠传输语义\n\nUDP 转发模式 \"native\"\n  Packet 命令 -> QUIC DATAGRAM\n  不可靠传输语义\n```"
+
+msgid "TUIC v5"
+msgstr "TUIC v5"
+
+msgid "TCP control; separate UDP relay"
+msgstr "TCP 控制；独立 UDP 中继"
+
+msgid "Usually QUIC over UDP"
+msgstr "通常为 UDP 上的 QUIC"
+
+msgid "None in base protocol"
+msgstr "基础协议中没有"
+
+msgid "QUIC TLS"
+msgstr "QUIC TLS"
+
+msgid "QUIC/TLS"
+msgstr "QUIC/TLS"
+
+msgid "METHOD negotiation + selected sub-protocol"
+msgstr "METHOD 协商 + 选定的子协议"
+
+msgid "HTTP/3 `/auth` request"
+msgstr "HTTP/3 `/auth` 请求"
+
+msgid "`Authenticate` command on uni stream"
+msgstr "单向 Stream 上的 `Authenticate` 命令"
+
+msgid "Auth success reply"
+msgstr "认证成功回复"
+
+msgid "Explicit method/auth response"
+msgstr "显式方法/认证响应"
+
+msgid "No TUIC success frame"
+msgstr "没有 TUIC 成功帧"
+
+msgid "Depends on auth method"
+msgstr "取决于认证方法"
+
+msgid "Auth string"
+msgstr "认证字符串"
+
+msgid "16-byte UUID + TLS-exporter token"
+msgstr "16 字节 UUID + TLS-exporter token"
+
+msgid "TCP request"
+msgstr "TCP 请求"
+
+msgid "`TCPRequest` on new bidi stream"
+msgstr "新双向 Stream 上的 `TCPRequest`"
+
+msgid "`Connect` on new bidi stream"
+msgstr "新双向 Stream 上的 `Connect`"
+
+msgid "TCP success"
+msgstr "TCP 成功"
+
+msgid "`REP=0x00`"
+msgstr "`REP=0x00`"
+
+msgid "`TCPResponse Status=0`"
+msgstr "`TCPResponse Status=0`"
+
+msgid "No success response"
+msgstr "没有成功响应"
+
+msgid "Address model"
+msgstr "地址模型"
+
+msgid "`ATYP + ADDR + PORT`"
+msgstr "`ATYP + ADDR + PORT`"
+
+msgid "text `host:port`"
+msgstr "文本 `host:port`"
+
+msgid "`TYPE + ADDR + PORT`"
+msgstr "`TYPE + ADDR + PORT`"
+
+msgid "Concurrent TCP flows"
+msgstr "并发 TCP 流"
+
+msgid "Usually independent TCP control sessions"
+msgstr "通常使用彼此独立的 TCP 控制会话"
+
+msgid "QUIC bidi streams"
+msgstr "QUIC 双向 Stream"
+
+msgid "Explicit `UDP ASSOCIATE`"
+msgstr "显式 `UDP ASSOCIATE`"
+
+msgid "First datagram/session ID creates logical session"
+msgstr "首个数据报/Session ID 创建逻辑会话"
+
+msgid "First `Packet`/ASSOC_ID creates association"
+msgstr "首个 `Packet`/ASSOC_ID 创建 association"
+
+msgid "Separate UDP socket"
+msgstr "独立 UDP socket"
+
+msgid "QUIC DATAGRAM"
+msgstr "QUIC DATAGRAM"
+
+msgid "QUIC uni stream or DATAGRAM"
+msgstr "QUIC 单向 Stream 或 DATAGRAM"
+
+msgid "UDP session ID"
+msgstr "UDP Session ID"
+
+msgid "None in UDP header; tied to TCP control session"
+msgstr "UDP 头中没有；绑定到 TCP 控制会话"
+
+msgid "32-bit Session ID"
+msgstr "32 位 Session ID"
+
+msgid "16-bit ASSOC_ID"
+msgstr "16 位 ASSOC_ID"
+
+msgid "UDP packet ID"
+msgstr "UDP 数据包 ID"
+
+msgid "16-bit Packet ID"
+msgstr "16 位 Packet ID"
+
+msgid "16-bit PKT_ID"
+msgstr "16 位 PKT_ID"
+
+msgid "`FRAG` field, rarely implemented"
+msgstr "`FRAG` 字段，实际实现较少"
+
+msgid "Fragment ID + count"
+msgstr "Fragment ID + 数量"
+
+msgid "FRAG_TOTAL + FRAG_ID"
+msgstr "FRAG_TOTAL + FRAG_ID"
+
+msgid "Explicit UDP close"
+msgstr "显式 UDP 关闭"
+
+msgid "TCP control connection lifetime"
+msgstr "TCP 控制连接生命周期"
+
+msgid "No explicit protocol close"
+msgstr "没有显式协议关闭命令"
+
+msgid "`Dissociate` command"
+msgstr "`Dissociate` 命令"
+
+msgid "Error model"
+msgstr "错误模型"
+
+msgid "Standard `REP` values"
+msgstr "标准 `REP` 值"
+
+msgid "TCPResponse error for TCP setup"
+msgstr "TCP 建立失败使用 TCPResponse 错误"
+
+msgid "Mostly implementation-defined"
+msgstr "大多由实现自行定义"
+
+msgid "Congestion/flow control"
+msgstr "拥塞/流量控制"
+
+msgid "TCP + native UDP behavior"
+msgstr "TCP + 原生 UDP 行为"
+
+msgid "QUIC"
+msgstr "QUIC"
+
+msgid "`Dissociate`,"
+msgstr "`Dissociate`；"
