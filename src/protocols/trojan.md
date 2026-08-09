@@ -14,7 +14,7 @@
 
 ### Wire Format
 - The precise framing and field definitions live in [Wire Format](./trojan/wire-format.md).
-- The first TLS record may include payload after the request to reduce packet count.
+- Clients may send payload immediately after the request header, but TLS record and TCP segment boundaries are not Trojan message boundaries.
 
 ### Traffic Handling
 - Fallback behavior and anti-detection notes are in [Traffic Handling](./trojan/traffic-handling.md).
