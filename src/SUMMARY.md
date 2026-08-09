@@ -5,6 +5,7 @@
 - [System Topology](./system-topology.md)
 - [Implementation Status and Source Evidence](./implementation-status.md)
 - [Test Evidence and Interoperability Matrix](./test-evidence.md)
+- [End-to-End Troubleshooting](./troubleshooting.md)
 - [Chimera_Client](./chimera_client.md)
   - [Ports and Listeners](./chimera_client/ports.md)
   - [DNS Module](./chimera_client/dns.md)
