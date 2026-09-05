@@ -1,5 +1,24 @@
 # Proxy Wiki
 
+> **Chimera Proxy Ecosystem** — documentation for a Rust-native VLESS + REALITY client/server stack.
+
+## Chimera Ecosystem
+
+```text
+Chimera Desktop
+       ↕
+Chimera Client (Rust client core)
+       ↕ VLESS / REALITY
+Chimera Proxy Server (Rust server core)
+       ↕
+AChimera · Proxy Wiki
+```
+
+- [Chimera](https://github.com/MFSGA/Chimera) — desktop application
+- [Chimera Client](https://github.com/MFSGA/Chimera_Client) — Rust client core
+- [Chimera Proxy Server](https://github.com/MFSGA/Chimera_Service) — Rust server core
+- [AChimera](https://github.com/MFSGA/AChimera) — Android client (when available)
+
 Proxy Wiki collects documentation and notes for the Chimera proxy stack, covering
 `chimera_client`, `Chimera`, and `chimera_server` plus quick references and
 comparisons for common proxy protocols. It is built with
