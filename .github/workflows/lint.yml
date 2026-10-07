@@ -43,7 +43,7 @@ jobs:
           rustup component add rustfmt --toolchain "$NIGHTLY_VERSION"
 
       - name: Check formatting
-        uses: dprint/check@v2.3
+        uses: dprint/check@v2.5
 
   typos:
     runs-on: ubuntu-latest
