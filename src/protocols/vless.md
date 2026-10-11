@@ -727,7 +727,7 @@ wire-format correctness described earlier, not a new VLESS command.
 When documenting Chimera compatibility, treat Vision and VLESS Encryption
 support separately from basic VLESS request parsing.
 
-## Minimal Xray-Style Server Example
+## Configuration Surface and Minimal Xray-Style Server Example
 
 ```json
 {
@@ -835,6 +835,23 @@ VLESS is explicitly included in the current server capability map, with example
 server configurations documented in the server repository. This still does not
 mean every transport, `flow`, fallback, encryption option, or Xray version is
 fully compatible.
+
+## Test Evidence
+
+The strongest currently indexed VLESS evidence covers several distinct layer
+combinations rather than “VLESS in general”:
+
+- Chimera Client → Chimera Server REALITY/Vision cross-project positive and
+  negative E2E suites;
+- Xray client → Chimera Server VLESS + REALITY + Vision;
+- Xray client → Chimera Server VLESS + TLS + Vision;
+- Xray client → Chimera Server VLESS over gRPC;
+- Xray client → Chimera Server VLESS over HTTPUpgrade.
+
+Use the exact test function when making an interoperability claim because a
+successful VLESS/REALITY/Vision path does not prove XHTTP, gRPC, HTTPUpgrade,
+UDP, encryption, or every flow combination. See
+[Test Evidence and Interoperability Matrix](../test-evidence.md).
 
 ## Troubleshooting
 

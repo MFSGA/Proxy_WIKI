@@ -22,6 +22,41 @@ who need accurate behavior, configuration, and compatibility information.
 - Protocol pages should cover handshake shape, configuration surface,
   interoperability notes, security considerations, and known limitations.
 
+### Protocol Page Template
+
+New protocol/transport pages should follow this order when the topic applies:
+
+1. **Position in the stack** — protocol vs transport vs security layer, and the
+   direction/component that currently implements it.
+2. **Configuration surface** — required fields, defaults only when verified,
+   feature gates, parsed-only/rejected compatibility fields.
+3. **Connection or handshake flow** — phase order before byte-level detail.
+4. **Wire format / framing** — field order, lengths, endianness, bounds, and
+   incremental parsing behavior.
+5. **State machine** — success, close, retry, fallback, and malformed-input
+   transitions where relevant.
+6. **TCP and UDP behavior** — document separately; use “not applicable” rather
+   than implying parity.
+7. **Packet-capture view** — identify which layer is visible before decryption or
+   inner-protocol handoff.
+8. **Security notes** — authentication, confidentiality, replay/fallback
+   boundaries, resource limits, and exposure assumptions.
+9. **Chimera implementation status** — Client/Server direction, feature gates,
+   parsed-only/rejected fields, and important version/build boundaries.
+10. **Test evidence** — strongest unit/integration/cross-project/external test
+    anchors; do not upgrade an evidence label beyond the exact path tested.
+11. **Compatibility boundaries** — explicitly list known differences from Xray,
+    Clash/Mihomo, or other upstream implementations.
+12. **Troubleshooting** — isolate failures by protocol layer rather than listing
+    generic networking advice.
+13. **Source anchors and references** — local implementation paths separately
+    from public specifications/upstream references.
+
+A page does not need empty headings for concepts that truly do not apply. When a
+normally expected topic is omitted, make the reason explicit in the nearest
+relevant section (for example, Dokodemo-door has no authentication handshake of
+its own).
+
 ## Code and Configuration Blocks
 
 - Use fenced code blocks with a language tag whenever possible.

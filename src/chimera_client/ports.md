@@ -42,6 +42,11 @@ socks_port: 7891
 Use SOCKS5 first when you want to separate proxy-core behavior from operating
 system routing and DNS interception issues.
 
+The currently audited Client SOCKS inbound does **not** provide a complete UDP
+ASSOCIATE relay path: UDP requests on this local inbound currently return
+unsupported. Do not infer local SOCKS UDP support from the existence of SOCKS
+outbound UDP handling elsewhere in the codebase.
+
 ### HTTP Proxy
 
 An HTTP proxy listener is convenient for browsers and operating-system proxy
@@ -60,6 +65,11 @@ than managing separate HTTP and SOCKS ports.
 ```yaml
 mixed-port: 7892
 ```
+
+The currently audited mixed listener is likewise a TCP-focused local entry for
+HTTP/SOCKS use; its UDP path is explicitly unsupported. Use the protocol/status
+matrix when a deployment requires local UDP ingress rather than assuming a
+mixed port provides SOCKS UDP parity.
 
 ### Transparent Listeners
 

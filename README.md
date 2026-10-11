@@ -48,7 +48,10 @@ exported as a static site.
 cargo xtask install-tools
 
 # Preview the English docs locally (default http://localhost:3000)
-cargo xtask serve --port 3100 (opt)
+cargo xtask serve
+
+# Optional: choose a different port
+cargo xtask serve --port 3100
 
 # Preview or build a specific language, e.g., Simplified Chinese
 cargo xtask serve -l zh-CN     # live preview
@@ -58,6 +61,12 @@ cargo xtask build -l zh-CN     # static output in book/zh-CN/
 - For English only, you can also run `mdbook serve -d book/` or `mdbook build -d book/` after installing the mdBook plugins via `cargo xtask install-tools`.
 - `cargo xtask rust-tests` runs `mdbook test` to validate code blocks (if present).
 - For routine validation, use `cargo test`, `cargo clippy -- -D warnings`, and a successful mdBook build.
+
+## Documentation entry points
+- `Implementation Status and Source Evidence`: source-audited capability levels and explicit compatibility boundaries.
+- `Test Evidence and Interoperability Matrix`: concrete test names and the strength of their evidence.
+- `End-to-End Troubleshooting`: failure isolation by layer.
+- `Deployment Security and Threat Model`: deployment boundaries, exposure, authentication, fallback, and secret-handling guidance.
 
 ## Translation notes
 - Translation entries live in `po/<lang>.po`; `mdbook build` emits `book/xgettext/messages.pot`.

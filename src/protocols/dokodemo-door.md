@@ -406,7 +406,7 @@ The Xray-compatible examples include:
 
 This is stronger evidence than a protocol enum entry alone, although transparent interception still depends on real Linux firewall/socket behavior in deployment.
 
-## Current Compatibility Boundaries
+## Current Implementation Status and Compatibility Boundaries
 
 The current implementation should be documented with these boundaries visible:
 

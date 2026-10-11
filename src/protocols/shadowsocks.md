@@ -361,7 +361,7 @@ destination + payload
 
 The remote side must run the matching plugin layer. Pointing a plugin-wrapped client directly at a plain Shadowsocks server makes the server see plugin bytes where it expects a Shadowsocks salt/record.
 
-## Current Chimera_Client Implementation
+## Current Chimera_Client Configuration and Implementation
 
 The Client implementation is behind the `shadowsocks` Cargo feature and currently has:
 
@@ -426,6 +426,22 @@ See [Implementation Status and Source Evidence](../implementation-status.md) for
 - Keep system clocks reasonably synchronized for AEAD-2022 timestamp validation.
 - A plugin can camouflage or reshape transport traffic, but it does not replace correct Shadowsocks authentication and AEAD validation.
 - Do not expose Client-only cipher support as a Server compatibility claim.
+
+## Test Evidence
+
+Current Client-side integration coverage includes TCP, UDP, multi-target UDP,
+and UDP session isolation in `shadowsocks_integration_tests.rs`. These tests
+exercise real local socket paths within Chimera Client implementations.
+
+Current Server external interoperability coverage in
+`xray_client_proxy_e2e.rs` includes classic AEAD TCP, multiple legacy users,
+AEAD-2022 EIH multi-user selection, and AEAD-2022 TCP plus AES UDP against an
+Xray client.
+
+These tests do not prove that every cipher accepted by the Client is also
+accepted by the Server. In particular, keep the explicit Server cipher and
+configuration rejections above visible when describing compatibility. See
+[Test Evidence and Interoperability Matrix](../test-evidence.md).
 
 ## Troubleshooting
 

@@ -508,6 +508,19 @@ HTTP proxying is mainly relevant as a local/client-side inbound. Server-side
 HTTP capabilities should be treated separately from remote encrypted proxy
 protocols such as Trojan, Hysteria 2, or VLESS.
 
+## Test Evidence
+
+The current Server test index includes process-level HTTP and mixed-listener
+coverage in `xray_client_proxy_e2e.rs::http_and_mixed_inbounds_proxy_tcp`. That
+test exercises authenticated HTTP `CONNECT`, absolute-form HTTP forwarding,
+transparent-style forwarding where enabled, HTTP through the mixed inbound, and
+SOCKS5 through the same mixed listener.
+
+This is stronger than parser-only evidence, but it should not be generalized to
+every HTTP version or every extended-CONNECT behavior described earlier in this
+protocol reference. See [Test Evidence and Interoperability Matrix](../test-evidence.md)
+for the exact evidence classification.
+
 ## Troubleshooting
 
 If a browser or CLI tool cannot connect:

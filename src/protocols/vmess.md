@@ -711,6 +711,18 @@ that implementation against the current AEAD-only Xray behavior described here,
 including AuthID time/replay checks, current body-security choices, TCP, UDP,
 and any Mux/XUDP behavior it claims to support.
 
+## Test Evidence
+
+The current Wiki evidence index does not catalog an independent-client VMess
+happy-path interoperability test for Chimera Server. The implementation-status
+claim is therefore grounded primarily in the audited AEAD VMess inbound source
+path rather than an external interop label.
+
+Do not upgrade this page to “externally interoperable” based only on parser,
+handler, or unrelated Xray-client tests. Add the exact peer and test function to
+[Test Evidence and Interoperability Matrix](../test-evidence.md) when external
+VMess coverage is introduced.
+
 ## Troubleshooting
 
 ### Immediate rejection

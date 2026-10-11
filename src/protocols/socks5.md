@@ -462,6 +462,19 @@ an implementation map rather than a guarantee of complete RFC 1928 parity, so
 server deployments should verify the commands and authentication modes they
 actually require.
 
+## Test Evidence
+
+The current Server test index includes external-process SOCKS coverage in
+`chimera_server_app/tests/socks_external_integration.rs` for both unauthenticated
+TCP round trips and username/password TCP round trips. The mixed-inbound process
+test also exercises SOCKS5 through a real mixed listener.
+
+This evidence is TCP-focused. It must not be used to claim complete SOCKS5 UDP
+ASSOCIATE support across every Chimera component; the currently audited Client
+local SOCKS inbound explicitly has a UDP limitation. See
+[Test Evidence and Interoperability Matrix](../test-evidence.md) and
+[Implementation Status and Source Evidence](../implementation-status.md).
+
 ## Troubleshooting
 
 1. Confirm the listener is bound to the expected address and port.

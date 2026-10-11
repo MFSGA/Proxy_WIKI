@@ -770,6 +770,23 @@ The server capability map includes XHTTP-related parsing/transport work. Treat
 basic XHTTP connectivity, TLS, REALITY, reverse-proxy behavior, and advanced
 XMUX/download settings as separate compatibility dimensions.
 
+## Test Evidence
+
+The Server has dedicated ignored Xray/Chimera XHTTP matrices rather than one
+single happy-path test:
+
+- `xhttp_matrix_e2e.rs` covers transport modes, uplink methods, session/sequence
+  placement, data placement, padding, and selected header variants;
+- `xhttp_security_matrix_e2e.rs` covers none/TLS/REALITY security wrappers;
+- `xhttp_protocol_matrix_e2e.rs` covers process-level behavior and negative
+  cases such as host/path rejection, padding validation, sequencing, body-size
+  limits, duplicate stream-up, and mode conflicts.
+
+These tests are the basis for the interoperability claims on this page. They do
+not make rejected Xray-shaped fields implemented; keep the explicit field
+boundaries in the implementation-status table and this page. See
+[Test Evidence and Interoperability Matrix](../test-evidence.md).
+
 ## Troubleshooting
 
 ### Immediate EOF / disconnect

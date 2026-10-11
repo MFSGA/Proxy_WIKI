@@ -668,6 +668,18 @@ The server capability map includes TUIC-related inbound parsing/handling work.
 That should be treated as implementation scope rather than a blanket guarantee
 of TUIC v5 interoperability, UDP modes, 0-RTT behavior, or every client option.
 
+## Test Evidence
+
+The current Server tree contains in-repository TUIC E2E coverage in
+`handler/tuic/e2e_tests.rs::udp_stream_and_datagram_roundtrips_record_stats`.
+It exercises UDP stream relay, QUIC datagram relay, and traffic-stat accounting
+through the implemented handler.
+
+This is strong evidence for the covered Chimera data path, but it is **not**
+external TUIC interoperability evidence with an independent client. Keep that
+distinction visible until such a test is added. See
+[Test Evidence and Interoperability Matrix](../test-evidence.md).
+
 ## Troubleshooting
 
 ### Cannot connect

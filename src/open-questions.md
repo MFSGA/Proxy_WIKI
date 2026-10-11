@@ -51,8 +51,6 @@ TODOs merely because they once appeared in an older Wiki revision.
 
 - Keep the AnyTLS `Parsed-only` field list synchronized with the Client config
   struct when compatibility fields are added or become active runtime behavior.
-- Document the current SOCKS inbound and mixed-listener UDP limitations next to
-  their configuration examples.
 - Add a feature/build matrix to release documentation so users can determine
   whether `anytls`, `shadowsocks`, `trojan`, `hysteria`, and `ws` are compiled
   into a distributed binary.
@@ -82,6 +80,4 @@ TODOs merely because they once appeared in an older Wiki revision.
   for interoperability claims when the corresponding upstream protocols change.
 - Add cross-links from each protocol page to its Client/Server implementation
   status and interoperability tests.
-
-## Test Evidence and Operations
 

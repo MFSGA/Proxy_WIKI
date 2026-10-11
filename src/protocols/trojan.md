@@ -374,7 +374,7 @@ normal stream shutdown should preserve half-close semantics where the runtime
 and upstream socket APIs support them instead of converting every EOF into an
 immediate reset.
 
-## Minimal Deployment Model
+## Configuration and Minimal Deployment Model
 
 A practical deployment needs at least:
 
@@ -482,6 +482,19 @@ to that core rather than the GUI itself.
 The server capability map includes Trojan-related inbound parsing/handling.
 Treat this as current implementation scope, not automatic compatibility with
 every Trojan client or every optional transport combination.
+
+## Test Evidence
+
+The current interoperability index records process-level Trojan fallback
+evidence in `xray_client_proxy_e2e.rs`, including TLS payload routing through
+Trojan fallback rules. That is important evidence for unauthenticated/fallback
+behavior, but it is not the same as a catalogued independent-client happy-path
+Trojan interoperability test.
+
+Until a concrete external positive Trojan test is listed in the evidence index,
+keep happy-path compatibility claims tied to implementation/source evidence and
+the exact tested peer rather than describing blanket Trojan interoperability.
+See [Test Evidence and Interoperability Matrix](../test-evidence.md).
 
 ## Troubleshooting
 

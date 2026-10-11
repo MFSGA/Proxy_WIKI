@@ -589,6 +589,18 @@ server documentation lists a Hysteria example configuration. Treat that as a
 stronger signal than a purely planned feature, while still validating TCP, UDP,
 authentication, and optional transport behavior separately.
 
+## Test Evidence
+
+The current Server interoperability index records an ignored external E2E case,
+`xray_client_proxy_e2e.rs::xray_client_can_proxy_tcp_and_udp_through_chimera_hysteria2_with_xray_defaults`,
+that starts a real Xray client against Chimera Server and exercises both TCP and
+UDP proxying through the Hysteria 2 implementation.
+
+Because this is an explicit process-level external test, it is strong evidence
+for the covered path. It does not automatically prove every congestion-control,
+obfuscation, masquerading, or version-specific option described on this page.
+See [Test Evidence and Interoperability Matrix](../test-evidence.md).
+
 ## Troubleshooting
 
 ### Cannot connect at all
