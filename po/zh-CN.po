@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Proxy Wiki\n"
-"POT-Creation-Date: 2026-10-12T02:07:57+08:00\n"
+"POT-Creation-Date: 2026-10-12T02:39:21+08:00\n"
 "PO-Revision-Date: 2026-10-11 23:08+0800\n"
 "Last-Translator: chimera_rust@proton.me\n"
 "Language-Team: Language zh-CN\n"
@@ -44,11 +44,11 @@ msgstr "端到端故障排查"
 msgid "Deployment Security and Threat Model"
 msgstr "部署安全与威胁模型"
 
-#: src/SUMMARY.md src/chimera_client.md src/open-questions.md
-#: src/protocols/socks5.md src/protocols/http.md src/protocols/trojan.md
-#: src/protocols/hysteria2.md src/protocols/tuic.md src/protocols/vmess.md
-#: src/protocols/vless.md src/transports/xhttp.md
-#: src/transport-security/reality.md
+#: src/SUMMARY.md src/chimera_client.md src/protocols/socks5.md
+#: src/protocols/http.md src/protocols/trojan.md src/protocols/hysteria2.md
+#: src/protocols/tuic.md src/protocols/vmess.md src/protocols/vless.md
+#: src/transports/xhttp.md src/transport-security/reality.md
+#: src/open-questions.md
 msgid "Chimera_Client"
 msgstr "Chimera_Client"
 
@@ -90,10 +90,6 @@ msgstr "AChimera Android 客户端"
 #: src/SUMMARY.md
 msgid "Chimera Server"
 msgstr "Chimera 服务端"
-
-#: src/SUMMARY.md src/open-questions.md
-msgid "Open Questions"
-msgstr "待确认问题"
 
 #: src/SUMMARY.md src/protocol.md
 msgid "Proxy Protocol Reference"
@@ -182,6 +178,10 @@ msgstr "传输安全参考"
 #: src/transport-security.md src/transport-security/reality.md
 msgid "REALITY"
 msgstr "REALITY"
+
+#: src/SUMMARY.md src/open-questions.md
+msgid "Open Questions"
+msgstr "待确认问题"
 
 #: src/preface.md
 msgid ""
@@ -341,6 +341,10 @@ msgid ""
 "[Transport Security Reference](./transport-security.md) for TLS/REALITY "
 "handshakes; each layer has its own configuration and failure boundaries."
 msgstr ""
+"**代理协议**：阅读[代理协议参考](./protocol.md)，了解代理握手、目标地址请求、"
+"报文格式以及 TCP/UDP 中继语义。字节流承载方式见[传输层参考](./transport.md)，"
+"TLS/REALITY 握手见[传输安全参考](./transport-security.md)；每一层都有独立的配"
+"置项和故障边界。"
 
 #: src/introduction.md
 msgid ""
@@ -802,9 +806,8 @@ msgstr ""
 "支持”。"
 
 #: src/implementation-status.md
-#, fuzzy
 msgid "Source Checkout Snapshot"
-msgstr "已审计源码快照"
+msgstr "源码检出快照"
 
 #: src/implementation-status.md
 msgid ""
@@ -814,6 +817,9 @@ msgid ""
 "should be verified against the relevant source and tests; dirty working "
 "trees can contain uncommitted changes beyond the listed commit."
 msgstr ""
+"下表记录了维护本页时于 2026-10-12 观察到的各仓库 HEAD 和工作区状态。这些信息"
+"用于追溯文档依据，并不表示下列每项功能都已在对应修订版本重新审计。协议相关声"
+"明仍应对照源码和测试验证；存在未提交改动的工作区可能包含所列提交之外的变更。"
 
 #: src/implementation-status.md
 msgid "Repository"
@@ -821,12 +827,11 @@ msgstr "仓库"
 
 #: src/implementation-status.md
 msgid "HEAD observed"
-msgstr ""
+msgstr "观察到的 HEAD"
 
 #: src/implementation-status.md
-#, fuzzy
 msgid "Working tree observed"
-msgstr "审计时工作区"
+msgstr "观察到的工作区状态"
 
 #: src/implementation-status.md
 msgid "Primary role"
@@ -834,7 +839,7 @@ msgstr "主要职责"
 
 #: src/implementation-status.md
 msgid "`8fc9b2b3`"
-msgstr ""
+msgstr "`8fc9b2b3`"
 
 #: src/implementation-status.md
 msgid "Clean"
@@ -846,7 +851,7 @@ msgstr "Clash 系客户端核心与本地代理运行时"
 
 #: src/implementation-status.md
 msgid "`c600d2f`"
-msgstr ""
+msgstr "`c600d2f`"
 
 #: src/implementation-status.md
 msgid "Xray-oriented inbound/server core"
@@ -854,7 +859,7 @@ msgstr "面向 Xray 的入站/服务端核心"
 
 #: src/implementation-status.md
 msgid "`f5f0d036`"
-msgstr ""
+msgstr "`f5f0d036`"
 
 #: src/implementation-status.md
 msgid "Desktop control plane and core lifecycle manager"
@@ -866,7 +871,7 @@ msgstr "`Chimera_Service`"
 
 #: src/implementation-status.md
 msgid "`938490b`"
-msgstr ""
+msgstr "`938490b`"
 
 #: src/implementation-status.md
 msgid "Dirty"
@@ -878,21 +883,20 @@ msgstr "本地特权服务与核心进程管理器"
 
 #: src/implementation-status.md
 msgid "`d6b4af73`"
-msgstr ""
+msgstr "`d6b4af73`"
 
 #: src/implementation-status.md
 msgid "Android application embedding the Chimera client core through UniFFI"
 msgstr "通过 UniFFI 嵌入 Chimera 客户端核心的 Android 应用"
 
 #: src/implementation-status.md
-#, fuzzy
 msgid ""
 "This is a documentation checkout marker, not a release compatibility promise "
 "or a complete feature audit. Re-check the relevant source and tests before "
 "relying on a capability claim after protocol or runtime changes."
 msgstr ""
-"这里记录的是文档审计标记，并非发布兼容性承诺。协议或运行时发生变化后，在依赖"
-"本表之前应重新检查源码。"
+"这是文档检出位置的记录，不代表发布版本的兼容性承诺，也不等同于完整的功能审"
+"计。当协议或运行时发生变化后，依赖某项能力声明前，应重新核对相关源码和测试。"
 
 #: src/implementation-status.md
 msgid ""
@@ -1126,7 +1130,6 @@ msgid "A transport is not a proxy protocol by itself."
 msgstr "传输层本身不是代理协议。"
 
 #: src/implementation-status.md
-#, fuzzy
 msgid "[gRPC transport](./transports/grpc-transport.md)"
 msgstr "[gRPC 传输](./transports/grpc-transport.md)"
 
@@ -1152,7 +1155,6 @@ msgstr ""
 "据，不能与代理传输测试混淆。"
 
 #: src/implementation-status.md src/transport.md
-#, fuzzy
 msgid "[HTTPUpgrade](./transports/httpupgrade.md)"
 msgstr "[HTTPUpgrade](./transports/httpupgrade.md)"
 
@@ -3109,12 +3111,11 @@ msgstr ""
 "景。日志和抓包分析中也应把它们视为不同层。"
 
 #: src/troubleshooting.md
-#, fuzzy
 msgid ""
 "See [REALITY](./transport-security/reality.md) and [Test Evidence and "
 "Interoperability Matrix](./test-evidence.md)."
 msgstr ""
-"参见 [REALITY](./transport-security/reality.md) 和 [测试证据与互操作矩阵](./"
+"参见 [REALITY](./transport-security/reality.md) 和[测试证据与互操作矩阵](./"
 "test-evidence.md)。"
 
 #: src/troubleshooting.md
@@ -3142,7 +3143,6 @@ msgid "Server logs contain transport-specific anchors such as:"
 msgstr "Server 日志包含以下传输特有锚点："
 
 #: src/troubleshooting.md
-#, fuzzy
 msgid "See [XHTTP Transport](./transports/xhttp.md)."
 msgstr "参见 [XHTTP 传输](./transports/xhttp.md)。"
 
@@ -3164,7 +3164,6 @@ msgstr ""
 "gRPC API 的测试或 endpoint 排查代理 gRPC 传输；它们是不同子系统。"
 
 #: src/troubleshooting.md
-#, fuzzy
 msgid "See [gRPC Transport](./transports/grpc-transport.md)."
 msgstr "参见 [gRPC 传输](./transports/grpc-transport.md)。"
 
@@ -3187,7 +3186,6 @@ msgstr ""
 "理 parser 实际却会收到无效字节。"
 
 #: src/troubleshooting.md
-#, fuzzy
 msgid "See [HTTPUpgrade Transport](./transports/httpupgrade.md)."
 msgstr "参见 [HTTPUpgrade 传输](./transports/httpupgrade.md)。"
 
@@ -9474,10 +9472,10 @@ msgstr ""
 "心嵌入应用，并通过 UniFFI 传递 TUN 文件描述符。两者最终都依赖 "
 "`Chimera_Client` 来实现 Clash 风格配置与代理转发。"
 
-#: src/chimera_server.md src/open-questions.md src/protocols/socks5.md
-#: src/protocols/http.md src/protocols/trojan.md src/protocols/hysteria2.md
-#: src/protocols/tuic.md src/protocols/vmess.md src/protocols/vless.md
-#: src/transports/xhttp.md src/transport-security/reality.md
+#: src/chimera_server.md src/protocols/socks5.md src/protocols/http.md
+#: src/protocols/trojan.md src/protocols/hysteria2.md src/protocols/tuic.md
+#: src/protocols/vmess.md src/protocols/vless.md src/transports/xhttp.md
+#: src/transport-security/reality.md src/open-questions.md
 msgid "Chimera_Server"
 msgstr "Chimera_Server"
 
@@ -10136,240 +10134,6 @@ msgstr ""
 "维护文档时，只有在检查过相关配置/运行时路径及其测试之后，才应更新协议能力声"
 "明。"
 
-#: src/open-questions.md
-msgid ""
-"This page tracks unresolved, source-verified documentation or implementation "
-"gaps. Remove an item when the source or tests answer it; do not keep "
-"historical TODOs merely because they once appeared in an older Wiki revision."
-msgstr ""
-"本页跟踪经源码确认仍未解决的文档或实现缺口。当源码或测试已经给出答案时，应删"
-"除对应条目；不要仅因为某个 TODO 曾出现在旧版 Wiki 中就继续保留。"
-
-#: src/open-questions.md
-msgid "Cross-Project Compatibility"
-msgstr "跨项目兼容性"
-
-#: src/open-questions.md
-msgid ""
-"Add and maintain a generated or semi-generated compatibility matrix that can "
-"be checked against `Chimera_Client` and `Chimera_Server` source changes."
-msgstr ""
-"增加并维护可生成或半生成的兼容性矩阵，使其能够随 `Chimera_Client` 与 "
-"`Chimera_Server` 源码变化进行核验。"
-
-#: src/open-questions.md
-msgid ""
-"Record the exact build artifact/features used for interoperability tests, "
-"not only the repository commit."
-msgstr "互操作测试不仅要记录仓库提交，还应记录实际使用的构建产物与 feature。"
-
-#: src/open-questions.md
-msgid ""
-"Expand interoperability evidence beyond the current REALITY/Vision, XHTTP, "
-"gRPC, SOCKS, and selected Xray/client test paths."
-msgstr ""
-"把互操作证据扩展到当前 REALITY/Vision、XHTTP、gRPC、SOCKS 以及部分 Xray/客户"
-"端测试路径之外。"
-
-#: src/open-questions.md
-msgid ""
-"Define a stable policy for how long an audited source snapshot remains "
-"“current” before the Wiki requires a re-audit."
-msgstr ""
-"定义稳定策略，明确已审计源码快照在多长时间内仍可视为“当前”，以及何时必须重新"
-"审计。"
-
-#: src/open-questions.md
-msgid "Chimera Desktop"
-msgstr "Chimera 桌面端"
-
-#: src/open-questions.md
-msgid ""
-"Classify each runtime setting as hot-reloadable, restart-required, or "
-"application/OS-owned by following its actual update path."
-msgstr ""
-"沿真实更新路径，把每个运行时设置分类为可热重载、需要重启，或由应用/操作系统负"
-"责。"
-
-#: src/open-questions.md
-msgid ""
-"Document the profile/enhance pipeline in enough detail to show where "
-"generated runtime YAML can differ between Mihomo, clash-rs, and Chimera "
-"Client."
-msgstr ""
-"详细记录配置档案/enhance 流程，明确生成运行时 YAML 在 Mihomo、clash-rs 与 "
-"Chimera Client 之间可能出现差异的位置。"
-
-#: src/open-questions.md
-msgid ""
-"Document failure handling for core download/update, generated-config "
-"validation, foreground process startup, and service-mode startup."
-msgstr ""
-"记录核心下载/更新、生成配置校验、前台进程启动和服务模式启动的失败处理。"
-
-#: src/open-questions.md
-msgid ""
-"Review `patch_clash_config` and adjacent IPC paths and document the concrete "
-"controller/restart behavior they use today."
-msgstr ""
-"审查 `patch_clash_config` 及其相邻 IPC 路径，并记录当前实际使用的 controller/"
-"重启行为。"
-
-#: src/open-questions.md
-msgid "Chimera_Service"
-msgstr "Chimera_Service"
-
-#: src/open-questions.md
-msgid ""
-"Document the local IPC transport/ACL model per operating system with exact "
-"source-backed permission behavior."
-msgstr "按操作系统记录本地 IPC 传输/ACL 模型，并给出源码可验证的精确权限行为。"
-
-#: src/open-questions.md
-msgid ""
-"Document which privileged network operations are implemented on each "
-"platform; `/network/set_dns` must not be assumed portable merely because it "
-"exists in the shared IPC API."
-msgstr ""
-"记录各平台实际实现了哪些特权网络操作；不能仅因为共享 IPC API 中存在 `/"
-"network/set_dns` 就假定它跨平台可用。"
-
-#: src/open-questions.md
-msgid ""
-"Add a compatibility note for desktop/service/shared-type version skew and "
-"the expected failure behavior."
-msgstr "补充桌面端/服务/共享类型版本不一致时的兼容性说明和预期失败行为。"
-
-#: src/open-questions.md
-msgid "AChimera"
-msgstr "AChimera"
-
-#: src/open-questions.md
-msgid ""
-"Document the exact Android route, DNS-server, MTU, IPv4/IPv6, and "
-"application include/exclude behavior configured by `TunService`."
-msgstr ""
-"记录 `TunService` 配置的精确 Android 路由、DNS 服务器、MTU、IPv4/IPv6 以及应"
-"用包含/排除行为。"
-
-#: src/open-questions.md
-msgid ""
-"Record which `Chimera_Client` Cargo features are built into the Android "
-"native artifact so Android protocol availability can be stated precisely."
-msgstr ""
-"记录 Android 原生产物实际编译了哪些 `Chimera_Client` Cargo feature，从而精确"
-"描述 Android 上的协议可用性。"
-
-#: src/open-questions.md
-msgid ""
-"Add an end-to-end Android test plan covering VPN permission, TUN setup, "
-"`protect(fd)`, DNS, profile validation, and one remote proxy path."
-msgstr ""
-"增加 Android 端到端测试计划，覆盖 VPN 权限、TUN 初始化、`protect(fd)`、DNS、"
-"配置档案校验以及至少一条远程代理路径。"
-
-#: src/open-questions.md
-msgid ""
-"Document controller polling intervals/backoff and behavior when the embedded "
-"core exits while the Android service remains alive."
-msgstr ""
-"记录 controller 轮询间隔/退避策略，以及嵌入式核心退出但 Android 服务仍存活时"
-"的行为。"
-
-#: src/open-questions.md
-msgid ""
-"Keep the AnyTLS `Parsed-only` field list synchronized with the Client config "
-"struct when compatibility fields are added or become active runtime behavior."
-msgstr ""
-"当新增兼容字段或字段开始真正影响运行时行为时，保持 AnyTLS `Parsed-only` 字段"
-"列表与 Client 配置结构同步。"
-
-#: src/open-questions.md
-msgid ""
-"Add a feature/build matrix to release documentation so users can determine "
-"whether `anytls`, `shadowsocks`, `trojan`, `hysteria`, and `ws` are compiled "
-"into a distributed binary."
-msgstr ""
-"在发布文档中增加 feature/构建矩阵，让用户能够判断分发二进制是否编译了 "
-"`anytls`、`shadowsocks`、`trojan`、`hysteria` 和 `ws`。"
-
-#: src/open-questions.md
-msgid ""
-"Clarify the intended future status of VMess, TUIC, WireGuard, SSH, and gRPC "
-"outbound support; these are not current variants of the inspected outbound "
-"enum."
-msgstr ""
-"明确 VMess、TUIC、WireGuard、SSH 与 gRPC 出站支持的未来定位；它们当前并不是已"
-"检查出站枚举的变体。"
-
-#: src/open-questions.md
-msgid ""
-"Document the unimplemented HTTP proxy-provider path if it remains exposed in "
-"configuration or migration guidance."
-msgstr ""
-"如果未实现的 HTTP proxy-provider 路径仍暴露在配置或迁移说明中，应明确记录。"
-
-#: src/open-questions.md
-msgid ""
-"Add per-protocol implementation pages that map configuration fields to "
-"`ServerConfig` validation, listener/transport selection, and handler code."
-msgstr ""
-"为各协议增加实现页面，把配置字段映射到 `ServerConfig` 校验、监听器/传输选择以"
-"及 handler 代码。"
-
-#: src/open-questions.md
-msgid ""
-"Convert explicit `not supported yet` builder/runtime errors into a "
-"maintained compatibility table and tests so documentation cannot silently "
-"drift."
-msgstr ""
-"把明确的 `not supported yet` builder/运行时错误整理成持续维护的兼容性表与测"
-"试，防止文档静默漂移。"
-
-#: src/open-questions.md
-msgid ""
-"Document current outbound/routing limitations separately from inbound "
-"protocol support; for example, an inbound VMess implementation does not "
-"imply a VMess outbound proxy path."
-msgstr ""
-"把当前出站/路由限制与入站协议支持分开记录；例如存在 VMess 入站实现并不意味着"
-"存在 VMess 出站代理路径。"
-
-#: src/open-questions.md
-msgid ""
-"Expand XHTTP documentation with the exact list of accepted and rejected Xray "
-"fields, including the current `downloadSettings` limitation."
-msgstr ""
-"扩展 XHTTP 文档，列出精确的已接受与已拒绝 Xray 字段，包括当前 "
-"`downloadSettings` 限制。"
-
-#: src/open-questions.md
-msgid ""
-"Document VLESS Vision direct-mode limitations and the conditions exercised "
-"by the existing REALITY/Vision E2E matrix."
-msgstr ""
-"记录 VLESS Vision direct mode 的限制，以及现有 REALITY/Vision E2E 矩阵实际覆"
-"盖的条件。"
-
-#: src/open-questions.md
-msgid "Protocol and Transport Reference"
-msgstr "协议与传输参考"
-
-#: src/open-questions.md
-msgid ""
-"Pin the upstream AnyTLS and Shadowsocks specification/version references "
-"used for interoperability claims when the corresponding upstream protocols "
-"change."
-msgstr ""
-"当上游协议发生变化时，固定互操作声明所依据的 AnyTLS 与 Shadowsocks 上游规范/"
-"版本引用。"
-
-#: src/open-questions.md
-msgid ""
-"Add cross-links from each protocol page to its Client/Server implementation "
-"status and interoperability tests."
-msgstr "从每个协议页面链接到对应 Client/Server 实现状态与互操作测试。"
-
 #: src/protocol.md
 msgid ""
 "A **proxy protocol** defines how a client identifies itself, requests a "
@@ -10377,6 +10141,8 @@ msgid ""
 "chapter covers those messages, authentication rules, framing, and failure "
 "behavior."
 msgstr ""
+"**代理协议**定义客户端如何标识自身、请求目标，以及如何与端点交换经过代理的 "
+"TCP 或 UDP 流量。本章介绍这些消息、认证规则、分帧方式和失败行为。"
 
 #: src/protocol.md
 msgid ""
@@ -10384,36 +10150,36 @@ msgid ""
 "[Transport Reference](./transport.md) and [Transport Security Reference](./"
 "transport-security.md). They are **not** additional proxy protocols."
 msgstr ""
+"传输封装和传输安全各有独立参考：[传输层参考](./transport.md)与[传输安全参考]"
+"(./transport-security.md)。它们**不是**额外的代理协议。"
 
 #: src/protocol.md
-#, fuzzy
 msgid "What Belongs to a Proxy Protocol?"
-msgstr "与代理协议的分层"
+msgstr "代理协议负责哪些内容？"
 
 #: src/protocol.md
-#, fuzzy
 msgid "A protocol reference owns:"
-msgstr "协议参考"
+msgstr "代理协议参考负责说明："
 
 #: src/protocol.md
 msgid "identity and proxy authentication (if the protocol defines them);"
-msgstr ""
+msgstr "身份标识和代理认证（若该协议定义了这些机制）；"
 
 #: src/protocol.md
 msgid "destination address, command, and response semantics;"
-msgstr ""
+msgstr "目标地址、命令及响应语义；"
 
 #: src/protocol.md
 msgid "TCP relay and UDP packet framing or association lifetime;"
-msgstr ""
+msgstr "TCP 中继、UDP 数据包分帧或关联生命周期；"
 
 #: src/protocol.md
 msgid "protocol-level encryption, replay checks, and error handling;"
-msgstr ""
+msgstr "协议层加密、重放检查和错误处理；"
 
 #: src/protocol.md
 msgid "implementation evidence and compatibility limits for that protocol."
-msgstr ""
+msgstr "该协议的实现证据及兼容性限制。"
 
 #: src/protocol.md
 msgid ""
@@ -10422,21 +10188,20 @@ msgid ""
 "relevant layer's documentation instead of copying its configuration into "
 "every protocol page."
 msgstr ""
+"代理协议**不负责**定义外层使用的 HTTP 路径、gRPC 服务名、XHTTP 会话、TLS 证书"
+"或 REALITY short ID。相关配置应链接到对应层的文档，而不是复制进每篇协议说明。"
 
 #: src/protocol.md
-#, fuzzy
 msgid "Protocols"
-msgstr "协议"
+msgstr "协议列表"
 
 #: src/protocol.md
-#, fuzzy
 msgid "Protocol-specific characteristics"
-msgstr "没有协议专属成功响应；"
+msgstr "协议特有的行为"
 
 #: src/protocol.md
-#, fuzzy
 msgid "[SOCKS5](./protocols/socks5.md)"
-msgstr "[Shadowsocks](./protocols/shadowsocks.md)"
+msgstr "[SOCKS5](./protocols/socks5.md)"
 
 #: src/protocol.md
 msgid "Local/application proxy"
@@ -10444,81 +10209,67 @@ msgstr "本地/应用代理"
 
 #: src/protocol.md
 msgid "Method negotiation, destination commands, and UDP ASSOCIATE"
-msgstr ""
+msgstr "认证方法协商、目标命令和 UDP ASSOCIATE"
 
 #: src/protocol.md
-#, fuzzy
 msgid "[HTTP Proxy](./protocols/http.md)"
-msgstr "参见 [XHTTP 传输](./transports/xhttp.md)。"
+msgstr "[HTTP 代理](./protocols/http.md)"
 
 #: src/protocol.md
 msgid "HTTP forwarding and CONNECT tunneling"
-msgstr ""
+msgstr "HTTP 请求转发与 CONNECT 隧道"
 
 #: src/protocol.md
-#, fuzzy
 msgid "Remote proxy"
-msgstr "远程代理协议"
+msgstr "远程代理"
 
 #: src/protocol.md
-#, fuzzy
 msgid "AEAD/AEAD-2022 encrypted TCP and UDP records"
-msgstr "内置 AEAD/AEAD-2022 加密与认证"
+msgstr "使用 AEAD/AEAD-2022 加密的 TCP 与 UDP 记录"
 
 #: src/protocol.md
-#, fuzzy
 msgid "Password authentication, framed logical streams, and UDP-over-TCP"
-msgstr ""
-"[AnyTLS](./protocols/anytls.md) — TLS 承载的密码认证、分帧流与 UDP-over-TCP "
-"v2。"
+msgstr "密码认证、带分帧的逻辑流与 UDP-over-TCP"
 
 #: src/protocol.md
-#, fuzzy
 msgid "[Trojan](./protocols/trojan.md)"
-msgstr "[AnyTLS](./protocols/anytls.md)"
+msgstr "[Trojan](./protocols/trojan.md)"
 
 #: src/protocol.md
-#, fuzzy
 msgid "Shared-secret authentication and destination requests"
-msgstr "服务端验证密码和目标请求。"
+msgstr "共享密钥认证和目标请求"
 
 #: src/protocol.md
-#, fuzzy
 msgid "[Hysteria 2](./protocols/hysteria2.md)"
-msgstr "[HTTPUpgrade](./transports/httpupgrade.md)"
+msgstr "[Hysteria 2](./protocols/hysteria2.md)"
 
 #: src/protocol.md
 msgid "QUIC-based sessions with its own TCP/UDP framing"
-msgstr ""
+msgstr "基于 QUIC 的会话及其专有 TCP/UDP 分帧"
 
 #: src/protocol.md
-#, fuzzy
 msgid "[TUIC](./protocols/tuic.md)"
-msgstr "[AnyTLS](./protocols/anytls.md)"
+msgstr "[TUIC](./protocols/tuic.md)"
 
 #: src/protocol.md
-#, fuzzy
 msgid "QUIC-based connection authentication and TCP/UDP relay"
-msgstr "连接与认证流程"
+msgstr "基于 QUIC 的连接认证与 TCP/UDP 中继"
 
 #: src/protocol.md
-#, fuzzy
 msgid "[VMess](./protocols/vmess.md)"
-msgstr "[AnyTLS](./protocols/anytls.md)"
+msgstr "[VMess](./protocols/vmess.md)"
 
 #: src/protocol.md
-#, fuzzy
 msgid "AEAD request authentication and encrypted body records"
-msgstr "VMess AEAD 用户认证 + 加密正文记录"
+msgstr "AEAD 请求认证与加密数据记录"
 
 #: src/protocol.md
-#, fuzzy
 msgid "[VLESS](./protocols/vless.md)"
-msgstr "[AnyTLS](./protocols/anytls.md)"
+msgstr "[VLESS](./protocols/vless.md)"
 
 #: src/protocol.md
 msgid "Identity and destination dispatch; optional VLESS Encryption"
-msgstr ""
+msgstr "身份识别与目标分发；可选 VLESS Encryption"
 
 #: src/protocol.md
 msgid "Server forwarding inbound"
@@ -10528,7 +10279,7 @@ msgstr "Server 转发入站"
 msgid ""
 "Fixed-target or original-destination forwarding, without its own proxy "
 "authentication handshake"
-msgstr ""
+msgstr "固定目标或原始目标地址转发，不包含独立的代理认证握手"
 
 #: src/protocol.md
 msgid ""
@@ -10536,16 +10287,19 @@ msgid ""
 "handling](./protocols/trojan/traffic-handling.md) expand the Trojan protocol "
 "description without defining outer transport behavior."
 msgstr ""
+"[Trojan 报文格式](./protocols/trojan/wire-format.md)和[Trojan 流量处理](./"
+"protocols/trojan/traffic-handling.md)进一步介绍 Trojan 协议本身，而不定义外层"
+"传输行为。"
 
 #: src/protocol.md
 msgid "Where the Layers Meet"
-msgstr ""
+msgstr "各层如何衔接"
 
 #: src/protocol.md
 msgid ""
 "For a stack that supports independently configurable layers, read it from "
 "the inner proxy messages outward:"
-msgstr ""
+msgstr "对于支持独立配置各层的协议栈，应从内层代理消息向外理解："
 
 #: src/protocol.md
 msgid ""
@@ -10554,16 +10308,21 @@ msgid ""
 "and HTTP wrappers, and the [Transport Security Reference](./transport-"
 "security.md) for outer-handshake responsibilities."
 msgstr ""
+"这是一张**职责划分示意图**，不保证任何组合都能任意搭配。分帧与 HTTP 封装见[传"
+"输层参考](./transport.md)，外层握手职责见[传输安全参考](./transport-"
+"security.md)。"
 
 #: src/protocol.md
 msgid "Some protocols intentionally bind these layers together:"
-msgstr ""
+msgstr "部分协议会有意将这些层绑定在一起："
 
 #: src/protocol.md
 msgid ""
 "Hysteria 2 and TUIC build their sessions on QUIC, including QUIC TLS. QUIC-"
 "specific details remain in the respective protocol chapters."
 msgstr ""
+"Hysteria 2 和 TUIC 以 QUIC（包括 QUIC TLS）建立会话。QUIC 特有的细节仍保留在"
+"各自的协议章节。"
 
 #: src/protocol.md
 msgid ""
@@ -10571,6 +10330,8 @@ msgid ""
 "describe that requirement without treating TLS configuration as a proxy "
 "command."
 msgstr ""
+"AnyTLS 和基础形态的 Trojan 明确依赖 TLS。各自的协议章节会说明这一要求，但不会"
+"把 TLS 配置当作代理命令。"
 
 #: src/protocol.md
 msgid ""
@@ -10578,11 +10339,12 @@ msgid ""
 "may use VLESS Encryption. None of those automatically implies a particular "
 "outer transport."
 msgstr ""
+"Shadowsocks 和 VMess 定义了协议自身的加密分帧；VLESS 可以使用 VLESS "
+"Encryption。这些机制都不自动意味着必须采用某种外层传输方式。"
 
 #: src/protocol.md
-#, fuzzy
 msgid "Choosing a Protocol"
-msgstr "基础协议中没有"
+msgstr "如何选择协议"
 
 #: src/protocol.md
 msgid ""
@@ -10593,6 +10355,12 @@ msgid ""
 "protocols/vmess.md). For QUIC-based remote sessions, compare [Hysteria 2](./"
 "protocols/hysteria2.md) and [TUIC](./protocols/tuic.md)."
 msgstr ""
+"对于本地应用入口，可以从 [SOCKS5](./protocols/socks5.md) 或 [HTTP 代理](./"
+"protocols/http.md) 入手。了解远程加密代理语义时，可以比较 [Shadowsocks](./"
+"protocols/shadowsocks.md)、[AnyTLS](./protocols/anytls.md)、[Trojan](./"
+"protocols/trojan.md) 和 [VMess](./protocols/vmess.md)。对于基于 QUIC 的远程会"
+"话，则可比较 [Hysteria 2](./protocols/hysteria2.md) 与 [TUIC](./protocols/"
+"tuic.md)。"
 
 #: src/protocol.md
 msgid ""
@@ -10602,22 +10370,24 @@ msgid ""
 "support for a combination merely because its constituent parts appear in the "
 "source."
 msgstr ""
+"对于 Xray 风格的分层配置，先阅读 [VLESS](./protocols/vless.md) 或 [VMess](./"
+"protocols/vmess.md)，再从独立章节中选择受支持的传输方式与安全机制。不能仅凭源"
+"码中存在各个组成部分，就推断其组合一定受支持。"
 
 #: src/protocol.md
-#, fuzzy
 msgid "Implementation and Troubleshooting"
-msgstr "端到端故障排查"
+msgstr "实现情况与故障排查"
 
 #: src/protocol.md
-#, fuzzy
 msgid ""
 "Read [Implementation Status and Source Evidence](./implementation-status.md) "
 "and [Test Evidence and Interoperability Matrix](./test-evidence.md) for "
 "component-specific availability and verification. Configuration parsing "
 "alone is not proof of runtime or cross-project compatibility."
 msgstr ""
-"对于实现状态声明和具体互操作测试，请结合本页阅读 [实现状态与源码证据](./"
-"implementation-status.md) 和 [测试证据与互操作矩阵](./test-evidence.md)。"
+"各组件的可用性与验证情况见[实现状态与源码证据](./implementation-status.md)和"
+"[测试证据与互操作矩阵](./test-evidence.md)。仅能解析配置，并不能证明运行时支"
+"持或跨项目兼容。"
 
 #: src/protocol.md
 msgid ""
@@ -10626,6 +10396,9 @@ msgid ""
 "authentication, destination dispatch, and TCP/UDP relay behavior. See [End-"
 "to-End Troubleshooting](./troubleshooting.md) for the full procedure."
 msgstr ""
+"排查故障时，先检查网络可达性，再检查外层安全握手、传输分帧与会话建立，最后检"
+"查代理认证、目标分发以及 TCP/UDP 中继行为。完整步骤见[端到端故障排查](./"
+"troubleshooting.md)。"
 
 #: src/protocols/socks5.md src/protocols/http.md src/protocols/trojan.md
 #: src/protocols/hysteria2.md src/protocols/tuic.md src/protocols/vmess.md
@@ -11559,14 +11332,13 @@ msgstr ""
 "客户端通常使用 HTTP `CONNECT` 方法要求代理建立隧道。"
 
 #: src/protocols/http.md
-#, fuzzy
 msgid ""
 "HTTP proxying should not be confused with XHTTP. An HTTP proxy is an inbound "
 "proxy protocol used by local applications; [XHTTP](../transports/xhttp.md) "
 "is an Xray transport used between compatible proxy endpoints."
 msgstr ""
-"HTTP 代理不应与 XHTTP 混淆。HTTP 代理是本地应用使用的入站代理协议；[XHTTP](./"
-"xhttp.md) 则是兼容代理端点之间使用的一种 Xray 传输方式。"
+"HTTP 代理不应与 XHTTP 混淆。HTTP 代理是本地应用使用的入站代理协议；[XHTTP]"
+"(../transports/xhttp.md) 则是兼容代理端点之间使用的一种 Xray 传输方式。"
 
 #: src/protocols/http.md
 msgid "Plain HTTP request"
@@ -22147,14 +21919,13 @@ msgstr ""
 "必须正确配置。"
 
 #: src/protocols/vless.md
-#, fuzzy
 msgid ""
 "REALITY modifies the TLS-facing security layer and is commonly combined with "
 "VLESS. See [REALITY](../transport-security/reality.md) for its key, short-"
 "ID, target, and fallback model."
 msgstr ""
 "REALITY 修改面向 TLS 的安全层，并经常与 VLESS 配合使用。其密钥、short ID、"
-"target 与 fallback 模型请参阅 [Reality](../transport-security/reality.md)。"
+"target 与 fallback 模型请参阅 [REALITY](../transport-security/reality.md)。"
 
 #: src/protocols/vless.md
 msgid "No transport security"
@@ -22397,11 +22168,12 @@ msgid ""
 "Upstream alignment: Needs assessment (target: Xray-core; scope: outbound "
 "VLESS wire behavior and supported transport, security, and flow combinations)"
 msgstr ""
+"上游对齐状态：Needs assessment（待评估对齐；目标：Xray-core；范围：出站 "
+"VLESS 报文行为及受支持的传输、安全与 flow 组合）"
 
 #: src/protocols/vless.md
-#, fuzzy
 msgid "Local maturity: Experimental"
-msgstr "本地成熟度：开发中"
+msgstr "本地成熟度：Experimental（实验性）"
 
 #: src/protocols/vless.md
 msgid ""
@@ -22412,6 +22184,10 @@ msgid ""
 "combinations verified by this Wiki, and do not infer full Xray compatibility "
 "from the protocol's presence in the outbound enum."
 msgstr ""
+"当前 `Chimera_Client` 源码定义了 VLESS 出站类型并注册了对应的运行时处理器。这"
+"能确认 VLESS 出站能力存在，但不能证明它在所有 Xray 传输、安全模式、flow 或配"
+"置选项上均已对齐。应通过实现矩阵和测试证据判断本 Wiki 实际验证过哪些组合，不"
+"能仅因出站枚举中存在 VLESS 就推断完全兼容 Xray。"
 
 #: src/protocols/vless.md
 msgid ""
@@ -22839,13 +22615,12 @@ msgstr ""
 "下，外层封装先消费自己的握手字节，只有得到的内层原始流才转发到配置/原始目标。"
 
 #: src/protocols/dokodemo-door.md
-#, fuzzy
 msgid ""
 "See [gRPC Transport](../transports/grpc-transport.md) and [HTTPUpgrade "
 "Transport](../transports/httpupgrade.md) for the transport-layer behavior."
 msgstr ""
-"传输层行为见 [gRPC 传输](../transports/grpc-transport.md) 和 [HTTPUpgrade 传"
-"输](./httpupgrade.md)。"
+"传输层行为见 [gRPC 传输](../transports/grpc-transport.md)与 [HTTPUpgrade 传"
+"输](../transports/httpupgrade.md)。"
 
 #: src/protocols/dokodemo-door.md
 msgid "UDP Mode"
@@ -23579,6 +23354,9 @@ msgid ""
 "users, choose the proxied destination, or interpret the inner protocol's "
 "command."
 msgstr ""
+"**传输层**负责在对等端之间承载所支持内层代理协议的字节流。它定义连接建立、"
+"HTTP 或流分帧、会话生命周期、顺序与背压；**不负责**代理用户认证、选择代理目"
+"标，也不解释内层协议命令。"
 
 #: src/transport.md
 msgid ""
@@ -23586,62 +23364,56 @@ msgid ""
 "For TLS/REALITY and other channel-protection questions, see [Transport "
 "Security Reference](./transport-security.md)."
 msgstr ""
+"这些职责见[代理协议参考](./protocol.md)；TLS/REALITY 及其他信道保护机制见[传"
+"输安全参考](./transport-security.md)。"
 
 #: src/transport.md
-#, fuzzy
 msgid "Transport Methods"
 msgstr "传输方式"
 
 #: src/transport.md
-#, fuzzy
 msgid "Transport"
-msgstr "gRPC 传输"
+msgstr "传输"
 
 #: src/transport.md
-#, fuzzy
 msgid "Transport-owned behavior"
-msgstr "传输方式"
+msgstr "传输层负责的行为"
 
 #: src/transport.md
-#, fuzzy
 msgid "What it passes to the inner protocol"
-msgstr "取决于外层安全机制与内层协议"
+msgstr "交付给内层协议的内容"
 
 #: src/transport.md
-#, fuzzy
 msgid "[XHTTP](./transports/xhttp.md)"
-msgstr "参见 [XHTTP 传输](./transports/xhttp.md)。"
+msgstr "[XHTTP](./transports/xhttp.md)"
 
 #: src/transport.md
 msgid "HTTP request/response modes, split sessions, ordering, and padding"
-msgstr ""
+msgstr "HTTP 请求/响应模式、拆分会话、顺序控制和填充"
 
 #: src/transport.md
 msgid "Reassembled ordered bytes"
-msgstr ""
+msgstr "重新组装并保持顺序的字节流"
 
 #: src/transport.md
-#, fuzzy
 msgid "[gRPC](./transports/grpc-transport.md)"
-msgstr "[gRPC 传输](./transports/grpc-transport.md)"
+msgstr "[gRPC](./transports/grpc-transport.md)"
 
 #: src/transport.md
 msgid "HTTP/2 gRPC stream and Hunk message envelope"
-msgstr ""
+msgstr "HTTP/2 gRPC 流与 Hunk 消息封装"
 
 #: src/transport.md
 msgid "Decapsulated stream bytes"
-msgstr ""
+msgstr "解除封装后的字节流"
 
 #: src/transport.md
-#, fuzzy
 msgid "HTTP/1.1 upgrade preface and 101 response"
-msgstr "HTTP/1.1 Upgrade 前导，随后为原始 TCP 流"
+msgstr "HTTP/1.1 Upgrade 前导与 101 响应"
 
 #: src/transport.md
-#, fuzzy
 msgid "Raw stream bytes after the upgrade"
-msgstr "请求后直接传输原始字节"
+msgstr "Upgrade 完成后的原始字节流"
 
 #: src/transport.md
 msgid ""
@@ -23651,6 +23423,9 @@ msgid ""
 "currently documented. This page does not claim that every protocol or "
 "direction supports every transport."
 msgstr ""
+"更广泛的 Chimera/Xray 生态还存在 **RAW/TCP**、**WebSocket** 等传输路径。[实现"
+"矩阵](./implementation-status.md)分别列出当前文档涉及的 Client 和 Server 路"
+"径。本页不表示所有代理协议或收发方向都支持每一种传输。"
 
 #: src/transport.md
 msgid ""
@@ -23659,11 +23434,13 @@ msgid ""
 "QUIC. Their QUIC framing and session rules belong to those protocol chapters "
 "rather than a hypothetical interchangeable Xray transport wrapper."
 msgstr ""
+"QUIC 有所不同：[Hysteria 2](./protocols/hysteria2.md) 和 [TUIC](./protocols/"
+"tuic.md) 等协议在 QUIC 之上定义了自身的协议语义。其 QUIC 分帧与会话规则应归入"
+"对应的协议章节，而不是假设存在可任意替换的 Xray 传输封装。"
 
 #: src/transport.md
-#, fuzzy
 msgid "Ownership Boundary"
-msgstr "安全边界"
+msgstr "职责边界"
 
 #: src/transport.md
 msgid ""
@@ -23672,6 +23449,8 @@ msgid ""
 "confirms that the inner proxy authentication or requested destination "
 "succeeded."
 msgstr ""
+"接收端按相反顺序处理这些层。HTTP `200`、gRPC 状态或 HTTP `101` 可以表示**传输"
+"层**已经取得进展，但它们本身绝不表示内层代理认证或目标请求已成功。"
 
 #: src/transport.md
 msgid ""
@@ -23681,10 +23460,13 @@ msgid ""
 "Keep certificate validation and REALITY authentication in the security "
 "reference."
 msgstr ""
+"传输文档负责说明 `path`、`host`、`serviceName`、流封装、超时处理和 HTTP 行"
+"为；UUID、密码、代理命令与目标地址编码应放在协议参考中；证书验证和 REALITY 认"
+"证应放在安全参考中。"
 
 #: src/transport.md
 msgid "Compatibility and Failure Isolation"
-msgstr ""
+msgstr "兼容性与故障隔离"
 
 #: src/transport.md
 msgid ""
@@ -23694,6 +23476,10 @@ msgid ""
 "status.md) and [Test Evidence](./test-evidence.md); a working transport "
 "listener alone is not an end-to-end proxy compatibility test."
 msgstr ""
+"部署组合之前，应同时核实实际的**客户端方向、服务端方向、内层代理协议、传输方"
+"式、安全层和 feature gate**。参见[实现状态](./implementation-status.md)与[测"
+"试证据](./test-evidence.md)；单独可运行的传输监听器不等于端到端代理兼容性验"
+"证。"
 
 #: src/transport.md
 msgid ""
@@ -23703,6 +23489,9 @@ msgid ""
 "handoff of decoded bytes to the proxy handler. See [End-to-End "
 "Troubleshooting](./troubleshooting.md)."
 msgstr ""
+"传输问题应在确认网络/安全连接之后、进入内层代理解析之前排查：检查 HTTP 路由和"
+"首部、适用时的 ALPN 或 HTTP 版本、传输特有的会话/分帧错误，以及解码后字节向代"
+"理处理器的交接。参见[端到端故障排查](./troubleshooting.md)。"
 
 #: src/transports/xhttp.md
 msgid "XHTTP Transport"
@@ -23717,6 +23506,10 @@ msgid ""
 "Protocol Reference](../protocol.md), and TLS/REALITY settings belong to "
 "[Transport Security](../transport-security.md)."
 msgstr ""
+"XHTTP 是一种 Xray 传输方式，通过具有 HTTP 请求/响应形态的交互承载代理流量。它"
+"属于传输层，而非代理协议层。本页负责 HTTP 分帧、会话处理与传输配置；代理身份"
+"及目标规则见[代理协议参考](../protocol.md)，TLS/REALITY 设置见[传输安全参考]"
+"(../transport-security.md)。"
 
 #: src/transports/xhttp.md
 msgid "A typical deployment combines:"
@@ -24535,9 +24328,8 @@ msgstr ""
 
 #: src/transports/xhttp.md src/transports/grpc-transport.md
 #: src/transports/httpupgrade.md
-#, fuzzy
 msgid "Proxy-Protocol Boundary"
-msgstr "代理协议成功"
+msgstr "代理协议职责边界"
 
 #: src/transports/xhttp.md
 msgid ""
@@ -24547,6 +24339,9 @@ msgid ""
 "See [SOCKS5](../protocols/socks5.md) and [VLESS](../protocols/vless.md) for "
 "those protocol-level messages."
 msgstr ""
+"XHTTP 不能替代 SOCKS5 或 VLESS 的代理握手。它负责重组字节流并将其交给内层代理"
+"处理器；客户端身份、目标地址和 TCP/UDP 语义均由内层处理器负责。这些协议层消息"
+"见 [SOCKS5](../protocols/socks5.md) 和 [VLESS](../protocols/vless.md)。"
 
 #: src/transports/xhttp.md
 msgid ""
@@ -24555,6 +24350,9 @@ msgid ""
 "acceptance. Likewise, XHTTP session IDs, ordering metadata, and XPadding are "
 "transport fields rather than proxy users, commands, or encryption keys."
 msgstr ""
+"XHTTP 的 HTTP `200` 只表示传输请求已被接受，**不表示**内层代理认证或目标请求"
+"成功。同样，XHTTP 会话 ID、顺序元数据与 XPadding 都是传输层字段，而不是代理用"
+"户、命令或加密密钥。"
 
 #: src/transports/xhttp.md
 msgid "Ordering, Flow Control, and Backpressure"
@@ -25120,7 +24918,6 @@ msgid "gRPC Transport"
 msgstr "gRPC 传输"
 
 #: src/transports/grpc-transport.md
-#, fuzzy
 msgid ""
 "The gRPC transport documented here is an Xray-style transport wrapper "
 "implemented by `Chimera_Server`. It is not the server's management gRPC API "
@@ -25131,9 +24928,11 @@ msgid ""
 "protocol.md), while TLS/REALITY handshakes belong to [Transport Security](../"
 "transport-security.md)."
 msgstr ""
-"这里记录的 gRPC 传输是 `Chimera_Server` 实现的 Xray 风格传输封装。它不是服务"
-"端的管理 gRPC API，本身也不是代理协议；它把内层协议的双向字节流封装成运行于兼"
-"容 HTTP/2 服务上的 gRPC 消息。"
+"本文所述 gRPC 传输是 `Chimera_Server` 实现的一种 Xray 风格传输封装。它不是服"
+"务端的管理 gRPC API，本身也不是代理协议；它把内层协议的双向字节流封装成运行于"
+"兼容 HTTP/2 服务上的 gRPC 消息。本页仅描述 gRPC 封装；内层身份认证与目标语义"
+"见[代理协议参考](../protocol.md)，TLS/REALITY 握手见[传输安全参考](../"
+"transport-security.md)。"
 
 #: src/transports/grpc-transport.md
 msgid ""
@@ -25681,6 +25480,10 @@ msgid ""
 "[inner protocol](../protocol.md) can still reject authentication, flow mode, "
 "or destination handling."
 msgstr ""
+"与 [SOCKS5](../protocols/socks5.md) 不同，gRPC 传输不会协商代理用户、编码目标"
+"地址或发送代理成功响应。它只负责在内层协议字节流与 HTTP/2、gRPC、Hunk 封装之"
+"间转换。HTTP/gRPC 响应成功只能确认传输建立；所选[内层协议](../protocol.md)仍"
+"可能拒绝认证、flow 模式或目标处理。"
 
 #: src/transports/grpc-transport.md
 msgid ""
@@ -25804,7 +25607,6 @@ msgid "HTTPUpgrade Transport"
 msgstr "HTTPUpgrade 传输"
 
 #: src/transports/httpupgrade.md
-#, fuzzy
 msgid ""
 "HTTPUpgrade is an HTTP/1.1 transport wrapper implemented by "
 "`Chimera_Server`. It uses an HTTP Upgrade-looking handshake to switch from "
@@ -25814,9 +25616,11 @@ msgid ""
 "Protocols](../protocol.md)) or outer TLS/REALITY settings (see [Transport "
 "Security](../transport-security.md))."
 msgstr ""
-"HTTPUpgrade 是 `Chimera_Server` 实现的 HTTP/1.1 传输封装。它通过看起来像 "
-"HTTP Upgrade 的握手，把 HTTP 请求/响应交换切换为供内层代理协议使用的原始双向"
-"字节流。"
+"HTTPUpgrade 是 `Chimera_Server` 实现的 HTTP/1.1 传输封装。它通过类似 HTTP "
+"Upgrade 的握手，将 HTTP 请求/响应交换切换为供内层代理协议使用的原始双向字节"
+"流。本章只负责 Upgrade 前导和建立后的字节流；内层代理认证与目标语义见[代理协"
+"议](../protocol.md)，外层 TLS/REALITY 设置见[传输安全](../transport-"
+"security.md)。"
 
 #: src/transports/httpupgrade.md
 msgid ""
@@ -26561,6 +26365,10 @@ msgid ""
 "application-proxy role. HTTPUpgrade contributes no additional record framing "
 "after the upgrade."
 msgstr ""
+"HTTP `101 Switching Protocols` 响应只能确认 HTTPUpgrade 前导握手成功，不能证"
+"明代理认证、目标接受或中继成功。这些行为仍由所选[内层代理协议](../"
+"protocol.md)负责，例如作为应用代理协议的 [SOCKS5](../protocols/socks5.md)。"
+"HTTPUpgrade 在升级完成后不增加额外的记录分帧。"
 
 #: src/transports/httpupgrade.md
 msgid "Current Chimera_Client Status"
@@ -26720,6 +26528,8 @@ msgid ""
 "It does not contain the inner proxy protocol's destination request, UUID, or "
 "password, and it must not be treated as a substitute for that protocol."
 msgstr ""
+"**传输安全**负责保护和/或认证外层连接。它不包含内层代理协议的目标请求、UUID "
+"或密码，也不能被当作代理协议的替代品。"
 
 #: src/transport-security.md
 msgid ""
@@ -26727,56 +26537,50 @@ msgid ""
 "(./protocol.md) (inner proxy semantics) and [Transport Reference](./"
 "transport.md) (carrying proxy bytes)."
 msgstr ""
+"两类独立职责分别见[代理协议参考](./protocol.md)（内层代理语义）和[传输层参考]"
+"(./transport.md)（承载代理字节流）。"
 
 #: src/transport-security.md
-#, fuzzy
 msgid "Security Mechanisms"
-msgstr "传输安全机制"
+msgstr "安全机制"
 
 #: src/transport-security.md
 msgid "Mechanism"
-msgstr ""
+msgstr "机制"
 
 #: src/transport-security.md
-#, fuzzy
 msgid "Security-layer responsibility"
-msgstr "阶段 / 职责"
+msgstr "安全层负责的行为"
 
 #: src/transport-security.md
-#, fuzzy
 msgid "Documentation"
-msgstr "文档状态"
+msgstr "文档"
 
 #: src/transport-security.md
 msgid "Encrypted channel and certificate-based peer authentication"
-msgstr ""
+msgstr "加密信道与基于证书的对等端身份认证"
 
 #: src/transport-security.md
-#, fuzzy
 msgid "[Deployment Security and Threat Model](./security-model.md)"
-msgstr "部署安全与威胁模型"
+msgstr "[部署安全与威胁模型](./security-model.md)"
 
 #: src/transport-security.md
 msgid ""
 "TLS-like outer handshake, key/short-ID validation, and target/fallback "
 "behavior"
-msgstr ""
+msgstr "类似 TLS 的外层握手、密钥/short ID 校验，以及目标站点/fallback 行为"
 
 #: src/transport-security.md
-#, fuzzy
 msgid "[REALITY](./transport-security/reality.md)"
-msgstr "传输安全机制"
+msgstr "[REALITY](./transport-security/reality.md)"
 
 #: src/transport-security.md
 msgid "Handshake and channel security integrated with QUIC"
-msgstr ""
+msgstr "与 QUIC 集成的握手和信道安全"
 
 #: src/transport-security.md
-#, fuzzy
 msgid "[Hysteria 2](./protocols/hysteria2.md), [TUIC](./protocols/tuic.md)"
-msgstr ""
-"[Hysteria 2](./protocols/hysteria2.md) — 基于 QUIC、通过 HTTP/3 完成认证行为"
-"的 TCP/UDP 代理协议。"
+msgstr "[Hysteria 2](./protocols/hysteria2.md)、[TUIC](./protocols/tuic.md)"
 
 #: src/transport-security.md
 msgid ""
@@ -26786,17 +26590,20 @@ msgid ""
 "and transport wrappers are not freely interchangeable; the actual peer/core "
 "determines allowed combinations."
 msgstr ""
+"协议自身的密码学机制与此不同：Shadowsocks 和 VMess 定义加密代理记录，VLESS 可"
+"以使用 VLESS Encryption。相关语义见各自的[协议章节](./protocol.md)。安全机制"
+"和传输封装不能随意互换，允许哪些组合取决于实际的对等端与核心。"
 
 #: src/transport-security.md
-#, fuzzy
 msgid "Layer Boundaries"
-msgstr "故障边界"
+msgstr "层间边界"
 
 #: src/transport-security.md
 msgid ""
 "In an independently layered TCP-based configuration, the security handshake "
 "occurs before the protected transport can deliver the inner proxy stream:"
 msgstr ""
+"在基于 TCP 且各层独立的配置中，安全握手先于受保护传输向内层代理交付字节流："
 
 #: src/transport-security.md
 msgid ""
@@ -26804,6 +26611,8 @@ msgid ""
 "have different negotiation requirements. Success at the security layer does "
 "**not** mean the HTTP transport route or the proxy user was accepted."
 msgstr ""
+"这个流程只是概念示意；不同传输方式和基于 QUIC 的协议有各自的协商要求。安全层"
+"认证成功**不代表** HTTP 传输路由或代理用户已被接受。"
 
 #: src/transport-security.md
 msgid ""
@@ -26812,11 +26621,12 @@ msgid ""
 "configuration owns HTTP/stream framing, while protocol-page configuration "
 "owns proxy identity and destination handling."
 msgstr ""
+"安全文档负责证书、SNI 与验证、REALITY 密钥材料、short ID、指纹及 fallback 行"
+"为；传输文档负责 HTTP/流分帧；协议文档负责代理身份与目标处理。"
 
 #: src/transport-security.md
-#, fuzzy
 msgid "Verification and Diagnostics"
-msgstr "验证"
+msgstr "验证与诊断"
 
 #: src/transport-security.md
 msgid ""
@@ -26827,9 +26637,12 @@ msgid ""
 "authentication or dispatch errors. See [End-to-End Troubleshooting](./"
 "troubleshooting.md)."
 msgstr ""
+"可通过[实现状态](./implementation-status.md)和[互操作测试](./test-"
+"evidence.md)验证所选核心及通信双方方向的支持情况。连接失败时，应区分 TCP/UDP "
+"可达性问题、安全握手拒绝、传输建立失败，以及内层协议认证或分发错误。参见[端到"
+"端故障排查](./troubleshooting.md)。"
 
 #: src/transport-security/reality.md
-#, fuzzy
 msgid ""
 "REALITY is an Xray transport-security mechanism. It is not a standalone "
 "proxy protocol: it protects and camouflages a supported transport while the "
@@ -26840,7 +26653,9 @@ msgid ""
 "(../transport.md)."
 msgstr ""
 "REALITY 是 Xray 的传输安全机制，而不是独立代理协议。它负责保护和伪装受支持的"
-"传输层，实际代理协议可以是 VLESS、Trojan 或其他兼容的 Xray 入站/出站组合。"
+"传输层，实际代理协议可以是 VLESS、Trojan 或其他兼容的 Xray 入站/出站组合。本"
+"页负责 REALITY 认证、密钥材料与 fallback 行为；内层代理语义见[代理协议](../"
+"protocol.md)，HTTP/流分帧见[传输层](../transport.md)。"
 
 #: src/transport-security/reality.md
 msgid ""
@@ -27144,9 +26959,8 @@ msgstr ""
 "须依据字节流与 TLS 长度解析，不能依赖数据包边界或单次 `read()`。"
 
 #: src/transport-security/reality.md
-#, fuzzy
 msgid "Security and Proxy Authentication Are Different"
-msgstr "身份与认证"
+msgstr "安全层认证与代理认证并不相同"
 
 #: src/transport-security/reality.md
 msgid ""
@@ -27156,6 +26970,10 @@ msgid ""
 "session may still fail when the inner [proxy protocol](../protocol.md) "
 "checks its own identity or target rules."
 msgstr ""
+"REALITY 验证的是类似 TLS 的**安全层**握手，包括密钥关系、short ID、server "
+"name 和其他配置约束。它不携带代理目标请求，也不认证 VLESS UUID。即使 REALITY "
+"会话有效，内层[代理协议](../protocol.md)仍可能因自身的身份或目标规则检查而失"
+"败。"
 
 #: src/transport-security/reality.md
 msgid ""
@@ -27164,6 +26982,9 @@ msgid ""
 "ASSOCIATE command. Proxy request framing remains in the inner protocol after "
 "the secure transport is established."
 msgstr ""
+"例如，[SOCKS5](../protocols/socks5.md) 会先协商认证方法，再发送目标请求；"
+"REALITY 则没有 SOCKS 风格的响应或 UDP ASSOCIATE 命令。安全传输建立后，代理请"
+"求的分帧仍由内层协议定义。"
 
 #: src/transport-security/reality.md
 msgid "Parser, Timing, and Boundary Conditions"
@@ -27694,3 +27515,237 @@ msgid ""
 "XTLS/REALITY server implementation and protocol notes: <https://github.com/"
 "XTLS/REALITY>"
 msgstr "XTLS/REALITY 服务端实现与协议说明：<https://github.com/XTLS/REALITY>"
+
+#: src/open-questions.md
+msgid ""
+"This page tracks unresolved, source-verified documentation or implementation "
+"gaps. Remove an item when the source or tests answer it; do not keep "
+"historical TODOs merely because they once appeared in an older Wiki revision."
+msgstr ""
+"本页跟踪经源码确认仍未解决的文档或实现缺口。当源码或测试已经给出答案时，应删"
+"除对应条目；不要仅因为某个 TODO 曾出现在旧版 Wiki 中就继续保留。"
+
+#: src/open-questions.md
+msgid "Cross-Project Compatibility"
+msgstr "跨项目兼容性"
+
+#: src/open-questions.md
+msgid ""
+"Add and maintain a generated or semi-generated compatibility matrix that can "
+"be checked against `Chimera_Client` and `Chimera_Server` source changes."
+msgstr ""
+"增加并维护可生成或半生成的兼容性矩阵，使其能够随 `Chimera_Client` 与 "
+"`Chimera_Server` 源码变化进行核验。"
+
+#: src/open-questions.md
+msgid ""
+"Record the exact build artifact/features used for interoperability tests, "
+"not only the repository commit."
+msgstr "互操作测试不仅要记录仓库提交，还应记录实际使用的构建产物与 feature。"
+
+#: src/open-questions.md
+msgid ""
+"Expand interoperability evidence beyond the current REALITY/Vision, XHTTP, "
+"gRPC, SOCKS, and selected Xray/client test paths."
+msgstr ""
+"把互操作证据扩展到当前 REALITY/Vision、XHTTP、gRPC、SOCKS 以及部分 Xray/客户"
+"端测试路径之外。"
+
+#: src/open-questions.md
+msgid ""
+"Define a stable policy for how long an audited source snapshot remains "
+"“current” before the Wiki requires a re-audit."
+msgstr ""
+"定义稳定策略，明确已审计源码快照在多长时间内仍可视为“当前”，以及何时必须重新"
+"审计。"
+
+#: src/open-questions.md
+msgid "Chimera Desktop"
+msgstr "Chimera 桌面端"
+
+#: src/open-questions.md
+msgid ""
+"Classify each runtime setting as hot-reloadable, restart-required, or "
+"application/OS-owned by following its actual update path."
+msgstr ""
+"沿真实更新路径，把每个运行时设置分类为可热重载、需要重启，或由应用/操作系统负"
+"责。"
+
+#: src/open-questions.md
+msgid ""
+"Document the profile/enhance pipeline in enough detail to show where "
+"generated runtime YAML can differ between Mihomo, clash-rs, and Chimera "
+"Client."
+msgstr ""
+"详细记录配置档案/enhance 流程，明确生成运行时 YAML 在 Mihomo、clash-rs 与 "
+"Chimera Client 之间可能出现差异的位置。"
+
+#: src/open-questions.md
+msgid ""
+"Document failure handling for core download/update, generated-config "
+"validation, foreground process startup, and service-mode startup."
+msgstr ""
+"记录核心下载/更新、生成配置校验、前台进程启动和服务模式启动的失败处理。"
+
+#: src/open-questions.md
+msgid ""
+"Review `patch_clash_config` and adjacent IPC paths and document the concrete "
+"controller/restart behavior they use today."
+msgstr ""
+"审查 `patch_clash_config` 及其相邻 IPC 路径，并记录当前实际使用的 controller/"
+"重启行为。"
+
+#: src/open-questions.md
+msgid "Chimera_Service"
+msgstr "Chimera_Service"
+
+#: src/open-questions.md
+msgid ""
+"Document the local IPC transport/ACL model per operating system with exact "
+"source-backed permission behavior."
+msgstr "按操作系统记录本地 IPC 传输/ACL 模型，并给出源码可验证的精确权限行为。"
+
+#: src/open-questions.md
+msgid ""
+"Document which privileged network operations are implemented on each "
+"platform; `/network/set_dns` must not be assumed portable merely because it "
+"exists in the shared IPC API."
+msgstr ""
+"记录各平台实际实现了哪些特权网络操作；不能仅因为共享 IPC API 中存在 `/"
+"network/set_dns` 就假定它跨平台可用。"
+
+#: src/open-questions.md
+msgid ""
+"Add a compatibility note for desktop/service/shared-type version skew and "
+"the expected failure behavior."
+msgstr "补充桌面端/服务/共享类型版本不一致时的兼容性说明和预期失败行为。"
+
+#: src/open-questions.md
+msgid "AChimera"
+msgstr "AChimera"
+
+#: src/open-questions.md
+msgid ""
+"Document the exact Android route, DNS-server, MTU, IPv4/IPv6, and "
+"application include/exclude behavior configured by `TunService`."
+msgstr ""
+"记录 `TunService` 配置的精确 Android 路由、DNS 服务器、MTU、IPv4/IPv6 以及应"
+"用包含/排除行为。"
+
+#: src/open-questions.md
+msgid ""
+"Record which `Chimera_Client` Cargo features are built into the Android "
+"native artifact so Android protocol availability can be stated precisely."
+msgstr ""
+"记录 Android 原生产物实际编译了哪些 `Chimera_Client` Cargo feature，从而精确"
+"描述 Android 上的协议可用性。"
+
+#: src/open-questions.md
+msgid ""
+"Add an end-to-end Android test plan covering VPN permission, TUN setup, "
+"`protect(fd)`, DNS, profile validation, and one remote proxy path."
+msgstr ""
+"增加 Android 端到端测试计划，覆盖 VPN 权限、TUN 初始化、`protect(fd)`、DNS、"
+"配置档案校验以及至少一条远程代理路径。"
+
+#: src/open-questions.md
+msgid ""
+"Document controller polling intervals/backoff and behavior when the embedded "
+"core exits while the Android service remains alive."
+msgstr ""
+"记录 controller 轮询间隔/退避策略，以及嵌入式核心退出但 Android 服务仍存活时"
+"的行为。"
+
+#: src/open-questions.md
+msgid ""
+"Keep the AnyTLS `Parsed-only` field list synchronized with the Client config "
+"struct when compatibility fields are added or become active runtime behavior."
+msgstr ""
+"当新增兼容字段或字段开始真正影响运行时行为时，保持 AnyTLS `Parsed-only` 字段"
+"列表与 Client 配置结构同步。"
+
+#: src/open-questions.md
+msgid ""
+"Add a feature/build matrix to release documentation so users can determine "
+"whether `anytls`, `shadowsocks`, `trojan`, `hysteria`, and `ws` are compiled "
+"into a distributed binary."
+msgstr ""
+"在发布文档中增加 feature/构建矩阵，让用户能够判断分发二进制是否编译了 "
+"`anytls`、`shadowsocks`、`trojan`、`hysteria` 和 `ws`。"
+
+#: src/open-questions.md
+msgid ""
+"Clarify the intended future status of VMess, TUIC, WireGuard, SSH, and gRPC "
+"outbound support; these are not current variants of the inspected outbound "
+"enum."
+msgstr ""
+"明确 VMess、TUIC、WireGuard、SSH 与 gRPC 出站支持的未来定位；它们当前并不是已"
+"检查出站枚举的变体。"
+
+#: src/open-questions.md
+msgid ""
+"Document the unimplemented HTTP proxy-provider path if it remains exposed in "
+"configuration or migration guidance."
+msgstr ""
+"如果未实现的 HTTP proxy-provider 路径仍暴露在配置或迁移说明中，应明确记录。"
+
+#: src/open-questions.md
+msgid ""
+"Add per-protocol implementation pages that map configuration fields to "
+"`ServerConfig` validation, listener/transport selection, and handler code."
+msgstr ""
+"为各协议增加实现页面，把配置字段映射到 `ServerConfig` 校验、监听器/传输选择以"
+"及 handler 代码。"
+
+#: src/open-questions.md
+msgid ""
+"Convert explicit `not supported yet` builder/runtime errors into a "
+"maintained compatibility table and tests so documentation cannot silently "
+"drift."
+msgstr ""
+"把明确的 `not supported yet` builder/运行时错误整理成持续维护的兼容性表与测"
+"试，防止文档静默漂移。"
+
+#: src/open-questions.md
+msgid ""
+"Document current outbound/routing limitations separately from inbound "
+"protocol support; for example, an inbound VMess implementation does not "
+"imply a VMess outbound proxy path."
+msgstr ""
+"把当前出站/路由限制与入站协议支持分开记录；例如存在 VMess 入站实现并不意味着"
+"存在 VMess 出站代理路径。"
+
+#: src/open-questions.md
+msgid ""
+"Expand XHTTP documentation with the exact list of accepted and rejected Xray "
+"fields, including the current `downloadSettings` limitation."
+msgstr ""
+"扩展 XHTTP 文档，列出精确的已接受与已拒绝 Xray 字段，包括当前 "
+"`downloadSettings` 限制。"
+
+#: src/open-questions.md
+msgid ""
+"Document VLESS Vision direct-mode limitations and the conditions exercised "
+"by the existing REALITY/Vision E2E matrix."
+msgstr ""
+"记录 VLESS Vision direct mode 的限制，以及现有 REALITY/Vision E2E 矩阵实际覆"
+"盖的条件。"
+
+#: src/open-questions.md
+msgid "Protocol and Transport Reference"
+msgstr "协议与传输参考"
+
+#: src/open-questions.md
+msgid ""
+"Pin the upstream AnyTLS and Shadowsocks specification/version references "
+"used for interoperability claims when the corresponding upstream protocols "
+"change."
+msgstr ""
+"当上游协议发生变化时，固定互操作声明所依据的 AnyTLS 与 Shadowsocks 上游规范/"
+"版本引用。"
+
+#: src/open-questions.md
+msgid ""
+"Add cross-links from each protocol page to its Client/Server implementation "
+"status and interoperability tests."
+msgstr "从每个协议页面链接到对应 Client/Server 实现状态与互操作测试。"

@@ -17,7 +17,6 @@
   - [Service Mode Configuration](./chimera/service-mode.md)
 - [AChimera Android Client](./achimera.md)
 - [Chimera Server](./chimera_server.md)
-- [Open Questions](./open-questions.md)
 - [Proxy Protocol Reference](./protocol.md)
   - [SOCKS5](./protocols/socks5.md)
   - [HTTP](./protocols/http.md)
@@ -37,3 +36,4 @@
   - [HTTPUpgrade](./transports/httpupgrade.md)
 - [Transport Security Reference](./transport-security.md)
   - [REALITY](./transport-security/reality.md)
+- [Open Questions](./open-questions.md)
