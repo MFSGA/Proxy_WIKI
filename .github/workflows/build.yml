@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         os:
-          - ubuntu-latest
+          - ubuntu-24.04
           - macos-latest
     runs-on: ${{ matrix.os }}
     steps:
@@ -37,7 +37,7 @@ jobs:
         run: cargo test
 
   find-languages:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       languages: ${{ steps.find-languages.outputs.languages }}
     steps:
@@ -55,7 +55,7 @@ jobs:
           json.dump(sorted(languages), github_output)
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs:
       - find-languages
     strategy:
@@ -115,7 +115,7 @@ jobs:
 
   po-diff:
     name: Translation diff
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -138,4 +138,4 @@ jobs:
         run: git checkout ${{ github.event.pull_request.base.sha }}
 
       - name: Translation diff
-        run: i18n-report diff po/ new-po/ > $GITHUB_STEP_SUMMARY
+        run: i18n-report diff po/ new-po/ > "$GITHUB_STEP_SUMMARY"
