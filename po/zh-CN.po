@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Proxy Wiki\n"
-"POT-Creation-Date: 2026-10-11T23:04:48+08:00\n"
+"POT-Creation-Date: 2026-10-11T23:59:00+08:00\n"
 "PO-Revision-Date: 2026-10-11 23:08+0800\n"
 "Last-Translator: chimera_rust@proton.me\n"
 "Language-Team: Language zh-CN\n"
@@ -6496,152 +6496,76 @@ msgid "See [Service Mode Configuration](./chimera/service-mode.md) for the actua
 msgstr "实际 IPC 边界与生命周期见 [Service Mode Configuration](./chimera/service-mode.md)。"
 
 #: src/chimera/runtime_config.md
-msgid "Explanation of Chimera’s Runtime Configuration Generation Mechanism"
-msgstr "Chimera 运行时配置生成机制说明"
+msgid "Chimera Runtime Configuration: Inputs, Generation, and Loading"
+msgstr "Chimera 运行时配置：输入、生成与加载"
 
 #: src/chimera/runtime_config.md
-msgid "1. Key Takeaways"
-msgstr "1. 关键结论"
+msgid "This page describes how Chimera prepares the configuration used by its core. At startup and during hot reload, the core uses a generated runtime file rather than reading `profiles.yaml` directly. The backend assembles the runtime configuration in memory, writes it to disk, and provides it to the core through startup arguments or the Clash API."
+msgstr "本文介绍 Chimera 如何准备核心使用的配置。核心在启动和热重载时使用后端生成的运行时文件，而不是直接读取 `profiles.yaml`。后端会先在内存中组装运行时配置，再写入磁盘，并通过启动参数或 Clash API 将其交给核心。"
 
 #: src/chimera/runtime_config.md
-msgid "The configuration consumed by the core (e.g., `chimera_client` / `mihomo`) at startup and during hot-reload is **not** read directly from `profiles.yaml`. What the core actually uses is a runtime file:"
-msgstr "核心（例如 `chimera_client` / `mihomo`）在启动和热重载时使用的配置**不是**直接从 `profiles.yaml` 读取的。核心真正使用的是一个运行时文件："
+msgid "Upstream alignment: Needs assessment"
+msgstr "上游对齐状态：待评估对齐"
 
 #: src/chimera/runtime_config.md
-msgid "`clash-config.yaml` (runtime configuration, located under `app_config_dir`)"
-msgstr "`clash-config.yaml`（运行时配置，位于 `app_config_dir` 下）"
+msgid "Local maturity: In development"
+msgstr "本地成熟度：开发中"
 
 #: src/chimera/runtime_config.md
-msgid "This file is first composed in memory by the backend, then written to disk, and finally passed to the core either via **startup arguments** or **Clash API hot-reload**."
-msgstr "这个文件首先由后端在内存中组装，然后写入磁盘，最后通过**启动参数**或**Clash API 热重载**传递给核心。"
+msgid "1. Inputs and Initialization"
+msgstr "1. 配置输入与初始化"
 
 #: src/chimera/runtime_config.md
-msgid "2. Configuration Inputs (Raw Materials)"
-msgstr "2. 配置输入（原材料）"
+msgid "The runtime configuration draws on four kinds of input:"
+msgstr "运行时配置由以下四类输入共同构成："
 
 #: src/chimera/runtime_config.md
-msgid "The runtime configuration is built from four categories of inputs:"
-msgstr "运行时配置由四类输入构建而成："
+msgid "**Application settings** — `chimera-config.yaml`, represented by `IVerge` and loaded through `backend/tauri/src/config/chimera/mod.rs` → `IVerge::new()`. These settings control field filtering, port strategy, TUN behavior, and system-proxy behavior."
+msgstr "**应用设置** — `chimera-config.yaml`，对应 `IVerge`，由 `backend/tauri/src/config/chimera/mod.rs` → `IVerge::new()` 加载。这些设置用于控制字段过滤、端口策略、TUN 行为和系统代理行为。"
 
 #: src/chimera/runtime_config.md
-msgid "Application settings: `chimera-config.yaml`"
-msgstr "应用设置：`chimera-config.yaml`"
+msgid "**Clash Guard overrides** — `clash-guard-overrides.yaml`, represented by `IClashTemp` and loaded through `backend/tauri/src/config/clash/mod.rs` → `IClashTemp::new()`. These values override selected fields such as `mode`, `mixed-port`, `external-controller`, and `secret`."
+msgstr "**Clash Guard 覆盖项** — `clash-guard-overrides.yaml`，对应 `IClashTemp`，由 `backend/tauri/src/config/clash/mod.rs` → `IClashTemp::new()` 加载。这些值会覆盖 `mode`、`mixed-port`、`external-controller`、`secret` 等指定字段。"
 
 #: src/chimera/runtime_config.md
-msgid "Struct: `IVerge`"
-msgstr "结构体：`IVerge`"
+msgid "**Profile metadata** — `profiles.yaml`, represented by `Profiles` and loaded through `backend/tauri/src/config/profile/profiles.rs` → `Profiles::new()`. It records the active profile (`current`) and the profile list (`items`)."
+msgstr "**配置元数据** — `profiles.yaml`，对应 `Profiles`，由 `backend/tauri/src/config/profile/profiles.rs` → `Profiles::new()` 加载。它记录当前激活配置（`current`）和配置列表（`items`）。"
 
 #: src/chimera/runtime_config.md
-msgid "Load entry: `backend/tauri/src/config/chimera/mod.rs` → `IVerge::new()`"
-msgstr "加载入口：`backend/tauri/src/config/chimera/mod.rs` → `IVerge::new()`"
+msgid "**Profile content** — `app_config_dir/profiles/*.yaml`, read through `Profiles::current_mappings()`. These files contain configuration such as proxies, rules, DNS, and TUN settings."
+msgstr "**配置内容文件** — `app_config_dir/profiles/*.yaml`，通过 `Profiles::current_mappings()` 读取。文件中包含代理、规则、DNS 和 TUN 等配置。"
 
 #: src/chimera/runtime_config.md
-msgid "Purpose: controls field filtering, port strategy, TUN/system proxy behavior, etc."
-msgstr "用途：控制字段过滤、端口策略、TUN / 系统代理行为等。"
+msgid "Startup initialization"
+msgstr "启动初始化"
 
 #: src/chimera/runtime_config.md
-msgid "Clash Guard override template: `clash-guard-overrides.yaml`"
-msgstr "Clash Guard 覆盖模板：`clash-guard-overrides.yaml`"
+msgid "`backend/tauri/src/utils/init/mod.rs` → `init_config()` creates the following files when they are missing:"
+msgstr "`backend/tauri/src/utils/init/mod.rs` → `init_config()` 会在以下文件缺失时创建它们："
 
 #: src/chimera/runtime_config.md
-msgid "Struct: `IClashTemp`"
-msgstr "结构体：`IClashTemp`"
+msgid "`clash-guard-overrides.yaml`, using `IClashTemp::template()`"
+msgstr "`clash-guard-overrides.yaml`，使用 `IClashTemp::template()` 生成"
 
 #: src/chimera/runtime_config.md
-msgid "Load entry: `backend/tauri/src/config/clash/mod.rs` → `IClashTemp::new()`"
-msgstr "加载入口：`backend/tauri/src/config/clash/mod.rs` → `IClashTemp::new()`"
+msgid "`chimera-config.yaml`, using `IVerge::template()`"
+msgstr "`chimera-config.yaml`，使用 `IVerge::template()` 生成"
 
 #: src/chimera/runtime_config.md
-msgid "Purpose: forcibly overrides critical fields (e.g., `mode`, `mixed-port`, `external-controller`, `secret`, etc.)"
-msgstr "用途：强制覆盖关键字段（例如 `mode`、`mixed-port`、`external-controller`、`secret` 等）。"
+msgid "`profiles.yaml`, with an empty or default configuration"
+msgstr "`profiles.yaml`，初始内容为空或为默认配置"
 
 #: src/chimera/runtime_config.md
-msgid "Profile metadata: `profiles.yaml`"
-msgstr "配置元数据：`profiles.yaml`"
+msgid "`backend/tauri/src/config/core.rs` → `Config::global()` initializes `Profiles::new()`, `IVerge::new()`, `IClashTemp::new()`, and `IRuntime::new()`. `IRuntime` holds the in-memory runtime configuration; its `config` field is an `Option<Mapping>`."
+msgstr "`backend/tauri/src/config/core.rs` → `Config::global()` 会初始化 `Profiles::new()`、`IVerge::new()`、`IClashTemp::new()` 和 `IRuntime::new()`。`IRuntime` 用于保存内存中的运行时配置，其 `config` 字段类型为 `Option<Mapping>`。"
 
 #: src/chimera/runtime_config.md
-msgid "Struct: `Profiles`"
-msgstr "结构体：`Profiles`"
+msgid "2. Runtime Configuration Generation"
+msgstr "2. 运行时配置生成"
 
 #: src/chimera/runtime_config.md
-msgid "Load entry: `backend/tauri/src/config/profile/profiles.rs` → `Profiles::new()`"
-msgstr "加载入口：`backend/tauri/src/config/profile/profiles.rs` → `Profiles::new()`"
-
-#: src/chimera/runtime_config.md
-msgid "Purpose: records the currently active profile (`current`) and the profile list (`items`)"
-msgstr "用途：记录当前激活的配置（`current`）和配置列表（`items`）"
-
-#: src/chimera/runtime_config.md
-msgid "Concrete profile content files: `app_config_dir/profiles/*.yaml`"
-msgstr "具体配置内容文件：`app_config_dir/profiles/*.yaml`"
-
-#: src/chimera/runtime_config.md
-msgid "Load entry: `Profiles::current_mappings()`"
-msgstr "加载入口：`Profiles::current_mappings()`"
-
-#: src/chimera/runtime_config.md
-msgid "Purpose: provides actual configuration content such as proxies, rules, DNS, TUN, etc."
-msgstr "用途：提供代理、规则、DNS、TUN 等实际配置内容。"
-
-#: src/chimera/runtime_config.md
-msgid "3. Startup Initialization Phase"
-msgstr "3. 启动初始化阶段"
-
-#: src/chimera/runtime_config.md
-msgid "3.1 Creating Base Files (If Missing)"
-msgstr "3.1 创建基础文件（如果缺失）"
-
-#: src/chimera/runtime_config.md
-msgid "`backend/tauri/src/utils/init/mod.rs` → `init_config()` ensures the following files exist:"
-msgstr "`backend/tauri/src/utils/init/mod.rs` → `init_config()` 会确保以下文件存在："
-
-#: src/chimera/runtime_config.md
-msgid "`clash-guard-overrides.yaml` (generated by default via `IClashTemp::template()`)"
-msgstr "`clash-guard-overrides.yaml`（默认通过 `IClashTemp::template()` 生成）"
-
-#: src/chimera/runtime_config.md
-msgid "`chimera-config.yaml` (generated by default via `IVerge::template()`)"
-msgstr "`chimera-config.yaml`（默认通过 `IVerge::template()` 生成）"
-
-#: src/chimera/runtime_config.md
-msgid "`profiles.yaml` (an empty/default configuration)"
-msgstr "`profiles.yaml`（一个空 / 默认配置）"
-
-#: src/chimera/runtime_config.md
-msgid "3.2 Loading Global Configuration Objects"
-msgstr "3.2 加载全局配置对象"
-
-#: src/chimera/runtime_config.md
-msgid "`backend/tauri/src/config/core.rs` → `Config::global()` initializes:"
-msgstr "`backend/tauri/src/config/core.rs` → `Config::global()` 会初始化："
-
-#: src/chimera/runtime_config.md
-msgid "`Profiles::new()`"
-msgstr "`Profiles::new()`"
-
-#: src/chimera/runtime_config.md
-msgid "`IVerge::new()`"
-msgstr "`IVerge::new()`"
-
-#: src/chimera/runtime_config.md
-msgid "`IClashTemp::new()`"
-msgstr "`IClashTemp::new()`"
-
-#: src/chimera/runtime_config.md
-msgid "`IRuntime::new()`"
-msgstr "`IRuntime::new()`"
-
-#: src/chimera/runtime_config.md
-msgid "`IRuntime` is the in-memory runtime configuration container; its `config` field is an `Option<Mapping>`."
-msgstr "`IRuntime` 是内存中的运行时配置容器；其 `config` 字段类型为 `Option<Mapping>`。"
-
-#: src/chimera/runtime_config.md
-msgid "4. Main Runtime Configuration Composition Flow"
-msgstr "4. 运行时配置主组装流程"
-
-#: src/chimera/runtime_config.md
-msgid "Main entry: `Config::generate()` (`backend/tauri/src/config/core.rs`)"
-msgstr "主入口：`Config::generate()`（`backend/tauri/src/config/core.rs`）"
+msgid "The documented entry point is `Config::generate()` in `backend/tauri/src/config/core.rs`:"
+msgstr "文档所述的入口是 `backend/tauri/src/config/core.rs` 中的 `Config::generate()`："
 
 #: src/chimera/runtime_config.md
 msgid ""
@@ -6670,108 +6594,40 @@ msgstr ""
 "```"
 
 #: src/chimera/runtime_config.md
-msgid "4.1 What `enhance::enhance()` Does"
-msgstr "4.1 `enhance::enhance()` 做了什么"
+msgid "`enhance::enhance()` in `backend/tauri/src/enhance/mod.rs` performs these steps:"
+msgstr "`backend/tauri/src/enhance/mod.rs` 中的 `enhance::enhance()` 依次执行以下步骤："
 
 #: src/chimera/runtime_config.md
-msgid "Location: `backend/tauri/src/enhance/mod.rs`"
-msgstr "位置：`backend/tauri/src/enhance/mod.rs`"
+msgid "Loads Clash Guard settings from `Config::clash().latest().0.clone()`."
+msgstr "从 `Config::clash().latest().0.clone()` 加载 Clash Guard 设置。"
 
 #: src/chimera/runtime_config.md
-msgid "Core steps:"
-msgstr "核心步骤："
+msgid "Reads feature settings from `IVerge`, including `enable_clash_fields`."
+msgstr "从 `IVerge` 读取功能设置，包括 `enable_clash_fields`。"
 
 #: src/chimera/runtime_config.md
-msgid "Load Clash Guard configuration"
-msgstr "加载 Clash Guard 配置"
+msgid "Loads the active profile content through `Profiles::current_mappings()`. This iterates over `current`, reads each `profiles/<file>.yaml`, and converts it to a `Mapping`."
+msgstr "通过 `Profiles::current_mappings()` 加载当前激活配置的内容。该方法遍历 `current`，逐个读取 `profiles/<file>.yaml`，并将内容转换为 `Mapping`。"
 
 #: src/chimera/runtime_config.md
-msgid "`let clash_config = Config::clash().latest().0.clone()`"
-msgstr "`let clash_config = Config::clash().latest().0.clone()`"
+msgid "Calls `process_chain(...)` for profile-chain scripts. In the implementation described here, this is a placeholder and returns the original configuration unchanged."
+msgstr "调用 `process_chain(...)` 执行配置链脚本。本文所述实现中，该步骤仍是占位逻辑，会原样返回输入配置。"
 
 #: src/chimera/runtime_config.md
-msgid "Read current feature toggles/settings"
-msgstr "读取当前功能开关 / 设置"
+msgid "Calls `merge_profiles(...)` to combine profile configurations. The first configuration is merged in full with `extend`; later configurations append only their `proxies` to the existing `proxies` list."
+msgstr "调用 `merge_profiles(...)` 合并多份配置。第一份配置通过 `extend` 完整合并；后续配置只会将其中的 `proxies` 追加到现有 `proxies` 列表。"
 
 #: src/chimera/runtime_config.md
-msgid "such as `enable_clash_fields`, from `IVerge`"
-msgstr "例如从 `IVerge` 读取 `enable_clash_fields`"
+msgid "Optionally filters fields through `use_whitelist_fields_filter(...)`. When `enable_clash_fields = true`, only keys in the valid and default field sets are retained."
+msgstr "可选地通过 `use_whitelist_fields_filter(...)` 过滤字段。当 `enable_clash_fields = true` 时，只保留有效字段集和默认字段集中的键。"
 
 #: src/chimera/runtime_config.md
-msgid "Load the content of the currently active profile(s)"
-msgstr "加载当前激活配置的内容"
+msgid "Copies the fields in `HANDLE_FIELDS` from `IClashTemp` into the final configuration so the client centrally controls these values."
+msgstr "将 `IClashTemp` 中 `HANDLE_FIELDS` 列出的字段复制到最终配置，由客户端集中管理这些值。"
 
 #: src/chimera/runtime_config.md
-msgid "via `Profiles::current_mappings()`"
-msgstr "通过 `Profiles::current_mappings()`"
-
-#: src/chimera/runtime_config.md
-msgid "this method iterates over `current`, reads `profiles/<file>.yaml` one by one, and converts them into `Mapping`"
-msgstr "该方法会遍历 `current`，逐个读取 `profiles/<file>.yaml`，并将其转换为 `Mapping`"
-
-#: src/chimera/runtime_config.md
-msgid "(Reserved) Execute profile chain scripts"
-msgstr "（预留）执行配置链脚本"
-
-#: src/chimera/runtime_config.md
-msgid "calls `process_chain(...)`"
-msgstr "调用 `process_chain(...)`"
-
-#: src/chimera/runtime_config.md
-msgid "current implementation is a placeholder (no-op), returning the original config"
-msgstr "当前实现只是占位（no-op），会直接返回原始配置"
-
-#: src/chimera/runtime_config.md
-msgid "Merge multiple profile configurations"
-msgstr "合并多个配置文件"
-
-#: src/chimera/runtime_config.md
-msgid "calls `merge_profiles(...)`"
-msgstr "调用 `merge_profiles(...)`"
-
-#: src/chimera/runtime_config.md
-msgid "current strategy:"
-msgstr "当前策略："
-
-#: src/chimera/runtime_config.md
-msgid "first config: full `extend`"
-msgstr "第一份配置：完整 `extend`"
-
-#: src/chimera/runtime_config.md
-msgid "subsequent configs: only append `proxies` to the existing `proxies`"
-msgstr "后续配置：仅将 `proxies` 追加到现有的 `proxies`"
-
-#: src/chimera/runtime_config.md
-msgid "Whitelist field filtering (optional, controlled by a toggle)"
-msgstr "白名单字段过滤（可选，由开关控制）"
-
-#: src/chimera/runtime_config.md
-msgid "`use_whitelist_fields_filter(...)`"
-msgstr "`use_whitelist_fields_filter(...)`"
-
-#: src/chimera/runtime_config.md
-msgid "when `enable_clash_fields = true`, only retains keys in `valid + default fields`"
-msgstr "当 `enable_clash_fields = true` 时，仅保留 `valid + default fields` 中的键"
-
-#: src/chimera/runtime_config.md
-msgid "Force-override Guard fields"
-msgstr "强制覆盖 Guard 字段"
-
-#: src/chimera/runtime_config.md
-msgid "writes back fields listed in `HANDLE_FIELDS` from `IClashTemp` into the final config"
-msgstr "将 `IClashTemp` 中 `HANDLE_FIELDS` 列出的字段写回最终配置"
-
-#: src/chimera/runtime_config.md
-msgid "ensures critical control fields are centrally managed by the client"
-msgstr "确保关键控制字段由客户端集中管理"
-
-#: src/chimera/runtime_config.md
-msgid "4.2 Scope of `HANDLE_FIELDS` Overrides"
-msgstr "4.2 `HANDLE_FIELDS` 覆盖范围"
-
-#: src/chimera/runtime_config.md
-msgid "Defined in `backend/tauri/src/enhance/field.rs`:"
-msgstr "定义于 `backend/tauri/src/enhance/field.rs`："
+msgid "`HANDLE_FIELDS`, defined in `backend/tauri/src/enhance/field.rs`, contains:"
+msgstr "`HANDLE_FIELDS` 定义于 `backend/tauri/src/enhance/field.rs`，包含："
 
 #: src/chimera/runtime_config.md src/protocols/xhttp.md
 msgid "`mode`"
@@ -6791,307 +6647,163 @@ msgstr "`log-level`"
 
 #: src/chimera/runtime_config.md
 msgid "`ipv6`"
-msgstr "ipv6"
+msgstr "`ipv6`"
 
 #: src/chimera/runtime_config.md
 msgid "`secret`"
 msgstr "`secret`"
 
 #: src/chimera/runtime_config.md
-msgid "This means that even if these fields exist in a profile, the final values will be overwritten by the corresponding values from `clash-guard-overrides.yaml`."
-msgstr "这意味着，即使这些字段存在于配置文件中，其最终值也会被 `clash-guard-overrides.yaml` 中对应的值覆盖。"
+msgid "If a profile also defines one of these fields, the corresponding value from `clash-guard-overrides.yaml` takes precedence."
+msgstr "即使配置文件也定义了这些字段，最终仍以 `clash-guard-overrides.yaml` 中对应的值为准。"
 
 #: src/chimera/runtime_config.md
-msgid "5. Writing to Disk and File Locations"
-msgstr "5. 写入磁盘与文件位置"
+msgid "3. Runtime File and Core Loading"
+msgstr "3. 运行时文件与核心加载"
 
 #: src/chimera/runtime_config.md
-msgid "Entry: `Config::generate_file(ConfigType::Run)` (`backend/tauri/src/config/core.rs`)"
-msgstr "入口：`Config::generate_file(ConfigType::Run)`（`backend/tauri/src/config/core.rs`）"
+msgid "`Config::generate_file(ConfigType::Run)` in `backend/tauri/src/config/core.rs` writes the runtime output to `app_config_dir()/clash-config.yaml`. In `Check` mode, it writes to `temp_dir()/clash-config-check.yaml`. If generation fails, `Config::init_config()` falls back to writing `IClashTemp` directly as the runtime configuration."
+msgstr "`backend/tauri/src/config/core.rs` 中的 `Config::generate_file(ConfigType::Run)` 会将运行时配置写入 `app_config_dir()/clash-config.yaml`。在 `Check` 模式下，输出路径为 `temp_dir()/clash-config-check.yaml`。如果生成失败，`Config::init_config()` 会直接将 `IClashTemp` 写入运行时配置，作为回退方案。"
 
 #: src/chimera/runtime_config.md
-msgid "Output in `Run` mode: `app_config_dir()/clash-config.yaml`"
-msgstr "`Run` 模式输出：`app_config_dir()/clash-config.yaml`"
+msgid "At startup"
+msgstr "启动时加载"
 
 #: src/chimera/runtime_config.md
-msgid "Output in `Check` mode: `temp_dir()/clash-config-check.yaml`"
-msgstr "`Check` 模式输出：`temp_dir()/clash-config-check.yaml`"
+msgid "`CoreManager::run_core()` → `Instance::try_new()` in `backend/tauri/src/core/clash/core.rs` calls `Config::generate_file(ConfigType::Run)` and passes the resulting path to the core through `CoreInstanceBuilder.config_path(config_path)`. The core then reads `clash-config.yaml` at startup."
+msgstr "`backend/tauri/src/core/clash/core.rs` 中的 `CoreManager::run_core()` → `Instance::try_new()` 会调用 `Config::generate_file(ConfigType::Run)`，并通过 `CoreInstanceBuilder.config_path(config_path)` 将生成路径传给核心。核心随后在启动时读取 `clash-config.yaml`。"
 
 #: src/chimera/runtime_config.md
-msgid "If generation fails, `Config::init_config()` provides a fallback: it writes `IClashTemp` directly as the runtime configuration."
-msgstr "如果生成失败，`Config::init_config()` 会提供回退方案：直接将 `IClashTemp` 写为运行时配置。"
+msgid "During hot reload"
+msgstr "运行时热重载"
 
 #: src/chimera/runtime_config.md
-msgid "6. How the Core Obtains This Configuration"
-msgstr "6. 核心如何获取这份配置"
+msgid "`CoreManager::update_config()` follows this sequence:"
+msgstr "`CoreManager::update_config()` 按以下顺序执行："
 
 #: src/chimera/runtime_config.md
-msgid "6.1 Loaded at Startup"
-msgstr "6.1 启动时加载"
+msgid "`Config::generate().await?` rebuilds the in-memory configuration."
+msgstr "`Config::generate().await?` 重新生成内存中的配置。"
 
 #: src/chimera/runtime_config.md
-msgid "`CoreManager::run_core()` → `Instance::try_new()` (`backend/tauri/src/core/clash/core.rs`):"
-msgstr "`CoreManager::run_core()` → `Instance::try_new()`（`backend/tauri/src/core/clash/core.rs`）："
+msgid "`check_config().await?` validates it using the check file."
+msgstr "`check_config().await?` 使用检查文件验证配置。"
 
 #: src/chimera/runtime_config.md
-msgid "Calls `Config::generate_file(ConfigType::Run)` to get the path"
-msgstr "调用 `Config::generate_file(ConfigType::Run)` 获取路径"
+msgid "`generate_file(Run)` rewrites `clash-config.yaml`."
+msgstr "`generate_file(Run)` 重写 `clash-config.yaml`。"
 
 #: src/chimera/runtime_config.md
-msgid "Passes the path to the core process via `CoreInstanceBuilder.config_path(config_path)`"
-msgstr "通过 `CoreInstanceBuilder.config_path(config_path)` 将该路径传给核心进程"
+msgid "The client sends `PUT /configs` with `{ \"path\": \"<absolute path>\" }` to ask the core to reload it."
+msgstr "客户端发送 `PUT /configs`，请求体为 `{ \"path\": \"<absolute path>\" }`，通知核心重新加载配置。"
 
 #: src/chimera/runtime_config.md
-msgid "In other words: the core reads `clash-config.yaml` directly at startup."
-msgstr "换句话说：核心在启动时会直接读取 `clash-config.yaml`。"
+msgid "Relevant code is in `backend/tauri/src/core/clash/core.rs` → `update_config()` and `backend/tauri/src/core/clash/api.rs` → `put_configs(...)`."
+msgstr "相关代码位于 `backend/tauri/src/core/clash/core.rs` → `update_config()`，以及 `backend/tauri/src/core/clash/api.rs` → `put_configs(...)`。"
 
 #: src/chimera/runtime_config.md
-msgid "6.2 Hot-Reload During Runtime"
-msgstr "6.2 运行时热重载"
+msgid "4. Operations That Trigger a Rebuild"
+msgstr "4. 会触发重建的操作"
 
 #: src/chimera/runtime_config.md
-msgid "`CoreManager::update_config()` flow:"
-msgstr "`CoreManager::update_config()` 的流程："
+msgid "Changing the active profile selection"
+msgstr "切换当前激活配置"
 
 #: src/chimera/runtime_config.md
-msgid "`Config::generate().await?` recomposes the in-memory config"
-msgstr "`Config::generate().await?` 重新组装内存中的配置"
+msgid "The frontend calls `commands.patchProfilesConfig`, which reaches `patch_profiles_config(...)` in the backend. The backend applies a draft with `Config::profiles().draft().apply(...)`, calls `CoreManager::update_config()`, then saves the profile state with `Config::profiles().apply()` and `save_file()` on success. On failure, it calls `discard()` to roll back."
+msgstr "前端调用 `commands.patchProfilesConfig` 后会进入后端的 `patch_profiles_config(...)`。后端先通过 `Config::profiles().draft().apply(...)` 应用草稿，再调用 `CoreManager::update_config()`。成功后，通过 `Config::profiles().apply()` 和 `save_file()` 保存配置状态；失败时则调用 `discard()` 回滚。"
 
 #: src/chimera/runtime_config.md
-msgid "`check_config().await?` validates syntax/usability using the check file"
-msgstr "`check_config().await?` 使用检查文件校验语法 / 可用性"
+msgid "Changing selected application settings"
+msgstr "修改部分应用设置"
 
 #: src/chimera/runtime_config.md
-msgid "`generate_file(Run)` rewrites `clash-config.yaml`"
-msgstr "`generate_file(Run)` 重写 `clash-config.yaml`"
+msgid "The frontend calls `commands.patchVergeConfig`, which reaches `feat::patch_verge(...)`. It first writes an `IVerge` draft. Depending on the field, for example `enable_tun_mode`, the change may regenerate configuration and restart the core through `Config::generate()` + `run_core()`, or hot-update it through `update_core_config()`."
+msgstr "前端调用 `commands.patchVergeConfig` 后会进入 `feat::patch_verge(...)`，并先写入一份 `IVerge` 草稿。根据字段不同（例如 `enable_tun_mode`），该变更可能通过 `Config::generate()` + `run_core()` 重新生成配置并重启核心，也可能通过 `update_core_config()` 热更新。"
 
 #: src/chimera/runtime_config.md
-msgid "Calls `PUT /configs` with body `{ \"path\": \"<absolute path>\" }` to instruct the core to reload"
-msgstr "调用 `PUT /configs`，并附带 `{ \"path\": \"<absolute path>\" }` 请求体，以指示核心重载"
+msgid "Importing the first profile"
+msgstr "导入第一份配置"
 
 #: src/chimera/runtime_config.md
-msgid "Relevant code:"
-msgstr "相关代码："
+msgid "After `import_profile(...)` succeeds, if no profile is active, Chimera sets `ProfilesBuilder.current = [new_uid]` and reuses `patch_profiles_config(...)` to trigger an update."
+msgstr "`import_profile(...)` 成功后，如果当前没有激活配置，Chimera 会将 `ProfilesBuilder.current` 设为 `[new_uid]`，并复用 `patch_profiles_config(...)` 触发更新。"
 
 #: src/chimera/runtime_config.md
-msgid "`backend/tauri/src/core/clash/core.rs` → `update_config()`"
-msgstr "`backend/tauri/src/core/clash/core.rs` → `update_config()`"
+msgid "5. Runtime Details and Limitations"
+msgstr "5. 运行时细节与限制"
 
 #: src/chimera/runtime_config.md
-msgid "`backend/tauri/src/core/clash/api.rs` → `put_configs(...)`"
-msgstr "`backend/tauri/src/core/clash/api.rs` → `put_configs(...)`"
+msgid "`profiles.yaml` stores profile metadata and the `current` pointer; it is not the final configuration consumed by the core."
+msgstr "`profiles.yaml` 保存配置元数据和 `current` 指针，并非核心最终使用的配置。"
 
 #: src/chimera/runtime_config.md
-msgid "7. User Actions That Trigger a Rebuild"
-msgstr "7. 会触发重建的用户操作"
+msgid "Profile content files are not passed to the core verbatim. They become the runtime configuration after merging, filtering, and Clash Guard overrides."
+msgstr "配置内容文件不会原样传给核心；它们要经过合并、过滤和 Clash Guard 覆盖后，才会成为运行时配置。"
 
 #: src/chimera/runtime_config.md
-msgid "7.1 Switching/Modifying Profile Selection"
-msgstr "7.1 切换 / 修改配置选择"
+msgid "`prepare_external_controller_port()` checks port availability according to policy and changes the `external-controller` port when necessary."
+msgstr "`prepare_external_controller_port()` 会按策略检查端口是否可用，并在必要时更改 `external-controller` 端口。"
 
 #: src/chimera/runtime_config.md
-msgid "Frontend `commands.patchProfilesConfig` → backend `patch_profiles_config(...)`:"
-msgstr "前端 `commands.patchProfilesConfig` → 后端 `patch_profiles_config(...)`："
+msgid "`verge_mixed_port` is primarily used by system-proxy logic. It is not written directly to the runtime YAML's `mixed-port`. System-proxy logic uses `verge_mixed_port` first, then falls back to `Config::clash().get_mixed_port()`."
+msgstr "`verge_mixed_port` 主要用于系统代理逻辑，不会直接写入运行时 YAML 的 `mixed-port`。系统代理会优先使用 `verge_mixed_port`，没有该值时再回退到 `Config::clash().get_mixed_port()`。"
 
 #: src/chimera/runtime_config.md
-msgid "Apply draft: `Config::profiles().draft().apply(...)`"
-msgstr "应用草稿：`Config::profiles().draft().apply(...)`"
+msgid "`get_runtime_yaml()` returns the in-memory `IRuntime.config`. It is usually consistent with the recently written `clash-config.yaml`, but it does not reread the file on each call."
+msgstr "`get_runtime_yaml()` 返回内存中的 `IRuntime.config`。它通常与最近写入的 `clash-config.yaml` 一致，但每次调用时不会重新读取磁盘文件。"
 
 #: src/chimera/runtime_config.md
-msgid "Trigger `CoreManager::update_config()`"
-msgstr "触发 `CoreManager::update_config()`"
+msgid "The implementation limitations recorded here are:"
+msgstr "本文记录的实现限制如下："
 
 #: src/chimera/runtime_config.md
-msgid "On success: `Config::profiles().apply()` + `save_file()`"
-msgstr "成功时：`Config::profiles().apply()` + `save_file()`"
+msgid "Profile-chain script execution is a placeholder; `process_chain(...)` does not yet rewrite the configuration."
+msgstr "配置链脚本执行仍是占位实现；`process_chain(...)` 尚不会改写配置。"
 
 #: src/chimera/runtime_config.md
-msgid "On failure: `discard()` (rollback)"
-msgstr "失败时：`discard()`（回滚）"
+msgid "Global chain processing remains commented out; only the scoped chain framework is present."
+msgstr "全局链处理代码仍被注释，目前只有带作用域的链处理框架。"
 
 #: src/chimera/runtime_config.md
-msgid "7.2 Changing Settings (Certain Fields)"
-msgstr "7.2 修改设置（某些字段）"
+msgid "The `patch_clash_config` IPC is still `todo!()`, so the frontend will fail if it uses that IPC path."
+msgstr "`patch_clash_config` IPC 仍为 `todo!()`；如果前端调用这条 IPC 路径，就会失败。"
 
 #: src/chimera/runtime_config.md
-msgid "Frontend `commands.patchVergeConfig` → backend `feat::patch_verge(...)`:"
-msgstr "前端 `commands.patchVergeConfig` → 后端 `feat::patch_verge(...)`："
+msgid "Editing a profile file directly does not automatically trigger hot reload. `save_profile_file(...)` writes the file but does not call `update_config()`."
+msgstr "直接编辑配置文件不会自动触发热重载。`save_profile_file(...)` 只写入文件，不会调用 `update_config()`。"
 
 #: src/chimera/runtime_config.md
-msgid "Writes an `IVerge` draft first"
-msgstr "先写入一份 `IVerge` 草稿"
+msgid "6. Troubleshooting"
+msgstr "6. 故障排查"
 
 #: src/chimera/runtime_config.md
-msgid "Some fields (e.g., `enable_tun_mode`) may trigger:"
-msgstr "某些字段（例如 `enable_tun_mode`）可能触发："
+msgid "If the core appears to be using the wrong configuration, check these items in order:"
+msgstr "如果核心似乎使用了错误的配置，请按以下顺序检查："
 
 #: src/chimera/runtime_config.md
-msgid "`Config::generate()` + `run_core()` (restart scenario)"
-msgstr "`Config::generate()` + `run_core()`（重启场景）"
+msgid "**Active profile:** verify `current` in `profiles.yaml`."
+msgstr "**当前配置：**检查 `profiles.yaml` 中的 `current`。"
 
 #: src/chimera/runtime_config.md
-msgid "or `update_core_config()` (hot-update scenario)"
-msgstr "或 `update_core_config()`（热更新场景）"
+msgid "**Profile content:** inspect the relevant file under `app_config_dir/profiles/`."
+msgstr "**配置内容：**检查 `app_config_dir/profiles/` 下对应的配置文件。"
 
 #: src/chimera/runtime_config.md
-msgid "7.3 Importing the First Profile"
-msgstr "7.3 导入第一份配置"
+msgid "**Clash Guard overrides:** check whether fields in `HANDLE_FIELDS` from `clash-guard-overrides.yaml` replace the values you expected."
+msgstr "**Clash Guard 覆盖项：**检查 `clash-guard-overrides.yaml` 中的 `HANDLE_FIELDS` 是否覆盖了预期值。"
 
 #: src/chimera/runtime_config.md
-msgid "After `import_profile(...)` succeeds, if there is no active profile yet, it automatically constructs `ProfilesBuilder.current = [new_uid]` and reuses `patch_profiles_config(...)` to trigger an update."
-msgstr "当 `import_profile(...)` 成功后，如果当前还没有激活配置，它会自动构造 `ProfilesBuilder.current = [new_uid]`，并复用 `patch_profiles_config(...)` 触发更新。"
+msgid "**Generated configuration:** inspect `clash-config.yaml`, or call `get_runtime_yaml()` to view the in-memory configuration."
+msgstr "**生成结果：**检查 `clash-config.yaml`，或调用 `get_runtime_yaml()` 查看内存中的配置。"
 
 #: src/chimera/runtime_config.md
-msgid "8. Key Details and Common Misunderstandings"
-msgstr "8. 关键细节与常见误解"
+msgid "**Reload or restart:** confirm that `patch_profiles_config`, `patch_verge_config`, or `restart_sidecar` ran, and check the logs for the result of `PUT /configs`."
+msgstr "**重载或重启：**确认是否执行了 `patch_profiles_config`、`patch_verge_config` 或 `restart_sidecar`，并查看日志中 `PUT /configs` 的结果。"
 
 #: src/chimera/runtime_config.md
-msgid "`profiles.yaml` is **not** the final configuration used by the core"
-msgstr "`profiles.yaml` **不是**核心最终使用的配置"
-
-#: src/chimera/runtime_config.md
-msgid "it only stores profile metadata and the `current` pointer"
-msgstr "它只存储配置元数据和 `current` 指针"
-
-#: src/chimera/runtime_config.md
-msgid "Profile content files are **not** passed to the core verbatim"
-msgstr "配置内容文件**不会**原样传给核心"
-
-#: src/chimera/runtime_config.md
-msgid "they become the runtime config only after merging, filtering, and guard overrides"
-msgstr "它们只有在经过合并、过滤和 guard 覆盖之后，才会变成运行时配置"
-
-#: src/chimera/runtime_config.md
-msgid "`external-controller` may have its port changed before startup"
-msgstr "`external-controller` 的端口可能会在启动前被修改"
-
-#: src/chimera/runtime_config.md
-msgid "`prepare_external_controller_port()` checks port availability according to policy and switches ports if necessary"
-msgstr "`prepare_external_controller_port()` 会按策略检查端口可用性，并在必要时切换端口"
-
-#: src/chimera/runtime_config.md
-msgid "`verge_mixed_port` is primarily used for system proxy logic"
-msgstr "`verge_mixed_port` 主要用于系统代理逻辑"
-
-#: src/chimera/runtime_config.md
-msgid "it is **not** directly written to the runtime YAML’s `mixed-port`"
-msgstr "它**不会**被直接写入运行时 YAML 的 `mixed-port`"
-
-#: src/chimera/runtime_config.md
-msgid "system proxy uses `verge_mixed_port` first, otherwise falls back to `Config::clash().get_mixed_port()`"
-msgstr "系统代理会优先使用 `verge_mixed_port`，否则回退到 `Config::clash().get_mixed_port()`"
-
-#: src/chimera/runtime_config.md
-msgid "`get_runtime_yaml()` returns `IRuntime.config` from memory"
-msgstr "`get_runtime_yaml()` 返回的是内存中的 `IRuntime.config`"
-
-#: src/chimera/runtime_config.md
-msgid "it is usually consistent with the recently written `clash-config.yaml`"
-msgstr "它通常与最近写入的 `clash-config.yaml` 保持一致"
-
-#: src/chimera/runtime_config.md
-msgid "but fundamentally it comes from memory, not from re-reading disk each time"
-msgstr "但从根本上说，它来自内存，而不是每次都重新读取磁盘"
-
-#: src/chimera/runtime_config.md
-msgid "9. Current Implementation Limitations (As of the Codebase)"
-msgstr "9. 当前实现限制（以当前代码库为准）"
-
-#: src/chimera/runtime_config.md
-msgid "Chain script execution is currently a placeholder"
-msgstr "链式脚本执行目前仍是占位实现"
-
-#: src/chimera/runtime_config.md
-msgid "`process_chain(...)` does not actually rewrite the config yet"
-msgstr "`process_chain(...)` 目前尚未真正改写配置"
-
-#: src/chimera/runtime_config.md
-msgid "Global chain processing code is still commented out"
-msgstr "全局链处理代码仍处于注释状态"
-
-#: src/chimera/runtime_config.md
-msgid "only the scoped chain framework exists for now"
-msgstr "目前仅存在带作用域的链式框架"
-
-#: src/chimera/runtime_config.md
-msgid "`patch_clash_config` IPC is still `todo!()`"
-msgstr "`patch_clash_config` IPC 仍然是 `todo!()`"
-
-#: src/chimera/runtime_config.md
-msgid "the frontend will fail if it uses that IPC path"
-msgstr "如果前端使用该 IPC 路径，将会失败"
-
-#: src/chimera/runtime_config.md
-msgid "Directly editing a profile file does not automatically trigger a hot-reload"
-msgstr "直接编辑配置文件不会自动触发热重载"
-
-#: src/chimera/runtime_config.md
-msgid "`save_profile_file(...)` only writes the file; it does not call `update_config()`"
-msgstr "`save_profile_file(...)` 只会写入文件；它不会调用 `update_config()`"
-
-#: src/chimera/runtime_config.md
-msgid "10. Troubleshooting Checklist (Practical Order)"
-msgstr "10. 故障排查清单（实用顺序）"
-
-#: src/chimera/runtime_config.md
-msgid "If you suspect “the core is using the wrong configuration,” check in this order:"
-msgstr "如果你怀疑“核心使用了错误的配置”，请按以下顺序检查："
-
-#: src/chimera/runtime_config.md
-msgid "Confirm the active profile is correct"
-msgstr "确认当前激活的配置是否正确"
-
-#: src/chimera/runtime_config.md
-msgid "verify `profiles.yaml` → `current`"
-msgstr "检查 `profiles.yaml` → `current`"
-
-#: src/chimera/runtime_config.md
-msgid "Confirm the profile source content matches expectations"
-msgstr "确认配置源内容符合预期"
-
-#: src/chimera/runtime_config.md
-msgid "check `app_config_dir/profiles/*.yaml`"
-msgstr "检查 `app_config_dir/profiles/*.yaml`"
-
-#: src/chimera/runtime_config.md
-msgid "Check guard override items"
-msgstr "检查 guard 覆盖项"
-
-#: src/chimera/runtime_config.md
-msgid "verify whether `HANDLE_FIELDS` in `clash-guard-overrides.yaml` overrides the values you intended"
-msgstr "确认 `clash-guard-overrides.yaml` 中的 `HANDLE_FIELDS` 是否覆盖了你预期的值"
-
-#: src/chimera/runtime_config.md
-msgid "Inspect the final runtime configuration"
-msgstr "检查最终运行时配置"
-
-#: src/chimera/runtime_config.md
-msgid "check `clash-config.yaml`"
-msgstr "检查 `clash-config.yaml`"
-
-#: src/chimera/runtime_config.md
-msgid "or call `get_runtime_yaml()` to view the in-memory version"
-msgstr "或调用 `get_runtime_yaml()` 查看内存中的版本"
-
-#: src/chimera/runtime_config.md
-msgid "Confirm a hot-reload actually occurred"
-msgstr "确认热重载是否真的发生"
-
-#: src/chimera/runtime_config.md
-msgid "verify `patch_profiles_config` / `patch_verge_config` / `restart_sidecar` was executed"
-msgstr "确认 `patch_profiles_config` / `patch_verge_config` / `restart_sidecar` 是否已执行"
-
-#: src/chimera/runtime_config.md
-msgid "check logs to see whether `PUT /configs` succeeded"
-msgstr "检查日志，确认 `PUT /configs` 是否成功"
-
-#: src/chimera/runtime_config.md
-msgid "If you see port-related issues"
-msgstr "如果你遇到端口相关问题"
-
-#: src/chimera/runtime_config.md
-msgid "check whether `external-controller` was rewritten by the port strategy"
-msgstr "检查 `external-controller` 是否被端口策略改写"
+msgid "**Port problems:** check whether the port strategy changed `external-controller`."
+msgstr "**端口问题：**检查端口策略是否修改了 `external-controller`。"
 
 #: src/chimera/service-mode.md
 msgid "Scope"
