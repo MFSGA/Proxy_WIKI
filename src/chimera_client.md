@@ -217,5 +217,5 @@ features enabled by the produced artifact.
 ## Reference Repositories
 
 - `Chimera_Client`: <https://github.com/MFSGA/Chimera_Client>
-- `clash-rs`: <https://github.com/Watfaq/clash-rs>
+- `clash-rs`: <https://github.com/ibigbug/clash-rs>
 - `mihomo`: <https://github.com/MetaCubeX/mihomo>

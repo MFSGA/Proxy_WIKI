@@ -19,13 +19,13 @@ questions are tracked in [Open Questions](./open-questions.md).
 
 ## Project Links
 
-- `clash-rs`: <https://github.com/Watfaq/clash-rs>
+- `clash-rs`: <https://github.com/ibigbug/clash-rs>
 - `Mihomo`: <https://github.com/MetaCubeX/mihomo>
 - `clash-nyanpasu`: <https://github.com/libnyanpasu/clash-nyanpasu>
 - `xray-core`: <https://github.com/XTLS/Xray-core>
 - `shoes`: <https://github.com/cfal/shoes>
 
-[clash-rs]: https://github.com/Watfaq/clash-rs
+[clash-rs]: https://github.com/ibigbug/clash-rs
 [Mihomo]: https://github.com/MetaCubeX/mihomo
 [clash-nyanpasu]: https://github.com/libnyanpasu/clash-nyanpasu
 [xray-core]: https://github.com/XTLS/Xray-core

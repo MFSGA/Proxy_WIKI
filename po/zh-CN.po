@@ -120,10 +120,10 @@ msgstr ""
 #: src/preface.md
 msgid ""
 "`Chimera_Client` takes inspiration from the open-source [clash-rs](https://"
-"github.com/Watfaq/clash-rs) project, with the long-term goal of matching "
+"github.com/ibigbug/clash-rs) project, with the long-term goal of matching "
 "[Mihomo](https://github.com/MetaCubeX/mihomo)'s feature set."
 msgstr ""
-"`Chimera_Client` 借鉴了开源 [clash-rs](https://github.com/Watfaq/clash-rs) 项"
+"`Chimera_Client` 借鉴了开源 [clash-rs](https://github.com/ibigbug/clash-rs) 项"
 "目，长期目标是对齐 [Mihomo](https://github.com/MetaCubeX/mihomo) 的功能集。"
 
 #: src/preface.md
@@ -153,8 +153,8 @@ msgid "Project Links"
 msgstr "项目链接"
 
 #: src/preface.md src/chimera_client.md
-msgid "`clash-rs`: <https://github.com/Watfaq/clash-rs>"
-msgstr "`clash-rs`: <https://github.com/Watfaq/clash-rs>"
+msgid "`clash-rs`: <https://github.com/ibigbug/clash-rs>"
+msgstr "`clash-rs`: <https://github.com/ibigbug/clash-rs>"
 
 #: src/preface.md
 msgid "`Mihomo`: <https://github.com/MetaCubeX/mihomo>"
@@ -5284,9 +5284,9 @@ msgstr "这些项目借鉴了多个成熟的开源项目："
 #: src\preface.md
 msgid ""
 "`Chimera_Client` builds on ideas from "
-"[clash-rs](https://github.com/Watfaq/clash-rs), with broader "
+"[clash-rs](https://github.com/ibigbug/clash-rs), with broader "
 "Clash/Mihomo-style compatibility as a long-term direction."
-msgstr "`Chimera_Client` 借鉴了 [clash-rs](https://github.com/Watfaq/clash-rs) 的设计思路，并将更广泛的 Clash/Mihomo 风格兼容性作为长期发展方向。"
+msgstr "`Chimera_Client` 借鉴了 [clash-rs](https://github.com/ibigbug/clash-rs) 的设计思路，并将更广泛的 Clash/Mihomo 风格兼容性作为长期发展方向。"
 
 #: src\preface.md
 msgid ""
