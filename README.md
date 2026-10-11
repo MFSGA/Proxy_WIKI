@@ -68,6 +68,25 @@ cargo xtask build -l zh-CN     # static output in book/zh-CN/
 - `End-to-End Troubleshooting`: failure isolation by layer.
 - `Deployment Security and Threat Model`: deployment boundaries, exposure, authentication, fallback, and secret-handling guidance.
 
+## Development commands
+
+When using the Nix development shell (`direnv allow` or `nix develop`), these
+short commands are available:
+
+```shell
+pw-help        # list available helper commands
+pw-serve       # preview English docs
+pw-serve-zh    # preview Simplified Chinese docs
+pw-build       # build English docs
+pw-build-zh    # build Simplified Chinese docs
+pw-rust-test   # run mdBook code-block tests
+pw-test        # run Rust workspace tests
+pw-clippy      # run Clippy with warnings denied
+pw-format      # run dprint and rustfmt
+pw-update-zh   # refresh po/zh-CN.po
+pw-check       # run the usual local validation sequence
+```
+
 ## Translation notes
 - Translation entries live in `po/<lang>.po`; `mdbook build` emits `book/xgettext/messages.pot`.
 - `scripts/update-zh.sh --stats` refreshes `po/zh-CN.po`, normalizes it, and reports untranslated/fuzzy counts.
