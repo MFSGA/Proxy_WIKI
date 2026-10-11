@@ -817,11 +817,17 @@ is not automatically valid in `chimera_client`.
 
 ### Chimera_Client
 
-The current `Chimera_Client` overview does **not** list standalone VLESS as a
-separate current capability, even though related capabilities such as Reality +
-TCP and XHTTP are documented. Until the client repository is used to establish
-the exact supported combination, treat VLESS client support as
-combination/branch-specific rather than claiming full parity.
+Upstream alignment: Needs assessment (target: Xray-core; scope: outbound VLESS
+wire behavior and supported transport, security, and flow combinations)
+
+Local maturity: Experimental
+
+The current `Chimera_Client` source defines a VLESS outbound and registers its
+runtime handler. This confirms that VLESS outbound support exists; it does not
+establish parity for every Xray transport, security mode, flow, or option. Use
+the implementation matrix and test evidence to determine the combinations
+verified by this Wiki, and do not infer full Xray compatibility from the
+protocol's presence in the outbound enum.
 
 ### Chimera GUI
 

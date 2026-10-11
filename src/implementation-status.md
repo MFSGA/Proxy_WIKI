@@ -22,23 +22,25 @@ Use the following terms consistently across this Wiki:
 A protocol must not be described simply as “supported” when the available
 evidence only reaches **Parsed** or **Constructed**.
 
-## Audited Source Snapshot
+## Source Checkout Snapshot
 
-The table below records the repository heads inspected while maintaining this
-page. A dirty working tree means local, uncommitted changes can exist beyond the
-listed commit.
+The table records the repository heads and working-tree states observed on
+2026-10-12 while maintaining this page. It is provenance, not a claim that every
+feature below was re-audited at these revisions. Protocol claims should be
+verified against the relevant source and tests; dirty working trees can contain
+uncommitted changes beyond the listed commit.
 
-| Repository | Audited HEAD | Working tree at audit | Primary role |
+| Repository | HEAD observed | Working tree observed | Primary role |
 | --- | --- | --- | --- |
-| `Chimera_Client` | `e25ace1` | Dirty | Clash-family client core and local proxy runtime |
-| `Chimera_Server` | `0e2d3c1` | Clean | Xray-oriented inbound/server core |
-| `Chimera` | `5119241` | Dirty | Desktop control plane and core lifecycle manager |
-| `Chimera_Service` | `1b7d3ec` | Clean | Privileged local service and core process manager |
-| `AChimera` | `3cd85e8` | Clean | Android application embedding the Chimera client core through UniFFI |
+| `Chimera_Client` | `8fc9b2b3` | Clean | Clash-family client core and local proxy runtime |
+| `Chimera_Server` | `c600d2f` | Clean | Xray-oriented inbound/server core |
+| `Chimera` | `f5f0d036` | Clean | Desktop control plane and core lifecycle manager |
+| `Chimera_Service` | `938490b` | Dirty | Privileged local service and core process manager |
+| `AChimera` | `d6b4af73` | Dirty | Android application embedding the Chimera client core through UniFFI |
 
-This is a documentation audit marker, not a release compatibility promise.
-Re-check the source before relying on this table after protocol or runtime
-changes.
+This is a documentation checkout marker, not a release compatibility promise
+or a complete feature audit. Re-check the relevant source and tests before
+relying on a capability claim after protocol or runtime changes.
 
 For the concrete tests behind interoperability claims, see
 [Test Evidence and Interoperability Matrix](./test-evidence.md).
