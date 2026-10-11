@@ -4,7 +4,10 @@
 
 XHTTP is an Xray transport method used to carry proxy traffic through
 HTTP-shaped request/response flows. It belongs to the transport layer, not the
-proxy-protocol layer.
+proxy-protocol layer. This page owns HTTP framing, session handling, and
+transport settings; proxy identity/destination rules belong to the
+[Proxy Protocol Reference](../protocol.md), and TLS/REALITY settings belong to
+[Transport Security](../transport-security.md).
 
 A typical deployment combines:
 
@@ -577,43 +580,18 @@ After TLS/QUIC decryption, debugging proceeds from the outside inward:
 A single HTTP request is not necessarily a single proxy request, and a single
 proxy request is not necessarily contained in one HTTP request.
 
-## XHTTP Compared with SOCKS5
+## Proxy-Protocol Boundary
 
-The most useful comparison is layer-by-layer rather than treating XHTTP as a
-replacement SOCKS protocol.
+XHTTP is not a replacement for a SOCKS5 or VLESS proxy handshake. It
+reconstructs and delivers a byte stream to an inner proxy handler; that handler
+owns client identity, destination address, and TCP/UDP semantics. See
+[SOCKS5](../protocols/socks5.md) and [VLESS](../protocols/vless.md) for those
+protocol-level messages.
 
-| Stage | SOCKS5 | VLESS over XHTTP |
-| --- | --- | --- |
-| Client identity | METHOD/RFC 1929 exchange | VLESS UUID inside reconstructed stream |
-| Proxy command | SOCKS `CONNECT` / `UDP ASSOCIATE` | VLESS command inside reconstructed stream |
-| Destination | `ATYP + DST.ADDR + DST.PORT` | VLESS `PORT + ATYP + ADDRESS` |
-| Transport request | Same SOCKS TCP control connection | One or more HTTP requests |
-| Transport session ID | None | XHTTP Session ID in split modes; placement can be path/query/header/cookie |
-| Ordering | TCP byte order | XHTTP sequence metadata (also relocatable) + upload queue, then byte order |
-| Uplink data placement | Same TCP stream | body, or Base64url chunks in headers/cookies for packet-up |
-| Padding/camouflage metadata | None | configurable XPadding placement/method; separate from proxy authentication |
-| Success at transport layer | SOCKS `REP` | HTTP status such as `200` |
-| Proxy-protocol success | SOCKS `REP` | VLESS response header / stream behavior |
-| Downlink | Same TCP stream | HTTP response body; `downloadSettings` can use a separately configured physical path |
-| Multiplexing | Not in base SOCKS5 | HTTP/2/3 plus optional XMUX/XHTTP reuse |
-| Encryption | Not provided | TLS or REALITY can protect XHTTP |
-
-The two important separations are:
-
-```text
-SOCKS5:
-authentication + destination command + relay framing
-are one protocol.
-
-VLESS + XHTTP + REALITY:
-VLESS   = identity + destination command + proxy semantics
-XHTTP   = mapping of proxy bytes onto HTTP requests/responses
-REALITY = transport-security authentication/camouflage
-```
-
-Therefore an HTTP `200` from XHTTP does **not** mean the requested destination
-was accepted in the same sense as SOCKS5 `REP=0x00`. It only means the HTTP
-transport request was accepted. The inner proxy protocol can still fail later.
+An XHTTP HTTP `200` confirms only that the transport request was accepted.
+It does **not** confirm inner proxy authentication or destination acceptance.
+Likewise, XHTTP session IDs, ordering metadata, and XPadding are transport
+fields rather than proxy users, commands, or encryption keys.
 
 ## Ordering, Flow Control, and Backpressure
 

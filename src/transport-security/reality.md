@@ -5,7 +5,9 @@
 REALITY is an Xray transport-security mechanism. It is not a standalone proxy
 protocol: it protects and camouflages a supported transport while the actual
 proxy protocol can be VLESS, Trojan, or another compatible Xray inbound/outbound
-combination.
+combination. This page owns REALITY authentication, key material, and fallback
+behavior; inner proxy semantics belong to [Proxy Protocols](../protocol.md),
+and HTTP/stream framing belongs to [Transports](../transport.md).
 
 Current Xray documentation describes REALITY as a modified TLS design that
 borrows the appearance and handshake characteristics of a target site. In the
@@ -240,36 +242,18 @@ span TCP segments, and newer fingerprints can produce larger ClientHello
 messages. A server implementation must parse a byte stream and TLS lengths,
 not depend on packet boundaries or a single `read()` call.
 
-## REALITY vs SOCKS5: Layer-by-Layer Comparison
+## Security and Proxy Authentication Are Different
 
-SOCKS5 and REALITY are intentionally different layers. The comparison is useful
-mainly to show which SOCKS5 responsibilities REALITY does **not** replace:
+REALITY validates a TLS-like **security-layer** handshake: key relation, short
+ID, server name, and other configured constraints. It does not carry a proxy
+destination request or authenticate a VLESS UUID. A valid REALITY session may
+still fail when the inner [proxy protocol](../protocol.md) checks its own
+identity or target rules.
 
-| Stage / responsibility | SOCKS5 | REALITY |
-| --- | --- | --- |
-| Underlying connection | TCP to SOCKS server | Usually TCP to Xray/REALITY listener |
-| First protocol message | SOCKS method list | TLS/uTLS ClientHello |
-| Authentication placement | Separate METHOD/auth sub-protocol | Protected metadata inside TLS-looking ClientHello |
-| Credential form | Method-specific; e.g. username/password | Server public/private key relation + short ID + handshake-derived authentication |
-| Target proxy address | `CMD + ATYP + DST.ADDR + DST.PORT` | **Not carried by REALITY**; supplied later by VLESS/Trojan/etc. |
-| Proxy success reply | SOCKS `REP` | No SOCKS-equivalent proxy reply; REALITY establishes/rejects the security layer |
-| TCP relay framing | Raw stream after `REP=0x00` | Defined by the underlying proxy/transport after REALITY succeeds |
-| UDP association | RFC 1928 `UDP ASSOCIATE` | Not defined by REALITY |
-| Encryption | None in base SOCKS5 | TLS-shaped encrypted transport/security layer |
-| Camouflage/fallback | None in base SOCKS5 | Invalid/non-REALITY traffic can be directed toward the configured target |
-
-For `VLESS + REALITY + RAW`, the closest functional mapping is therefore:
-
-```text
-SOCKS5 METHOD/auth       ~= REALITY handshake authentication
-SOCKS5 CONNECT request   ~= VLESS request header (not REALITY)
-SOCKS5 REP               ~= VLESS/transport success or failure behavior
-SOCKS5 raw relay         ~= VLESS body over the REALITY-protected connection
-```
-
-This layered mapping prevents a common documentation error: describing the
-REALITY short ID as if it were a replacement for a VLESS UUID, or describing
-REALITY as if it encoded the destination address. It does neither.
+For example, [SOCKS5](../protocols/socks5.md) negotiates a method and then a
+destination request, whereas REALITY has no SOCKS-style reply or UDP ASSOCIATE
+command. Proxy request framing remains in the inner protocol after the secure
+transport is established.
 
 ## Parser, Timing, and Boundary Conditions
 

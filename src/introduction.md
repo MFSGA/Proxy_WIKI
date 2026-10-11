@@ -27,9 +27,11 @@ There are three complementary reading paths:
   [Implementation Status and Source Evidence](./implementation-status.md) to see
   which capabilities are parsed, implemented, feature-gated, tested, or
   explicitly rejected in the current source.
-- **Wire protocols**: use [Protocol Reference](./protocol.md) for low-level wire
-  formats, state machines, security properties, packet-capture views, and
-  comparisons with SOCKS5.
+- **Proxy protocols**: use [Proxy Protocol Reference](./protocol.md) for proxy
+  handshakes, destination requests, wire formats, and TCP/UDP relay semantics.
+  See [Transport Reference](./transport.md) for byte-stream delivery and
+  [Transport Security Reference](./transport-security.md) for TLS/REALITY
+  handshakes; each layer has its own configuration and failure boundaries.
 
 Protocol specification and implementation status are deliberately separate. An
 upstream protocol can define a field that Chimera does not yet implement, while

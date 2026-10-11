@@ -696,7 +696,7 @@ correctly.
 ### REALITY
 
 REALITY modifies the TLS-facing security layer and is commonly combined with
-VLESS. See [Reality](./reality.md) for its key, short-ID, target, and fallback
+VLESS. See [REALITY](../transport-security/reality.md) for its key, short-ID, target, and fallback
 model.
 
 ### No transport security

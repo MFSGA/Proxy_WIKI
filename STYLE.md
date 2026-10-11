@@ -21,6 +21,16 @@ who need accurate behavior, configuration, and compatibility information.
   broader gaps summarized in `src/open-questions.md`.
 - Protocol pages should cover handshake shape, configuration surface,
   interoperability notes, security considerations, and known limitations.
+- Keep proxy-protocol references under `src/protocols/`, transport wrappers
+  under `src/transports/`, and outer security mechanisms under
+  `src/transport-security/`. Their parent indexes are `src/protocol.md`,
+  `src/transport.md`, and `src/transport-security.md`, respectively.
+- A protocol page owns user identity, target requests, and proxy framing; a
+  transport page owns stream delivery/session framing; a security page owns
+  outer-channel handshakes and verification. Link across layers instead of
+  duplicating configuration rules or implying unrestricted combinations.
+- When a cross-layer example is necessary, label it as a specific tested or
+  conceptual composition, not as a generic compatibility claim.
 
 ### Feature Status Fields
 
@@ -83,8 +93,8 @@ New protocol/transport pages should follow this order when the topic applies:
    transitions where relevant.
 6. **TCP and UDP behavior** — document separately; use “not applicable” rather
    than implying parity.
-7. **Packet-capture view** — identify which layer is visible before decryption or
-   inner-protocol handoff.
+7. **Packet-capture view** — identify which layer is visible before decryption
+   or inner-protocol handoff.
 8. **Security notes** — authentication, confidentiality, replay/fallback
    boundaries, resource limits, and exposure assumptions.
 9. **Chimera implementation status** — Client/Server direction, the two feature

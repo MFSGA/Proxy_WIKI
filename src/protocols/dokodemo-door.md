@@ -151,7 +151,7 @@ The normal security-layer builder can also wrap the TCP path where the selected 
 
 This means Dokodemo-door can be the **inner forwarding handler** behind another transport. In that case, the wrapper consumes its own handshake bytes first, and only the resulting inner raw stream is forwarded to the configured/original target.
 
-See [gRPC Transport](./grpc-transport.md) and [HTTPUpgrade Transport](./httpupgrade.md) for the transport-layer behavior.
+See [gRPC Transport](../transports/grpc-transport.md) and [HTTPUpgrade Transport](../transports/httpupgrade.md) for the transport-layer behavior.
 
 ## UDP Mode
 

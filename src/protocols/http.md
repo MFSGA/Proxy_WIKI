@@ -9,7 +9,7 @@ other TCP destinations, the client normally asks the proxy to create a tunnel
 with the HTTP `CONNECT` method.
 
 HTTP proxying should not be confused with XHTTP. An HTTP proxy is an inbound
-proxy protocol used by local applications; [XHTTP](./xhttp.md) is an Xray
+proxy protocol used by local applications; [XHTTP](../transports/xhttp.md) is an Xray
 transport used between compatible proxy endpoints.
 
 ## Protocol Flow

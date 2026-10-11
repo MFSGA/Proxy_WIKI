@@ -226,7 +226,7 @@ For REALITY, additionally verify:
 
 The Server test suite intentionally contains cases where REALITY/transport state and VLESS account/flow state fail independently. Treat them as separate layers in logs and captures.
 
-See [REALITY](./protocols/reality.md) and [Test Evidence and Interoperability Matrix](./test-evidence.md).
+See [REALITY](./transport-security/reality.md) and [Test Evidence and Interoperability Matrix](./test-evidence.md).
 
 ## Step 7: Validate the Transport Wrapper
 
@@ -245,7 +245,7 @@ xhttp packet-up write failed
 xhttp logical stream ... failed
 ```
 
-See [XHTTP Transport](./protocols/xhttp.md).
+See [XHTTP Transport](./transports/xhttp.md).
 
 ### gRPC transport
 
@@ -262,7 +262,7 @@ inner proxy bytes
 
 A `grpc-status: 12` response usually means method/path/content-type mismatch. Do not use management-gRPC API tests or endpoints to diagnose the proxy gRPC transport; they are separate subsystems.
 
-See [gRPC Transport](./protocols/grpc-transport.md).
+See [gRPC Transport](./transports/grpc-transport.md).
 
 ### HTTPUpgrade
 
@@ -270,7 +270,7 @@ The current Server expects HTTP/1.1 `GET`, matching path/optional Host, `Connect
 
 Do not apply WebSocket data framing after `101`. That mistake makes the transport handshake look successful while the inner proxy parser receives invalid bytes.
 
-See [HTTPUpgrade Transport](./protocols/httpupgrade.md).
+See [HTTPUpgrade Transport](./transports/httpupgrade.md).
 
 ### WebSocket
 

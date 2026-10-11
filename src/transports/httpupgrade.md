@@ -1,6 +1,6 @@
 # HTTPUpgrade Transport
 
-HTTPUpgrade is an HTTP/1.1 transport wrapper implemented by `Chimera_Server`. It uses an HTTP Upgrade-looking handshake to switch from an HTTP request/response exchange into a raw bidirectional byte stream for an inner proxy protocol.
+HTTPUpgrade is an HTTP/1.1 transport wrapper implemented by `Chimera_Server`. It uses an HTTP Upgrade-looking handshake to switch from an HTTP request/response exchange into a raw bidirectional byte stream for an inner proxy protocol. This chapter owns the upgrade preface and resulting stream, not inner proxy authentication/destination semantics (see [Proxy Protocols](../protocol.md)) or outer TLS/REALITY settings (see [Transport Security](../transport-security.md)).
 
 Despite the current header value `Upgrade: websocket`, this implementation is **not a WebSocket transport**: it does not perform the WebSocket key/accept handshake and it does not add WebSocket data frames after the `101 Switching Protocols` response.
 
@@ -340,19 +340,14 @@ HTTP CONNECT also transitions into a tunnel, but the setup semantics differ:
 
 HTTPUpgrade is therefore an **extra transport layer** for another proxy protocol, whereas an HTTP CONNECT proxy itself performs destination proxying.
 
-## SOCKS5 Phase-by-phase Comparison
+## Proxy-Protocol Boundary
 
-| Phase | SOCKS5 | HTTPUpgrade transport | Relationship |
-| --- | --- | --- | --- |
-| Initial TCP | Connect to SOCKS server | Connect to HTTPUpgrade listener | Same lower-layer step |
-| Method negotiation | SOCKS method list | None | Removed from transport |
-| Authentication | Optional SOCKS auth | None at this layer | Delegated to inner protocol/security |
-| Destination | SOCKS request contains target | HTTPUpgrade path/Host identify transport endpoint; inner protocol contains target | Moved to inner layer |
-| Success response | SOCKS `REP` | HTTP `101` only confirms transport upgrade | Different purpose |
-| Data | Raw relay after SOCKS setup | Raw inner-protocol bytes after HTTP headers | Extra transport preface |
-| Framing | No extra TCP record framing | No framing after `101` | Conceptually similar raw stream after setup |
-| Errors | SOCKS numeric `REP` | Handler errors before `101`; inner errors afterward | Replaced |
-| Close | TCP close | TCP/inner-protocol close | Same underlying close after transport setup |
+An HTTP `101 Switching Protocols` response confirms the HTTPUpgrade preface
+but not proxy authentication, destination acceptance, or relay success.
+Those remain the responsibility of the selected
+[inner proxy protocol](../protocol.md), such as
+[SOCKS5](../protocols/socks5.md) in its own application-proxy role.
+HTTPUpgrade contributes no additional record framing after the upgrade.
 
 ## Current Chimera_Client Status
 

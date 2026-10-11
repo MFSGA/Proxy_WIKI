@@ -1,6 +1,6 @@
 # gRPC Transport
 
-The gRPC transport documented here is an Xray-style transport wrapper implemented by `Chimera_Server`. It is not the server's management gRPC API and it is not itself a proxy protocol. It turns a bidirectional byte stream for an inner protocol into gRPC messages over HTTP/2-compatible HTTP serving.
+The gRPC transport documented here is an Xray-style transport wrapper implemented by `Chimera_Server`. It is not the server's management gRPC API and it is not itself a proxy protocol. It turns a bidirectional byte stream for an inner protocol into gRPC messages over HTTP/2-compatible HTTP serving. This page covers the gRPC wrapper only: inner identity and destination semantics belong to the [Proxy Protocol Reference](../protocol.md), while TLS/REALITY handshakes belong to [Transport Security](../transport-security.md).
 
 The current `Chimera_Client` outbound tree does not contain a matching gRPC transport module, so this page primarily documents Server behavior and the Xray interoperability surface exercised by Server E2E tests.
 
@@ -282,22 +282,14 @@ Do **not** use `grpc_all_interfaces_e2e.rs`, `grpc_external_integration.rs`, or 
 
 The current `Chimera_Client` outbound transport tree does not contain a gRPC transport implementation. Therefore a Server gRPC feature must not be presented as a current Chimera Client → Chimera Server end-to-end combination unless a different compatible client is used.
 
-## SOCKS5 Comparison
+## Proxy-Protocol Boundary
 
-SOCKS5 and gRPC transport live at different layers, but phase comparison helps troubleshooting:
-
-| Phase | SOCKS5 | gRPC transport |
-| --- | --- | --- |
-| TCP connect | Connect to SOCKS proxy | Connect to gRPC server, possibly then TLS/REALITY |
-| Proxy auth | SOCKS method/subnegotiation | Not handled by gRPC transport; inner protocol handles it |
-| Destination request | SOCKS request header | Not handled by gRPC transport; inner protocol carries destination |
-| Data framing | Raw TCP bytes after SOCKS setup | gRPC envelope + Hunk protobuf around inner bytes |
-| Multiplexing | No HTTP/2 layer | HTTP/2 exists, but Chimera `multiMode` is not implemented |
-| Flow control | TCP | TCP + HTTP/2 + in-process pipe + inner protocol |
-| Errors | SOCKS `REP` during setup | HTTP/gRPC status for transport errors; inner protocol errors separately |
-| Close | TCP close/half-close | HTTP request/response completion + gRPC trailers + underlying connection close |
-
-The relationship is therefore **extra transport layer**, not replacement of SOCKS5's proxy semantics.
+Unlike [SOCKS5](../protocols/socks5.md), gRPC transport does not negotiate a
+proxy user, encode a target address, or send a proxy success reply. It maps
+inner protocol bytes to HTTP/2, gRPC, and Hunk envelopes and back. A successful
+HTTP/gRPC response verifies transport setup only; the selected
+[inner protocol](../protocol.md) can still reject authentication, flow mode,
+or destination handling.
 
 ## Security Notes
 
