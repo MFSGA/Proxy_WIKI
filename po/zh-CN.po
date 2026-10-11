@@ -412,18 +412,6 @@ msgid "`clash-lib/src/config`, `clash-lib/src/app`, `clash-lib/src/proxy`"
 msgstr "`clash-lib/src/config`、`clash-lib/src/app`、`clash-lib/src/proxy`"
 
 #: src/system-topology.md src/implementation-status.md
-msgid "`Chimera_Service`"
-msgstr "`Chimera_Service`"
-
-#: src/system-topology.md
-msgid "Privileged local service: install/start/stop/status, local IPC, selected core lifecycle, selected privileged network operations."
-msgstr "本地特权服务：负责安装/启动/停止/状态查询、本地 IPC、所选核心生命周期以及部分特权网络操作。"
-
-#: src/system-topology.md
-msgid "`chimera_ipc/src/api`, `chimera_service/src/server`, `chimera_service/src/cmds`"
-msgstr "`chimera_ipc/src/api`、`chimera_service/src/server`、`chimera_service/src/cmds`"
-
-#: src/system-topology.md src/implementation-status.md
 msgid "`AChimera`"
 msgstr "`AChimera`"
 
@@ -672,6 +660,10 @@ msgstr "`5119241`"
 #: src/implementation-status.md
 msgid "Desktop control plane and core lifecycle manager"
 msgstr "桌面控制面与核心生命周期管理器"
+
+#: src/implementation-status.md
+msgid "`Chimera_Service`"
+msgstr "`Chimera_Service`"
 
 #: src/implementation-status.md
 msgid "`1b7d3ec`"

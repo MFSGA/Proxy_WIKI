@@ -35,7 +35,6 @@ not sit in series.
 | --- | --- | --- |
 | `Chimera` | Desktop control plane: profile/runtime generation, core selection and update, foreground process management, service-mode IPC, system integration. | `backend/tauri/src/config`, `backend/tauri/src/core/clash`, `backend/tauri/src/core/service` |
 | `Chimera_Client` | Clash-family client core: local listeners, DNS, rules, TUN/transparent paths, outbound proxy handlers, controller APIs. | `clash-lib/src/config`, `clash-lib/src/app`, `clash-lib/src/proxy` |
-| `Chimera_Service` | Privileged local service: install/start/stop/status, local IPC, selected core lifecycle, selected privileged network operations. | `chimera_ipc/src/api`, `chimera_service/src/server`, `chimera_service/src/cmds` |
 | `AChimera` | Android control/platform layer: `VpnService`, TUN ownership, profile lifecycle, UniFFI bridge, controller-backed traffic/memory/connection UI. | `app/src/main/java/rs/chimera/android/backend`, `service/TunService.kt`, `ffi` |
 | `Chimera_Server` | Server/inbound core: Xray-oriented config validation, listeners/transports/security wrappers, inbound protocol handlers, forwarding/runtime/traffic state. | `chimera_server_lib/src/config`, `beginning`, `handler`, `reality` |
 
