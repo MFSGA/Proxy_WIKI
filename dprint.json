@@ -6,7 +6,7 @@
   },
   "exec": {
     "commands": [{
-      "command": "yapf3",
+      "command": "python -m yapf",
       "exts": ["py"]
     }, {
       "command": "rustup run nightly-2025-09-01 rustfmt --edition 2024",

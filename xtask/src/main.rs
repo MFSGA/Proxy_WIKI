@@ -21,9 +21,10 @@
 
 use anyhow::{Context, Result, anyhow};
 use clap::{Parser, Subcommand};
-use std::env;
 use std::path::{Path, PathBuf};
-use std::process::Command;
+use std::process::{Command, Output};
+use std::time::{SystemTime, UNIX_EPOCH};
+use std::{env, fs};
 
 fn main() -> Result<()> {
     execute_task()
@@ -47,6 +48,20 @@ enum Task {
     },
     /// Tests all included Rust snippets.
     RustTests,
+    /// Refreshes and validates the Simplified Chinese translation catalog.
+    UpdateZh {
+        /// Print untranslated and fuzzy entry counts after updating.
+        #[arg(long)]
+        stats: bool,
+
+        /// Skip catalog normalization and obsolete-entry removal.
+        #[arg(long)]
+        no_format: bool,
+
+        /// Keep obsolete entries in the catalog.
+        #[arg(long)]
+        keep_obsolete: bool,
+    },
     /// Starts a web server with the book.
     Serve {
         /// ISO 639 language code (e.g. da for the Danish translation).
@@ -80,6 +95,9 @@ fn execute_task() -> Result<()> {
     match cli.task {
         Task::InstallTools { binstall } => install_tools(binstall),
         Task::RustTests => run_rust_tests(),
+        Task::UpdateZh { stats, no_format, keep_obsolete } => {
+            update_zh(stats, !no_format, keep_obsolete)
+        }
         Task::Serve { language, output, port } => {
             start_web_server(language, output, port)
         }
@@ -130,7 +148,6 @@ fn install_tools(binstall: bool) -> Result<()> {
         ("mdbook", "0.4.52"),
         ("mdbook-mermaid", "0.16.0"),
         ("mdbook-svgbob", "0.2.2"),
-        ("mdbook-pandoc", "0.10.4"),
         ("mdbook-i18n-helpers", "0.3.6"),
         ("i18n-report", "0.2.0"),
         ("mdbook-linkcheck2", "0.9.1"),
@@ -140,6 +157,20 @@ fn install_tools(binstall: bool) -> Result<()> {
         let mut cmd = Command::new(cargo);
         cmd.args([install_command, tool, "--version", version, "--locked"]);
         run_command(&mut cmd)?;
+    }
+
+    if cfg!(not(windows)) {
+        let mut cmd = Command::new(cargo);
+        cmd.args([
+            install_command,
+            "mdbook-pandoc",
+            "--version",
+            "0.10.4",
+            "--locked",
+        ]);
+        run_command(&mut cmd)?;
+    } else {
+        println!("Skipping mdbook-pandoc; PDF output is disabled in book.toml.");
     }
 
     // Install local tools from the workspace.
@@ -187,6 +218,132 @@ fn run_rust_tests() -> Result<()> {
     let mut cmd = Command::new("mdbook");
     cmd.current_dir(workspace_root).arg("test");
     run_command(&mut cmd)
+}
+
+fn update_zh(show_stats: bool, run_format: bool, keep_obsolete: bool) -> Result<()> {
+    let workspace_root = Path::new(env!("CARGO_WORKSPACE_DIR"));
+    let po_file = workspace_root.join("po/zh-CN.po");
+    let temp_dir = TemporaryDirectory::create()?;
+    let build_dir = temp_dir.path.join("build");
+
+    let mut build = Command::new("mdbook");
+    build.current_dir(workspace_root).args(["build", "-d"]).arg(&build_dir);
+    run_command(&mut build)?;
+
+    let pot_file = build_dir.join("xgettext/messages.pot");
+    if !pot_file.is_file() {
+        return Err(anyhow!(
+            "mdBook did not generate the translation template at {}",
+            pot_file.display()
+        ));
+    }
+
+    println!("Merging updates into {}", po_file.display());
+    let mut merge = Command::new("msgmerge");
+    merge.args(["--update", "--backup=none"]).arg(&po_file).arg(&pot_file);
+    run_command(&mut merge)?;
+
+    if run_format {
+        println!("Normalizing the translation catalog");
+        let normalized_file = temp_dir.path.join("zh-CN-normalized.po");
+        if keep_obsolete {
+            fs::copy(&po_file, &normalized_file)
+                .context("Failed to copy the translation catalog")?;
+        } else {
+            let mut attrib = Command::new("msgattrib");
+            attrib
+                .args(["--no-obsolete", "--output-file"])
+                .arg(&normalized_file)
+                .arg(&po_file);
+            run_command(&mut attrib)?;
+        }
+
+        let mut normalize = Command::new("msgmerge");
+        normalize
+            .arg(&normalized_file)
+            .arg(&pot_file)
+            .arg("--output-file")
+            .arg(&po_file);
+        run_command(&mut normalize)?;
+    }
+
+    println!("Validating the translation catalog");
+    let mut validate = Command::new("msgfmt");
+    validate
+        .args(["--check", "--output-file"])
+        .arg(temp_dir.path.join("zh-CN.mo"))
+        .arg(&po_file);
+    run_command(&mut validate)?;
+
+    if show_stats {
+        let untranslated = count_gettext_entries(
+            Command::new("msgattrib")
+                .args(["--no-obsolete", "--untranslated"])
+                .arg(&po_file),
+        )?;
+        let fuzzy = count_gettext_entries(
+            Command::new("msgattrib").arg("--only-fuzzy").arg(&po_file),
+        )?;
+        println!("Untranslated: {untranslated}");
+        println!("Fuzzy: {fuzzy}");
+    }
+
+    Ok(())
+}
+
+fn count_gettext_entries(command: &mut Command) -> Result<usize> {
+    let command_display = format!("{command:?}");
+    let output = command
+        .output()
+        .with_context(|| format!("Failed to execute command: {command_display}"))?;
+    ensure_success(&output, &command_display)?;
+
+    Ok(String::from_utf8_lossy(&output.stdout)
+        .lines()
+        .filter(|line| line.starts_with("msgid "))
+        .count())
+}
+
+fn ensure_success(output: &Output, command_display: &str) -> Result<()> {
+    if output.status.success() {
+        return Ok(());
+    }
+
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    let status = output.status;
+    Err(anyhow!(
+        "Command `{command_display}` failed with {status}: {}",
+        if stderr.trim().is_empty() {
+            "no error output was provided"
+        } else {
+            stderr.trim()
+        }
+    ))
+}
+
+struct TemporaryDirectory {
+    path: PathBuf,
+}
+
+impl TemporaryDirectory {
+    fn create() -> Result<Self> {
+        let nonce = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .context("System clock is before the Unix epoch")?
+            .as_nanos();
+        let path = env::temp_dir()
+            .join(format!("proxy-wiki-update-zh-{}-{nonce}", std::process::id()));
+        fs::create_dir(&path).with_context(|| {
+            format!("Failed to create temporary directory {}", path.display())
+        })?;
+        Ok(Self { path })
+    }
+}
+
+impl Drop for TemporaryDirectory {
+    fn drop(&mut self) {
+        let _ = fs::remove_dir_all(&self.path);
+    }
 }
 
 fn run_mdbook_command(

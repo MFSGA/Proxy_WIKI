@@ -7,9 +7,9 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
-      yapf3 = pkgs.writeShellScriptBin "yapf3" ''
-        exec ${pkgs.python3Packages.yapf}/bin/yapf "$@"
-      '';
+      pythonWithYapf = pkgs.python3.withPackages (pythonPackages: [
+        pythonPackages.yapf
+      ]);
       mkPwCommand = name: text:
         pkgs.writeShellScriptBin name ''
           set -euo pipefail
@@ -46,7 +46,7 @@
             dprint fmt
             cargo fmt --all
           '')
-          (mkPwCommand "pw-update-zh" ''scripts/update-zh.sh --stats'')
+          (mkPwCommand "pw-update-zh" ''cargo xtask update-zh --stats'')
           (mkPwCommand "pw-check" ''
             cargo fmt --all -- --check
             dprint check
@@ -71,13 +71,12 @@
           nodejs_22
           pnpm
           corepack
-          python3
+          pythonWithYapf
           git
           pkg-config
           openssl
           gettext
           dprint
-          yapf3
           proxyWikiCommands
         ];
 

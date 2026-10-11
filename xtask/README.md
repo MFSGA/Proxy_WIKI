@@ -7,3 +7,9 @@ projects to run scripts). Please see
 
 To add support for a new task, add a new arm to the `match` in the
 `execute_task` function, and add a new handler function that contains the logic.
+
+`cargo xtask update-zh --stats` refreshes `po/zh-CN.po` from the current book
+sources, removes obsolete entries, validates the catalog, and reports
+untranslated/fuzzy counts. It is implemented in Rust so it can be used from
+PowerShell as well as Unix shells. GNU gettext (`msgmerge`, `msgattrib`, and
+`msgfmt`) must be available on `PATH`.

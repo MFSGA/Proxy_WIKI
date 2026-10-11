@@ -19,6 +19,7 @@ jobs:
         os:
           - ubuntu-24.04
           - macos-latest
+          - windows-latest
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -112,6 +113,28 @@ jobs:
         env:
           MDBOOK_BOOK__LANGUAGE: ${{ matrix.language }}
         run: mdbook test
+
+  windows-docs:
+    name: Windows documentation workflow
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Update Rust
+        run: rustup update
+
+      - name: Install mdBook tools
+        run: .\scripts\dev.ps1 setup
+
+      - name: Build English documentation
+        run: .\scripts\dev.ps1 build -Output target\book\en
+
+      - name: Build Simplified Chinese documentation
+        run: .\scripts\dev.ps1 build-zh -Output target\book\zh-CN
+
+      - name: Test documentation code blocks
+        run: .\scripts\dev.ps1 rust-test
 
   po-diff:
     name: Translation diff
