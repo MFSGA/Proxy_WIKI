@@ -1,43 +1,62 @@
 # Trojan Wire Format
 
-## Scope
+This page describes the base Trojan request and relay framing after any
+configured outer transport has been established. TLS, WebSocket, and other
+transport wrappers are separate layers; their order and availability depend on
+the implementation.
 
-This page documents the baseline Trojan protocol framing after the TLS session
-has been established. Transport wrappers added by individual implementations
-can add another layer around this baseline and should be documented separately.
+## TLS and Stream Boundaries
 
-## 1. TLS Handshake
+In the common TLS deployment, the client establishes TLS before sending
+Trojan application data. TLS records are not Trojan message boundaries: a
+request can span multiple TLS records, and a record can contain both the end of
+a request and following payload. Parsers must read the decrypted connection as
+an ordered byte stream rather than assume one socket read or TLS record
+contains one complete message.
 
-Trojan starts with a normal TLS handshake. Only after TLS succeeds does the
-client send Trojan authentication and destination information.
+TLS protects Trojan fields and relayed data when it is enabled. The client
+should validate the server certificate and hostname unless an explicitly
+configured trust model says otherwise.
 
-If the TLS handshake fails, there is no valid Trojan application session. A
-server may also provide ordinary HTTPS behavior for non-Trojan traffic as part
-of its fallback design.
+## Initial Request
 
-## 2. Initial Application Request
-
-The first Trojan application data has this logical form:
+After the outer transport is ready, the client sends this request:
 
 ```text
-+-----------------------+---------+----------------+---------+----------+
-| hex(SHA224(password)) |  CRLF   | Trojan Request |  CRLF   | Payload  |
-+-----------------------+---------+----------------+---------+----------+
-|          56           | 0D 0A   |    Variable    | 0D 0A   | Variable |
-+-----------------------+---------+----------------+---------+----------+
++-----------------------+---------+----------------+---------+-----------------+
+| hex(SHA224(password)) |  CRLF   | Trojan Request |  CRLF   | Payload / frame |
++-----------------------+---------+----------------+---------+-----------------+
+|          56           |   2     |    Variable    |    2    |    Optional     |
++-----------------------+---------+----------------+---------+-----------------+
 ```
 
-The 56-byte authentication field is the lowercase/uppercase-insensitive hex
-representation of the 28-byte SHA-224 digest, as expected by the implementation.
-The exact credential handling should follow the endpoint implementation rather
-than relying on manual hashing in normal user configuration.
+The authentication field is 56 ASCII hexadecimal characters representing the
+28-byte SHA-224 digest of the configured password. The current Chimera client
+emits lowercase hexadecimal. The current Chimera server matches the encoded
+digest exactly, so this client/server combination requires the lowercase form
+it emits. This describes the accepted encoding; it does not imply constant-time
+authentication comparison. There is no separate authentication negotiation
+or success packet.
 
-The optional initial payload allows the client to send application data in the
-same logical request instead of waiting for an additional round trip.
+The request header is terminated by the second `CRLF`. After it, `CONNECT`
+carries raw bytes for the destination TCP stream; `UDP ASSOCIATE` begins the
+UDP frame stream described below. There is no additional Trojan success frame
+before relaying begins.
 
-## 3. Trojan Request
+With no initial payload, request sizes are:
 
-The request reuses a SOCKS5-like destination format:
+| Destination type | Trojan Request | Full initial header |
+| --- | ---: | ---: |
+| IPv4 | 8 bytes | 68 bytes |
+| IPv6 | 20 bytes | 80 bytes |
+| Domain of `N` bytes | `N + 5` bytes | `N + 65` bytes |
+
+The full header includes the 56-byte digest text and both 2-byte `CRLF` delimiters.
+
+## Trojan Request Fields
+
+Trojan reuses the SOCKS5 command and address encodings, but omits the SOCKS5
+version and reserved fields:
 
 ```text
 +-----+------+----------+----------+
@@ -47,88 +66,119 @@ The request reuses a SOCKS5-like destination format:
 +-----+------+----------+----------+
 ```
 
-### `CMD`
+`CMD` is one byte:
 
 | Value | Meaning |
 | --- | --- |
-| `0x01` | TCP `CONNECT` |
-| `0x03` | UDP association |
+| `0x01` | `CONNECT`: open a TCP connection to the destination |
+| `0x03` | `UDP ASSOCIATE`: carry UDP datagrams as frames in this stream |
 
-### `ATYP`
+`ATYP` and `DST.ADDR` use these encodings:
 
-| Value | Address form |
-| --- | --- |
-| `0x01` | IPv4 |
-| `0x03` | Domain name |
-| `0x04` | IPv6 |
+| ATYP | Address | Encoded `DST.ADDR` |
+| --- | --- | --- |
+| `0x01` | IPv4 | exactly 4 address bytes |
+| `0x03` | domain name | 1-byte length `N`, followed by `N` domain bytes |
+| `0x04` | IPv6 | exactly 16 address bytes |
 
-`DST.PORT` is encoded in network byte order.
+`DST.PORT` is an unsigned 16-bit integer in network byte order (big-endian). The
+one-byte domain length allows at most 255 bytes on the wire. The current
+Chimera server rejects empty domain names and domain bytes that are not valid
+UTF-8.
 
-For address-field semantics, SOCKS5 RFC 1928 is a useful reference because the
-Trojan request intentionally follows the same general address model.
+## TCP Relay and Responses
 
-## 4. TCP Payload
-
-For a valid TCP request, bytes following the second CRLF can immediately become
-payload for the requested destination. After the request has been accepted,
-subsequent application data is relayed through the TLS connection.
-
-Conceptually:
+Once a `CONNECT` request is accepted, Trojan adds no further framing to the TCP data:
 
 ```text
-TLS
-└── Trojan authentication + destination
-    └── TCP application byte stream
+client application bytes
+        -> Trojan client -> outer transport -> Trojan server -> destination TCP socket
+        <-                  raw bidirectional bytes                         <-
 ```
 
-## 5. UDP Datagram Framing
+Trojan defines no method-selection response, authentication-status response,
+SOCKS5-style `REP` reply, or portable error frame. A client observes success
+when the tunnel becomes usable; failures before or during relay are represented
+by TLS/I/O failure, connection closure, fallback handling, or
+implementation-specific behavior.
 
-For UDP association, each UDP datagram is framed separately inside the TLS
-stream:
+A plain Trojan connection carries one `CONNECT` tunnel or one UDP association.
+Multiplexing or additional framing supplied by a product is outside the base
+Trojan request format.
+
+## UDP Associate Framing
+
+For `UDP ASSOCIATE`, each datagram is encoded in the same stream as:
 
 ```text
-+------+----------+----------+--------+---------+----------+
-| ATYP | DST.ADDR | DST.PORT | Length |  CRLF   | Payload  |
-+------+----------+----------+--------+---------+----------+
-|  1   | Variable |    2     |   2    | 0D 0A   | Variable |
-+------+----------+----------+--------+---------+----------+
++------+----------+----------+--------+---------+---------+
+| ATYP | DST.ADDR | DST.PORT | Length |  CRLF   | Payload |
++------+----------+----------+--------+---------+---------+
+|  1   | Variable |    2     |   2    |    2    | Variable|
++------+----------+----------+--------+---------+---------+
 ```
 
-- `ATYP`, `DST.ADDR`, and `DST.PORT` identify the UDP destination.
-- `Length` is the UDP payload length in network byte order.
-- `Payload` is one UDP datagram.
+- Address fields use the same encoding as the initial request.
+- `Length` is an unsigned 16-bit payload length in network byte order.
+- `Payload` contains exactly `Length` bytes.
+- Frames are bidirectional: client-to-server frames identify the destination;
+  server-to-client frames identify the datagram source.
+- Trojan UDP frames have no SOCKS5 `RSV` or `FRAG` field and define no native
+  fragmentation or reassembly.
 
-Because UDP datagrams are carried inside a TLS stream, packet boundaries are
-represented by this framing rather than by the underlying transport.
+The frame header before the payload is 11 bytes for IPv4, 23 bytes for IPv6,
+and `N + 8` bytes for a domain name of length `N`. Although the wire length can
+represent up to 65535 bytes, the current Chimera server limits Trojan UDP
+payloads to 8192 bytes in both directions. This is an implementation limit,
+not a Trojan wire-format limit.
 
-## 6. Parser Considerations
+UDP datagrams carried over a TCP/TLS stream inherit TCP head-of-line blocking:
+loss or retransmission on the stream can delay later datagrams.
 
-An implementation should treat the request as structured binary data rather
-than assuming a single socket read contains the entire header. TLS and TCP can
-split application data across reads.
+## Parsing and Failure Behavior
 
-Important parser checks include:
+Implementations should read complete fields from the stream and validate the
+command, address type, address length, port, `CRLF` delimiters, and declared
+UDP payload length before dispatch. A malformed or truncated UDP frame loses
+framing synchronization; the association should fail rather than guess where
+the next frame begins.
 
-- complete 56-byte authentication field,
-- exact CRLF delimiters,
-- valid `CMD`,
-- supported `ATYP`,
-- bounded domain-name and payload lengths,
-- complete destination port,
-- and complete UDP payload before dispatch.
+The base protocol has no close command. The TLS/TCP connection lifetime bounds
+the relay, and an I/O or parse failure ends the affected connection. In
+Chimera Server, configured fallback handling can receive traffic that fails
+before a valid password line is accepted; after a valid digest line, malformed
+commands or addresses are rejected rather than sent to fallback.
 
-Malformed input should not panic the server or expose protocol-specific debug
-information to an unauthenticated peer.
+## Security Notes
 
-## 7. Relationship to Chimera
+- `hex(SHA224(password))` is a deterministic wire credential, not a
+  password-hardening KDF. Use unique, high-entropy passwords.
+- When TLS is enabled, passive observers without session keys cannot read the
+  digest, command, destination, UDP lengths, or payload. Endpoint addresses,
+  timing, sizes, and some handshake metadata may remain visible.
+- Fallback destinations should be controlled carefully; routing unauthenticated
+  traffic to sensitive internal services can expose them to probes.
+- Parsers should bound input before allocating buffers and reject malformed
+  lengths and addresses. Authentication comparisons should avoid data-dependent
+  early exits.
 
-This wire format is the baseline Trojan reference. `Chimera_Client` currently
-documents Trojan together with WebSocket support, so a deployed connection may
-contain an additional transport layer around the Trojan payload. Likewise,
-`Chimera_Server` compatibility should be tested against the exact transport and
-framing combination being used.
+## Implementation References
+
+The current Chimera implementations used to cross-check this page are:
+
+- Client request construction: `Chimera_Client/clash-lib/src/proxy/trojan/mod.rs`.
+- Client UDP framing: `Chimera_Client/clash-lib/src/proxy/trojan/datagram.rs`.
+- Server authentication and request parsing:
+  `Chimera_Server/chimera_server_lib/src/handler/trojan.rs`.
+- Server UDP framing:
+  `Chimera_Server/chimera_server_lib/src/handler/trojan_udp.rs`.
+
+These implementation notes describe current project behavior and are not
+additional protocol requirements.
 
 ## References
 
 - Trojan protocol: <https://trojan-gfw.github.io/trojan/protocol.html>
-- SOCKS5 address model: <https://www.rfc-editor.org/rfc/rfc1928>
+- SOCKS Protocol Version 5 (RFC 1928): <https://datatracker.ietf.org/doc/html/rfc1928>
+- Username/Password Authentication for SOCKS V5 (RFC 1929):
+  <https://datatracker.ietf.org/doc/html/rfc1929>
