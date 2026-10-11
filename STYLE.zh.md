@@ -19,6 +19,44 @@ Proxy Wiki 是 Chimera 代理技术栈的技术参考文档。写作目标是让
 - 已知限制应放在对应功能章节中；跨模块问题汇总到 `src/open-questions.md`。
 - 协议页面应覆盖握手形态、配置表面、互通说明、安全注意事项和已知限制。
 
+### 功能状态字段
+
+新增或修订功能状态摘要时，必须分别记录以下两个字段。不得根据上游对齐
+状态推断本地成熟度，也不得反向推断。已有状态条目在下次审查时再补齐；
+不得凭假设填写。英文字段和值是规范标识；中文页面可使用下列固定译名，
+不要另造同义状态。
+
+- **上游对齐状态**：
+  `Needs assessment`（待评估对齐）、`Planned`（计划对齐）、`Aligning`（对齐中）、
+  `Aligned`（已对齐）、`Not aligning`（暂不对齐）、`Not applicable`（不适用）。
+- **本地成熟度**：`Not assessed`（成熟度待评估）、`Not implemented`（未实现）、
+  `In development`（开发中）、`Experimental`（实验性）、`Stable`（稳定）。
+
+对于**上游对齐状态**，`Aligned` 仅表示在明确范围内与指定上游版本一致。`Planned`
+表示已决定对齐但尚未开始；`Aligning`
+表示正在积极推进。这三种状态都要记录目标上游仓库和范围；`Aligned`
+还必须注明发布版本或 `commit` 并链接验证证据。`Not aligning`
+表示明确暂不纳入范围或保留已知差异，必须说明原因，必要时注明复查日期。完成对比审查前使用
+`Needs assessment`；没有有意义的上游对应实现时使用 `Not applicable`。
+
+对于**本地成熟度**，`Not implemented`
+表示没有运行时实现；仅接受配置不算已实现。`In development`
+表示实现尚不完整，未达到日常使用条件。`Experimental`
+表示可在文档说明的限制内使用，但仍可能变化或存在重要缺口。`Stable`
+表示面向日常使用，且行为和限制已有文档说明。源码尚未审查时使用
+`Not assessed`。这些标签描述成熟度，不代表测试强度；`Parsed`、`Implemented`、`Interop-tested`
+等证据等级应单独记录，定义见[实现状态与源码证据](src/implementation-status.md)。
+
+在功能摘要或表格中分别填写两个字段。适用时记录最近核对日期，并为对齐或
+稳定性结论链接最强证据。Client 与 Server 行为不同时，应按方向或组件分别标注。
+
+示例：
+
+```text
+上游对齐状态：Aligning（对齐中；目标：<仓库>；范围：<功能>）
+本地成熟度：Experimental（实验性）
+```
+
 ### 协议页面模板
 
 新建协议/传输页面时，在主题适用的情况下，建议按以下顺序组织：
@@ -31,7 +69,9 @@ Proxy Wiki 是 Chimera 代理技术栈的技术参考文档。写作目标是让
 6. **TCP 与 UDP 行为** —— 分开描述；不适用时明确写出，不要默认二者能力相同。
 7. **抓包视角** —— 说明在解密或内层协议接管之前，抓包实际能看到哪一层。
 8. **安全说明** —— 覆盖认证、机密性、重放/fallback 边界、资源限制和暴露假设。
-9. **Chimera 实现状态** —— 记录 Client/Server 方向、feature gate、parsed-only/rejected 字段和重要版本/构建边界。
+9. **Chimera 实现状态** —— 记录 Client/Server
+   方向、上述两个功能状态字段、feature gate、parsed-only/rejected
+   字段和重要版本/构建边界。
 10. **测试证据** —— 链接最强的 unit/integration/cross-project/external 测试锚点，不要把证据等级扩展到测试没有覆盖的路径。
 11. **兼容性边界** —— 明确列出与 Xray、Clash/Mihomo 或其他上游实现的已知差异。
 12. **故障排查** —— 按协议层定位失败，不要只列通用网络排查项。

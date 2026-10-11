@@ -63,6 +63,8 @@ cargo xtask build -l zh-CN     # static output in book/zh-CN/
 - For routine validation, use `cargo test`, `cargo clippy -- -D warnings`, and a successful mdBook build.
 
 ## Documentation entry points
+- [Documentation style and feature status rules](STYLE.md)
+  (中文：[风格指南](STYLE.zh.md)).
 - `Implementation Status and Source Evidence`: source-audited capability levels and explicit compatibility boundaries.
 - `Test Evidence and Interoperability Matrix`: concrete test names and the strength of their evidence.
 - `End-to-End Troubleshooting`: failure isolation by layer.
